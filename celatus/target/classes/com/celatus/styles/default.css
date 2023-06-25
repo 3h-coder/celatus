@@ -14,3 +14,7 @@
 .PasswordField {
     -fx-background-color :  #96a6d6;
 }
+
+#confirmPasswordLabel {
+    -fx-text-fill: red
+}

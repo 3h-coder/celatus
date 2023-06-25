@@ -18,7 +18,7 @@ public class EntryWindowController {
     private Button entryButton;
 
     @FXML
-    private Button viewButton;
+    protected Button viewButton;
 
     @FXML
     private Button minimizeButton;
@@ -32,12 +32,7 @@ public class EntryWindowController {
     @FXML 
     private TextField revealedPwdField;
 
-    private String password;
-
-    @FXML
-    private void onPasswordKeyTyped() {
-        System.out.println("test");
-    }
+    protected String password;
 
     @FXML
     private void viewButtonClicked() {
@@ -58,11 +53,13 @@ public class EntryWindowController {
 
     @FXML
     private void submitPassword() {
+        // Getting the pass phrase
         if ("View".equals(viewButton.getText())) {
             password = pwdField.getText();
         } else {
             password = revealedPwdField.getText();
         }
+        // TODO: 
         System.out.println("Entered password is : " + password);
     }
 
