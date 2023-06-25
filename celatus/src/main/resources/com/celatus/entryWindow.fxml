@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="180.0" prefWidth="350.0" styleClass="AnchorPane" stylesheets="@styles/default.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.celatus.EntryWindowController">
+   <children>
+      <Label fx:id="mainLabel" layoutX="96.0" layoutY="47.0" prefHeight="17.0" prefWidth="160.0" text="Please enter your pass phrase" />
+      <PasswordField fx:id="pwdField" layoutX="14.0" layoutY="78.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#submitPassword" prefHeight="25.0" prefWidth="265.0" styleClass="PasswordField" />
+      <TextField fx:id="revealedPwdField" layoutX="14.0" layoutY="78.0" onAction="#submitPassword" prefHeight="25.0" prefWidth="265.0" styleClass="PasswordField" visible="false" />
+      <Button fx:id="enterButton" layoutX="136.0" layoutY="120.0" mnemonicParsing="false" onAction="#submitPassword" prefHeight="25.0" prefWidth="80.0" text="Enter">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Button fx:id="viewButton" layoutX="294.0" layoutY="78.0" mnemonicParsing="false" onAction="#viewButtonClicked" text="View">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Button fx:id="closeButton" layoutX="324.0" layoutY="6.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#close" prefHeight="25.0" prefWidth="25.0" text="X" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <Button fx:id="minimizeButton" layoutX="294.0" layoutY="6.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#minimize" prefHeight="25.0" prefWidth="25.0" text="_" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="0.0" />
+   </children>
+</AnchorPane>
