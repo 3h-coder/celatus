@@ -1,15 +1,17 @@
 package com.celatus;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.stage.Stage;
+
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 
-public class EntryWindowController {
+
+public class EntryWindowController extends BaseWindowController {
+
+    // region =====Variables=====
 
     @FXML
     private Button closeButton;
@@ -21,9 +23,6 @@ public class EntryWindowController {
     protected Button viewButton;
 
     @FXML
-    private Button minimizeButton;
-
-    @FXML
     private Label mainLabel;
     
     @FXML
@@ -33,6 +32,10 @@ public class EntryWindowController {
     private TextField revealedPwdField;
 
     protected String password;
+
+    // endregion
+
+    // region =====Methods=====
 
     @FXML
     private void viewButtonClicked() {
@@ -59,19 +62,9 @@ public class EntryWindowController {
         } else {
             password = revealedPwdField.getText();
         }
-        // TODO: 
+        // TODO : check pass phrase
         System.out.println("Entered password is : " + password);
     }
 
-    @FXML
-    private void close() {
-        Platform.exit();
-    }
-
-    @FXML
-    private void minimize() {
-        Stage stage = (Stage) minimizeButton.getScene().getWindow();
-        // Minimize the stage
-        stage.setIconified(true);
-    }
+    // endregion
 }

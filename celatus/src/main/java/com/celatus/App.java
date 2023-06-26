@@ -14,7 +14,13 @@ import java.io.IOException;
  */
 public class App extends Application {
 
+    // region =====Application Variables=====
+
     private static Scene scene;
+
+    // endregion
+
+    // region =====Main Methods=====
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -36,5 +42,7 @@ public class App extends Application {
     public static void main(String[] args) {
         launch();
     }
+
+    // endregion
 
 }
