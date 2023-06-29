@@ -6,6 +6,9 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.control.ContextMenu;
 
 public class SetupWindowController extends EntryWindowController {
 
@@ -42,20 +45,25 @@ public class SetupWindowController extends EntryWindowController {
     }
 
     @FXML
-    private void pwdField2KeyPressed(KeyEvent event) {
-        if (event.isControlDown() && event.getCode() == KeyCode.V) {
-            thirdLabel.setText("Copy pasting is not allowed in this field");
-            thirdLabel.setVisible(true);
-            pwdField2.setText(password2);
-            pwdField2.positionCaret(password2.length());
-        } else {
-            password2 = pwdField2.getText();
-        }
+    private void warning(String message) {
+        thirdLabel.setText(message);
+        thirdLabel.setVisible(true);
+    } 
+
+    private ContextMenu createEmptyContextMenu() {
+        return new ContextMenu();
     }
 
     @FXML
-    private void handlePaste() {
-
+    private void pwdField2KeyPressed(KeyEvent event) {
+        // Prevent copy pasting into this field
+        if (event.isControlDown() && event.getCode() == KeyCode.V) {
+            warning("Copy pasting is not allowed in this field");
+            /*pwdField2.setText(password2);
+            pwdField2.positionCaret(password2.length());*/
+        } else {
+            password2 = pwdField2.getText();
+        }
     }
 
     @FXML
@@ -64,25 +72,21 @@ public class SetupWindowController extends EntryWindowController {
         boolean valid = true;
         // Check if both pass phrases match
         if (!password1.equals(password2)) {
-            thirdLabel.setText("The pass phrases do not match");
-            thirdLabel.setVisible(true);
+            warning("The pass phrases do not match");
             return false;
         } else {
             thirdLabel.setVisible(false);
             // Check if the pass phrase's length is sufficient
             if (password1.length() < 30) {
-                thirdLabel.setText("The pass phrase must be at least 30 characters long");
-                thirdLabel.setVisible(true);
+                warning("The pass phrase must be at least 30 characters long");
                 return false;
             // Check if no whitespace at the beginning
             } else if (password1.startsWith(" ")) {
-                thirdLabel.setText("White spaces are not allowed at the start of the pass phrase");
-                thirdLabel.setVisible(true);
+                warning("White spaces are not allowed at the start of the pass phrase");
                 return false;
             // Check if no whitespace at the end
             } else if (password1.endsWith(" ")) {
-                thirdLabel.setText("White spaces are not allowed at the end of the pass phrase");
-                thirdLabel.setVisible(true);
+                warning("White spaces are not allowed at the end of the pass phrase");
                 return false;
             }
         }
@@ -106,5 +110,9 @@ public class SetupWindowController extends EntryWindowController {
         
     }
 
+    @FXML
+    private void initialize() {
+        pwdField2.setContextMenu(createEmptyContextMenu());
+    }
     // endregion
 }

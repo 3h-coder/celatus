@@ -20,12 +20,6 @@
             <artifactId>javafx-fxml</artifactId>
             <version>13</version>
         </dependency>
-    
-      <dependency>
-        <groupId>com.vaadin</groupId>
-        <artifactId>vaadin-server</artifactId>
-        <version>8.8.6</version>
-      </dependency>
     </dependencies>
     <build>
         <plugins>
