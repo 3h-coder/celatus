@@ -1,10 +1,12 @@
 package com.celatus;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.control.ContextMenu;
 
@@ -18,28 +20,62 @@ public class SetupWindowController extends EntryWindowController {
     @FXML
     private PasswordField pwdField2;
 
+    @FXML
+    private Button viewButton;
+
+    @FXML
+    private Button enterButton;
+
     @FXML 
     private TextField revealedPwdField;
+
+    @FXML
+    private Label mainLabel;
+
+    @FXML
+    private Label secondaryLabel;
 
     @FXML
     private Label thirdLabel;
 
     private String password2;
 
+    private String recoveryQuestion;
+
+    private String recoveryAnswer;
     // endregion
 
-    // region =====Methods=====
+    // region ===== Main Methods=====
 
     @FXML
-    private void goToPwdField2() {
-        pwdField2.requestFocus();
+    private void initialize() {
+        pwdField2.setContextMenu(createEmptyContextMenu());
     }
 
     @FXML
-    private void pwdFieldKeyPressed(KeyEvent event) {
-        if (event.getCode() == KeyCode.TAB) {
-            goToPwdField2();
+    private void submitPassPhrases() {
+        // Getting the pass phrase
+        if ("View".equals(viewButton.getText())) {
+            password = pwdField.getText();
+        } else {
+            password = revealedPwdField.getText();
         }
+        password2 = pwdField2.getText();
+
+        if(validEqualPasswords(password, password2)) {
+            // System.out.println("Yay both pass phrases are valid and the same!");
+            System.out.println("The password is: " + password);
+            System.out.println("The key from it is: " + CryptoUtils.generateAESKey(password));
+            recoveryQuestionSetup();
+        }   
+    }
+
+    // endregion
+
+    // region =====Secondary Methods=====
+
+    private ContextMenu createEmptyContextMenu() {
+        return new ContextMenu();
     }
 
     @FXML
@@ -47,22 +83,6 @@ public class SetupWindowController extends EntryWindowController {
         thirdLabel.setText(message);
         thirdLabel.setVisible(true);
     } 
-
-    private ContextMenu createEmptyContextMenu() {
-        return new ContextMenu();
-    }
-
-    @FXML
-    private void pwdField2KeyPressed(KeyEvent event) {
-        // Prevent copy pasting into this field
-        if (event.isControlDown() && event.getCode() == KeyCode.V) {
-            warning("Copy pasting is not allowed in this field");
-            pwdField2.setText(password2);
-            pwdField2.positionCaret(password2.length());
-        } else {
-            password2 = pwdField2.getText();
-        }
-    }
 
     @FXML
     private boolean validEqualPasswords(String password1, String password2) {
@@ -92,27 +112,43 @@ public class SetupWindowController extends EntryWindowController {
     }
 
     @FXML
-    private void submitPassword() {
-        // Getting the pass phrase
-        if ("View".equals(viewButton.getText())) {
-            password = pwdField.getText();
-        } else {
-            password = revealedPwdField.getText();
-        }
-        password2 = pwdField2.getText();
-
-        if(validEqualPasswords(password, password2)) {
-            // System.out.println("Yay both pass phrases are valid and the same!");
-            System.out.println("The password is: " + password);
-            System.out.println("The key from it is: " + CryptoUtils.generateAESKey(password));
-        }
-
-        
+    private void goToPwdField2() {
+        pwdField2.requestFocus();
     }
 
     @FXML
-    private void initialize() {
-        pwdField2.setContextMenu(createEmptyContextMenu());
+    private void pwdFieldKeyPressed(KeyEvent event) {
+        if (event.getCode() == KeyCode.TAB) {
+            goToPwdField2();
+        }
     }
+
+    @FXML
+    private void pwdField2KeyPressed(KeyEvent event) {
+        // Prevent copy pasting into this field
+        if (event.isControlDown() && event.getCode() == KeyCode.V) {
+            warning("Copy pasting is not allowed in this field");
+            pwdField2.setText(password2);
+            pwdField2.positionCaret(password2.length());
+        } else {
+            password2 = pwdField2.getText();
+        }
+    }
+
+    @FXML
+    private void recoveryQuestionSetup() {
+
+        AnchorPane.setRightAnchor(pwdField, 15.0);
+        AnchorPane.setRightAnchor(pwdField2, 15.0);
+        pwdField.clear();
+        pwdField2.clear();
+        viewButton.setVisible(false);
+        mainLabel.setText("Please enter a recovery question");
+        secondaryLabel.setText("Answer");
+        // TODO: Change the enter button and pwdField2 onAction to check for the answer 
+        // enterButton.setOnAction(null);
+        // pwdField2.setOnAction(null);
+    }
+
     // endregion
 }

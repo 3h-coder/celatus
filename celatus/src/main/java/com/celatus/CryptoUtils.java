@@ -7,9 +7,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -49,7 +47,7 @@ public class CryptoUtils {
 
     /**
      * Generates a 256 bits AES key derived from an input pass phrase string 
-     * @param passPhrase The pass phrase used to generate the AES key
+     * @param passPhrase : The pass phrase used to generate the AES key
      */
     public static Key generateAESKey(String passPhrase) {
         try {
@@ -87,10 +85,10 @@ public class CryptoUtils {
 
     /**
      * Encrypts the input data
-     * @param data The data string to cipher
-     * @param Key The key used for our AES CBC encryption
-     * @param iv The IV used for our AES CBC encryption
-     * @return The encrypted data as a string
+     * @param data : The data string to cipher
+     * @param Key : The key used for our AES CBC encryption
+     * @param iv : The IV used for our AES CBC encryption
+     * @return : The encrypted data as a string
      */
     public static String encryptData(String data, Key Key, IvParameterSpec iv){
         try {
@@ -107,10 +105,10 @@ public class CryptoUtils {
 
     /**
      * Deciphers an encrypted data string
-     * @param encryptedData The data we want to decipher
-     * @param key The key used for our AES deciphering
-     * @param iv The IV used for our AES CBC encryption
-     * @return The deciphered plain text
+     * @param encryptedData : The data we want to decipher
+     * @param key : The key used for our AES deciphering
+     * @param iv : The IV used for our AES CBC encryption
+     * @return : The deciphered plain text
      */
     public static String decryptData(String encryptedData, Key key, IvParameterSpec iv) {
         try {
@@ -124,6 +122,13 @@ public class CryptoUtils {
         }
     }
     
+    /**
+     * Saves data into a file after ciphering it through AES CBC
+     * @param outputFilePath : File where we store the data
+     * @param data : Data to be stored into the file
+     * @param key : Key used for AES CBC encryption
+     * @param iv : The iv byte array used for encryption
+     */
     public static void encryptIntoFile(String outputFilePath, String data, Key key, byte[] iv) {
         try (FileOutputStream outputStream = new FileOutputStream(outputFilePath)){
             outputStream.write(iv);
@@ -137,6 +142,12 @@ public class CryptoUtils {
         }
     }
 
+    /**
+     * Decrypts data from an AES CBC encrypted file
+     * @param inputFilePath : The file that we want to decrypt
+     * @param key : The AES key used for decryption
+     * @return The deciphered file content as a String object
+     */
     public static String decryptFile(String inputFilePath, Key key) {
         try (InputStream inputStream = new FileInputStream(inputFilePath)){
             Cipher cipher = Cipher.getInstance(ALGORITHM);

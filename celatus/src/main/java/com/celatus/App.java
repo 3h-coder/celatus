@@ -2,6 +2,8 @@ package com.celatus;
 
 import java.io.IOException;
 import java.io.File;
+import java.security.Key;
+import java.util.HashMap;
 
 import javafx.application.Application;
 import javafx.fxml.FXML;
@@ -19,12 +21,37 @@ import org.apache.logging.log4j.Logger;
  */
 public class App extends Application {
 
-    private static final Logger logger = LogManager.getLogger(App.class.getName());
-
     // region =====Application Variables=====
 
+    private static final Logger logger = LogManager.getLogger(App.class.getName());
+
     private static Scene scene;
-    private static String dbFilePath = "db.clts";
+    private static final String dbFilePath = "db.clts";
+
+    // 256 bits AES key used to encrypt the db.clts file
+    private static Key key;
+
+    private static HashMap<Object, Object> data = new HashMap<Object, Object>();
+
+    // endregion
+
+    // region =====Getters and Setters=====
+
+    public Key getKey() {
+        return key;
+    }
+
+    public void setKey(Key value) {
+        key = value;
+    }
+
+    public HashMap<Object, Object> getData() {
+        return data;
+    }
+
+    public void setData(HashMap<Object, Object> newData) {
+        data = newData; 
+    }
 
     // endregion
 
