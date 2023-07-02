@@ -57,15 +57,15 @@ public class SetupWindowController extends EntryWindowController {
         // Prevent copy pasting into this field
         if (event.isControlDown() && event.getCode() == KeyCode.V) {
             warning("Copy pasting is not allowed in this field");
-            /*pwdField2.setText(password2);
-            pwdField2.positionCaret(password2.length());*/
+            pwdField2.setText(password2);
+            pwdField2.positionCaret(password2.length());
         } else {
             password2 = pwdField2.getText();
         }
     }
 
     @FXML
-    private boolean validPasswords(String password1, String password2) {
+    private boolean validEqualPasswords(String password1, String password2) {
 
         boolean valid = true;
         // Check if both pass phrases match
@@ -101,8 +101,10 @@ public class SetupWindowController extends EntryWindowController {
         }
         password2 = pwdField2.getText();
 
-        if(validPasswords(password, password2)) {
+        if(validEqualPasswords(password, password2)) {
             // System.out.println("Yay both pass phrases are valid and the same!");
+            System.out.println("The password is: " + password);
+            System.out.println("The key from it is: " + CryptoUtils.generateAESKey(password));
         }
 
         

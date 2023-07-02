@@ -63,7 +63,7 @@ public class EntryWindowController extends BaseWindowController {
             password = revealedPwdField.getText();
         }
         // TODO : check pass phrase
-        System.out.println("Entered password is : " + password);
+        // System.out.println("Entered password is : " + password);
     }
 
     // endregion

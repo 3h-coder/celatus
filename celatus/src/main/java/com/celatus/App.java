@@ -1,6 +1,7 @@
 package com.celatus;
 
 import java.io.IOException;
+import java.io.File;
 
 import javafx.application.Application;
 import javafx.fxml.FXML;
@@ -23,6 +24,7 @@ public class App extends Application {
     // region =====Application Variables=====
 
     private static Scene scene;
+    private static String dbFilePath = "db.clts";
 
     // endregion
 
@@ -34,13 +36,23 @@ public class App extends Application {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             // Code to be executed when the application is shutting down
             // This can include cleanup tasks or saving data
+            try{
+                if (dbFileExists()) {
+                    CryptoUtils.hideFile(dbFilePath, true);
+                }
+            } catch(IOException ex) {
+                logger.error("An unexpected error occured while trying to conceal sensitive files: " + ex.getMessage());
+            }
             logger.info("--------------------Application Shutdown--------------------");
+            
         }));
-
-        scene = new Scene(loadFXML("setupWindow"));
-        stage.initStyle(StageStyle.UNDECORATED);
-        stage.setScene(scene);
-        stage.show();      
+        
+        if (dbFileExists()) {
+            launchWindow(stage, "entryWindow");
+        } else {
+            launchWindow(stage, "setupWindow");
+        }
+             
     }
 
     public static void main(String[] args) {
@@ -51,7 +63,19 @@ public class App extends Application {
 
     // region =====Secondary Methods=====
 
-    static void setRoot(String fxml) throws IOException {
+    public static void launchWindow(Stage stage, String fxml) throws IOException {
+        scene = new Scene(loadFXML(fxml));
+        stage.initStyle(StageStyle.UNDECORATED);
+        stage.setScene(scene);
+        stage.show(); 
+    }
+
+    /**
+     * Switches the application's scene to another
+     * @param fxml The view to switch to
+     * @throws IOException
+     */
+    public static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
     }
 
@@ -60,6 +84,10 @@ public class App extends Application {
         return fxmlLoader.load();
     }
 
+    /**
+     * Logs the provided error message and displays it into a pop-up window
+     * @param error The error message
+     */
     public static void error(String error) {
         logger.error(error);
         try {
@@ -78,6 +106,15 @@ public class App extends Application {
             logger.error("Failed to popup the error window: " + ex.getMessage());
         }
         
+    }
+
+    /**
+     * Checks if the pp.bin file exists in the app's directory
+     * @return
+     */
+    public static boolean dbFileExists() {
+        File file = new File(dbFilePath);
+        return file.exists();
     }
 
     // endregion
