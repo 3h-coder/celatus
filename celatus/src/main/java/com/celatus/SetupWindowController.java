@@ -6,11 +6,16 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.control.ContextMenu;
+import javafx.stage.Stage;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class SetupWindowController extends EntryWindowController {
+
+    private static final Logger logger = LogManager.getLogger(SetupWindowController.class.getName());
 
     // region =====Variables=====
 
@@ -24,25 +29,30 @@ public class SetupWindowController extends EntryWindowController {
     private Button viewButton;
 
     @FXML
+    private Button viewButton2;
+
+    @FXML
     private Button enterButton;
 
     @FXML 
     private TextField revealedPwdField;
 
-    @FXML
-    private Label mainLabel;
+    @FXML 
+    private TextField revealedPwdField2;
 
     @FXML
-    private Label secondaryLabel;
+    private Label label01;
 
     @FXML
-    private Label thirdLabel;
+    private Label label02;
+
+    @FXML
+    private Label label03;
+
+    @FXML
+    private Label label04;
 
     private String password2;
-
-    private String recoveryQuestion;
-
-    private String recoveryAnswer;
     // endregion
 
     // region ===== Main Methods=====
@@ -54,19 +64,29 @@ public class SetupWindowController extends EntryWindowController {
 
     @FXML
     private void submitPassPhrases() {
-        // Getting the pass phrase
+        // Getting the master password
         if ("View".equals(viewButton.getText())) {
             password = pwdField.getText();
         } else {
             password = revealedPwdField.getText();
         }
-        password2 = pwdField2.getText();
+        if ("View".equals(viewButton2.getText())) {
+            password2 = pwdField2.getText();
+        } else {
+            password2 = revealedPwdField2.getText();
+        }
 
         if(validEqualPasswords(password, password2)) {
-            // System.out.println("Yay both pass phrases are valid and the same!");
-            System.out.println("The password is: " + password);
-            System.out.println("The key from it is: " + CryptoUtils.generateAESKey(password));
-            recoveryQuestionSetup();
+            // System.out.println("The password is: " + password);
+            // System.out.println("The key from it is: " + CryptoUtils.generateAESKey(password));
+            try {
+                App.setKey(CryptoUtils.generateAESKey(password));
+                App.launchDialogWindow(getCurrentWindow(), "holala");
+            } catch (Exception ex) {
+                App.error(getCurrentWindow(),"An unexpected error occured when trying to summon the main window : " + ex);
+                close();
+            }
+            
         }   
     }
 
@@ -80,31 +100,33 @@ public class SetupWindowController extends EntryWindowController {
 
     @FXML
     private void warning(String message) {
-        thirdLabel.setText(message);
-        thirdLabel.setVisible(true);
+        label04.setText(message);
+        label04.setVisible(true);
     } 
 
     @FXML
     private boolean validEqualPasswords(String password1, String password2) {
 
         boolean valid = true;
-        // Check if both pass phrases match
+        // Check if both master passwords match
         if (!password1.equals(password2)) {
-            warning("The pass phrases do not match");
+            warning("Both passwords do not match");
+            System.out.println(password1);
+            System.out.println(password2);
             return false;
         } else {
-            thirdLabel.setVisible(false);
-            // Check if the pass phrase's length is sufficient
+            label04.setVisible(false);
+            // Check if the master password's length is sufficient
             if (password1.length() < 30) {
-                warning("The pass phrase must be at least 30 characters long");
+                warning("The master password must be at least 30 characters long");
                 return false;
             // Check if no whitespace at the beginning
             } else if (password1.startsWith(" ")) {
-                warning("White spaces are not allowed at the start of the pass phrase");
+                warning("White spaces are not allowed at the start of the master password");
                 return false;
             // Check if no whitespace at the end
             } else if (password1.endsWith(" ")) {
-                warning("White spaces are not allowed at the end of the pass phrase");
+                warning("White spaces are not allowed at the end of the master password");
                 return false;
             }
         }
@@ -136,18 +158,18 @@ public class SetupWindowController extends EntryWindowController {
     }
 
     @FXML
-    private void recoveryQuestionSetup() {
-
-        AnchorPane.setRightAnchor(pwdField, 15.0);
-        AnchorPane.setRightAnchor(pwdField2, 15.0);
-        pwdField.clear();
-        pwdField2.clear();
-        viewButton.setVisible(false);
-        mainLabel.setText("Please enter a recovery question");
-        secondaryLabel.setText("Answer");
-        // TODO: Change the enter button and pwdField2 onAction to check for the answer 
-        // enterButton.setOnAction(null);
-        // pwdField2.setOnAction(null);
+    private void viewButton2Clicked() {
+        if ("View".equals(viewButton2.getText())) {
+            viewButton2.setText("Hide");
+            pwdField2.setVisible(false);
+            revealedPwdField2.setVisible(true);
+            revealedPwdField2.setText(password2);
+        } else {
+            viewButton2.setText("View");
+            revealedPwdField2.setVisible(false);
+            pwdField2.setVisible(true);
+            pwdField2.setText(password2);
+        } 
     }
 
     // endregion

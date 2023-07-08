@@ -15,6 +15,12 @@
     -fx-background-color :  #96a6d6;
 }
 
-#confirmPasswordLabel {
+/* Setup window*/
+
+#badPasswordsLabel {
     -fx-text-fill: red
+}
+
+#warningLabel {
+    -fx-text-fill: #fcba03
 }

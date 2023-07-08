@@ -47,14 +47,14 @@ public class CryptoUtils {
 
     /**
      * Generates a 256 bits AES key derived from an input pass phrase string 
-     * @param passPhrase : The pass phrase used to generate the AES key
+     * @param masterPwd : The pass phrase used to generate the AES key
      */
-    public static Key generateAESKey(String passPhrase) {
+    public static Key generateAESKey(String masterPwd) {
         try {
             SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
             // Note that salting the pass phrase is not necessary since we're not storing multiple passwords in a database, but to comply with
             // the method we are forced to use a salt.
-            KeySpec spec = new PBEKeySpec(passPhrase.toCharArray(), "salt".getBytes(), 65536, 256);
+            KeySpec spec = new PBEKeySpec(masterPwd.toCharArray(), "salt".getBytes(), 65536, 256);
             SecretKey secret = new SecretKeySpec(factory.generateSecret(spec).getEncoded(), "AES");
             return secret;
         } catch (Exception ex) {

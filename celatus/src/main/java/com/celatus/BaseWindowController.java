@@ -12,14 +12,21 @@ public class BaseWindowController {
     // region =====Variables=====
 
     @FXML
-    private Button minimizeButton;
+    protected Button minimizeButton;
 
     @FXML
-    private Button closeButton;
+    protected Button closeButton;
+
+    protected Stage window;
 
     // ====================
 
     // region =====Methods=====
+
+    @FXML
+    public Stage getCurrentWindow() {
+        return (Stage) closeButton.getScene().getWindow();
+    }
     
     @FXML
     public void close() {

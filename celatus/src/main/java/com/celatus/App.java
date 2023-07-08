@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -37,19 +38,19 @@ public class App extends Application {
 
     // region =====Getters and Setters=====
 
-    public Key getKey() {
+    public static Key getKey() {
         return key;
     }
 
-    public void setKey(Key value) {
+    public static void setKey(Key value) {
         key = value;
     }
 
-    public HashMap<Object, Object> getData() {
+    public static HashMap<Object, Object> getData() {
         return data;
     }
 
-    public void setData(HashMap<Object, Object> newData) {
+    public static void setData(HashMap<Object, Object> newData) {
         data = newData; 
     }
 
@@ -90,6 +91,14 @@ public class App extends Application {
 
     // region =====Secondary Methods=====
 
+    public static void launchWindow(String fxml) throws IOException {
+        Stage stage = new Stage();
+        scene = new Scene(loadFXML(fxml));
+        stage.setScene(scene);
+        stage.initStyle(StageStyle.UNDECORATED);
+        stage.show(); 
+    }
+
     public static void launchWindow(Stage stage, String fxml) throws IOException {
         scene = new Scene(loadFXML(fxml));
         stage.initStyle(StageStyle.UNDECORATED);
@@ -97,12 +106,21 @@ public class App extends Application {
         stage.show(); 
     }
 
+    public static void launchDialogWindow(Stage owner, String fxml) throws IOException {
+        Stage dialogStage = new Stage();
+        dialogStage.initModality(Modality.APPLICATION_MODAL);
+        dialogStage.initStyle(StageStyle.UNDECORATED);
+        dialogStage.initOwner(owner);
+        dialogStage.setScene(new Scene(loadFXML(fxml)));
+        dialogStage.showAndWait();
+    }
+
     /**
      * Switches the application's scene to another
      * @param fxml The view to switch to
      * @throws IOException
      */
-    public static void setRoot(String fxml) throws IOException {
+    public static void setView(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
     }
 
@@ -115,19 +133,20 @@ public class App extends Application {
      * Logs the provided error message and displays it into a pop-up window
      * @param error The error message
      */
-    public static void error(String error) {
+    public static void error(Stage window, String error) {
         logger.error(error);
         try {
-            FXMLLoader loader = new FXMLLoader(App.class.getResource("errorWindow.fxml"));
+            FXMLLoader loader = new FXMLLoader(App.class.getResource("popupWindow.fxml"));
             Parent root = loader.load();
-
-            ErrorWindowController controller = loader.getController();
+            PopupWindowController controller = loader.getController();
 
             Stage errorStage = new Stage();
+            errorStage.initModality(Modality.APPLICATION_MODAL);
             errorStage.initStyle(StageStyle.UNDECORATED);
+            errorStage.initOwner(window);
             errorStage.setScene(new Scene(root));
-            errorStage.show();
             controller.setErrorMessage(error);
+            errorStage.showAndWait();
 
         } catch (IOException ex) {
             logger.error("Failed to popup the error window: " + ex.getMessage());

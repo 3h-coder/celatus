@@ -2,9 +2,8 @@ package com.celatus;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.stage.Stage;
 
-public class ErrorWindowController extends BaseWindowController {
+public class PopupWindowController extends BaseWindowController {
     
     @FXML
     public Label errorMessage;
@@ -16,9 +15,9 @@ public class ErrorWindowController extends BaseWindowController {
 
     @FXML
     public void close() {
-         // Get the stage (window) associated with the button
-        Stage stage = (Stage) errorMessage.getScene().getWindow();
-        // Close the stage
-        stage.close();
+        // Get the current window
+        window = getCurrentWindow();
+        // Close it
+        window.close();
     }
 }
