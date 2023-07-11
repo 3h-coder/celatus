@@ -8,7 +8,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.control.ContextMenu;
-import javafx.stage.Stage;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -57,8 +56,8 @@ public class SetupWindowController extends EntryWindowController {
 
     // region ===== Main Methods=====
 
-    @FXML
-    private void initialize() {
+    @FXML 
+    public void initialize() {
         pwdField2.setContextMenu(createEmptyContextMenu());
     }
 
@@ -81,7 +80,7 @@ public class SetupWindowController extends EntryWindowController {
             // System.out.println("The key from it is: " + CryptoUtils.generateAESKey(password));
             try {
                 App.setKey(CryptoUtils.generateAESKey(password));
-                App.launchDialogWindow(getCurrentWindow(), "holala");
+                switchWindow("mainWindow");
             } catch (Exception ex) {
                 App.error(getCurrentWindow(),"An unexpected error occured when trying to summon the main window : " + ex);
                 close();

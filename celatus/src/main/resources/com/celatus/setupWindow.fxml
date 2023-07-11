@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="secondaryLabel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#windowKeyPressed" prefHeight="300.0" prefWidth="500.0" styleClass="AnchorPane" stylesheets="@styles/default.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.celatus.SetupWindowController">
+<AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#windowKeyPressed" onMouseDragged="#onMouseDragged" onMousePressed="#onMousePressed" prefHeight="300.0" prefWidth="500.0" styleClass="AnchorPane" stylesheets="@styles/default.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.celatus.SetupWindowController">
    <children>
       <PasswordField fx:id="pwdField" layoutX="14.0" layoutY="78.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#goToPwdField2" onKeyPressed="#pwdFieldKeyPressed" prefHeight="25.0" prefWidth="390.0" styleClass="PasswordField" AnchorPane.bottomAnchor="130.0" AnchorPane.leftAnchor="15.0" />
       <PasswordField fx:id="pwdField2" layoutX="14.0" layoutY="152.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#submitPassPhrases" onKeyPressed="#pwdField2KeyPressed" prefHeight="25.0" prefWidth="390.0" styleClass="PasswordField" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="15.0" />

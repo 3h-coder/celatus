@@ -2,21 +2,22 @@ package com.celatus;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
 
 public class PopupWindowController extends BaseWindowController {
     
     @FXML
-    public Label errorMessage;
+    public Label mainMessage;
 
     @FXML
     public void setErrorMessage(String message) {
-        errorMessage.setText(message);
+        mainMessage.setText(message);
     }
 
     @FXML
     public void close() {
         // Get the current window
-        window = getCurrentWindow();
+        Stage window = getCurrentWindow();
         // Close it
         window.close();
     }
