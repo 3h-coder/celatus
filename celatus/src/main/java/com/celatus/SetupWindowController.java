@@ -1,5 +1,7 @@
 package com.celatus;
 
+import java.util.Map;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -9,61 +11,54 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.control.ContextMenu;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-public class SetupWindowController extends EntryWindowController {
-
-    private static final Logger logger = LogManager.getLogger(SetupWindowController.class.getName());
+public class SetupWindowController extends BaseWindowController {
 
     // region =====Variables=====
 
     @FXML
     private PasswordField pwdField;
-    
     @FXML
     private PasswordField pwdField2;
-
     @FXML
     private Button viewButton;
-
     @FXML
     private Button viewButton2;
-
     @FXML
     private Button enterButton;
-
     @FXML 
     private TextField revealedPwdField;
-
     @FXML 
     private TextField revealedPwdField2;
-
     @FXML
     private Label label01;
-
     @FXML
     private Label label02;
-
     @FXML
     private Label label03;
-
     @FXML
     private Label label04;
 
+    private String password;
     private String password2;
+
     // endregion
 
-    // region ===== Main Methods=====
+    // region =====Window Methods=====
 
-    @FXML 
+    @Override 
     public void initialize() {
-        pwdField2.setContextMenu(createEmptyContextMenu());
+        super.initialize();
+        pwdField2.setContextMenu(new ContextMenu());
     }
 
     @FXML
-    private void submitPassPhrases() {
-        // Getting the master password
+    public void warning(String message) {
+        label04.setText(message);
+        label04.setVisible(true);
+    } 
+
+    @FXML
+    private void setPasswordsValue() {
         if ("View".equals(viewButton.getText())) {
             password = pwdField.getText();
         } else {
@@ -74,68 +69,36 @@ public class SetupWindowController extends EntryWindowController {
         } else {
             password2 = revealedPwdField2.getText();
         }
+    }
 
-        if(validEqualPasswords(password, password2)) {
-            // System.out.println("The password is: " + password);
-            // System.out.println("The key from it is: " + CryptoUtils.generateAESKey(password));
+    @FXML
+    private void submitMasterPasswords() {
+        setPasswordsValue();
+
+        Map<Boolean, String> passwordsCheckInfo = AuthHandler.checkPasswords(password, password2);
+        boolean validPasswords = (boolean)passwordsCheckInfo.keySet().toArray()[0];
+        if (!validPasswords) {
+            String invalidPasswordsMessage = (String)passwordsCheckInfo.values().toArray()[0];
+            warning(invalidPasswordsMessage);
+        } else {
             try {
-                App.setKey(CryptoUtils.generateAESKey(password));
+                AuthHandler.setAppKey(password);
                 switchWindow("mainWindow");
             } catch (Exception ex) {
-                App.error(getCurrentWindow(),"An unexpected error occured when trying to summon the main window : " + ex);
+                App.error(window,"An unexpected error occured when trying to summon the main window : " + ex, logger);
                 close();
             }
-            
-        }   
-    }
-
-    // endregion
-
-    // region =====Secondary Methods=====
-
-    private ContextMenu createEmptyContextMenu() {
-        return new ContextMenu();
-    }
-
-    @FXML
-    private void warning(String message) {
-        label04.setText(message);
-        label04.setVisible(true);
-    } 
-
-    @FXML
-    private boolean validEqualPasswords(String password1, String password2) {
-
-        boolean valid = true;
-        // Check if both master passwords match
-        if (!password1.equals(password2)) {
-            warning("Both passwords do not match");
-            System.out.println(password1);
-            System.out.println(password2);
-            return false;
-        } else {
-            label04.setVisible(false);
-            // Check if the master password's length is sufficient
-            if (password1.length() < 30) {
-                warning("The master password must be at least 30 characters long");
-                return false;
-            // Check if no whitespace at the beginning
-            } else if (password1.startsWith(" ")) {
-                warning("White spaces are not allowed at the start of the master password");
-                return false;
-            // Check if no whitespace at the end
-            } else if (password1.endsWith(" ")) {
-                warning("White spaces are not allowed at the end of the master password");
-                return false;
-            }
         }
-        return valid;
     }
 
     @FXML
     private void goToPwdField2() {
         pwdField2.requestFocus();
     }
+
+    // endregion
+
+    // region =====Event Methods=====
 
     @FXML
     private void pwdFieldKeyPressed(KeyEvent event) {
@@ -157,6 +120,23 @@ public class SetupWindowController extends EntryWindowController {
     }
 
     @FXML
+    private void viewButtonClicked() {
+        if ("View".equals(viewButton.getText())) {
+            password = pwdField.getText();
+            viewButton.setText("Hide");
+            pwdField.setVisible(false);
+            revealedPwdField.setVisible(true);
+            revealedPwdField.setText(password);
+        } else {
+            password = revealedPwdField.getText();
+            viewButton.setText("View");
+            revealedPwdField.setVisible(false);
+            pwdField.setVisible(true);
+            pwdField.setText(password);
+        }    
+    }
+
+    @FXML
     private void viewButton2Clicked() {
         if ("View".equals(viewButton2.getText())) {
             viewButton2.setText("Hide");
@@ -172,4 +152,6 @@ public class SetupWindowController extends EntryWindowController {
     }
 
     // endregion
+
+    
 }

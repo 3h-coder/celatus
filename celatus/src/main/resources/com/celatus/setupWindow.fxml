@@ -10,11 +10,11 @@
 
 <AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#windowKeyPressed" onMouseDragged="#onMouseDragged" onMousePressed="#onMousePressed" prefHeight="300.0" prefWidth="500.0" styleClass="AnchorPane" stylesheets="@styles/default.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.celatus.SetupWindowController">
    <children>
-      <PasswordField fx:id="pwdField" layoutX="14.0" layoutY="78.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#goToPwdField2" onKeyPressed="#pwdFieldKeyPressed" prefHeight="25.0" prefWidth="390.0" styleClass="PasswordField" AnchorPane.bottomAnchor="130.0" AnchorPane.leftAnchor="15.0" />
-      <PasswordField fx:id="pwdField2" layoutX="14.0" layoutY="152.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#submitPassPhrases" onKeyPressed="#pwdField2KeyPressed" prefHeight="25.0" prefWidth="390.0" styleClass="PasswordField" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="15.0" />
-      <TextField fx:id="revealedPwdField" layoutX="14.0" layoutY="78.0" onAction="#submitPassword" prefHeight="25.0" prefWidth="390.0" styleClass="PasswordField" visible="false" AnchorPane.bottomAnchor="130.0" AnchorPane.leftAnchor="15.0" />
-      <TextField fx:id="revealedPwdField2" layoutX="24.0" layoutY="88.0" onAction="#submitPassword" prefHeight="25.0" prefWidth="390.0" styleClass="PasswordField" visible="false" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="15.0" />
-      <Button fx:id="enterButton" layoutX="210.0" layoutY="255.0" mnemonicParsing="false" onAction="#submitPassPhrases" prefHeight="25.0" prefWidth="80.0" text="Enter" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="210.0" AnchorPane.rightAnchor="210.0">
+      <PasswordField fx:id="pwdField" layoutX="14.0" layoutY="78.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#goToPwdField2" onKeyPressed="#pwdFieldKeyPressed" prefHeight="25.0" prefWidth="390.0" styleClass="PasswordField" AnchorPane.bottomAnchor="130.0" AnchorPane.leftAnchor="20.0" />
+      <PasswordField fx:id="pwdField2" layoutX="14.0" layoutY="152.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#submitMasterPasswords" onKeyPressed="#pwdField2KeyPressed" prefHeight="25.0" prefWidth="390.0" styleClass="PasswordField" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="20.0" />
+      <TextField fx:id="revealedPwdField" layoutX="14.0" layoutY="78.0" onAction="#submitMasterPasswords" prefHeight="25.0" prefWidth="390.0" styleClass="PasswordField" visible="false" AnchorPane.bottomAnchor="130.0" AnchorPane.leftAnchor="20.0" />
+      <TextField fx:id="revealedPwdField2" layoutX="24.0" layoutY="88.0" onAction="#submitMasterPasswords" prefHeight="25.0" prefWidth="390.0" styleClass="PasswordField" visible="false" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="20.0" />
+      <Button fx:id="enterButton" layoutX="210.0" layoutY="255.0" mnemonicParsing="false" onAction="#submitMasterPasswords" prefHeight="25.0" prefWidth="80.0" text="Enter" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="210.0" AnchorPane.rightAnchor="210.0">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
@@ -31,13 +31,13 @@
       </Button>
       <Button fx:id="closeButton" layoutX="324.0" layoutY="6.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#close" prefHeight="25.0" prefWidth="25.0" text="X" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
       <Button fx:id="minimizeButton" layoutX="294.0" layoutY="6.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#minimize" prefHeight="25.0" prefWidth="25.0" text="_" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="0.0" />
-      <Label id="warningLabel" fx:id="label01" layoutX="11.0" layoutY="36.0" prefHeight="66.0" prefWidth="390.0" text="Your master password is not saved anywhere. Please make sure you write it down somewhere as there will be no way to recover your data!" wrapText="true">
+      <Label id="warningLabel" fx:id="label01" layoutX="11.0" layoutY="36.0" prefHeight="66.0" prefWidth="390.0" text="Please first setup your master password. Your master password is not saved anywhere. Please make sure you write it down somewhere as there will be no way to recover your data!" wrapText="true" AnchorPane.leftAnchor="20.0">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Label fx:id="label02" layoutX="18.0" layoutY="47.0" prefHeight="17.0" prefWidth="390.0" text="Please enter your master password (30 characters minimum)" AnchorPane.bottomAnchor="160.0" AnchorPane.leftAnchor="15.0" />
-      <Label fx:id="label03" layoutX="18.0" layoutY="125.0" prefHeight="17.0" prefWidth="390.0" text="Confirm master password" AnchorPane.bottomAnchor="100.0" />
-      <Label id="badPasswordsLabel" fx:id="label04" layoutX="15.0" layoutY="187.0" prefHeight="17.0" prefWidth="390.0" visible="false" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="15.0" />
+      <Label fx:id="label02" layoutX="18.0" layoutY="47.0" prefHeight="17.0" prefWidth="390.0" text="Please enter your master password (30 characters minimum)" AnchorPane.bottomAnchor="160.0" AnchorPane.leftAnchor="20.0" />
+      <Label fx:id="label03" layoutX="18.0" layoutY="125.0" prefHeight="17.0" prefWidth="390.0" text="Confirm master password" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="20.0" />
+      <Label id="badPasswordsLabel" fx:id="label04" layoutX="15.0" layoutY="187.0" prefHeight="17.0" prefWidth="390.0" visible="false" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="20.0" />
    </children>
 </AnchorPane>

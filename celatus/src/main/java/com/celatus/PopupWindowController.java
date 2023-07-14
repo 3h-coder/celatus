@@ -6,19 +6,30 @@ import javafx.stage.Stage;
 
 public class PopupWindowController extends BaseWindowController {
     
+    // region =====Variables=====
+
     @FXML
     public Label mainMessage;
 
+    // endregion
+
+    // region =====Window Methods=====
+
     @FXML
-    public void setErrorMessage(String message) {
+    public void setMessage(String message) {
         mainMessage.setText(message);
     }
 
+    // endregion
+
+
+    // region =====Event Methods=====
+
     @FXML
     public void close() {
-        // Get the current window
-        Stage window = getCurrentWindow();
         // Close it
         window.close();
     }
+
+    // endregion
 }

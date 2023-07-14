@@ -1,5 +1,8 @@
 package com.celatus;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
@@ -13,40 +16,58 @@ public class BaseWindowController {
 
     // region =====Variables=====
 
+    protected final Logger logger = LogManager.getLogger(this.getClass().toString().replace("class ", ""));
+
     @FXML
     protected AnchorPane pane;
-
     @FXML
     protected Button minimizeButton;
-
     @FXML
     protected Button closeButton;
+    @FXML
+    protected Stage window;
 
     private static double xOffset = 0;
     private static double yOffset = 0;
 
     // ====================
 
-    // region =====Methods=====
+    // region =====Window Methods=====
+
+    public void initialize() {
+        // We have to make sure the scene is fully initialized to properly set up our variables
+        Platform.runLater(() -> {
+            window = getCurrentWindow();
+        });
+    }
 
     @FXML
     public Stage getCurrentWindow() {
         return (Stage) pane.getScene().getWindow();
     }
     
-    @FXML
-    public void close() {
-        Platform.exit();
+
+    /**
+     * Switches window with the provided one. In other terms, closes the current window to open the specified one.
+     * @param fxml
+     */
+    public void switchWindow(String fxml) {
+        try {
+            App.launchWindow(fxml);
+            window.close();
+        } catch (Exception ex) {
+            App.error(window, "An unexpected error occured when trying to open " + fxml + ": " + ex, logger);
+            close();
+        }
     }
 
-    @FXML
-    public void minimize() {
-        Stage stage = (Stage) minimizeButton.getScene().getWindow();
-        stage.setIconified(true);
-    }
+    // endregion
+    
+    // region =====Event Methods=====
 
     @FXML
     public void windowKeyPressed(KeyEvent event) {
+        // Quit program on alt + F4
         if (event.isAltDown() && event.getCode() == KeyCode.F4) {
             close();
         }
@@ -66,20 +87,14 @@ public class BaseWindowController {
         window.setY(event.getScreenY() + yOffset);
     }
 
-    /**
-     * Switches window with the provided one. In other terms, closes the current window to open the specified one.
-     * @param fxml
-     */
-    public void switchWindow(String fxml) {
-        Stage window = getCurrentWindow();
-        try {
-            App.launchWindow(fxml);
-            window.close();
-        } catch (Exception ex) {
-            App.error(window, "An unexpected error occured when trying to open " + fxml + ": " + ex);
-            close();
-        }
+    public void close() {
+        Platform.exit();
     }
 
+    public void minimize() {
+        Stage stage = (Stage) minimizeButton.getScene().getWindow();
+        stage.setIconified(true);
+    }
+    
     // endregion
 }

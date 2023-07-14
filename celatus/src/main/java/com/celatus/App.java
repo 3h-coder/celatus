@@ -1,12 +1,9 @@
 package com.celatus;
 
 import java.io.IOException;
-import java.io.File;
 import java.security.Key;
-import java.util.HashMap;
 
 import javafx.application.Application;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -24,15 +21,12 @@ public class App extends Application {
 
     // region =====Application Variables=====
 
-    private static final Logger logger = LogManager.getLogger(App.class.getName());
+    private static final Logger _logger = LogManager.getLogger(App.class.getName());
 
     private static Scene scene;
-    private static final String dbFilePath = "db.clts";
 
     // 256 bits AES key used to encrypt the db.clts file
     private static Key key;
-
-    private static HashMap<Object, Object> data = new HashMap<Object, Object>();
 
     // endregion
 
@@ -46,17 +40,18 @@ public class App extends Application {
         key = value;
     }
 
-    public static HashMap<Object, Object> getData() {
-        return data;
-    }
-
-    public static void setData(HashMap<Object, Object> newData) {
-        data = newData; 
+    public static Stage getWindow() {
+        return (Stage) scene.getWindow();
     }
 
     // endregion
 
     // region =====Main Methods=====
+
+    @Override
+    public void init(){
+       // Nothing for now
+    }
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -65,23 +60,23 @@ public class App extends Application {
             // Code to be executed when the application is shutting down
             // This can include cleanup tasks or saving data
             try{
-                if (dbFileExists()) {
-                    CryptoUtils.hideFile(dbFilePath, true);
-                }
+                DatabaseHandler.concealDatabase();
             } catch(IOException ex) {
-                logger.error("An unexpected error occured while trying to conceal sensitive files: " + ex.getMessage());
+                _logger.error("An unexpected error occured while trying to conceal the passwords database: " + ex.getMessage());
             }
-            logger.info("--------------------Application Shutdown--------------------");
+            _logger.info("--------------------Application Shutdown--------------------");
             
         }));
         
-        if (dbFileExists()) {
+        if (DatabaseHandler.dbFileExists()) {
             launchWindow(stage, "entryWindow");
         } else {
             launchWindow(stage, "setupWindow");
         }
              
     }
+
+
 
     public static void main(String[] args) {
         launch();
@@ -133,8 +128,10 @@ public class App extends Application {
      * Logs the provided error message and displays it into a pop-up window
      * @param error The error message
      */
-    public static void error(Stage window, String error) {
-        logger.error(error);
+    public static void error(Stage window, String error, Logger logger) {
+        if (logger != null) {
+            logger.error(error);
+        }
         try {
             FXMLLoader loader = new FXMLLoader(App.class.getResource("popupWindow.fxml"));
             Parent root = loader.load();
@@ -145,22 +142,17 @@ public class App extends Application {
             errorStage.initStyle(StageStyle.UNDECORATED);
             errorStage.initOwner(window);
             errorStage.setScene(new Scene(root));
-            controller.setErrorMessage(error);
+            controller.setMessage(error);
             errorStage.showAndWait();
 
         } catch (IOException ex) {
-            logger.error("Failed to popup the error window: " + ex.getMessage());
+            if (logger != null) {
+                 logger.error("Failed to popup the window: " + ex.getMessage());
+            } else {
+                 _logger.error("Failed to popup the window: " + ex.getMessage());
+            }
         }
         
-    }
-
-    /**
-     * Checks if the pp.bin file exists in the app's directory
-     * @return
-     */
-    public static boolean dbFileExists() {
-        File file = new File(dbFilePath);
-        return file.exists();
     }
 
     // endregion

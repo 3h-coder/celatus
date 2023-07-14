@@ -15,27 +15,38 @@ public class EntryWindowController extends BaseWindowController {
 
     @FXML
     private Button closeButton;
-
     @FXML
     private Button entryButton;
-
     @FXML
     protected Button viewButton;
-
     @FXML
     private Label mainLabel;
-    
     @FXML
     private PasswordField pwdField;
-
     @FXML 
     private TextField revealedPwdField;
 
-    protected String password;
+    private String password;
 
     // endregion
 
-    // region =====Methods=====
+    // region =====Window Methods=====
+
+    @FXML
+    private void submitPassword() {
+        // Getting the pass phrase
+        if ("View".equals(viewButton.getText())) {
+            password = pwdField.getText();
+        } else {
+            password = revealedPwdField.getText();
+        }
+        // TODO : check pass phrase
+        // System.out.println("Entered password is : " + password);
+    }
+
+    // endregion
+
+    // region =====Event Methods=====
 
     @FXML
     private void viewButtonClicked() {
@@ -52,18 +63,6 @@ public class EntryWindowController extends BaseWindowController {
             pwdField.setVisible(true);
             pwdField.setText(password);
         }    
-    }
-
-    @FXML
-    private void submitPassword() {
-        // Getting the pass phrase
-        if ("View".equals(viewButton.getText())) {
-            password = pwdField.getText();
-        } else {
-            password = revealedPwdField.getText();
-        }
-        // TODO : check pass phrase
-        // System.out.println("Entered password is : " + password);
     }
 
     // endregion
