@@ -41,8 +41,13 @@ public class AuthHandler {
         
     }
 
+    /**
+     * Checks if the entered master password is correct
+     * @param password
+     * @return
+     */
     public static boolean correctPassword(String password) {
-        DatabaseHandler.getRawDataFromDatabase();
+        DatabaseHandler.parseRawDataFromDatabase();
         return DatabaseHandler.getRawData() != null;
     }
 

@@ -45,6 +45,10 @@ public class CryptoUtils {
         }
     }
 
+    public static void unhideFile(String filePath) throws IOException {
+        Files.setAttribute(Paths.get(filePath), "dos:hidden", false, LinkOption.NOFOLLOW_LINKS);
+    }
+
     /**
      * Generates a 256 bits AES key derived from an input pass phrase string 
      * @param masterPwd : The pass phrase used to generate the AES key

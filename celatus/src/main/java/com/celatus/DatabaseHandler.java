@@ -17,7 +17,6 @@ public class DatabaseHandler {
     private static final Logger logger = LogManager.getLogger(DatabaseHandler.class.getName());
 
     private static final String dbFilePath = "passwords.clts";
-    private static final String hintword = "celatus";
 
     private static Map<String, Object> data;
     private static String rawData;
@@ -54,18 +53,23 @@ public class DatabaseHandler {
     }
 
     public static void saveDatabase() {
-        if (data == null) {
+        if (!dbFileExists()) {
             logger.info("Creating the passwords database file.");
-            rawData = hintword;
             CryptoUtils.encryptIntoFile(dbFilePath, rawData, App.getKey(), CryptoUtils.generateIV());
         } else {
             logger.info("Saving the passwords database file.");
-            rawData = hintword + "\n" + MapUtils.mapToJson(data, true);
-            CryptoUtils.encryptIntoFile(dbFilePath, rawData, App.getKey(), CryptoUtils.generateIV());
+            rawData = MapUtils.mapToJson(data, true);
+            try {
+                // CryptoUtils.unhideFile(dbFilePath);
+                CryptoUtils.encryptIntoFile(dbFilePath, rawData, App.getKey(), CryptoUtils.generateIV());
+            } catch (Exception ex) {
+                App.error(App.getWindow(), "Could not properly save the passwords data", logger);
+            }
+            
         }
     }
 
-    public static void getRawDataFromDatabase() {
+    public static void parseRawDataFromDatabase() {
         if (dbFileExists()) {
             rawData = CryptoUtils.decryptFile(dbFilePath, App.getKey());
         }
