@@ -54,6 +54,11 @@ public class Testing {
         System.out.println(CryptoUtils.decryptFile("something.clts", key));
     }
 
+    public static void testDataDecrytionFromfile(String password, String filepath) {
+        Key key = CryptoUtils.generateAESKey(password);
+        System.out.println(CryptoUtils.decryptFile(filepath, key));
+    }
+
     public static void testMapToJson() {
         Map<String, Object> outerMap = new HashMap();
         Map<String, Object> childMap1 = new HashMap();
@@ -80,7 +85,8 @@ public class Testing {
         //testDataDecryption();
         //testDataEncryptionIntoFile();
         //testDataDecrytionFromfile();
-        testMapToJson();
+        //testMapToJson();
+        testDataDecrytionFromfile("This is just a test passphrase to test", "passwords.clts");
     }
 
 }

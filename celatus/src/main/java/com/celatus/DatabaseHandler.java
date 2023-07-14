@@ -24,6 +24,14 @@ public class DatabaseHandler {
 
     // endregion
 
+    // region =====Getters and Setters=====
+
+    public static String getRawData() {
+        return rawData;
+    }
+
+    // endregion
+
     // region =====Static Methods=====
 
     /**
@@ -54,6 +62,12 @@ public class DatabaseHandler {
             logger.info("Saving the passwords database file.");
             rawData = hintword + "\n" + MapUtils.mapToJson(data, true);
             CryptoUtils.encryptIntoFile(dbFilePath, rawData, App.getKey(), CryptoUtils.generateIV());
+        }
+    }
+
+    public static void getRawDataFromDatabase() {
+        if (dbFileExists()) {
+            rawData = CryptoUtils.decryptFile(dbFilePath, App.getKey());
         }
     }
 

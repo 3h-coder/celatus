@@ -1,6 +1,9 @@
 package com.celatus;
 
 import java.util.Map;
+
+import javafx.scene.chart.PieChart.Data;
+
 import java.util.HashMap;
 
 public class AuthHandler {
@@ -36,6 +39,11 @@ public class AuthHandler {
         }
         return result;
         
+    }
+
+    public static boolean correctPassword(String password) {
+        DatabaseHandler.getRawDataFromDatabase();
+        return DatabaseHandler.getRawData() != null;
     }
 
     /**

@@ -20,7 +20,9 @@ public class EntryWindowController extends BaseWindowController {
     @FXML
     protected Button viewButton;
     @FXML
-    private Label mainLabel;
+    private Label label01;
+    @FXML
+    private Label label02;
     @FXML
     private PasswordField pwdField;
     @FXML 
@@ -33,15 +35,30 @@ public class EntryWindowController extends BaseWindowController {
     // region =====Window Methods=====
 
     @FXML
-    private void submitPassword() {
-        // Getting the pass phrase
+    public void warning(String message) {
+        label02.setText(message);
+        label02.setVisible(true);
+    } 
+
+    @FXML
+    private void setPasswordValue() {
         if ("View".equals(viewButton.getText())) {
             password = pwdField.getText();
         } else {
             password = revealedPwdField.getText();
         }
-        // TODO : check pass phrase
-        // System.out.println("Entered password is : " + password);
+    }
+
+    @FXML
+    private void submitPassword() {
+        setPasswordValue();
+        
+        AuthHandler.setAppKey(password);
+        if (AuthHandler.correctPassword(password)) {
+            switchWindow("mainWindow");
+        } else {
+            warning("Incorrect master password");
+        }
     }
 
     // endregion
