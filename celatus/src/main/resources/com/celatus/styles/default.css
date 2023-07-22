@@ -22,5 +22,21 @@
 }
 
 #warningLabel {
-    -fx-text-fill: #fcba03
+    -fx-text-fill: #fcba03;
+    -fx-font-size: 14px;
+}
+
+/* Main window */
+
+#menu_bar {
+    -fx-background-color : #5168b0;
+    -fx-border-color: white;
+}
+
+.menu .label {
+    -fx-text-fill: white
+}
+
+.menu-item .label {
+    -fx-text-fill: black
 }

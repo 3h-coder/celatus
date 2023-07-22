@@ -53,7 +53,6 @@ public class EntryWindowController extends BaseWindowController {
     private void submitPassword() {
         setPasswordValue();
         
-        AuthHandler.setAppKey(password);
         if (AuthHandler.correctPassword(password)) {
             switchWindow("mainWindow");
         } else {

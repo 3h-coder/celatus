@@ -47,6 +47,7 @@ public class AuthHandler {
      * @return
      */
     public static boolean correctPassword(String password) {
+        setAppKey(password);
         DatabaseHandler.parseRawDataFromDatabase();
         return DatabaseHandler.getRawData() != null;
     }

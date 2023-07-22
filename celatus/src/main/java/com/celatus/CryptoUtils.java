@@ -47,6 +47,7 @@ public class CryptoUtils {
 
     public static void unhideFile(String filePath) throws IOException {
         Files.setAttribute(Paths.get(filePath), "dos:hidden", false, LinkOption.NOFOLLOW_LINKS);
+        Files.setAttribute(Paths.get(filePath), "dos:readonly", false, LinkOption.NOFOLLOW_LINKS);
     }
 
     /**
