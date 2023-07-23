@@ -1,18 +1,19 @@
 .AnchorPane {
-    -fx-background-color : #5168b0
+    -fx-background-color : #555657
 }
 
 .button {
-    -fx-background-color :  #96a6d6;
-    -fx-text-fill: #28386b
+    -fx-background-color :  #353536;
+    -fx-text-fill: white
 }
 
 .label {
-    -fx-text-fill: #bcd5eb
+    -fx-text-fill: white
 }
 
 .PasswordField {
-    -fx-background-color :  #96a6d6;
+    -fx-background-color :  #353536;
+    -fx-text-fill: white
 }
 
 /* Setup window*/
@@ -28,9 +29,14 @@
 
 /* Main window */
 
+#rowPane1 {
+    -fx-background-color: #353536;
+    -fx-border-color: #8c8c8c;
+    -fx-border-width: 0 0 1 0
+}
+
 #menu_bar {
-    -fx-background-color : #5168b0;
-    -fx-border-color: white;
+    -fx-background-color : #353536;
 }
 
 .menu .label {
@@ -39,4 +45,14 @@
 
 .menu-item .label {
     -fx-text-fill: black
+}
+
+#columnPane1 {
+    -fx-background-color: #353536;
+    -fx-border-color: #8c8c8c;
+    -fx-border-width: 0 1 0 0 /* top right bottom left*/
+}
+
+#columnPane2 {
+    -fx-background-color: transparent
 }

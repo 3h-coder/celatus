@@ -59,12 +59,11 @@ public class DatabaseHandler {
             logger.info("Saving the passwords database file.");
             try {
                 CryptoUtils.unhideFile(dbFilePath);
-                System.out.println("Saved raw data: " + rawData);
+                logger.debug("Saved raw data: " + rawData);
                 CryptoUtils.encryptIntoFile(dbFilePath, rawData, App.getKey(), CryptoUtils.generateIV());
             } catch (Exception ex) {
                 App.error(App.getWindow(), "Could not properly save the passwords data", logger);
-            }
-            
+            }      
         }
     }
 
