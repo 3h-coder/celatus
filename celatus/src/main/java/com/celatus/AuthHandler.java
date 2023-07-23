@@ -21,10 +21,8 @@ public class AuthHandler {
         if (!password1.equals(password2)) {
             result.put(false, "Both passwords do not match");
         } else {
-            if (password1.length() < 30) {
-                result.put(false, "The master password must be at least 30 characters long");
             // Check if no whitespace at the beginning
-            } else if (password1.startsWith(" ")) {
+            if (password1.startsWith(" ")) {
                 result.put(false, "White spaces are not allowed at the start of the master password");
             // Check if no whitespace at the end
             } else if (password1.endsWith(" ")) {

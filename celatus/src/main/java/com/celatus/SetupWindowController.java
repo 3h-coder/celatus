@@ -83,6 +83,7 @@ public class SetupWindowController extends BaseWindowController {
         } else {
             try {
                 AuthHandler.setAppKey(password);
+                App.setPasswordsDatabase(PasswordsDatabase.generateDefault());
                 switchWindow("mainWindow");
             } catch (Exception ex) {
                 App.error(window,"An unexpected error occured when trying to summon the main window : " + ex, logger);

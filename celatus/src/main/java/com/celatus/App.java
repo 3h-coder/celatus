@@ -28,6 +28,8 @@ public class App extends Application {
     // 256 bits AES key used to encrypt the db.clts file
     private static Key key;
 
+    private static PasswordsDatabase passwordsDatabase;
+
     // endregion
 
     // region =====Getters and Setters=====
@@ -38,6 +40,14 @@ public class App extends Application {
 
     public static void setKey(Key value) {
         key = value;
+    }
+
+    public static PasswordsDatabase getPasswordsDatabase() {
+        return passwordsDatabase;
+    }
+
+    public static void setPasswordsDatabase(PasswordsDatabase value) {
+        passwordsDatabase = value;
     }
 
     public static Stage getWindow() {
@@ -68,13 +78,13 @@ public class App extends Application {
             
         }));
         
-        /*if (DatabaseHandler.dbFileExists()) {
+        if (DatabaseHandler.dbFileExists()) {
             launchWindow(stage, "entryWindow");
         } else {
             launchWindow(stage, "setupWindow");
-        }*/
+        }
 
-        launchWindow(stage, "mainWindow");
+        // launchWindow(stage, "mainWindow");
              
     }
 
