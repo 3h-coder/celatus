@@ -68,11 +68,13 @@ public class App extends Application {
             
         }));
         
-        if (DatabaseHandler.dbFileExists()) {
+        /*if (DatabaseHandler.dbFileExists()) {
             launchWindow(stage, "entryWindow");
         } else {
             launchWindow(stage, "setupWindow");
-        }
+        }*/
+
+        launchWindow(stage, "mainWindow");
              
     }
 

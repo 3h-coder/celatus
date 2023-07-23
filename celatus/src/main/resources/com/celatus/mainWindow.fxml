@@ -10,7 +10,7 @@
    <children>
       <AnchorPane id="rowPane1" fx:id="rowPane1" prefHeight="26.0" prefWidth="700.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <MenuBar id="menu_bar" fx:id="menuBar" layoutX="136.0" layoutY="8.0" prefHeight="26.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="0.0">
+            <MenuBar fx:id="menuBar" layoutX="136.0" layoutY="8.0" prefHeight="26.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="0.0">
               <menus>
                 <Menu id="menu-item" mnemonicParsing="false" text="File">
                   <items>

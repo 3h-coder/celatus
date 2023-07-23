@@ -7,6 +7,12 @@
     -fx-text-fill: white
 }
 
+.button:hover {
+    -fx-background-color: #cacac9;
+    -fx-text-fill: black;
+    -fx-transition-duration: 500ms
+}
+
 .label {
     -fx-text-fill: white
 }
@@ -15,6 +21,10 @@
     -fx-background-color :  #353536;
     -fx-text-fill: white
 }
+
+/* All windows */
+
+
 
 /* Setup window*/
 
@@ -35,8 +45,16 @@
     -fx-border-width: 0 0 1 0
 }
 
-#menu_bar {
+#menuBar {
     -fx-background-color : #353536;
+}
+
+#menuBar .menu:hover{
+    -fx-selection-bar: #cacac9
+}
+
+#menuBar .menu:hover .label{
+    -fx-text-fill: black
 }
 
 .menu .label {
@@ -45,6 +63,10 @@
 
 .menu-item .label {
     -fx-text-fill: black
+}
+
+.menu-item:focused {
+    -fx-background-color: #cacac9;
 }
 
 #columnPane1 {
