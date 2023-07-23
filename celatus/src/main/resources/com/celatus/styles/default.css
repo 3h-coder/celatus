@@ -47,10 +47,11 @@
 
 #menuBar {
     -fx-background-color : #353536;
+    -fx-selection-bar: #cacac9
 }
 
 #menuBar .menu:hover{
-    -fx-selection-bar: #cacac9
+    
 }
 
 #menuBar .menu:hover .label{

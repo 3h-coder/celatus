@@ -12,11 +12,16 @@
          <children>
             <MenuBar fx:id="menuBar" layoutX="136.0" layoutY="8.0" prefHeight="26.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="0.0">
               <menus>
-                <Menu id="menu-item" mnemonicParsing="false" text="File">
+                <Menu mnemonicParsing="false" text="File">
                   <items>
                     <MenuItem mnemonicParsing="false" onAction="#saveDatabase" text="Save" />
                   </items>
                 </Menu>
+                  <Menu mnemonicParsing="false" text="Options">
+                     <items>
+                        <MenuItem mnemonicParsing="false" text="Theme" />
+                     </items>
+                  </Menu>
                 <Menu mnemonicParsing="false" text="Help">
                   <items>
                     <MenuItem mnemonicParsing="false" text="About" />

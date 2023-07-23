@@ -1,9 +1,6 @@
 package com.celatus;
 
 import java.util.Map;
-
-import javafx.scene.chart.PieChart.Data;
-
 import java.util.HashMap;
 
 public class AuthHandler {
