@@ -45,18 +45,32 @@ public class Testing {
 
         String filePath = "something.clts";
 
-        CryptoUtils.encryptIntoFile(filePath, textBlock, key, iv);
+        try {
+            CryptoUtils.encryptIntoFile(filePath, textBlock, key, iv);
+        } catch (Exception ex) {
+            System.err.println(ex);
+        }
+        
     }
 
     public static void testDataDecrytionFromfile() {
         String password = "haha";
         Key key = CryptoUtils.generateAESKey(password);
-        System.out.println(CryptoUtils.decryptFile("something.clts", key));
+        try {
+            System.out.println(CryptoUtils.decryptFile("something.clts", key));
+        } catch (Exception ex) {
+            System.err.println(ex);
+        }
+        
     }
 
     public static void testDataDecrytionFromfile(String password, String filepath) {
         Key key = CryptoUtils.generateAESKey(password);
-        System.out.println(CryptoUtils.decryptFile(filepath, key));
+        try {
+            System.out.println(CryptoUtils.decryptFile(filepath, key));
+        } catch (Exception ex) {
+            System.err.println(ex);
+        }
     }
 
     public static void testMapToJson() {

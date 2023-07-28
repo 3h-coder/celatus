@@ -1,15 +1,23 @@
 package com.celatus;
 
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
+
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
 import java.security.Key;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,6 +56,10 @@ public class CryptoUtils {
     public static void unhideFile(String filePath) throws IOException {
         Files.setAttribute(Paths.get(filePath), "dos:hidden", false, LinkOption.NOFOLLOW_LINKS);
         Files.setAttribute(Paths.get(filePath), "dos:readonly", false, LinkOption.NOFOLLOW_LINKS);
+    }
+
+    public static void setReadOnly(String filePath, boolean readOnly) throws IOException {
+        Files.setAttribute(Paths.get(filePath), "dos:readonly", readOnly, LinkOption.NOFOLLOW_LINKS);
     }
 
     /**
@@ -134,17 +146,17 @@ public class CryptoUtils {
      * @param key : Key used for AES CBC encryption
      * @param iv : The iv byte array used for encryption
      */
-    public static void encryptIntoFile(String outputFilePath, String data, Key key, byte[] iv) {
-        try (FileOutputStream outputStream = new FileOutputStream(outputFilePath)){
-            outputStream.write(iv);
-            Cipher cipher = Cipher.getInstance(ALGORITHM);
-            cipher.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(iv));
+    public static void encryptIntoFile(String outputFilePath, String data, Key key, byte[] iv) throws FileNotFoundException,
+        IOException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException,
+        IllegalBlockSizeException, BadPaddingException {
             
-            byte[] cipherText = cipher.doFinal(data.getBytes());
-            outputStream.write(cipherText);
-        } catch (Exception ex) {
-            logger.error("Failed to encrypt data into a file: " + ex);
-        }
+        FileOutputStream outputStream = new FileOutputStream(outputFilePath);
+        outputStream.write(iv);
+        Cipher cipher = Cipher.getInstance(ALGORITHM);
+        cipher.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(iv));
+        
+        byte[] cipherText = cipher.doFinal(data.getBytes());
+        outputStream.write(cipherText);
     }
 
     /**
@@ -153,23 +165,22 @@ public class CryptoUtils {
      * @param key : The AES key used for decryption
      * @return The deciphered file content as a String object
      */
-    public static String decryptFile(String inputFilePath, Key key) {
-        try (InputStream inputStream = new FileInputStream(inputFilePath)){
-            Cipher cipher = Cipher.getInstance(ALGORITHM);
-
-            // Read the IV from the input file
-            byte[] storedIV = new byte[16];
-            inputStream.read(storedIV);
+    public static String decryptFile(String inputFilePath, Key key) throws InvalidKeyException, 
+        InvalidAlgorithmParameterException, FileNotFoundException, NoSuchAlgorithmException,
+        NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, IOException {
             
-            cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(storedIV));
+        InputStream inputStream = new FileInputStream(inputFilePath);
+        Cipher cipher = Cipher.getInstance(ALGORITHM);
 
-            byte[] encryptedBytes = inputStream.readAllBytes();
-            byte[] decryptedBytes = cipher.doFinal(encryptedBytes);
-            return new String(decryptedBytes, StandardCharsets.UTF_8);
-        } catch (Exception ex) {
-            logger.error("Failed to decrypt data from file: " + ex);
-            return null;
-        }
+        // Read the IV from the input file
+        byte[] storedIV = new byte[16];
+        inputStream.read(storedIV);
+        
+        cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(storedIV));
+
+        byte[] encryptedBytes = inputStream.readAllBytes();
+        byte[] decryptedBytes = cipher.doFinal(encryptedBytes);
+        return new String(decryptedBytes, StandardCharsets.UTF_8);
     }
     // endregion
 }
