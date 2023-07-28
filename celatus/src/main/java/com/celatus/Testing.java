@@ -88,9 +88,21 @@ public class Testing {
             System.out.println(json);
         } catch (Exception ex) {
             System.err.println(ex);
-        }
-        
+        }       
          
+    }
+
+    public static void testObjToJson() {
+        PasswordsDatabase pwdDB = PasswordsDatabase.generateDefault();
+        PasswordEntry pwdEntry = new PasswordEntry("Facebook", null, "fake.email@gmail.com", "password");
+        pwdDB.getCategory("Social Media").addPasswordEntry(pwdEntry);
+        System.out.println(MapUtils.objectToJson(pwdDB, false));
+    }
+
+    public static void testJsonToObj() {
+        String json = "{\"categories\":[{\"name\":\"General\",\"passwordEntries\":null},{\"name\":\"Emails\",\"passwordEntries\":null},{\"name\":\"Social media\",\"passwordEntries\":[{\"name\":\"Facebook\",\"description\":null,\"identifier\":\"fake.email@gmail.com\",\"password\":\"password\"}]},{\"name\":\"Administrative\",\"passwordEntries\":null},{\"name\":\"Shopping\",\"passwordEntries\":null},{\"name\":\"Miscellaneous\",\"passwordEntries\":null}]}";
+        PasswordsDatabase pwdDB = MapUtils.jsonToObject(json, PasswordsDatabase.class);
+        System.out.println(pwdDB);
     }
 
 
@@ -100,7 +112,9 @@ public class Testing {
         //testDataEncryptionIntoFile();
         //testDataDecrytionFromfile();
         //testMapToJson();
-        testDataDecrytionFromfile("This is just a test passphrase to test", "passwords.clts");
+        //testDataDecrytionFromfile("This is just a test passphrase to test", "passwords.clts");
+        //testObjToJson();
+        testJsonToObj();
     }
 
 }

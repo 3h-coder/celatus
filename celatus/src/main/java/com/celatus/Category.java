@@ -1,6 +1,7 @@
 package com.celatus;
 
 import java.util.List;
+import java.util.ArrayList;
 
 public class Category {
 
@@ -18,7 +19,7 @@ public class Category {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name.strip();
     }
 
     public List<PasswordEntry> getPasswordEntries() {
@@ -33,8 +34,10 @@ public class Category {
 
     // region =====Constructor=====
 
+    public Category() {}
+
     public Category(String name, List<PasswordEntry> passwordEntries) {
-        this.name = name;
+        this.name = name.strip();
         this.passwordEntries = passwordEntries;
     }
 
@@ -44,8 +47,20 @@ public class Category {
     // =====Instance Methods=====
 
     public void addPasswordEntry(String name, String description, String identifier, String password) {
+        if (this.passwordEntries == null) {
+            this.passwordEntries = new ArrayList<PasswordEntry>();
+        }
+
         PasswordEntry passwordEntry = new PasswordEntry(name, description, identifier, password);
-        passwordEntries.add(passwordEntry);
+        this.passwordEntries.add(passwordEntry);
+    }
+
+    public void addPasswordEntry(PasswordEntry passwordEntry) {
+        if (this.passwordEntries == null) {
+            this.passwordEntries = new ArrayList<PasswordEntry>();
+        }
+
+        this.passwordEntries.add(passwordEntry);
     }
 
     @Override
@@ -77,6 +92,11 @@ public class Category {
         } else if (!passwordEntries.equals(other.passwordEntries))
             return false;
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Category [name=" + name + ", passwordEntries=" + passwordEntries + "]";
     }
 
     // endregion

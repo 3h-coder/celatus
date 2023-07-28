@@ -145,6 +145,7 @@ public class CryptoUtils {
      * @param data : Data to be stored into the file
      * @param key : Key used for AES CBC encryption
      * @param iv : The iv byte array used for encryption
+     * @return <b>true</b> if the encryption was succesful, <b>false</b> otherwise
      */
     public static void encryptIntoFile(String outputFilePath, String data, Key key, byte[] iv) throws FileNotFoundException,
         IOException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException,

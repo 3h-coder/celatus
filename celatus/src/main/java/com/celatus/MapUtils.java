@@ -13,18 +13,43 @@ public class MapUtils {
     private static final Logger logger = LogManager.getLogger(App.class.getName());
 
     public static String mapToJson(Map map, boolean pretty) {
-        String result = null;
+        String json = null;
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             if(pretty) {
-                result = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(map);
+                json = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(map);
             } else {
-                result = objectMapper.writeValueAsString(map);
+                json = objectMapper.writeValueAsString(map);
             }
         } catch (JsonProcessingException ex) {
            logger.error("An error occured while trying to convert map to json: " + ex);
         }
-        return result;
+        return json;
+    }
+
+    public static <T> String objectToJson(T obj, boolean pretty) {
+        String json = null;
+        ObjectMapper objectMapper = new ObjectMapper();
+         try {
+            if(pretty) {
+                json = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
+            } else {
+                json = objectMapper.writeValueAsString(obj);
+            }
+        } catch (JsonProcessingException ex) {
+           logger.error("An error occured while trying to convert map to json: " + ex);
+        }
+        return json;
+    }
+
+    public static <T> T jsonToObject(String jsonString, Class<T> targetClass) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.readValue(jsonString, targetClass);
+        } catch (JsonProcessingException ex) {
+            logger.error("An error occurred while trying to convert JSON to object: " + ex);
+            return null;
+        }     
     }
     
 }

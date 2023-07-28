@@ -23,11 +23,10 @@ public class MainWindowController extends BaseWindowController {
     public void initialize() {
         Platform.runLater(() -> {
             for (Category category : App.getPasswordsDatabase().getCategories()) {
-                categoriesList.getItems().add(category.getName());
+                FXMLUtils.addToListView(categoriesList, category.getName());
             }
-            double cellSize = categoriesList.getFixedCellSize();
-            categoriesList.setPrefHeight(categoriesList.getItems().size() * cellSize + 2);
         });
+        logger.debug(App.getPasswordsDatabase());
         super.initialize();
     }
 

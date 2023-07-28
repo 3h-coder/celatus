@@ -95,9 +95,9 @@ public class SetupWindowController extends BaseWindowController {
     @FXML
     private void goToPwdField2() {
         if ("View".equals(viewButton2.getText())) {
-            revealedPwdField2.requestFocus();
+            pwdField2.requestFocus();         
         } else {
-            pwdField2.requestFocus();
+            revealedPwdField2.requestFocus();
         }    
     }
 

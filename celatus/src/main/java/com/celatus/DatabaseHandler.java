@@ -50,24 +50,37 @@ public class DatabaseHandler {
     }
 
     public static void saveDatabase() {
+        rawData = App.getPasswordsDatabase().toRawData();
+        
         if (!dbFileExists()) {
             logger.info("Creating the passwords database file.");
-            CryptoUtils.encryptIntoFile(dbFilePath, "celatus", App.getKey(), CryptoUtils.generateIV());
-        } else {
-            logger.info("Saving the passwords database file.");
-            try {
+            dbToEncryptedFile(false);
+            return;  
+        } 
+
+        logger.info("Saving the passwords database.");
+        dbToEncryptedFile(true);       
+    }
+
+    private static void dbToEncryptedFile(boolean fileExists) {
+        try {
+            if (fileExists) {
                 CryptoUtils.unhideFile(dbFilePath);
-                logger.debug("Saved raw data: " + rawData);
-                CryptoUtils.encryptIntoFile(dbFilePath, rawData, App.getKey(), CryptoUtils.generateIV());
-            } catch (Exception ex) {
-                App.error(App.getWindow(), "Could not properly save the passwords data", logger);
-            }      
+            }
+            // If rawData is null, this will throw an exception, hence the "celatus"
+            CryptoUtils.encryptIntoFile(dbFilePath, rawData, App.getKey(), CryptoUtils.generateIV());
+        } catch (Exception ex) {
+            App.error(App.getWindow(), "Could not properly save the passwords data: " + ex, logger);
         }
     }
 
     public static void parseRawDataFromDatabase() {
         if (dbFileExists()) {
-            rawData = CryptoUtils.decryptFile(dbFilePath, App.getKey());
+            try {
+                rawData = CryptoUtils.decryptFile(dbFilePath, App.getKey());
+            } catch (Exception ex) {
+                rawData = null;
+            }
         }
     }
 

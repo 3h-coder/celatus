@@ -49,6 +49,8 @@ public class PasswordEntry {
 
     // region =====Constructor=====
 
+    public PasswordEntry() {}
+
     public PasswordEntry(String name, String description, String identifier, String password) {
         this.name = name;
         this.description = description;
@@ -102,6 +104,13 @@ public class PasswordEntry {
             return false;
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "PasswordEntry [name=" + name + ", description=" + description + ", identifier=" + identifier
+                + ", password=" + password + "]";
+    }
+    
     
 
     // endregion
