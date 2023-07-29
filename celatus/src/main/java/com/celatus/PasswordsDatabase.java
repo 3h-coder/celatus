@@ -23,6 +23,9 @@ public class PasswordsDatabase {
     }
 
     public Category getCategory(String categoryName) {
+        if (categories == null) {
+            return null;
+        }
         for (Category category : categories) {
             if(category.getName().equalsIgnoreCase(categoryName)) {
                 return category;
@@ -46,10 +49,16 @@ public class PasswordsDatabase {
     // region =====Instance Methods=====
 
     public boolean hasCategory(Category category) {
-        return categories.contains(category);
+        if (categories != null) {
+            return categories.contains(category);
+        }
+        return false;     
     }
 
     public boolean hasCategory(String categoryName) {
+        if (categories == null) {
+            return false;
+        }
         for (Category category : categories) {
             if(category.getName().equalsIgnoreCase(categoryName)) {
                 return true;
@@ -59,7 +68,7 @@ public class PasswordsDatabase {
     }
 
     public void addCategory(Category category) {
-        if(!this.hasCategory(category.getName())) {
+        if(this.categories != null && this.hasCategory(category.getName())) {
             throw new IllegalArgumentException("There is already a category with the name " + category.getName() + " in the password database");
         }
         if(this.categories == null) {
@@ -73,6 +82,32 @@ public class PasswordsDatabase {
             this.categories.remove(category);
         }
     }
+
+    /**
+     * Browses the categories and their nested PasswordEntry objects to calculate ids for categories and password entries without an id.
+     */
+    public void calculateAllIds() {
+        if (this.categories == null) {
+            return;
+        }
+
+        for (Category category : this.categories) {
+            if (category.getId() == null) {
+                // Calculate the id
+            }
+
+            List<PasswordEntry> passwordEntries = category.getPasswordEntries();
+            if (passwordEntries == null) {
+                continue;
+            }
+            for (PasswordEntry passwordEntry : passwordEntries) {
+                if (passwordEntry.getId() == null) {
+                    // Calculate the id
+                }
+            }
+        }
+    }
+
 
     /**
      * @return The PasswordDatabase object as a json string
@@ -113,9 +148,11 @@ public class PasswordsDatabase {
     
     // endregion
     
-    // =====Static Methods=====
+    // region =====Static Methods=====
 
-
+    /**
+     * @return a default PasswordsDatabase object with a few categories and no password entries.
+     */
     public static PasswordsDatabase generateDefault() {
         List<Category> categoriesList = Arrays.asList(new Category("General", null),
                                                       new Category("Emails", null),
@@ -126,6 +163,11 @@ public class PasswordsDatabase {
         return new PasswordsDatabase(categoriesList);
     }
 
+    /**
+     * Parses a PasswordsDatabase object from a serialized json string
+     * @param rawData : The json string representing the object
+     * @return The PasswordsDatabase object
+     */
     public static PasswordsDatabase fromRawData(String rawData) {
         return MapUtils.jsonToObject(rawData, PasswordsDatabase.class);
     }

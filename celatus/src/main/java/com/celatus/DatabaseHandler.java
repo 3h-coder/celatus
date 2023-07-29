@@ -49,9 +49,12 @@ public class DatabaseHandler {
         }
     }
 
+    /**
+     * Saves the current password database into the password database file.
+     */
     public static void saveDatabase() {
         rawData = App.getPasswordsDatabase().toRawData();
-        
+
         if (!dbFileExists()) {
             logger.info("Creating the passwords database file.");
             dbToEncryptedFile(false);
@@ -74,6 +77,9 @@ public class DatabaseHandler {
         }
     }
 
+    /**
+     * Decrypts the database to save the decrypted string into the rawData variable
+     */
     public static void parseRawDataFromDatabase() {
         if (dbFileExists()) {
             try {

@@ -7,6 +7,7 @@ public class Category {
 
     // region =====Variables=====
 
+    private String id;
     private String name;
     private List<PasswordEntry> passwordEntries;
 
@@ -14,12 +15,20 @@ public class Category {
 
     // region =====Getters and Setters=====
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String value) {
+        this.id = value;
+    }
+
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name.strip();
+    public void setName(String value) {
+        this.name = value.strip();
     }
 
     public List<PasswordEntry> getPasswordEntries() {
@@ -41,10 +50,27 @@ public class Category {
         this.passwordEntries = passwordEntries;
     }
 
+    public Category(String id, String name, List<PasswordEntry> passwordEntries) {
+        this.id = id;
+        this.name = name.strip();
+        this.passwordEntries = passwordEntries;
+    }
+
     // endregion
     
+    // region =====Instance Methods=====
 
-    // =====Instance Methods=====
+    public boolean hasPasswordEntry(PasswordEntry passwordEntry) {
+        if (this.passwordEntries == null) {
+            return false;
+        }
+        for (PasswordEntry pwdEntry : this.passwordEntries) {
+            if (pwdEntry.equals(passwordEntry)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public void addPasswordEntry(String name, String description, String identifier, String password) {
         if (this.passwordEntries == null) {
@@ -52,6 +78,9 @@ public class Category {
         }
 
         PasswordEntry passwordEntry = new PasswordEntry(name, description, identifier, password);
+        if (this.hasPasswordEntry(passwordEntry)) {
+            throw new IllegalArgumentException("This password entry already exists in the password entries list! ");
+        }
         this.passwordEntries.add(passwordEntry);
     }
 
@@ -60,6 +89,9 @@ public class Category {
             this.passwordEntries = new ArrayList<PasswordEntry>();
         }
 
+        if (this.hasPasswordEntry(passwordEntry)) {
+            throw new IllegalArgumentException("This password entry already exists in the password entries list! ");
+        }
         this.passwordEntries.add(passwordEntry);
     }
 

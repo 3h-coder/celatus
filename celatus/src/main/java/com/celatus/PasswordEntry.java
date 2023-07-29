@@ -4,6 +4,7 @@ public class PasswordEntry {
 
     // region =====Variables=====
 
+    private String id;
     private String name;
     private String description;
     private String identifier;
@@ -13,12 +14,20 @@ public class PasswordEntry {
 
     // region =====Getters and Setters=====
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String value) {
+        this.id = value;
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String value) {
-        this.name = value;
+        this.name = value.strip();
     }
 
     public String getDescription() {
@@ -52,7 +61,15 @@ public class PasswordEntry {
     public PasswordEntry() {}
 
     public PasswordEntry(String name, String description, String identifier, String password) {
-        this.name = name;
+        this.name = name.strip();
+        this.description = description;
+        this.identifier = identifier;
+        this.password = password;
+    }
+
+    public PasswordEntry(String id, String name, String description, String identifier, String password) {
+        this.id = id;
+        this.name = name.strip();
         this.description = description;
         this.identifier = identifier;
         this.password = password;
@@ -110,8 +127,6 @@ public class PasswordEntry {
         return "PasswordEntry [name=" + name + ", description=" + description + ", identifier=" + identifier
                 + ", password=" + password + "]";
     }
-    
-    
 
     // endregion
     

@@ -6,6 +6,8 @@ import javafx.scene.control.ListView;
 
 public class FXMLUtils {
 
+    // region =====ListView=====
+
     @FXML
     public static void adjustListViewHeight(ListView listView) {
         double cellSize = listView.getFixedCellSize();
@@ -24,4 +26,5 @@ public class FXMLUtils {
         adjustListViewHeight(listView);
     }
     
+    // endregion
 }
