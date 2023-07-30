@@ -3,6 +3,8 @@ package com.celatus;
 import java.security.Key;
 import java.util.Map;
 import java.util.HashMap;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 import javax.crypto.spec.IvParameterSpec;
 
@@ -99,13 +101,23 @@ public class Testing {
         PasswordsDatabase pwdDB = PasswordsDatabase.generateDefault();
         PasswordEntry pwdEntry = new PasswordEntry("Facebook", null, "fake.email@gmail.com", "password");
         pwdDB.getCategory("Social Media").addPasswordEntry(pwdEntry);
-        System.out.println(MapUtils.objectToJson(pwdDB, false));
+        System.out.println(MapUtils.objectToJson(pwdDB, true));
     }
 
     public static void testJsonToObj() {
         String json = "{\"categories\":[{\"name\":\"General\",\"passwordEntries\":null},{\"name\":\"Emails\",\"passwordEntries\":null},{\"name\":\"Social media\",\"passwordEntries\":[{\"name\":\"Facebook\",\"description\":null,\"identifier\":\"fake.email@gmail.com\",\"password\":\"password\"}]},{\"name\":\"Administrative\",\"passwordEntries\":null},{\"name\":\"Shopping\",\"passwordEntries\":null},{\"name\":\"Miscellaneous\",\"passwordEntries\":null}]}";
         PasswordsDatabase pwdDB = MapUtils.jsonToObject(json, PasswordsDatabase.class);
         System.out.println(pwdDB);
+    }
+
+    public static void testIdFromDateTime() {
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println("Now: " + now);
+        long timeStampSeconds = now.atZone(ZoneId.systemDefault()).toEpochSecond();
+        System.out.println("Time stamp: " + timeStampSeconds);
+        String hash = CryptoUtils.getSHA256Hash(String.valueOf(timeStampSeconds));
+        String result = "CAT" + hash.toUpperCase();
+        System.out.println("Result: " + result);
     }
 
 
@@ -116,8 +128,9 @@ public class Testing {
         //testDataDecrytionFromfile();
         //testMapToJson();
         //testDataDecrytionFromfile("This is just a test passphrase to test", "passwords.clts");
-        //testObjToJson();
-        testJsonToObj();
+        testObjToJson();
+        //testJsonToObj();
+        //testIdFromDateTime();
     }
 
 }

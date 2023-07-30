@@ -86,31 +86,6 @@ public class PasswordsDatabase {
         }
     }
 
-    /**
-     * Browses the categories and their nested PasswordEntry objects to calculate ids for categories and password entries without an id.
-     */
-    public void calculateAllIds() {
-        if (this.categories == null) {
-            return;
-        }
-
-        for (Category category : this.categories) {
-            if (category.getId() == null) {
-                // Calculate the id
-            }
-
-            List<PasswordEntry> passwordEntries = category.getPasswordEntries();
-            if (passwordEntries == null) {
-                continue;
-            }
-            for (PasswordEntry passwordEntry : passwordEntries) {
-                if (passwordEntry.getId() == null) {
-                    // Calculate the id
-                }
-            }
-        }
-    }
-
 
     /**
      * @return The PasswordDatabase object as a json string
@@ -176,5 +151,4 @@ public class PasswordsDatabase {
     }
 
     // endregion
-
 }

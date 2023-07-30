@@ -1,25 +1,27 @@
 package com.celatus;
 
-public class PasswordEntry {
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+
+import com.celatus.util.CryptoUtils;
+
+public class PasswordEntry implements Recordable {
 
     // region =====Variables=====
 
-    private String id;
+    private String ID;
     private String name;
     private String description;
     private String identifier;
     private String password;
+    private LocalDateTime creationDate;
 
     // endregion
 
     // region =====Getters and Setters=====
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String value) {
-        this.id = value;
+    public String getID() {
+        return ID;
     }
 
     public String getName() {
@@ -61,18 +63,12 @@ public class PasswordEntry {
     public PasswordEntry() {}
 
     public PasswordEntry(String name, String description, String identifier, String password) {
+        this.creationDate = LocalDateTime.now();
         this.name = name.strip();
         this.description = description;
         this.identifier = identifier;
         this.password = password;
-    }
-
-    public PasswordEntry(String id, String name, String description, String identifier, String password) {
-        this.id = id;
-        this.name = name.strip();
-        this.description = description;
-        this.identifier = identifier;
-        this.password = password;
+        calculateID();
     }
 
     // endregion
@@ -130,4 +126,13 @@ public class PasswordEntry {
 
     // endregion
     
+    // region =====Interface Methods=====
+
+    public void calculateID() {
+        long creationDateTimeStamp = this.creationDate.atZone(ZoneId.systemDefault()).toEpochSecond();
+        String toBeHashed = String.valueOf(creationDateTimeStamp) + this.name;
+        this.ID = "PE" + CryptoUtils.getSHA256Hash(toBeHashed).toUpperCase();
+    }
+
+    // endregion
 }

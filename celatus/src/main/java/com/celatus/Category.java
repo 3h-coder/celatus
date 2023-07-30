@@ -1,26 +1,27 @@
 package com.celatus;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.ArrayList;
 
-public class Category {
+import com.celatus.util.CryptoUtils;
+
+public class Category implements Recordable {
 
     // region =====Variables=====
 
-    private String id;
+    private String ID;
     private String name;
     private List<PasswordEntry> passwordEntries;
+    private LocalDateTime creationDate;
 
     // endregion
 
     // region =====Getters and Setters=====
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String value) {
-        this.id = value;
+    public String getID() {
+        return ID;
     }
 
     public String getName() {
@@ -46,14 +47,10 @@ public class Category {
     public Category() {}
 
     public Category(String name, List<PasswordEntry> passwordEntries) {
+        this.creationDate = LocalDateTime.now();
         this.name = name.strip();
         this.passwordEntries = passwordEntries;
-    }
-
-    public Category(String id, String name, List<PasswordEntry> passwordEntries) {
-        this.id = id;
-        this.name = name.strip();
-        this.passwordEntries = passwordEntries;
+        calculateID();
     }
 
     // endregion
@@ -133,5 +130,13 @@ public class Category {
 
     // endregion
 
-    
+    // region =====Interface Methods=====
+
+    public void calculateID() {
+        long creationDateTimeStamp = this.creationDate.atZone(ZoneId.systemDefault()).toEpochSecond();
+        String toBeHashed = String.valueOf(creationDateTimeStamp) + this.name;
+        this.ID = "CAT" + CryptoUtils.getSHA256Hash(toBeHashed).toUpperCase();
+    }
+
+    // endregion
 }
