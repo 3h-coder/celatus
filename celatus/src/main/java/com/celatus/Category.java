@@ -125,7 +125,8 @@ public class Category implements Recordable {
 
     @Override
     public String toString() {
-        return "Category [name=" + name + ", passwordEntries=" + passwordEntries + "]";
+        return "Category [ID=" + ID + ", name=" + name + ", passwordEntries=" + passwordEntries + ", creationDate="
+                + creationDate + "]";
     }
 
     // endregion
@@ -135,7 +136,7 @@ public class Category implements Recordable {
     public void calculateID() {
         long creationDateTimeStamp = this.creationDate.atZone(ZoneId.systemDefault()).toEpochSecond();
         String toBeHashed = String.valueOf(creationDateTimeStamp) + this.name;
-        this.ID = "CAT" + CryptoUtils.getSHA256Hash(toBeHashed).toUpperCase();
+        this.ID = "CAT" + CryptoUtils.getSHA256Hash(toBeHashed).toUpperCase().substring(0, 8);
     }
 
     // endregion
