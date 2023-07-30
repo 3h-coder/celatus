@@ -1,4 +1,4 @@
-package com.celatus;
+package com.celatus.util;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;

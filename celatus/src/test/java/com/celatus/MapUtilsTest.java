@@ -1,6 +1,9 @@
 package com.celatus;
 
 import org.junit.Test;
+
+import com.celatus.util.MapUtils;
+
 import org.junit.Assert;
 
 public class MapUtilsTest {

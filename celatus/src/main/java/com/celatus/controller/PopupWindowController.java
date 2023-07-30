@@ -1,4 +1,6 @@
-package com.celatus;
+package com.celatus.controller;
+
+import com.celatus.App;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

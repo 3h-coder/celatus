@@ -5,6 +5,9 @@ import java.security.*;
 import javax.crypto.spec.IvParameterSpec;
 
 import org.junit.Test;
+
+import com.celatus.util.CryptoUtils;
+
 import org.junit.Assert;
 
 public class CryptoUtilsTest {

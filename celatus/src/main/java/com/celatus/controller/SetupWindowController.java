@@ -1,4 +1,8 @@
-package com.celatus;
+package com.celatus.controller;
+
+import com.celatus.App;
+import com.celatus.AuthHandler;
+import com.celatus.PasswordsDatabase;
 
 import java.util.Map;
 

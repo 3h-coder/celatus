@@ -1,6 +1,9 @@
 package com.celatus;
 
 import java.util.Map;
+
+import com.celatus.util.CryptoUtils;
+
 import java.util.HashMap;
 
 public class AuthHandler {

@@ -7,7 +7,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#windowKeyPressed" onMouseDragged="#onMouseDragged" onMousePressed="#onMousePressed" prefHeight="600.0" prefWidth="900.0" styleClass="AnchorPane" stylesheets="@styles/default.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.celatus.MainWindowController">
+<AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#windowKeyPressed" onMouseDragged="#onMouseDragged" onMousePressed="#onMousePressed" prefHeight="600.0" prefWidth="900.0" styleClass="AnchorPane" stylesheets="@styles/default.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.celatus.controller.MainWindowController">
    <children>
       <AnchorPane id="rowPane1" fx:id="rowPane1" prefHeight="26.0" prefWidth="700.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>

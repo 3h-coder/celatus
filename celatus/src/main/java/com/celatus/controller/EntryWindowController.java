@@ -1,4 +1,9 @@
-package com.celatus;
+package com.celatus.controller;
+
+import com.celatus.App;
+import com.celatus.AuthHandler;
+import com.celatus.DatabaseHandler;
+import com.celatus.PasswordsDatabase;
 
 import javafx.fxml.FXML;
 

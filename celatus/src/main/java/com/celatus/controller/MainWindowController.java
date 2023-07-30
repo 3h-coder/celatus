@@ -1,4 +1,10 @@
-package com.celatus;
+package com.celatus.controller;
+
+import com.celatus.App;
+import com.celatus.Category;
+import com.celatus.DatabaseHandler;
+
+import com.celatus.util.FXMLUtils;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;

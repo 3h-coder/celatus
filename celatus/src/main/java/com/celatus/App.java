@@ -14,6 +14,8 @@ import javafx.stage.StageStyle;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.celatus.controller.PopupWindowController;
+
 /**
  * JavaFX App
  */

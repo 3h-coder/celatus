@@ -1,4 +1,4 @@
-package com.celatus;
+package com.celatus.util;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
