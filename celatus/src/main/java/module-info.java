@@ -8,6 +8,6 @@ module com.celatus {
     opens com.celatus to javafx.fxml;
     opens com.celatus.controller to javafx.fxml;
     exports com.celatus;
-    // exports com.celatus.controller;
-    // exports com.celatus.util;
+    exports com.celatus.controller;
+    exports com.celatus.util;
 }
