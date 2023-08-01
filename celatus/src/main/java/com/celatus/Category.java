@@ -11,7 +11,7 @@ public class Category implements Recordable {
 
     // region =====Variables=====
 
-    private String ID;
+    private String id;
     private String name;
     private List<PasswordEntry> passwordEntries;
     private LocalDateTime creationDate;
@@ -20,8 +20,8 @@ public class Category implements Recordable {
 
     // region =====Getters and Setters=====
 
-    public String getID() {
-        return ID;
+    public String getId() {
+        return id;
     }
 
     public String getName() {
@@ -125,7 +125,7 @@ public class Category implements Recordable {
 
     @Override
     public String toString() {
-        return "Category [ID=" + ID + ", name=" + name + ", passwordEntries=" + passwordEntries + ", creationDate="
+        return "Category [ID=" + id + ", name=" + name + ", passwordEntries=" + passwordEntries + ", creationDate="
                 + creationDate + "]";
     }
 
@@ -136,7 +136,7 @@ public class Category implements Recordable {
     public void calculateID() {
         long creationDateTimeStamp = this.creationDate.atZone(ZoneId.systemDefault()).toEpochSecond();
         String toBeHashed = String.valueOf(creationDateTimeStamp) + this.name;
-        this.ID = "CAT" + CryptoUtils.getSHA256Hash(toBeHashed).toUpperCase().substring(0, 8);
+        this.id = "CAT" + CryptoUtils.getSHA256Hash(toBeHashed).toUpperCase().substring(0, 8);
     }
 
     // endregion

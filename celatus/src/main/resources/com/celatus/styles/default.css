@@ -24,6 +24,23 @@
 
 /* All windows */
 
+.context-menu {
+    -fx-background-color: #353536;
+    -fx-border-color: #8c8c8c;
+    -fx-border-width: 1 1 1 1
+}
+
+.context-menu .menu-item .label{
+    -fx-text-fill: white
+}
+
+.context-menu .menu-item:focused {
+    -fx-background-color: #cacac9;
+}
+
+.context-menu .menu-item:focused .label {
+    -fx-text-fill: black
+}
 
 
 /* Setup window*/

@@ -9,7 +9,7 @@ public class PasswordEntry implements Recordable {
 
     // region =====Variables=====
 
-    private String ID;
+    private String id;
     private String name;
     private String description;
     private String identifier;
@@ -20,8 +20,8 @@ public class PasswordEntry implements Recordable {
 
     // region =====Getters and Setters=====
 
-    public String getID() {
-        return ID;
+    public String getId() {
+        return id;
     }
 
     public String getName() {
@@ -120,7 +120,7 @@ public class PasswordEntry implements Recordable {
 
     @Override
     public String toString() {
-        return "PasswordEntry [ID=" + ID + ", name=" + name + ", description=" + description + ", identifier="
+        return "PasswordEntry [ID=" + id + ", name=" + name + ", description=" + description + ", identifier="
                 + identifier + ", password=" + password + ", creationDate=" + creationDate + "]";
     }
 
@@ -131,7 +131,7 @@ public class PasswordEntry implements Recordable {
     public void calculateID() {
         long creationDateTimeStamp = this.creationDate.atZone(ZoneId.systemDefault()).toEpochSecond();
         String toBeHashed = String.valueOf(creationDateTimeStamp) + this.name;
-        this.ID = "PE" + CryptoUtils.getSHA256Hash(toBeHashed).toUpperCase().substring(0, 8);
+        this.id = "PE" + CryptoUtils.getSHA256Hash(toBeHashed).toUpperCase().substring(0, 8);
     }
 
     // endregion

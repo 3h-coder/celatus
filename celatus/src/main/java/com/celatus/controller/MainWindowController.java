@@ -21,7 +21,7 @@ public class MainWindowController extends BaseWindowController {
     @FXML
     private MenuBar menuBar;
     @FXML
-    private ListView categoriesList;
+    private ListView<String> categoriesList;
 
     // endregion
 
@@ -35,8 +35,9 @@ public class MainWindowController extends BaseWindowController {
                 FXMLUtils.addToListView(categoriesList, category.getName());
             }
             // Setting up the context menu
-            categoriesList.setCellFactory( cl -> {
+            categoriesList.setCellFactory( (listView) -> {
                 ListCell<String> cell = new ListCell<>();
+                cell.textProperty().bind(cell.itemProperty());
                 ContextMenu contextMenu = FXMLUtils.createContextMenu(new String[]{"Edit", "Delete"});
                 cell.setContextMenu(contextMenu);
                 return cell;

@@ -72,7 +72,7 @@ public class DatabaseHandler {
             if (fileExists) {
                 CryptoUtils.unhideFile(dbFilePath);
             }
-            // If rawData is null, this will throw an exception, hence the "celatus"
+            // logger.debug("Saved data: " + rawData);
             CryptoUtils.encryptIntoFile(dbFilePath, rawData, App.getKey(), CryptoUtils.generateIV());
         } catch (Exception ex) {
             App.error(App.getWindow(), "Could not properly save the passwords data: " + ex, logger);
