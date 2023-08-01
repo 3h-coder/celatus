@@ -10,6 +10,8 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 
 public class MainWindowController extends BaseWindowController {
@@ -28,9 +30,18 @@ public class MainWindowController extends BaseWindowController {
     @Override
     public void initialize() {
         Platform.runLater(() -> {
+            // Adding Categories
             for (Category category : App.getPasswordsDatabase().getCategories()) {
                 FXMLUtils.addToListView(categoriesList, category.getName());
             }
+            // Setting up the context menu
+            categoriesList.setCellFactory( cl -> {
+                ListCell<String> cell = new ListCell<>();
+                ContextMenu contextMenu = FXMLUtils.createContextMenu(new String[]{"Edit", "Delete"});
+                cell.setContextMenu(contextMenu);
+                return cell;
+                }
+            );
         });
         logger.debug(App.getPasswordsDatabase());
         super.initialize();
