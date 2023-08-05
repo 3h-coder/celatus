@@ -34,9 +34,9 @@
             </MenuBar>
          </children>
       </AnchorPane>
-      <AnchorPane id="columnPane1" fx:id="colmunPane1" layoutY="39.0" onMouseClicked="#test" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="600.0" AnchorPane.topAnchor="27.0">
+      <AnchorPane id="columnPane1" fx:id="columnPane1" layoutY="39.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="600.0" AnchorPane.topAnchor="27.0">
          <children>
-            <ListView fx:id="categoriesList" fixedCellSize="24.0" layoutX="-6.0" layoutY="14.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <ListView fx:id="categoriesList" fixedCellSize="24.0" layoutX="-6.0" layoutY="14.0" prefHeight="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </children></AnchorPane>
       <AnchorPane id="columnPane2" fx:id="columnPane2" layoutX="300.0" layoutY="27.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="27.0" />
    </children>

@@ -1,3 +1,5 @@
+/* All windows */
+
 .AnchorPane {
     -fx-background-color : #555657
 }
@@ -17,12 +19,25 @@
     -fx-text-fill: white
 }
 
-.PasswordField {
+.text-field {
     -fx-background-color :  #353536;
     -fx-text-fill: white
 }
 
-/* All windows */
+.text-area {
+    -fx-background-radius: 0;
+    -fx-background-color :  #353536;
+    -fx-text-fill: white
+}
+
+.text-area .content{
+    -fx-background-radius: 0;
+    -fx-background-color :  #353536;
+}
+
+.text-area:focused {
+    -fx-highlight-fill: #8c8c8c;
+}
 
 .context-menu {
     -fx-background-color: #353536;

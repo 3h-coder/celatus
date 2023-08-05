@@ -1,12 +1,9 @@
 package com.celatus.controller;
 
-import com.celatus.App;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.stage.Stage;
 
-public class PopupWindowController extends BaseWindowController {
+public class PopupWindowController extends DialogWindowController {
     
     // region =====Variables=====
 
@@ -26,12 +23,6 @@ public class PopupWindowController extends BaseWindowController {
 
 
     // region =====Event Methods=====
-
-    @FXML
-    public void close() {
-        // Close it
-        window.close();
-    }
 
     // endregion
 }

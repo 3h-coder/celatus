@@ -132,12 +132,12 @@ public class PasswordsDatabase {
      * @return a default PasswordsDatabase object with a few categories and no password entries.
      */
     public static PasswordsDatabase generateDefault() {
-        List<Category> categoriesList = Arrays.asList(new Category("General", null),
-                                                      new Category("Emails", null),
-                                                      new Category("Social media", null),
-                                                      new Category("Administrative", null),
-                                                      new Category("Shopping", null),
-                                                      new Category("Miscellaneous", null));
+        List<Category> categoriesList = Arrays.asList(new Category("General", null, null),
+                                                      new Category("Emails", null, null),
+                                                      new Category("Social media", null, null),
+                                                      new Category("Administrative", null, null),
+                                                      new Category("Shopping", null, null),
+                                                      new Category("Miscellaneous", null, null));
         return new PasswordsDatabase(categoriesList);
     }
 

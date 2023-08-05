@@ -15,6 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.celatus.controller.PopupWindowController;
+import com.celatus.util.FXMLUtils;
 
 /**
  * JavaFX App
@@ -26,9 +27,8 @@ public class App extends Application {
     private static final Logger _logger = LogManager.getLogger(App.class.getName());
 
     private static Scene scene;
-
-    // 256 bits AES key used to encrypt the db.clts file
-    private static Key key;
+    
+    private static Key key; // 256 bits AES key used to encrypt the db.clts file
 
     private static PasswordsDatabase passwordsDatabase;
 
@@ -50,6 +50,10 @@ public class App extends Application {
 
     public static void setPasswordsDatabase(PasswordsDatabase value) {
         passwordsDatabase = value;
+    }
+
+    public static Scene getScene() {
+        return scene;
     }
 
     public static Stage getWindow() {
@@ -116,12 +120,13 @@ public class App extends Application {
     }
 
     public static void launchDialogWindow(Stage owner, String fxml) throws IOException {
+        FXMLUtils.addDarkOverlay(scene);
         Stage dialogStage = new Stage();
         dialogStage.initModality(Modality.APPLICATION_MODAL);
         dialogStage.initStyle(StageStyle.UNDECORATED);
         dialogStage.initOwner(owner);
         dialogStage.setScene(new Scene(loadFXML(fxml)));
-        dialogStage.showAndWait();
+        dialogStage.showAndWait();    
     }
 
     /**

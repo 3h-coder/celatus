@@ -13,6 +13,7 @@ public class Category implements Recordable {
 
     private String id;
     private String name;
+    private String description;
     private List<PasswordEntry> passwordEntries;
     private LocalDateTime creationDate;
 
@@ -32,6 +33,14 @@ public class Category implements Recordable {
         this.name = value.strip();
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public List<PasswordEntry> getPasswordEntries() {
         return passwordEntries;
     }
@@ -46,9 +55,10 @@ public class Category implements Recordable {
 
     public Category() {}
 
-    public Category(String name, List<PasswordEntry> passwordEntries) {
+    public Category(String name, String description, List<PasswordEntry> passwordEntries) {
         this.creationDate = LocalDateTime.now();
         this.name = name.strip();
+        this.description = description;
         this.passwordEntries = passwordEntries;
         calculateID();
     }
@@ -56,6 +66,7 @@ public class Category implements Recordable {
     // endregion
     
     // region =====Instance Methods=====
+
 
     public boolean hasPasswordEntry(PasswordEntry passwordEntry) {
         if (this.passwordEntries == null) {
@@ -96,8 +107,11 @@ public class Category implements Recordable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((description == null) ? 0 : description.hashCode());
         result = prime * result + ((passwordEntries == null) ? 0 : passwordEntries.hashCode());
+        result = prime * result + ((creationDate == null) ? 0 : creationDate.hashCode());
         return result;
     }
 
@@ -110,23 +124,38 @@ public class Category implements Recordable {
         if (getClass() != obj.getClass())
             return false;
         Category other = (Category) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
         if (name == null) {
             if (other.name != null)
                 return false;
         } else if (!name.equals(other.name))
+            return false;
+        if (description == null) {
+            if (other.description != null)
+                return false;
+        } else if (!description.equals(other.description))
             return false;
         if (passwordEntries == null) {
             if (other.passwordEntries != null)
                 return false;
         } else if (!passwordEntries.equals(other.passwordEntries))
             return false;
+        if (creationDate == null) {
+            if (other.creationDate != null)
+                return false;
+        } else if (!creationDate.equals(other.creationDate))
+            return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "Category [ID=" + id + ", name=" + name + ", passwordEntries=" + passwordEntries + ", creationDate="
-                + creationDate + "]";
+        return "Category [id=" + id + ", name=" + name + ", description=" + description + ", passwordEntries="
+                + passwordEntries + ", creationDate=" + creationDate + "]";
     }
 
     // endregion
