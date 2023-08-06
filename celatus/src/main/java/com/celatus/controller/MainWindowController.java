@@ -54,7 +54,7 @@ public class MainWindowController extends BaseWindowController {
 
     @Override
     public void close() {
-        saveDatabase();
+        // TODO : ask to save the database if a change is detected
         super.close();
     }
 

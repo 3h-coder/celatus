@@ -1,2 +1,0 @@
-1. Create a category as a user
-2. Create a password entry as a user

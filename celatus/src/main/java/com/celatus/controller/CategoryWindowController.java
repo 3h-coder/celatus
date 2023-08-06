@@ -1,7 +1,5 @@
 package com.celatus.controller;
 
-import java.util.InputMismatchException;
-
 import com.celatus.App;
 import com.celatus.Category;
 import com.celatus.PasswordsDatabase;
@@ -76,7 +74,7 @@ public class CategoryWindowController extends DialogWindowController {
         }
         // Update the list view in the main window
         Scene appScene = owner.getScene();
-        ListView<String> categoriesList = (ListView<String>) appScene.lookup("#categoriesList");
+        @SuppressWarnings("unchecked") ListView<String> categoriesList = (ListView<String>) appScene.lookup("#categoriesList");
         FXMLUtils.addToListView(categoriesList, name);
         closeDialog();
     }

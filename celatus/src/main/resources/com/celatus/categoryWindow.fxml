@@ -12,6 +12,7 @@
          <children>
             <Button fx:id="minimizeButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#minimize" prefHeight="25.0" prefWidth="25.0" text="_" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="0.0" />
             <Button id="closeButton" fx:id="closeButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#closeDialog" prefHeight="25.0" prefWidth="25.0" text="X" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <Label fx:id="title" layoutX="52.0" layoutY="7.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="60.0" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="rowPane2" layoutY="35.0" prefWidth="500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">

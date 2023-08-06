@@ -32,6 +32,8 @@ public class App extends Application {
 
     private static PasswordsDatabase passwordsDatabase;
 
+    private static int originalDatabaseHash; 
+
     // endregion
 
     // region =====Getters and Setters=====
@@ -52,6 +54,14 @@ public class App extends Application {
         passwordsDatabase = value;
     }
 
+    public static int getOriginalDatabaseHash() {
+        return originalDatabaseHash;
+    }
+
+    public static void setOriginalDatabaseHash(int value) {
+        originalDatabaseHash = value;
+    }
+
     public static Scene getScene() {
         return scene;
     }
@@ -63,6 +73,7 @@ public class App extends Application {
     // endregion
 
     // region =====Main Methods=====
+
 
     @Override
     public void init(){

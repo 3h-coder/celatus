@@ -59,7 +59,9 @@ public class EntryWindowController extends BaseWindowController {
         setPasswordValue();
         
         if (AuthHandler.correctPassword(password)) {
-            App.setPasswordsDatabase(PasswordsDatabase.fromRawData(DatabaseHandler.getRawData()));
+            PasswordsDatabase passwordsDatabase = PasswordsDatabase.fromRawData(DatabaseHandler.getRawData());
+            App.setPasswordsDatabase(passwordsDatabase);
+            App.setOriginalDatabaseHash(passwordsDatabase.hashCode());
             switchWindow("mainWindow");
         } else {
             warning("Incorrect master password");
