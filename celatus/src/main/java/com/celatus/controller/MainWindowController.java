@@ -3,7 +3,7 @@ package com.celatus.controller;
 import com.celatus.App;
 import com.celatus.Category;
 import com.celatus.DatabaseHandler;
-
+import com.celatus.PasswordsDatabase;
 import com.celatus.util.FXMLUtils;
 
 import javafx.fxml.FXML;
@@ -40,12 +40,12 @@ public class MainWindowController extends BaseWindowController {
             FXMLUtils.addToListView(categoriesList, category.getName());
         }
         setContextMenus();
-        logger.debug(App.getPasswordsDatabase());
+        // logger.debug(App.getPasswordsDatabase());
         super.initialize();
     }
 
     public void test() {
-        logger.debug("Clicking on the anchor");
+        App.error(window, "Test", logger);
     }
 
     // endregion
@@ -67,10 +67,17 @@ public class MainWindowController extends BaseWindowController {
         categoriesList.setCellFactory( (listView) -> {
             ListCell<String> cell = new ListCell<>();
             cell.textProperty().bind(cell.itemProperty());
-            MenuItem menuItem1 = new MenuItem("Edit");
-            MenuItem menuItem2 = new MenuItem("Delete");
+
+            MenuItem editMenuItem = new MenuItem("Edit");
+            MenuItem deleteMenuItem = new MenuItem("Delete");
+            deleteMenuItem.setOnAction(event -> {
+                String categoryName = cell.getItem();
+                listView.getItems().remove(categoryName);
+                deleteCategory(categoryName);
+            });
+
             ContextMenu contextMenu = new ContextMenu();
-            contextMenu.getItems().addAll(menuItem1, menuItem2);
+            contextMenu.getItems().addAll(editMenuItem, deleteMenuItem);
             cell.setContextMenu(contextMenu);
             return cell;
             }
@@ -107,8 +114,14 @@ public class MainWindowController extends BaseWindowController {
             App.launchDialogWindow(window, "categoryWindow");
         } catch (Exception ex) {
             App.error(window, "An error occured: " + ex, logger);
-        }
-        
+        }  
+    }
+
+    private void deleteCategory(String categoryName) {
+        PasswordsDatabase passwordsDatabase = App.getPasswordsDatabase();
+        Category category = passwordsDatabase.getCategory(categoryName);
+        logger.info("Deleting the category " + categoryName + " : " + category);
+        passwordsDatabase.removeCategory(category);
     }
 
     // endregion

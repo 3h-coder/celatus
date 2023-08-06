@@ -21,7 +21,8 @@
 
 .text-field {
     -fx-background-color :  #353536;
-    -fx-text-fill: white
+    -fx-text-fill: white;
+    -fx-highlight-fill: #8c8c8c
 }
 
 .text-area {
@@ -57,12 +58,12 @@
     -fx-text-fill: black
 }
 
-
-/* Setup window*/
-
-#badPasswordsLabel {
+#badFieldLabel {
     -fx-text-fill: red
 }
+
+
+/* Setup window*/
 
 #warningLabel {
     -fx-text-fill: #fcba03;

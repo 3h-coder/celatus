@@ -94,8 +94,6 @@ public class App extends Application {
              
     }
 
-
-
     public static void main(String[] args) {
         launch();
     }
@@ -120,7 +118,6 @@ public class App extends Application {
     }
 
     public static void launchDialogWindow(Stage owner, String fxml) throws IOException {
-        FXMLUtils.addDarkOverlay(scene);
         Stage dialogStage = new Stage();
         dialogStage.initModality(Modality.APPLICATION_MODAL);
         dialogStage.initStyle(StageStyle.UNDECORATED);
