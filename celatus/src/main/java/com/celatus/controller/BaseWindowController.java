@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.input.KeyEvent;
@@ -47,7 +48,6 @@ public class BaseWindowController {
     public Stage getCurrentWindow() {
         return (Stage) pane.getScene().getWindow();
     }
-    
 
     /**
      * Switches window with the provided one. In other terms, closes the current window to open the specified one.

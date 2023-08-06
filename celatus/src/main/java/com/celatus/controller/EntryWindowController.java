@@ -65,7 +65,7 @@ public class EntryWindowController extends BaseWindowController {
             switchWindow("mainWindow");
         } else {
             warning("Incorrect master password");
-        }
+        }     
     }
 
     // endregion

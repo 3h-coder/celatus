@@ -5,6 +5,9 @@ import com.celatus.Category;
 import com.celatus.PasswordsDatabase;
 import com.celatus.util.FXMLUtils;
 
+import java.util.Map;
+import java.util.HashMap;
+
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 
@@ -21,11 +24,49 @@ public class CategoryWindowController extends DialogWindowController {
     // region =====Variables
 
     @FXML
+    private Label title;
+    @FXML
     private Label label02;
     @FXML
     private TextField nameTextField;
     @FXML
     private TextArea descriptionTextArea;
+
+    private Category inputCategory;
+
+    // endregion
+
+    // region =====Getters and Setters=====
+
+    public Category getInputCategory() {
+        return inputCategory;
+    }
+
+    public void setInputCategory(Category category) {
+        inputCategory = category;
+    }
+
+    // endregion
+
+    // region =====Window Methods=====
+
+    public void initialize() {
+        super.initialize();
+        Platform.runLater(() -> {
+            fillFields();
+        });
+    }
+
+    public void fillFields() {
+        if (inputCategory != null) {
+            nameTextField.setText(inputCategory.getName());
+            descriptionTextArea.setText(inputCategory.getDescription());
+        }
+    }
+
+    public void setTitle(String title) {
+        this.title.setText(title);
+    }
 
     // endregion
 
@@ -54,6 +95,9 @@ public class CategoryWindowController extends DialogWindowController {
     
     @FXML
     private void saveCategory() {
+        Scene appScene = owner.getScene();
+        @SuppressWarnings("unchecked") ListView<String> categoriesList = (ListView<String>) appScene.lookup("#categoriesList");
+
         String name = nameTextField.getText();
         if (name == null || name.isEmpty()) {
             label02.setText("This field is required");
@@ -61,21 +105,33 @@ public class CategoryWindowController extends DialogWindowController {
         }
 
         String description = descriptionTextArea.getText();
-        if (description.isEmpty()) {
+        if (description == null || description.isEmpty()) {
             description = null;
         }
         Category category = new Category(name, description, null);
         PasswordsDatabase passwordsDatabase = App.getPasswordsDatabase();
-        try {
-            passwordsDatabase.addCategory(category);
-        } catch (IllegalArgumentException ex) {
-            label02.setText("This category already exists");
-            return;
+        if (inputCategory == null) {
+            try {
+                passwordsDatabase.addCategory(category);
+                FXMLUtils.addToListView(categoriesList, name);
+            } catch (IllegalArgumentException ex) {
+                label02.setText("This category already exists");
+                return;
+            }
+        } else {
+            Map<String, Object> changes = new HashMap<>();
+            changes.put("name", name);
+            changes.put("description", description);
+            try {
+                String oldName = inputCategory.getName();
+                passwordsDatabase.updateCategory(inputCategory.getName(), changes);
+                FXMLUtils.updateListView(categoriesList, oldName, name);
+            } catch (IllegalArgumentException ex) {
+                label02.setText("The category does not exist and cannot be updated");
+                return;
+            }
         }
-        // Update the list view in the main window
-        Scene appScene = owner.getScene();
-        @SuppressWarnings("unchecked") ListView<String> categoriesList = (ListView<String>) appScene.lookup("#categoriesList");
-        FXMLUtils.addToListView(categoriesList, name);
+        
         closeDialog();
     }
     

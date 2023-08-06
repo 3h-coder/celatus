@@ -1,5 +1,7 @@
 package com.celatus.controller;
 
+import java.util.Map;
+
 import com.celatus.App;
 import com.celatus.Category;
 import com.celatus.DatabaseHandler;
@@ -10,6 +12,7 @@ import javafx.fxml.FXML;
 
 import javafx.scene.control.MenuBar;
 import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -69,6 +72,12 @@ public class MainWindowController extends BaseWindowController {
             cell.textProperty().bind(cell.itemProperty());
 
             MenuItem editMenuItem = new MenuItem("Edit");
+            editMenuItem.setOnAction(event -> {
+                String categoryName = cell.getItem();
+                Category category = App.getPasswordsDatabase().getCategory(categoryName);
+                openCategoryWindow(category);
+            });
+
             MenuItem deleteMenuItem = new MenuItem("Delete");
             deleteMenuItem.setOnAction(event -> {
                 String categoryName = cell.getItem();
@@ -84,11 +93,11 @@ public class MainWindowController extends BaseWindowController {
         );
         // Setting up the context menu for our categories column pane
         ContextMenu contextMenu = new ContextMenu();
-        MenuItem menuItem1 = new MenuItem("New Category");
-        menuItem1.setOnAction(event -> {
-            openCategoryWindow();
+        MenuItem newCatMenuItem = new MenuItem("New Category");
+        newCatMenuItem.setOnAction(event -> {
+            openCategoryWindow(null);
         });
-        contextMenu.getItems().add(menuItem1);
+        contextMenu.getItems().add(newCatMenuItem);
         columnPane1.addEventHandler(ContextMenuEvent.CONTEXT_MENU_REQUESTED, event -> {
             contextMenu.show(columnPane1, event.getScreenX(), event.getScreenY());
             event.consume();
@@ -109,11 +118,25 @@ public class MainWindowController extends BaseWindowController {
         }
     }  
     
-    private void openCategoryWindow() {
+    private void openCategoryWindow(Category category) {
         try{
-            App.launchDialogWindow(window, "categoryWindow");
+            // FXMLUtils.launchDialogWindow(window, "categoryWindow");
+            Map<String, Object> map = FXMLUtils.getSceneAndController("categoryWindow");
+            Scene scene = (Scene) map.get("Scene");
+            CategoryWindowController controller = (CategoryWindowController) map.get("Controller");
+
+            String title;
+            if (category != null) {
+                title = "Editing category";
+                controller.setInputCategory(category);
+            } else {
+                title = "Adding new category";
+            }
+            controller.setTitle(title);
+            FXMLUtils.launchDialogWindow(this.window, scene);
+
         } catch (Exception ex) {
-            App.error(window, "An error occured: " + ex, logger);
+            App.error(this.window, "An error occured: " + ex, logger);
         }  
     }
 

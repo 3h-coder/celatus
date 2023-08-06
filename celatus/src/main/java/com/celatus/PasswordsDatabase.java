@@ -1,6 +1,7 @@
 package com.celatus;
 
 import java.util.List;
+import java.util.Map;
 
 import com.celatus.util.MapUtils;
 
@@ -83,6 +84,28 @@ public class PasswordsDatabase {
     public void removeCategory(Category category) {
         if (this.categories != null) {
             this.categories.remove(category);
+        }
+    }
+
+    public void updateCategory(String categoryName, Map<String, Object> updates) {
+        if (this.categories == null || !this.hasCategory(categoryName)) {
+            throw new IllegalArgumentException("The category does not exist and cannot be updated : " + categoryName);
+        }
+        Category category = getCategory(categoryName);
+        for (Map.Entry<String, Object> entry : updates.entrySet()) {
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            switch(key) {
+                case "name":
+                    category.setName((String) value);
+                    break;
+                case "description":
+                    category.setDescription((String) value);
+                case "passwordEntries":
+                    category.setPasswordEntries((List<PasswordEntry>) value);
+                default:
+                    break;
+            }
         }
     }
 

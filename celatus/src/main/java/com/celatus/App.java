@@ -2,6 +2,7 @@ package com.celatus;
 
 import java.io.IOException;
 import java.security.Key;
+import java.util.Map;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +15,7 @@ import javafx.stage.StageStyle;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.celatus.controller.BaseWindowController;
 import com.celatus.controller.PopupWindowController;
 import com.celatus.util.FXMLUtils;
 
@@ -25,14 +27,18 @@ public class App extends Application {
     // region =====Application Variables=====
 
     private static final Logger _logger = LogManager.getLogger(App.class.getName());
-
-    private static Scene scene;
     
     private static Key key; // 256 bits AES key used to encrypt the db.clts file
 
+    private static Scene scene; // The current app scene
+
     private static PasswordsDatabase passwordsDatabase;
 
-    private static int originalDatabaseHash; 
+    private static int originalDatabaseHash; // used to check unsaved modifications
+
+    private static BaseWindowController controller; // controller associated with the current scene
+
+    private static Map<String, ?> tmpVariables; // used to store any variable at runtime
 
     // endregion
 
@@ -70,10 +76,21 @@ public class App extends Application {
         return (Stage) scene.getWindow();
     }
 
+    public static BaseWindowController getController() {
+        return controller;
+    }
+
+    public static void setController(BaseWindowController controller) {
+        App.controller = controller;
+    }
+
+    public static Map<String, ?> getTmpVariables() {
+        return tmpVariables;
+    }
+
     // endregion
 
     // region =====Main Methods=====
-
 
     @Override
     public void init(){
@@ -114,41 +131,33 @@ public class App extends Application {
     // region =====Secondary Methods=====
 
     public static void launchWindow(String fxml) throws IOException {
+        Map<String, Object> map = FXMLUtils.getSceneAndController(fxml);
+        App.scene = (Scene) map.get("Scene");
+        App.controller = (BaseWindowController) map.get("Controller");
+
         Stage stage = new Stage();
-        scene = new Scene(loadFXML(fxml));
         stage.setScene(scene);
         stage.initStyle(StageStyle.UNDECORATED);
         stage.show(); 
     }
 
     public static void launchWindow(Stage stage, String fxml) throws IOException {
-        scene = new Scene(loadFXML(fxml));
+        Map<String, Object> map = FXMLUtils.getSceneAndController(fxml);
+        App.scene = (Scene) map.get("Scene");
+        App.controller = (BaseWindowController) map.get("Controller");
+
         stage.initStyle(StageStyle.UNDECORATED);
         stage.setScene(scene);
         stage.show(); 
-    }
-
-    public static void launchDialogWindow(Stage owner, String fxml) throws IOException {
-        Stage dialogStage = new Stage();
-        dialogStage.initModality(Modality.APPLICATION_MODAL);
-        dialogStage.initStyle(StageStyle.UNDECORATED);
-        dialogStage.initOwner(owner);
-        dialogStage.setScene(new Scene(loadFXML(fxml)));
-        dialogStage.showAndWait();    
     }
 
     /**
      * Switches the application's scene to another
      * @param fxml The view to switch to
      * @throws IOException
-     */
+     */ //  /!\ Do not use!
     public static void setView(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml));
-    }
-
-    private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
-        return fxmlLoader.load();
+        scene.setRoot(FXMLUtils.loadFXML(fxml));
     }
 
     /**
@@ -160,18 +169,17 @@ public class App extends Application {
             logger.error(error);
         }
         try {
-            FXMLLoader loader = new FXMLLoader(App.class.getResource("popupWindow.fxml"));
-            Parent root = loader.load();
-            PopupWindowController controller = loader.getController();
-
+            Map<String, Object> map = FXMLUtils.getSceneAndController("popupWindow");
+            Scene scene = (Scene) map.get("Scene");
+            PopupWindowController controller = (PopupWindowController) map.get("Controller");
+            
             Stage errorStage = new Stage();
             errorStage.initModality(Modality.APPLICATION_MODAL);
             errorStage.initStyle(StageStyle.UNDECORATED);
             errorStage.initOwner(window);
-            errorStage.setScene(new Scene(root));
+            errorStage.setScene(scene);
             controller.setMessage(error);
             errorStage.showAndWait();
-
         } catch (IOException ex) {
             if (logger != null) {
                  logger.error("Failed to popup the window: " + ex.getMessage());
