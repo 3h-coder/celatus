@@ -72,7 +72,7 @@ public class MainWindowController extends BaseWindowController {
             MenuItem deleteMenuItem = new MenuItem("Delete");
             deleteMenuItem.setOnAction(event -> {
                 String categoryName = cell.getItem();
-                listView.getItems().remove(categoryName);
+                FXMLUtils.removeFromListView(listView, categoryName);
                 deleteCategory(categoryName);
             });
 
