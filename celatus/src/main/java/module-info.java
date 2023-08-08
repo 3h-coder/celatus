@@ -1,6 +1,7 @@
 module com.celatus {
     requires javafx.controls;
     requires javafx.fxml;
+    requires org.apache.commons.lang3;
     requires org.apache.logging.log4j;
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;

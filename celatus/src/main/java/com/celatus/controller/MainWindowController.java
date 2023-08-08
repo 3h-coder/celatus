@@ -14,6 +14,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
@@ -29,6 +30,8 @@ public class MainWindowController extends BaseWindowController {
     private AnchorPane columnPane1;
     @FXML
     private MenuBar menuBar;
+    @FXML
+    private Label catDescriptionLabel;
     @FXML
     private ListView<String> categoriesList;
 
@@ -104,6 +107,20 @@ public class MainWindowController extends BaseWindowController {
             ContextMenu contextMenu = new ContextMenu();
             contextMenu.getItems().addAll(editMenuItem, deleteMenuItem);
             cell.setContextMenu(contextMenu);
+
+            cell.setOnMouseClicked(event -> {
+                String categoryName = cell.getItem();
+                Category category = App.getPasswordsDatabase().getCategory(categoryName);
+                String catDescription = category.getDescription();
+                AnchorPane descriptionPane = (AnchorPane) window.getScene().lookup("#descriptionPane");
+                if (catDescription != null && !catDescription.isEmpty()) {
+                    descriptionPane.setVisible(true);
+                    catDescriptionLabel.setText(category.getDescription());
+                } else {
+                    descriptionPane.setVisible(false);
+                }     
+            });
+            
             return cell;
             }
         );

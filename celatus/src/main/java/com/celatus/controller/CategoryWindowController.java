@@ -19,6 +19,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.input.KeyEvent;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class CategoryWindowController extends DialogWindowController {
     
     // region =====Variables
@@ -100,22 +102,26 @@ public class CategoryWindowController extends DialogWindowController {
     private void saveCategory() {
         Scene appScene = owner.getScene();
         @SuppressWarnings("unchecked") ListView<String> categoriesList = (ListView<String>) appScene.lookup("#categoriesList");
+        Label catDescriptionLabel = (Label) appScene.lookup("#catDescriptionLabel");
+        AnchorPane descriptionPane = (AnchorPane) appScene.lookup("#descriptionPane");
 
         String name = nameTextField.getText();
-        if (name == null || name.isEmpty()) {
+        if (StringUtils.isBlank(name)) {
             label02.setText("This field is required");
             return;
         }
 
         String description = descriptionTextArea.getText();
-        if (description == null || description.isEmpty()) {
+        if (StringUtils.isBlank(description)) {
             description = null;
         }
         Category category = new Category(name, description, null);
         PasswordsDatabase passwordsDatabase = App.getPasswordsDatabase();
         if (inputCategory == null) {
             try {
+                // Updating the passwords database
                 passwordsDatabase.addCategory(category);
+                // Updating the main window categories list
                 FXMLUtils.addToListView(categoriesList, name);
             } catch (IllegalArgumentException ex) {
                 label02.setText("This category already exists");
@@ -127,8 +133,16 @@ public class CategoryWindowController extends DialogWindowController {
             changes.put("description", description);
             try {
                 String oldName = inputCategory.getName();
+                // Updating the passwords database
                 passwordsDatabase.updateCategory(inputCategory.getName(), changes);
+                // Updating the main window categories list and category description
                 FXMLUtils.updateListView(categoriesList, oldName, name);
+                if (StringUtils.isNotBlank(description)) {
+                    descriptionPane.setVisible(true);
+                    catDescriptionLabel.setText(description);
+                } else {
+                    descriptionPane.setVisible(false);
+                }
             } catch (IllegalArgumentException ex) {
                 label02.setText("The category does not exist and cannot be updated");
                 return;

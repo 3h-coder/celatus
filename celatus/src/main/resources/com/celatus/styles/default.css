@@ -83,6 +83,12 @@
 
 /* Main window */
 
+#descriptionPane {
+    -fx-background-color: #353536;
+    -fx-border-color: #8c8c8c;
+    -fx-border-width: 0 0 1 0
+}
+
 #menuBar {
     -fx-background-color : #353536;
     -fx-selection-bar: #555657
@@ -128,6 +134,10 @@
 }
 
 #categoriesList .list-cell:hover {
+    -fx-background-color: #555657;
+}
+
+#categoriesList .list-cell:selected {
     -fx-background-color: #555657;
 }
 
