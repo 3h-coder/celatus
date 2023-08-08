@@ -48,7 +48,7 @@ public class MainWindowController extends BaseWindowController {
     }
 
     public void test() {
-        App.error(window, "Test", logger);
+
     }
 
     // endregion
@@ -57,8 +57,20 @@ public class MainWindowController extends BaseWindowController {
 
     @Override
     public void close() {
-        // TODO : ask to save the database if a change is detected
-        super.close();
+        // Check for unsaved changes
+        int originalDBHash = App.getOriginalDatabaseHash();
+        int currentDBHash = App.getPasswordsDatabase().hashCode();
+        if (originalDBHash == currentDBHash) {
+            super.close();
+        } else {
+            App.warn(window, "Unsaved changes detected, would you like to save these changes?", logger, PopupMode.YES_AND_NO);
+        }
+        if (App.getSignal("yes_signal") == true) {
+            saveDatabase();
+            super.close();
+        } else if (App.getSignal("no_signal") == true) {
+            super.close();
+        }    
     }
 
     // endregion
@@ -80,9 +92,13 @@ public class MainWindowController extends BaseWindowController {
 
             MenuItem deleteMenuItem = new MenuItem("Delete");
             deleteMenuItem.setOnAction(event -> {
-                String categoryName = cell.getItem();
-                FXMLUtils.removeFromListView(listView, categoryName);
-                deleteCategory(categoryName);
+                App.warn(window, "This is an irreversible action, and you will lose all the passwords in this category, are you sure you want to delete it?",
+                        logger, PopupMode.YES_AND_NO);
+                if (App.getSignal("yes_signal") == true) {
+                    String categoryName = cell.getItem();
+                    FXMLUtils.removeFromListView(listView, categoryName);
+                    deleteCategory(categoryName);
+                }  
             });
 
             ContextMenu contextMenu = new ContextMenu();
@@ -136,7 +152,7 @@ public class MainWindowController extends BaseWindowController {
             FXMLUtils.launchDialogWindow(this.window, scene);
 
         } catch (Exception ex) {
-            App.error(this.window, "An error occured: " + ex, logger);
+            App.error(this.window, "An error occured: " + ex, logger, PopupMode.OK);
         }  
     }
 

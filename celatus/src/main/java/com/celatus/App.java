@@ -2,11 +2,10 @@ package com.celatus;
 
 import java.io.IOException;
 import java.security.Key;
+import java.util.HashMap;
 import java.util.Map;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -17,6 +16,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.celatus.controller.BaseWindowController;
 import com.celatus.controller.PopupWindowController;
+import com.celatus.controller.PopupMode;
 import com.celatus.util.FXMLUtils;
 
 /**
@@ -38,7 +38,7 @@ public class App extends Application {
 
     private static BaseWindowController controller; // controller associated with the current scene
 
-    private static Map<String, ?> tmpVariables; // used to store any variable at runtime
+    private static Map<String, Object> tmpVariables; // used to store any variable at runtime
 
     // endregion
 
@@ -164,9 +164,9 @@ public class App extends Application {
      * Logs the provided error message and displays it into a pop-up window
      * @param error The error message
      */
-    public static void error(Stage window, String error, Logger logger) {
+    public static void error(Stage window, String error, Logger logger, PopupMode mode) {
         if (logger != null) {
-            logger.error(error);
+            logger.error("To user -> " + error);
         }
         try {
             Map<String, Object> map = FXMLUtils.getSceneAndController("popupWindow");
@@ -179,6 +179,39 @@ public class App extends Application {
             errorStage.initOwner(window);
             errorStage.setScene(scene);
             controller.setMessage(error);
+            controller.setIcon("error-icon.png");
+            controller.setMode(mode);
+            errorStage.showAndWait();
+        } catch (IOException ex) {
+            if (logger != null) {
+                 logger.error("Failed to popup the window: " + ex.getMessage());
+            } else {
+                 _logger.error("Failed to popup the window: " + ex.getMessage());
+            }
+        }  
+    }
+
+    /**
+     * Logs the provided warning message and displays it into a pop-up window
+     * @param warning The warning message
+     */
+    public static void warn(Stage window, String warning, Logger logger, PopupMode mode) {
+        if (logger != null) {
+            logger.warn("To user -> " + warning);
+        }
+        try {
+            Map<String, Object> map = FXMLUtils.getSceneAndController("popupWindow");
+            Scene scene = (Scene) map.get("Scene");
+            PopupWindowController controller = (PopupWindowController) map.get("Controller");
+            
+            Stage errorStage = new Stage();
+            errorStage.initModality(Modality.APPLICATION_MODAL);
+            errorStage.initStyle(StageStyle.UNDECORATED);
+            errorStage.initOwner(window);
+            errorStage.setScene(scene);
+            controller.setMessage(warning);
+            controller.setIcon("warning-icon.png");
+            controller.setMode(mode);
             errorStage.showAndWait();
         } catch (IOException ex) {
             if (logger != null) {
@@ -187,7 +220,40 @@ public class App extends Application {
                  _logger.error("Failed to popup the window: " + ex.getMessage());
             }
         }
-        
+    }
+
+    public static void addTempVariable (String key, Object value) {
+        if (tmpVariables == null) {
+            tmpVariables = new HashMap<>();
+        }
+        tmpVariables.put(key, value);
+    }
+
+    public static void removeTempVariable (String key) {
+        if (tmpVariables != null) {
+            tmpVariables.remove(key);
+        } 
+    }
+
+    public static void clearTempVariables() {
+        if (tmpVariables != null) {
+            tmpVariables.clear();
+        }
+    }
+
+    public static Object getTempVariable(String key) {
+        if (tmpVariables != null) {
+            return tmpVariables.get(key);
+        }
+        return null;
+    }
+
+    public static boolean getSignal (String signalKey) {
+        if (tmpVariables != null && tmpVariables.containsKey(signalKey)) {
+            tmpVariables.remove(signalKey);
+            return true;
+        }
+        return false;
     }
 
     // endregion

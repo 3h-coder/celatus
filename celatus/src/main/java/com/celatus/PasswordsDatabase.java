@@ -101,8 +101,10 @@ public class PasswordsDatabase {
                     break;
                 case "description":
                     category.setDescription((String) value);
+                    break;
                 case "passwordEntries":
                     category.setPasswordEntries((List<PasswordEntry>) value);
+                    break;
                 default:
                     break;
             }

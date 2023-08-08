@@ -120,6 +120,20 @@ public class Testing {
         System.out.println("Result: " + result);
     }
 
+    public static void testRemoveFromMap() {
+        /*Map <String, Boolean> map = new HashMap<>();
+        map.put("test", true);
+        System.out.println(map);
+        boolean tmp = map.get("test");
+        map.remove("test");
+        System.out.println(tmp);
+        System.out.println(map);*/
+        Map map = null;
+        if (map.containsKey("test")) {
+            System.out.println("haha");
+        }
+    }
+
 
     public static void main(String[] args) {
         //testDataEncryption();
@@ -128,9 +142,10 @@ public class Testing {
         //testDataDecrytionFromfile();
         //testMapToJson();
         //testDataDecrytionFromfile("This is just a test passphrase to test", "passwords.clts");
-        testObjToJson();
+        // testObjToJson();
         //testJsonToObj();
         //testIdFromDateTime();
+        testRemoveFromMap();
     }
 
 }

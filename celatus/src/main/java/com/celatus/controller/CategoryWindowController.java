@@ -60,7 +60,10 @@ public class CategoryWindowController extends DialogWindowController {
     public void fillFields() {
         if (inputCategory != null) {
             nameTextField.setText(inputCategory.getName());
-            descriptionTextArea.setText(inputCategory.getDescription());
+            
+            if (inputCategory.getDescription() != null) {
+                descriptionTextArea.setText(inputCategory.getDescription());
+            }  
         }
     }
 

@@ -90,7 +90,7 @@ public class SetupWindowController extends BaseWindowController {
                 App.setPasswordsDatabase(PasswordsDatabase.generateDefault());
                 switchWindow("mainWindow");
             } catch (Exception ex) {
-                App.error(window,"An unexpected error occured when trying to summon the main window : " + ex, logger);
+                App.error(window,"An unexpected error occured when trying to summon the main window : " + ex, logger, PopupMode.OK);
                 close();
             }
         }

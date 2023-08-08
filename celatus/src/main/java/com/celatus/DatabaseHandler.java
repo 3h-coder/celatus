@@ -6,6 +6,7 @@ import java.io.IOException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.celatus.controller.PopupMode;
 import com.celatus.util.CryptoUtils;
 
 public class DatabaseHandler {
@@ -56,6 +57,7 @@ public class DatabaseHandler {
      */
     public static void saveDatabase() {
         rawData = App.getPasswordsDatabase().toRawData();
+        App.setOriginalDatabaseHash(App.getPasswordsDatabase().hashCode());
 
         if (!dbFileExists()) {
             logger.info("Creating the passwords database file.");
@@ -75,7 +77,7 @@ public class DatabaseHandler {
             // logger.debug("Saved data: " + rawData);
             CryptoUtils.encryptIntoFile(dbFilePath, rawData, App.getKey(), CryptoUtils.generateIV());
         } catch (Exception ex) {
-            App.error(App.getWindow(), "Could not properly save the passwords data: " + ex, logger);
+            App.error(App.getWindow(), "Could not properly save the passwords data: " + ex, logger, PopupMode.OK);
         }
     }
 
