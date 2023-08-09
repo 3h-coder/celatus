@@ -140,6 +140,7 @@ public class CategoryWindowController extends DialogWindowController {
                 if (StringUtils.isNotBlank(description)) {
                     descriptionPane.setVisible(true);
                     catDescriptionLabel.setText(description);
+                    FXMLUtils.adjustLabelHeight(catDescriptionLabel);
                 } else {
                     descriptionPane.setVisible(false);
                 }

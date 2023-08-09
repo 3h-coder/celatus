@@ -1,6 +1,7 @@
 package com.celatus.controller;
 
 import com.celatus.App;
+import com.celatus.util.FXMLUtils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,6 +31,8 @@ public class BaseWindowController {
     @FXML
     protected Button closeButton;
     @FXML
+    protected Scene scene;
+    @FXML
     protected Stage window;
 
     private static double xOffset = 0;
@@ -43,6 +46,7 @@ public class BaseWindowController {
         // We have to make sure the scene is fully initialized to properly set up our variables
         Platform.runLater(() -> {
             window = getCurrentWindow();
+            scene = window.getScene();
         });
     }
 
@@ -100,6 +104,15 @@ public class BaseWindowController {
         stage.setIconified(true);
     }
 
+    public boolean isMaximized() {
+        Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+        double minX = primaryScreenBounds.getMinX();
+        double minY = primaryScreenBounds.getMinY();
+        double screenWidth = primaryScreenBounds.getWidth();
+        double screenHeight = primaryScreenBounds.getHeight();
+        return window.getWidth() == screenWidth && window.getHeight() == screenHeight && window.getX() == minX && window.getY() == minY;
+    }
+
     public void maximize() {
         Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
         double minX = primaryScreenBounds.getMinX();
@@ -118,6 +131,7 @@ public class BaseWindowController {
             window.setX(minX);
             window.setY(minY);
         }
+        logger.debug("Scene width: " + scene.getWidth());
     }
     
     // endregion

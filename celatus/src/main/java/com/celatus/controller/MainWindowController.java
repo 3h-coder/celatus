@@ -31,6 +31,8 @@ public class MainWindowController extends BaseWindowController {
     @FXML
     private AnchorPane columnPane1;
     @FXML
+    private AnchorPane descriptionPane;
+    @FXML
     private MenuBar menuBar;
     @FXML
     private Label catDescriptionLabel;
@@ -46,15 +48,30 @@ public class MainWindowController extends BaseWindowController {
 
         super.initialize();
         Platform.runLater(() -> {
-            for (Category category : App.getPasswordsDatabase().getCategories()) {
-                FXMLUtils.addToListView(categoriesList, category.getName());
-            }
-            setContextMenus();
-            window.setMinWidth(900);
-            window.setMinHeight(600);
-            ResizeHelper.addResizeListener(window);
+            performGraphicalSetup();
         });
         // logger.debug(App.getPasswordsDatabase());    
+    }
+
+    private void performGraphicalSetup() {
+        // We set the minimum window dimensions
+        window.setMinWidth(900);
+        window.setMinHeight(600);
+        // We make the window resizable
+        ResizeHelper.addResizeListener(window);
+        // We set the proper bindings
+        // catDescriptionLabel.prefWidthProperty().bind(descriptionPane.widthProperty());
+        // descriptionPane.prefWidthProperty().bind(catDescriptionLabel.widthProperty());
+        // We add our listeners
+        catDescriptionLabel.widthProperty().addListener((observable, oldValue, newValue) -> {
+            FXMLUtils.adjustLabelHeight(catDescriptionLabel);
+        });
+        // We fill up the categories list view and set up the context menus
+        for (Category category : App.getPasswordsDatabase().getCategories()) {
+            FXMLUtils.addToListView(categoriesList, category.getName());
+        }
+        setContextMenus();
+        
     }
 
     public void test() {
@@ -81,6 +98,12 @@ public class MainWindowController extends BaseWindowController {
         } else if (App.getSignal("no_signal") == true) {
             super.close();
         }    
+    }
+
+    @Override
+    public void maximize() {
+        super.maximize();
+        FXMLUtils.adjustLabelHeight(catDescriptionLabel);
     }
 
     // endregion
@@ -123,6 +146,7 @@ public class MainWindowController extends BaseWindowController {
                 if (catDescription != null && !catDescription.isEmpty()) {
                     descriptionPane.setVisible(true);
                     catDescriptionLabel.setText(category.getDescription());
+                    FXMLUtils.adjustLabelHeight(catDescriptionLabel);
                 } else {
                     descriptionPane.setVisible(false);
                 }     

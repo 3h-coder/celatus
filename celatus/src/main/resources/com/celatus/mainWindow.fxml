@@ -42,9 +42,9 @@
          </children></AnchorPane>
       <AnchorPane id="columnPane2" fx:id="columnPane2" layoutX="200.0" layoutY="27.0" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="27.0">
          <children>
-            <AnchorPane fx:id="descriptionPane" prefHeight="70.0" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <AnchorPane fx:id="descriptionPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <Label fx:id="catDescriptionLabel" alignment="TOP_LEFT" layoutX="22.0" layoutY="14.0" wrapText="true" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="5.0" />
+                  <Label fx:id="catDescriptionLabel" alignment="TOP_LEFT" layoutX="22.0" layoutY="14.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="hahaha" wrapText="true" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
                </children>
             </AnchorPane>
          </children></AnchorPane>

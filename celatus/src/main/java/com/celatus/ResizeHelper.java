@@ -1,5 +1,7 @@
 package com.celatus;
 
+import com.celatus.util.FXMLUtils;
+
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
@@ -102,8 +104,6 @@ public class ResizeHelper {
                                 stage.setY(mouseEvent.getScreenY());
                             } else {
                                 newHeight = Math.min(Math.max(newHeight, minHeight), maxHeight);
-                                // y1 + h1 = y2 + h2
-                                // y1 = y2 + h2 - h1
                                 stage.setY(stage.getY() + stage.getHeight() - newHeight);
                                 stage.setHeight(newHeight);
                             }
@@ -122,8 +122,6 @@ public class ResizeHelper {
                                 stage.setX(mouseEvent.getScreenX());
                             } else {
                                 newWidth = Math.min(Math.max(newWidth, minWidth), maxWidth);
-                                // x1 + w1 = x2 + w2
-                                // x1 = x2 + w2 - w1
                                 stage.setX(stage.getX() + stage.getWidth() - newWidth);
                                 stage.setWidth(newWidth);
                             }
@@ -134,17 +132,6 @@ public class ResizeHelper {
                 }
             }
 
-            /*if (MouseEvent.MOUSE_PRESSED.equals(mouseEventType)) {
-                startScreenX = mouseEvent.getScreenX();
-                startScreenY = mouseEvent.getScreenY();
-            } else if (MouseEvent.MOUSE_DRAGGED.equals(mouseEventType)) {
-                if (Cursor.DEFAULT.equals(cursorEvent)) {
-                    stage.setX(stage.getX() + mouseEvent.getScreenX() - startScreenX);
-                    startScreenX = mouseEvent.getScreenX();
-                    stage.setY(stage.getY() + mouseEvent.getScreenY() - startScreenY);
-                    startScreenY = mouseEvent.getScreenY();
-                }
-            }*/
             if (MouseEvent.MOUSE_PRESSED.equals(mouseEventType)) {
                 startScreenX = mouseEvent.getScreenX();
                 startScreenY = mouseEvent.getScreenY();
