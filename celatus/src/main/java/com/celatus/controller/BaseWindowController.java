@@ -6,9 +6,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javafx.application.Platform;
+import javafx.geometry.Rectangle2D;
 import javafx.fxml.FXML;
-import javafx.stage.Stage;
+import javafx.stage.Screen;
 import javafx.scene.Scene;
+import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.input.KeyEvent;
@@ -22,7 +24,7 @@ public class BaseWindowController {
     protected final Logger logger = LogManager.getLogger(this.getClass().toString().replace("class ", ""));
 
     @FXML
-    protected AnchorPane pane;
+    protected AnchorPane rootPane;
     @FXML
     protected Button minimizeButton;
     @FXML
@@ -46,7 +48,7 @@ public class BaseWindowController {
 
     @FXML
     public Stage getCurrentWindow() {
-        return (Stage) pane.getScene().getWindow();
+        return (Stage) rootPane.getScene().getWindow();
     }
 
     /**
@@ -96,6 +98,26 @@ public class BaseWindowController {
     public void minimize() {
         Stage stage = (Stage) minimizeButton.getScene().getWindow();
         stage.setIconified(true);
+    }
+
+    public void maximize() {
+        Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+        double minX = primaryScreenBounds.getMinX();
+        double minY = primaryScreenBounds.getMinY();
+        double screenWidth = primaryScreenBounds.getWidth();
+        double screenHeight = primaryScreenBounds.getHeight();
+
+        // If the window is already maximized, we set it back to default 
+        if (window.getWidth() == screenWidth && window.getHeight() == screenHeight && window.getX() == minX && window.getY() == minY) {
+            window.setWidth(900);
+            window.setHeight(600);
+            window.centerOnScreen();
+        } else {
+            window.setWidth(screenWidth);
+            window.setHeight(screenHeight);
+            window.setX(minX);
+            window.setY(minY);
+        }
     }
     
     // endregion

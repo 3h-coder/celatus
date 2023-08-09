@@ -6,8 +6,10 @@ import com.celatus.App;
 import com.celatus.Category;
 import com.celatus.DatabaseHandler;
 import com.celatus.PasswordsDatabase;
+import com.celatus.ResizeHelper;
 import com.celatus.util.FXMLUtils;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 
 import javafx.scene.control.MenuBar;
@@ -42,12 +44,17 @@ public class MainWindowController extends BaseWindowController {
     @Override
     public void initialize() {
 
-        for (Category category : App.getPasswordsDatabase().getCategories()) {
-            FXMLUtils.addToListView(categoriesList, category.getName());
-        }
-        setContextMenus();
-        // logger.debug(App.getPasswordsDatabase());
         super.initialize();
+        Platform.runLater(() -> {
+            for (Category category : App.getPasswordsDatabase().getCategories()) {
+                FXMLUtils.addToListView(categoriesList, category.getName());
+            }
+            setContextMenus();
+            window.setMinWidth(900);
+            window.setMinHeight(600);
+            ResizeHelper.addResizeListener(window);
+        });
+        // logger.debug(App.getPasswordsDatabase());    
     }
 
     public void test() {

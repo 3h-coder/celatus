@@ -12,7 +12,6 @@
 .button:hover {
     -fx-background-color: #cacac9;
     -fx-text-fill: black;
-    -fx-transition-duration: 500ms
 }
 
 .label {
