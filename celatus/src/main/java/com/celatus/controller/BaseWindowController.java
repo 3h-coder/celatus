@@ -131,7 +131,6 @@ public class BaseWindowController {
             window.setX(minX);
             window.setY(minY);
         }
-        logger.debug("Scene width: " + scene.getWidth());
     }
     
     // endregion

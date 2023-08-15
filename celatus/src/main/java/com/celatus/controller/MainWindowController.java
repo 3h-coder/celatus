@@ -16,12 +16,14 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+
+import org.apache.commons.lang3.StringUtils;
 
 
 public class MainWindowController extends BaseWindowController {
@@ -34,8 +36,6 @@ public class MainWindowController extends BaseWindowController {
     private AnchorPane descriptionPane;
     @FXML
     private MenuBar menuBar;
-    @FXML
-    private Label catDescriptionLabel;
     @FXML
     private ListView<String> categoriesList;
 
@@ -60,12 +60,6 @@ public class MainWindowController extends BaseWindowController {
         // We make the window resizable
         ResizeHelper.addResizeListener(window);
         // We set the proper bindings
-        // catDescriptionLabel.prefWidthProperty().bind(descriptionPane.widthProperty());
-        // descriptionPane.prefWidthProperty().bind(catDescriptionLabel.widthProperty());
-        // We add our listeners
-        catDescriptionLabel.widthProperty().addListener((observable, oldValue, newValue) -> {
-            FXMLUtils.adjustLabelHeight(catDescriptionLabel);
-        });
         // We fill up the categories list view and set up the context menus
         for (Category category : App.getPasswordsDatabase().getCategories()) {
             FXMLUtils.addToListView(categoriesList, category.getName());
@@ -103,7 +97,6 @@ public class MainWindowController extends BaseWindowController {
     @Override
     public void maximize() {
         super.maximize();
-        FXMLUtils.adjustLabelHeight(catDescriptionLabel);
     }
 
     // endregion
@@ -143,10 +136,9 @@ public class MainWindowController extends BaseWindowController {
                 Category category = App.getPasswordsDatabase().getCategory(categoryName);
                 String catDescription = category.getDescription();
                 AnchorPane descriptionPane = (AnchorPane) window.getScene().lookup("#descriptionPane");
-                if (catDescription != null && !catDescription.isEmpty()) {
+                if (StringUtils.isNotBlank(catDescription)) {
                     descriptionPane.setVisible(true);
-                    catDescriptionLabel.setText(category.getDescription());
-                    FXMLUtils.adjustLabelHeight(catDescriptionLabel);
+
                 } else {
                     descriptionPane.setVisible(false);
                 }     

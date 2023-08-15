@@ -17,6 +17,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import javafx.scene.input.KeyEvent;
 
 import org.apache.commons.lang3.StringUtils;
@@ -102,7 +103,7 @@ public class CategoryWindowController extends DialogWindowController {
     private void saveCategory() {
         Scene appScene = owner.getScene();
         @SuppressWarnings("unchecked") ListView<String> categoriesList = (ListView<String>) appScene.lookup("#categoriesList");
-        Label catDescriptionLabel = (Label) appScene.lookup("#catDescriptionLabel");
+        // TextArea catDescriptionTextArea = (TextArea) appScene.lookup("#catDescriptionTextArea");
         AnchorPane descriptionPane = (AnchorPane) appScene.lookup("#descriptionPane");
 
         String name = nameTextField.getText();
@@ -139,8 +140,7 @@ public class CategoryWindowController extends DialogWindowController {
                 FXMLUtils.updateListView(categoriesList, oldName, name);
                 if (StringUtils.isNotBlank(description)) {
                     descriptionPane.setVisible(true);
-                    catDescriptionLabel.setText(description);
-                    FXMLUtils.adjustLabelHeight(catDescriptionLabel);
+                    // catDescriptionTextArea.setText(description);
                 } else {
                     descriptionPane.setVisible(false);
                 }
