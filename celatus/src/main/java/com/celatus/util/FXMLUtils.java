@@ -22,20 +22,52 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Duration;
 
 
 public class FXMLUtils {
 
     private static final Logger logger = LogManager.getLogger(App.class.getName());
 
+    // region =====Text=====
+
+    public static double computeTextHeight(String text, javafx.scene.text.Font font, double width) {
+        javafx.scene.text.Text helper = new javafx.scene.text.Text();
+        helper.setFont(font);
+        helper.setText(text);
+        helper.setWrappingWidth(width);
+        return helper.getLayoutBounds().getHeight();
+    }
+
+    public static double computeTextWidth(String text, javafx.scene.text.Font font) {
+        javafx.scene.text.Text helper = new javafx.scene.text.Text();
+        helper.setFont(font);
+        helper.setText(text);
+        return helper.getLayoutBounds().getWidth() * 1.018;
+    }
+
+    // endregion
+
     // region =====TextArea=====
 
+    public static void adjustTextAreaHeight(TextArea textArea) {
+        final double LINE_HEIGHT = 19.0; // Minimum height to ensure readability
+
+        double width = textArea.getWidth();
+        double textwidth = computeTextWidth(textArea.getText(), textArea.getFont());
+        /*logger.debug("width: " + width);
+        logger.debug("textwidth: " + textwidth);
+        logger.debug("textWidth / width: " + (textwidth / width));*/
+
+        int linesNeeded = (int)Math.ceil(textwidth / width);
+        //logger.debug("Lines needed: " + linesNeeded);
+        textArea.setPrefHeight(linesNeeded * LINE_HEIGHT);
+        //logger.debug("Height set to : " + linesNeeded * LINE_HEIGHT);
+        // Force a layout update by invalidating the layout
+        textArea.getParent().requestLayout();
+    }
 
     // endregion 
 

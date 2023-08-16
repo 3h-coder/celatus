@@ -128,8 +128,7 @@ public class BaseWindowController {
         } else {
             window.setWidth(screenWidth);
             window.setHeight(screenHeight);
-            window.setX(minX);
-            window.setY(minY);
+            window.centerOnScreen();
         }
     }
     

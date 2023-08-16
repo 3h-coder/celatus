@@ -35,6 +35,8 @@ public class MainWindowController extends BaseWindowController {
     @FXML
     private AnchorPane descriptionPane;
     @FXML
+    private TextArea catDescription;
+    @FXML
     private MenuBar menuBar;
     @FXML
     private ListView<String> categoriesList;
@@ -60,6 +62,10 @@ public class MainWindowController extends BaseWindowController {
         // We make the window resizable
         ResizeHelper.addResizeListener(window);
         // We set the proper bindings
+        // We add out listeners
+        catDescription.widthProperty().addListener((observable, oldValue, newValue) -> {
+            FXMLUtils.adjustTextAreaHeight(catDescription);
+        });
         // We fill up the categories list view and set up the context menus
         for (Category category : App.getPasswordsDatabase().getCategories()) {
             FXMLUtils.addToListView(categoriesList, category.getName());
@@ -70,6 +76,13 @@ public class MainWindowController extends BaseWindowController {
 
     public void test() {
 
+    }
+
+    @FXML
+    public void showDescription(String description) {
+        descriptionPane.setVisible(true);
+        catDescription.setText(description);
+        FXMLUtils.adjustTextAreaHeight(catDescription);
     }
 
     // endregion
@@ -97,6 +110,7 @@ public class MainWindowController extends BaseWindowController {
     @Override
     public void maximize() {
         super.maximize();
+        FXMLUtils.adjustTextAreaHeight(catDescription);
     }
 
     // endregion
@@ -134,11 +148,10 @@ public class MainWindowController extends BaseWindowController {
             cell.setOnMouseClicked(event -> {
                 String categoryName = cell.getItem();
                 Category category = App.getPasswordsDatabase().getCategory(categoryName);
-                String catDescription = category.getDescription();
+                String categoryDescription = category.getDescription();
                 AnchorPane descriptionPane = (AnchorPane) window.getScene().lookup("#descriptionPane");
-                if (StringUtils.isNotBlank(catDescription)) {
-                    descriptionPane.setVisible(true);
-
+                if (StringUtils.isNotBlank(categoryDescription)) {
+                    showDescription(categoryDescription);
                 } else {
                     descriptionPane.setVisible(false);
                 }     

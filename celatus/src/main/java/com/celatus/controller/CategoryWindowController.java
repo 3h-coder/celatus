@@ -103,7 +103,7 @@ public class CategoryWindowController extends DialogWindowController {
     private void saveCategory() {
         Scene appScene = owner.getScene();
         @SuppressWarnings("unchecked") ListView<String> categoriesList = (ListView<String>) appScene.lookup("#categoriesList");
-        // TextArea catDescriptionTextArea = (TextArea) appScene.lookup("#catDescriptionTextArea");
+        TextArea catDescription = (TextArea) appScene.lookup("#catDescription");
         AnchorPane descriptionPane = (AnchorPane) appScene.lookup("#descriptionPane");
 
         String name = nameTextField.getText();
@@ -139,14 +139,16 @@ public class CategoryWindowController extends DialogWindowController {
                 // Updating the main window categories list and category description
                 FXMLUtils.updateListView(categoriesList, oldName, name);
                 if (StringUtils.isNotBlank(description)) {
-                    descriptionPane.setVisible(true);
-                    // catDescriptionTextArea.setText(description);
+                    MainWindowController controller = (MainWindowController) App.getController();
+                    controller.showDescription(description);
                 } else {
                     descriptionPane.setVisible(false);
                 }
             } catch (IllegalArgumentException ex) {
                 label02.setText("The category does not exist and cannot be updated");
                 return;
+            } catch (Exception ex) {
+                App.error(window, "An error occured: " + ex, logger, PopupMode.OK);
             }
         }
         
