@@ -53,6 +53,7 @@ public class FXMLUtils {
     // region =====TextArea=====
 
     public static void adjustTextAreaHeight(TextArea textArea) {
+        final double MIN_HEIGHT = 30.0;
         final double LINE_HEIGHT = 19.0; // Minimum height to ensure readability
 
         double width = textArea.getWidth();
@@ -63,7 +64,7 @@ public class FXMLUtils {
 
         int linesNeeded = (int)Math.ceil(textwidth / width);
         //logger.debug("Lines needed: " + linesNeeded);
-        textArea.setPrefHeight(linesNeeded * LINE_HEIGHT);
+        textArea.setPrefHeight(MIN_HEIGHT + (linesNeeded-1) * LINE_HEIGHT);
         //logger.debug("Height set to : " + linesNeeded * LINE_HEIGHT);
         // Force a layout update by invalidating the layout
         textArea.getParent().requestLayout();

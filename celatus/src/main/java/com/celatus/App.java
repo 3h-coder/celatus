@@ -40,7 +40,7 @@ public class App extends Application {
 
     private static Map<String, Object> tmpVariables; // used to store any variable at runtime
 
-    // endregion
+    // endregion 
 
     // region =====Getters and Setters=====
 

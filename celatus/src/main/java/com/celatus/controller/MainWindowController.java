@@ -62,6 +62,8 @@ public class MainWindowController extends BaseWindowController {
         // We make the window resizable
         ResizeHelper.addResizeListener(window);
         // We set the proper bindings
+        descriptionPane.maxHeightProperty().bind(catDescription.prefHeightProperty());
+        descriptionPane.minHeightProperty().bind(catDescription.prefHeightProperty());
         // We add out listeners
         catDescription.widthProperty().addListener((observable, oldValue, newValue) -> {
             FXMLUtils.adjustTextAreaHeight(catDescription);
@@ -153,7 +155,7 @@ public class MainWindowController extends BaseWindowController {
                 if (StringUtils.isNotBlank(categoryDescription)) {
                     showDescription(categoryDescription);
                 } else {
-                    descriptionPane.setVisible(false);
+                    catDescription.setPrefHeight(0);                  
                 }     
             });
             
@@ -189,7 +191,6 @@ public class MainWindowController extends BaseWindowController {
     
     private void openCategoryWindow(Category category) {
         try{
-            // FXMLUtils.launchDialogWindow(window, "categoryWindow");
             Map<String, Object> map = FXMLUtils.getSceneAndController("categoryWindow");
             Scene scene = (Scene) map.get("Scene");
             CategoryWindowController controller = (CategoryWindowController) map.get("Controller");
@@ -210,10 +211,15 @@ public class MainWindowController extends BaseWindowController {
     }
 
     private void deleteCategory(String categoryName) {
+        // Get the category
         PasswordsDatabase passwordsDatabase = App.getPasswordsDatabase();
         Category category = passwordsDatabase.getCategory(categoryName);
+        // Delete it
         logger.info("Deleting the category " + categoryName + " : " + category);
         passwordsDatabase.removeCategory(category);
+        // Remove the description display
+        catDescription.clear();
+        catDescription.setPrefHeight(0);
     }
 
     // endregion

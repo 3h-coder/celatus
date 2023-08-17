@@ -1,7 +1,19 @@
 /* All windows */
 
 .AnchorPane {
-    -fx-background-color : #555657
+    -fx-background-color : #555657;
+}
+
+.split-pane {
+    -fx-background-color : #555657;
+    -fx-box-border: transparent;
+    -fx-border-width: 0;
+    -fx-padding: 0 0 0 0;
+}
+
+.split-pane .split-pane-divider{
+    -fx-background-color : transparent;
+    -fx-padding: 0 0 0 0;
 }
 
 .button {
@@ -90,6 +102,33 @@
     -fx-background-color: #353536;
     -fx-border-color: #8c8c8c;
     -fx-border-width: 0 0 1 0
+}
+
+#passwordsPane {
+    -fx-padding: 0 0 0 0;
+}
+
+#passwordsTable {
+    -fx-background-color: transparent;
+}
+
+#passwordsTable .column-header {
+    -fx-background-color: #cacac9;
+    -fx-border-color: black;
+    -fx-border-width: 0 0 0 1
+}
+
+#passwordsTable .column-header-background {
+    -fx-background-color: #cacac9;
+}
+
+#passwordsTable .column-header-background .label {
+    -fx-background-color: #cacac9;
+    -fx-text-fill: black;
+}
+
+#passwordsTable .column-header-background .filler {
+    -fx-background-color: transparent;
 }
 
 #catDescription .content {
