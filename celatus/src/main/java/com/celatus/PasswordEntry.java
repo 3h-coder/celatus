@@ -11,10 +11,13 @@ public class PasswordEntry implements Recordable {
 
     private String id;
     private String name;
-    private String description;
+    private String url; // website url
+    private String notes;
     private String identifier;
+    private String email; // not always the same as the identifier
     private String password;
     private LocalDateTime creationDate;
+    private LocalDateTime lastEditDate;
 
     // endregion
 
@@ -24,20 +27,44 @@ public class PasswordEntry implements Recordable {
         return id;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public LocalDateTime getLastEditDate() {
+        return lastEditDate;
+    }
+
+    public void setLastEditDate(LocalDateTime lastEditDate) {
+        this.lastEditDate = lastEditDate;
     }
 
     public void setName(String value) {
         this.name = value.strip();
     }
 
-    public String getDescription() {
-        return description;
+    public String getNotes() {
+        return notes;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setNotes(String description) {
+        this.notes = description;
     }
 
     public String getIdentifier() {
@@ -62,11 +89,13 @@ public class PasswordEntry implements Recordable {
 
     public PasswordEntry() {}
 
-    public PasswordEntry(String name, String description, String identifier, String password) {
+    public PasswordEntry(String name, String url, String notes, String identifier, String email, String password) {
         this.creationDate = LocalDateTime.now();
-        this.name = name.strip();
-        this.description = description;
+        this.name = name;
+        this.url = url;
+        this.notes = notes;
         this.identifier = identifier;
+        this.email = email;
         this.password = password;
         calculateID();
     }
@@ -79,10 +108,15 @@ public class PasswordEntry implements Recordable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + ((description == null) ? 0 : description.hashCode());
+        result = prime * result + ((url == null) ? 0 : url.hashCode());
+        result = prime * result + ((notes == null) ? 0 : notes.hashCode());
         result = prime * result + ((identifier == null) ? 0 : identifier.hashCode());
+        result = prime * result + ((email == null) ? 0 : email.hashCode());
         result = prime * result + ((password == null) ? 0 : password.hashCode());
+        result = prime * result + ((creationDate == null) ? 0 : creationDate.hashCode());
+        result = prime * result + ((lastEditDate == null) ? 0 : lastEditDate.hashCode());
         return result;
     }
 
@@ -95,33 +129,59 @@ public class PasswordEntry implements Recordable {
         if (getClass() != obj.getClass())
             return false;
         PasswordEntry other = (PasswordEntry) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
         if (name == null) {
             if (other.name != null)
                 return false;
         } else if (!name.equals(other.name))
             return false;
-        if (description == null) {
-            if (other.description != null)
+        if (url == null) {
+            if (other.url != null)
                 return false;
-        } else if (!description.equals(other.description))
+        } else if (!url.equals(other.url))
+            return false;
+        if (notes == null) {
+            if (other.notes != null)
+                return false;
+        } else if (!notes.equals(other.notes))
             return false;
         if (identifier == null) {
             if (other.identifier != null)
                 return false;
         } else if (!identifier.equals(other.identifier))
             return false;
+        if (email == null) {
+            if (other.email != null)
+                return false;
+        } else if (!email.equals(other.email))
+            return false;
         if (password == null) {
             if (other.password != null)
                 return false;
         } else if (!password.equals(other.password))
+            return false;
+        if (creationDate == null) {
+            if (other.creationDate != null)
+                return false;
+        } else if (!creationDate.equals(other.creationDate))
+            return false;
+        if (lastEditDate == null) {
+            if (other.lastEditDate != null)
+                return false;
+        } else if (!lastEditDate.equals(other.lastEditDate))
             return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "PasswordEntry [ID=" + id + ", name=" + name + ", description=" + description + ", identifier="
-                + identifier + ", password=" + password + ", creationDate=" + creationDate + "]";
+        return "PasswordEntry [id=" + id + ", name=" + name + ", url=" + url + ", notes=" + notes + ", identifier="
+                + identifier + ", email=" + email + ", password=" + password + ", creationDate=" + creationDate
+                + ", lastEditDate=" + lastEditDate + "]";
     }
 
     // endregion

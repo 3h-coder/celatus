@@ -99,7 +99,8 @@ public class Testing {
 
     public static void testObjToJson() {
         PasswordsDatabase pwdDB = PasswordsDatabase.generateDefault();
-        PasswordEntry pwdEntry = new PasswordEntry("Facebook", null, "fake.email@gmail.com", "password");
+        PasswordEntry pwdEntry = new PasswordEntry("Facebook", "https://facebook.com", null, 
+        "fake.email@gmail.com", "fake.email@gmail.com", "password");
         pwdDB.getCategory("Social Media").addPasswordEntry(pwdEntry);
         System.out.println(MapUtils.objectToJson(pwdDB, true));
     }

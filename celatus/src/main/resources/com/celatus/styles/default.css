@@ -32,6 +32,10 @@
     -fx-border-width: 1 1 1 1*/
 }
 
+.badFieldLabel {
+    -fx-text-fill: red
+}
+
 .text-field {
     -fx-background-color :  #353536;
     -fx-text-fill: white;
@@ -82,10 +86,6 @@
 #bottomRow {
     -fx-border-color: #8c8c8c;
     -fx-border-width: 1 0 0 0
-}
-
-#badFieldLabel {
-    -fx-text-fill: red
 }
 
 

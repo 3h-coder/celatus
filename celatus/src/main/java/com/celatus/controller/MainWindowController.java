@@ -19,7 +19,9 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.SplitPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
@@ -33,9 +35,15 @@ public class MainWindowController extends BaseWindowController {
     @FXML
     private AnchorPane columnPane1;
     @FXML
+    private SplitPane columnPane2;
+    @FXML
     private AnchorPane descriptionPane;
     @FXML
+    private AnchorPane passwordsPane;
+    @FXML
     private TextArea catDescription;
+    @FXML
+    private TableView passwordsTable;
     @FXML
     private MenuBar menuBar;
     @FXML
@@ -64,10 +72,12 @@ public class MainWindowController extends BaseWindowController {
         // We set the proper bindings
         descriptionPane.maxHeightProperty().bind(catDescription.prefHeightProperty());
         descriptionPane.minHeightProperty().bind(catDescription.prefHeightProperty());
-        // We add out listeners
+        // We add our listeners
         catDescription.widthProperty().addListener((observable, oldValue, newValue) -> {
             FXMLUtils.adjustTextAreaHeight(catDescription);
         });
+        // We make disable the split pane divider
+        columnPane2.lookupAll(".split-pane-divider").stream().forEach(div ->  div.setMouseTransparent(true) );
         // We fill up the categories list view and set up the context menus
         for (Category category : App.getPasswordsDatabase().getCategories()) {
             FXMLUtils.addToListView(categoriesList, category.getName());
@@ -77,7 +87,7 @@ public class MainWindowController extends BaseWindowController {
     }
 
     public void test() {
-
+        logger.debug("test");
     }
 
     @FXML
@@ -112,7 +122,12 @@ public class MainWindowController extends BaseWindowController {
     @Override
     public void maximize() {
         super.maximize();
-        FXMLUtils.adjustTextAreaHeight(catDescription);
+        if (StringUtils.isBlank(catDescription.getText())) {
+            catDescription.setPrefHeight(0);
+        }
+        else {
+            FXMLUtils.adjustTextAreaHeight(catDescription);
+        }
     }
 
     // endregion
@@ -155,6 +170,7 @@ public class MainWindowController extends BaseWindowController {
                 if (StringUtils.isNotBlank(categoryDescription)) {
                     showDescription(categoryDescription);
                 } else {
+                    catDescription.clear();
                     catDescription.setPrefHeight(0);                  
                 }     
             });
@@ -163,21 +179,32 @@ public class MainWindowController extends BaseWindowController {
             }
         );
         // Setting up the context menu for our categories column pane
-        ContextMenu contextMenu = new ContextMenu();
-        MenuItem newCatMenuItem = new MenuItem("New Category");
+        ContextMenu newCatContextMenu = new ContextMenu();
+        MenuItem newCatMenuItem = new MenuItem("new category");
         newCatMenuItem.setOnAction(event -> {
             openCategoryWindow(null);
         });
-        contextMenu.getItems().add(newCatMenuItem);
+        newCatContextMenu.getItems().add(newCatMenuItem);
         columnPane1.addEventHandler(ContextMenuEvent.CONTEXT_MENU_REQUESTED, event -> {
-            contextMenu.show(columnPane1, event.getScreenX(), event.getScreenY());
+            newCatContextMenu.show(columnPane1, event.getScreenX(), event.getScreenY());
             event.consume();
         });
         columnPane1.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
-            contextMenu.hide();
+            newCatContextMenu.hide();
         });
         categoriesList.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
-            contextMenu.hide();
+            newCatContextMenu.hide();
+        });
+        // Setting up the context menu for passwords
+        ContextMenu newPwdContextMenu = new ContextMenu();
+        MenuItem newPwdMenuItem = new MenuItem("new password");
+        newPwdContextMenu.getItems().add(newPwdMenuItem);
+        passwordsPane.addEventHandler(ContextMenuEvent.CONTEXT_MENU_REQUESTED, event -> {
+            newPwdContextMenu.show(passwordsPane, event.getScreenX(), event.getScreenY());
+            event.consume();
+        });
+        columnPane2.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
+            newPwdContextMenu.hide();
         });
     }
 

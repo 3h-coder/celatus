@@ -16,6 +16,7 @@ public class Category implements Recordable {
     private String description;
     private List<PasswordEntry> passwordEntries;
     private LocalDateTime creationDate;
+    private LocalDateTime lastEditDate;
 
     // endregion
 
@@ -31,6 +32,14 @@ public class Category implements Recordable {
 
     public void setName(String value) {
         this.name = value.strip();
+    }
+
+    public LocalDateTime getLastEditDate() {
+        return lastEditDate;
+    }
+
+    public void setLastEditDate(LocalDateTime lastEditDate) {
+        this.lastEditDate = lastEditDate;
     }
 
     public String getDescription() {
@@ -80,18 +89,6 @@ public class Category implements Recordable {
         return false;
     }
 
-    public void addPasswordEntry(String name, String description, String identifier, String password) {
-        if (this.passwordEntries == null) {
-            this.passwordEntries = new ArrayList<PasswordEntry>();
-        }
-
-        PasswordEntry passwordEntry = new PasswordEntry(name, description, identifier, password);
-        if (this.hasPasswordEntry(passwordEntry)) {
-            throw new IllegalArgumentException("This password entry already exists in the password entries list! ");
-        }
-        this.passwordEntries.add(passwordEntry);
-    }
-
     public void addPasswordEntry(PasswordEntry passwordEntry) {
         if (this.passwordEntries == null) {
             this.passwordEntries = new ArrayList<PasswordEntry>();
@@ -112,6 +109,7 @@ public class Category implements Recordable {
         result = prime * result + ((description == null) ? 0 : description.hashCode());
         result = prime * result + ((passwordEntries == null) ? 0 : passwordEntries.hashCode());
         result = prime * result + ((creationDate == null) ? 0 : creationDate.hashCode());
+        result = prime * result + ((lastEditDate == null) ? 0 : lastEditDate.hashCode());
         return result;
     }
 
@@ -149,13 +147,18 @@ public class Category implements Recordable {
                 return false;
         } else if (!creationDate.equals(other.creationDate))
             return false;
+        if (lastEditDate == null) {
+            if (other.lastEditDate != null)
+                return false;
+        } else if (!lastEditDate.equals(other.lastEditDate))
+            return false;
         return true;
     }
 
     @Override
     public String toString() {
         return "Category [id=" + id + ", name=" + name + ", description=" + description + ", passwordEntries="
-                + passwordEntries + ", creationDate=" + creationDate + "]";
+                + passwordEntries + ", creationDate=" + creationDate + ", lastEditDate=" + lastEditDate + "]";
     }
 
     // endregion
