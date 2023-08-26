@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.celatus.App;
 import com.celatus.Category;
+import com.celatus.PasswordEntry;
 import com.celatus.DatabaseHandler;
 import com.celatus.PasswordsDatabase;
 import com.celatus.ResizeHelper;
@@ -16,12 +17,15 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.SplitPane;
+import javafx.scene.control.TableColumn;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
@@ -33,6 +37,8 @@ public class MainWindowController extends BaseWindowController {
     // region =====Variables=====
 
     @FXML
+    private Label addPwdLabel;
+    @FXML
     private AnchorPane columnPane1;
     @FXML
     private SplitPane columnPane2;
@@ -43,7 +49,7 @@ public class MainWindowController extends BaseWindowController {
     @FXML
     private TextArea catDescription;
     @FXML
-    private TableView passwordsTable;
+    private TableView<PasswordEntry> passwordsTable;
     @FXML
     private MenuBar menuBar;
     @FXML
@@ -76,14 +82,13 @@ public class MainWindowController extends BaseWindowController {
         catDescription.widthProperty().addListener((observable, oldValue, newValue) -> {
             FXMLUtils.adjustTextAreaHeight(catDescription);
         });
-        // We make disable the split pane divider
+        // We disable the split pane divider
         columnPane2.lookupAll(".split-pane-divider").stream().forEach(div ->  div.setMouseTransparent(true) );
         // We fill up the categories list view and set up the context menus
-        for (Category category : App.getPasswordsDatabase().getCategories()) {
-            FXMLUtils.addToListView(categoriesList, category.getName());
-        }
+        fillCategories();
+        // We set our context menus and passwords table
         setContextMenus();
-        
+        setPasswordsTable();
     }
 
     public void test() {
@@ -95,6 +100,30 @@ public class MainWindowController extends BaseWindowController {
         descriptionPane.setVisible(true);
         catDescription.setText(description);
         FXMLUtils.adjustTextAreaHeight(catDescription);
+    }
+
+    private void fillCategories() {
+        for (Category category : App.getPasswordsDatabase().getCategories()) {
+            FXMLUtils.addToListView(categoriesList, category.getName());
+        }
+    }
+
+    private void fillPasswordsTable(Category cat) {
+        for (PasswordEntry pwdEntry : cat.getPasswordEntries()) {
+            FXMLUtils.addToTableView(passwordsTable, pwdEntry);
+        }
+    }
+
+    public void displayPasswords(Category category) {
+        passwordsTable.getItems().clear();
+        if (category.getPasswordEntries() != null) {
+            addPwdLabel.setVisible(false);
+            passwordsTable.setVisible(true);
+            fillPasswordsTable(category); 
+        } else {
+            addPwdLabel.setVisible(true);
+            passwordsTable.setVisible(false);
+        }
     }
 
     // endregion
@@ -136,7 +165,7 @@ public class MainWindowController extends BaseWindowController {
 
     private void setContextMenus() {
         // Setting up the context menu for our categories
-        categoriesList.setCellFactory( (listView) -> {
+        this.categoriesList.setCellFactory( (listView) -> {
             ListCell<String> cell = new ListCell<>();
             cell.textProperty().bind(cell.itemProperty());
 
@@ -155,6 +184,7 @@ public class MainWindowController extends BaseWindowController {
                     String categoryName = cell.getItem();
                     FXMLUtils.removeFromListView(listView, categoryName);
                     deleteCategory(categoryName);
+                    this.categoriesList.getSelectionModel().clearSelection();
                 }  
             });
 
@@ -166,13 +196,14 @@ public class MainWindowController extends BaseWindowController {
                 String categoryName = cell.getItem();
                 Category category = App.getPasswordsDatabase().getCategory(categoryName);
                 String categoryDescription = category.getDescription();
-                AnchorPane descriptionPane = (AnchorPane) window.getScene().lookup("#descriptionPane");
                 if (StringUtils.isNotBlank(categoryDescription)) {
                     showDescription(categoryDescription);
                 } else {
                     catDescription.clear();
                     catDescription.setPrefHeight(0);                  
-                }     
+                } 
+                // Displaying all the password entries   
+                displayPasswords(category);
             });
             
             return cell;
@@ -198,14 +229,42 @@ public class MainWindowController extends BaseWindowController {
         // Setting up the context menu for passwords
         ContextMenu newPwdContextMenu = new ContextMenu();
         MenuItem newPwdMenuItem = new MenuItem("new password");
+        newPwdMenuItem.setOnAction(event -> {
+            openPasswordWindow(null);
+        });
         newPwdContextMenu.getItems().add(newPwdMenuItem);
         passwordsPane.addEventHandler(ContextMenuEvent.CONTEXT_MENU_REQUESTED, event -> {
             newPwdContextMenu.show(passwordsPane, event.getScreenX(), event.getScreenY());
+            // we disable the new password creation if no category was selected
+            for (MenuItem menuItem : newPwdContextMenu.getItems()) {
+                if ("new password".equals(menuItem.getText())) {
+                    if (StringUtils.isBlank(this.categoriesList.getSelectionModel().getSelectedItem())) {
+                        menuItem.setDisable(true);
+                    } else {
+                        menuItem.setDisable(false);
+                    }
+                }
+            }
             event.consume();
         });
         columnPane2.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
             newPwdContextMenu.hide();
         });
+    }
+
+    @SuppressWarnings("unchecked")
+    private void setPasswordsTable() {
+        TableColumn nameColumn = new TableColumn("Name");
+        TableColumn identifierColumn = new TableColumn("Identifier");
+        TableColumn passwordColumn = new TableColumn("Password");
+        TableColumn lastEditedColumn = new TableColumn("Last edited");
+
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        identifierColumn.setCellValueFactory(new PropertyValueFactory<>("identifier"));
+        passwordColumn.setCellValueFactory(new PropertyValueFactory<>("password"));
+        lastEditedColumn.setCellValueFactory(new PropertyValueFactory<>("lastEditDate"));
+
+        this.passwordsTable.getColumns().addAll(nameColumn, identifierColumn, passwordColumn, lastEditedColumn);
     }
 
     public void saveDatabase() {
@@ -249,6 +308,26 @@ public class MainWindowController extends BaseWindowController {
         catDescription.setPrefHeight(0);
     }
 
+    private void openPasswordWindow(PasswordEntry pwdEntry) {
+        try {
+            Map<String, Object> map = FXMLUtils.getSceneAndController("passwordWindow");
+            Scene scene = (Scene) map.get("Scene");
+            PasswordWindowController controller = (PasswordWindowController) map.get("Controller");
+
+            String title;
+            if (pwdEntry != null) {
+                title = "Editing password entry";
+                controller.setInputPwdEntry(pwdEntry);
+            } else {
+                title = "Adding new password entry";
+            }
+            controller.setCategory(App.getPasswordsDatabase().getCategory(this.categoriesList.getSelectionModel().getSelectedItem()));
+            controller.setTitle(title);
+            FXMLUtils.launchDialogWindow(this.window, scene);
+        } catch (Exception ex) {
+            App.error(this.window, "An error occured: " + ex, logger, PopupMode.OK);
+        }  
+    }
     // endregion
 
 }

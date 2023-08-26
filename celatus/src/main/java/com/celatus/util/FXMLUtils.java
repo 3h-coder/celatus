@@ -19,6 +19,7 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -97,6 +98,22 @@ public class FXMLUtils {
         Collections.replaceAll(listView.getItems(), element, newValue);
     }
     
+    // endregion
+
+    // region =====TableView=====
+
+    @FXML
+    public static <T> void adjustTableViewHeight(TableView<T> tableView) {
+        double cellSize = tableView.getFixedCellSize();
+        tableView.setPrefHeight((tableView.getItems().size() * cellSize + 2) + 24.0);
+    }
+
+    @FXML
+    public static <T> void addToTableView(TableView<T> tableView, T element) {
+        tableView.getItems().add(element);
+        adjustTableViewHeight(tableView);
+    }
+
     // endregion
 
     // region =====Context Menu=====

@@ -1,5 +1,7 @@
 package com.celatus;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
@@ -47,6 +49,14 @@ public class PasswordEntry implements Recordable {
         this.url = url;
     }
 
+    public LocalDateTime getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(LocalDateTime creationDate) {
+        this.creationDate = creationDate;
+    }
+
     public LocalDateTime getLastEditDate() {
         return lastEditDate;
     }
@@ -90,12 +100,12 @@ public class PasswordEntry implements Recordable {
     public PasswordEntry() {}
 
     public PasswordEntry(String name, String url, String notes, String identifier, String email, String password) {
-        this.creationDate = LocalDateTime.now();
+        this.creationDate = this.lastEditDate = LocalDateTime.now();
         this.name = name;
-        this.url = url;
-        this.notes = notes;
+        if (StringUtils.isNotBlank(url)) {this.url = url;}
+        if (StringUtils.isNotBlank(notes)) {this.notes = notes;}
         this.identifier = identifier;
-        this.email = email;
+        if (StringUtils.isNotBlank(email)) {this.email = email;}
         this.password = password;
         calculateID();
     }

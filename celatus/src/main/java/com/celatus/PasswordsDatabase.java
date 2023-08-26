@@ -158,12 +158,12 @@ public class PasswordsDatabase {
      */
     public static PasswordsDatabase generateDefault() {
         List<Category> categoriesList = Arrays.asList(new Category("General", null, null),
-                                                      new Category("Emails", null, null),
+                                                      new Category("Emails", "For example your gmail passwords.", null),
                                                       new Category("Social media", null, null),
                                                       new Category("Administrative", null, null),
-                                                      new Category("Shopping", null, null),
+                                                      new Category("Shopping", "For example eBay, Amazon or Sephora.", null),
                                                       new Category("Miscellaneous", null, null));
-        return new PasswordsDatabase(categoriesList);
+        return new PasswordsDatabase(new ArrayList<>(categoriesList));
     }
 
     /**

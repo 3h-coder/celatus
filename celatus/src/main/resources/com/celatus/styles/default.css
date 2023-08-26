@@ -32,6 +32,14 @@
     -fx-border-width: 1 1 1 1*/
 }
 
+.infoFieldLabel {
+    -fx-text-fill: green
+}
+
+.warningFieldLabel {
+    -fx-text-fill: orange
+}
+
 .badFieldLabel {
     -fx-text-fill: red
 }
@@ -113,22 +121,38 @@
 }
 
 #passwordsTable .column-header {
-    -fx-background-color: #cacac9;
-    -fx-border-color: black;
-    -fx-border-width: 0 0 0 1
+    -fx-background-color: linear-gradient(to bottom, #8c8c8c, #cacac9);
+    /*-fx-border-color: black;
+    -fx-border-width: 0 0 0 1;*/
+    -fx-font-weight: 700
 }
 
 #passwordsTable .column-header-background {
-    -fx-background-color: #cacac9;
+    -fx-background-color: linear-gradient(to bottom, #8c8c8c, #cacac9);
 }
 
 #passwordsTable .column-header-background .label {
-    -fx-background-color: #cacac9;
+    -fx-background-color: transparent;
     -fx-text-fill: black;
 }
 
 #passwordsTable .column-header-background .filler {
     -fx-background-color: transparent;
+}
+
+#passwordsTable .table-cell {
+    -fx-border-color: transparent;
+    -fx-text-fill: white
+}
+
+#passwordsTable .table-row-cell:odd {
+    -fx-background-color: #8c8c8c;
+    -fx-background-insets: 0, 0 0 1 0;
+}
+
+#passwordsTable .table-row-cell:even {
+    -fx-background-color: #555657;
+    -fx-background-insets: 0, 0 0 1 0;
 }
 
 #catDescription .content {

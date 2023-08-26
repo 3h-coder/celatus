@@ -17,7 +17,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.text.Text;
 import javafx.scene.input.KeyEvent;
 
 import org.apache.commons.lang3.StringUtils;
@@ -103,7 +102,6 @@ public class CategoryWindowController extends DialogWindowController {
     private void saveCategory() {
         Scene appScene = owner.getScene();
         @SuppressWarnings("unchecked") ListView<String> categoriesList = (ListView<String>) appScene.lookup("#categoriesList");
-        TextArea catDescription = (TextArea) appScene.lookup("#catDescription");
         AnchorPane descriptionPane = (AnchorPane) appScene.lookup("#descriptionPane");
 
         String name = nameTextField.getText();
@@ -113,9 +111,6 @@ public class CategoryWindowController extends DialogWindowController {
         }
 
         String description = descriptionTextArea.getText();
-        if (StringUtils.isBlank(description)) {
-            description = null;
-        }
         Category category = new Category(name, description, null);
         PasswordsDatabase passwordsDatabase = App.getPasswordsDatabase();
         if (inputCategory == null) {
@@ -127,6 +122,8 @@ public class CategoryWindowController extends DialogWindowController {
             } catch (IllegalArgumentException ex) {
                 label02.setText("This category already exists");
                 return;
+            } catch (Exception ex) {
+                App.error(window, "An error occured: " + ex, logger, PopupMode.OK);
             }
         } else {
             Map<String, Object> changes = new HashMap<>();

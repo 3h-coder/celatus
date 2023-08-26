@@ -3,6 +3,9 @@ package com.celatus;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 
 import com.celatus.util.CryptoUtils;
@@ -67,7 +70,7 @@ public class Category implements Recordable {
     public Category(String name, String description, List<PasswordEntry> passwordEntries) {
         this.creationDate = LocalDateTime.now();
         this.name = name.strip();
-        this.description = description;
+        if (StringUtils.isNotBlank(description)) {this.description = description;}
         this.passwordEntries = passwordEntries;
         calculateID();
     }

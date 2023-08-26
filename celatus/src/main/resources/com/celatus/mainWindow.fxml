@@ -7,7 +7,6 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -54,17 +53,12 @@
             </AnchorPane>
             <AnchorPane fx:id="passwordsPane" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <children>
-                  <TableView fx:id="passwordsTable" layoutX="7.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="0.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="-1.0">
+                  <TableView fx:id="passwordsTable" fixedCellSize="24.0" layoutX="7.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="0.0" visible="false" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="-1.0">
                      <placeholder>
                         <Label text="" />
                      </placeholder>
-                     <columns>
-                        <TableColumn editable="false" maxWidth="150.0" minWidth="-Infinity" prefWidth="144.0" text="Name" />
-                        <TableColumn editable="false" prefWidth="144.0" text="Identifier" />
-                        <TableColumn editable="false" prefWidth="144.0" text="Password" />
-                        <TableColumn editable="false" prefWidth="144.0" text="Last edited" />
-                     </columns>
                   </TableView>
+                  <Label fx:id="addPwdLabel" alignment="CENTER" layoutX="346.0" layoutY="139.0" opacity="0.85" text="Right click + new password" visible="false" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="250.0" AnchorPane.topAnchor="100.0" />
                </children>
             </AnchorPane>
          </items>
