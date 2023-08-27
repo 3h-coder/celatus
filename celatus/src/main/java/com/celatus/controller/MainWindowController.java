@@ -1,5 +1,6 @@
 package com.celatus.controller;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 import com.celatus.App;
@@ -8,6 +9,7 @@ import com.celatus.PasswordEntry;
 import com.celatus.DatabaseHandler;
 import com.celatus.PasswordsDatabase;
 import com.celatus.ResizeHelper;
+import com.celatus.util.CustomDateUtils;
 import com.celatus.util.FXMLUtils;
 
 import javafx.application.Platform;
@@ -22,6 +24,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.SplitPane;
@@ -289,6 +292,34 @@ public class MainWindowController extends BaseWindowController {
         identifierColumn.setCellValueFactory(new PropertyValueFactory<>("identifier"));
         passwordColumn.setCellValueFactory(new PropertyValueFactory<>("password"));
         lastEditedColumn.setCellValueFactory(new PropertyValueFactory<>("lastEditDate"));
+
+        passwordColumn.setCellFactory(column -> {
+            return new TableCell<PasswordEntry, String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (item == null || empty) {
+                        setText(null);
+                    } else {
+                        setText("\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022");
+                    }
+                }
+            };
+        });
+
+        lastEditedColumn.setCellFactory(column -> {
+            return new TableCell<PasswordEntry, LocalDateTime>() {
+                @Override
+                protected void updateItem(LocalDateTime item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (item == null || empty) {
+                        setText(null);
+                    } else {
+                        setText(CustomDateUtils.prettyDate(item));
+                    }
+                }
+            };
+        });
 
         this.passwordsTable.getColumns().addAll(nameColumn, identifierColumn, passwordColumn, lastEditedColumn);
     }

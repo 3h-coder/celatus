@@ -190,7 +190,7 @@ public class PasswordEntry implements Recordable {
     @Override
     public String toString() {
         return "PasswordEntry [id=" + id + ", name=" + name + ", url=" + url + ", notes=" + notes + ", identifier="
-                + identifier + ", email=" + email + ", password=" + password + ", creationDate=" + creationDate
+                + identifier + ", email=" + email + ", password=**********" + ", creationDate=" + creationDate
                 + ", lastEditDate=" + lastEditDate + "]";
     }
 

@@ -1,5 +1,6 @@
 package com.celatus.controller;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,6 +10,7 @@ import com.celatus.App;
 import com.celatus.Category;
 import com.celatus.PasswordEntry;
 import com.celatus.PasswordsDatabase;
+import com.celatus.util.CustomDateUtils;
 import com.celatus.util.FXMLUtils;
 
 import javafx.application.Platform;
@@ -116,8 +118,8 @@ public class PasswordWindowController extends PopupWindowController {
         passwordField.setText(inputPwdEntry.getPassword());
         revealedPasswordField.setText(inputPwdEntry.getPassword());
         passwordNotes.setText(inputPwdEntry.getNotes());
-        createdLabel.setText("Created : " + inputPwdEntry.getCreationDate());
-        lastEditedLabel.setText("Last edited : " + inputPwdEntry.getLastEditDate());
+        createdLabel.setText("Created : " + CustomDateUtils.prettyDate(inputPwdEntry.getCreationDate()));
+        lastEditedLabel.setText("Last edited : " + CustomDateUtils.prettyDate(inputPwdEntry.getLastEditDate()));
     }
 
     // endregion
@@ -146,12 +148,14 @@ public class PasswordWindowController extends PopupWindowController {
         if (inputPwdEntry == null) {
             PasswordEntry pwdEntry = new PasswordEntry(name, url, notes, identifier, email, this.password);
             this.category.addPasswordEntry(pwdEntry);
+            logger.info("Adding the following password entry to the " + this.category.getName() + "category : " + pwdEntry);
         } else {
             inputPwdEntry.setName(name);
             inputPwdEntry.setIdentifier(identifier);
             inputPwdEntry.setPassword(this.password);
             inputPwdEntry.setEmail(email);
             inputPwdEntry.setNotes(notes);
+            inputPwdEntry.setLastEditDate(LocalDateTime.now());
         }
 
         controller.displayPasswords(category);

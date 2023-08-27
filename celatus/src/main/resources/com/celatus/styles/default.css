@@ -70,6 +70,7 @@
 .context-menu {
     -fx-background-color: #353536;
     -fx-border-color: #8c8c8c;
+    -fx-border-radius: 5px;
     -fx-border-width: 1 1 1 1
 }
 
