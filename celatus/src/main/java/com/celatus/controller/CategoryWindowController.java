@@ -105,14 +105,15 @@ public class CategoryWindowController extends DialogWindowController {
         AnchorPane descriptionPane = (AnchorPane) appScene.lookup("#descriptionPane");
 
         String name = nameTextField.getText();
+        String description = descriptionTextArea.getText();
         if (StringUtils.isBlank(name)) {
             label02.setText("This field is required");
             return;
         }
 
-        String description = descriptionTextArea.getText();
         Category category = new Category(name, description, null);
         PasswordsDatabase passwordsDatabase = App.getPasswordsDatabase();
+
         if (inputCategory == null) {
             try {
                 // Updating the passwords database
@@ -126,26 +127,16 @@ public class CategoryWindowController extends DialogWindowController {
                 App.error(window, "An error occured: " + ex, logger, PopupMode.OK);
             }
         } else {
-            Map<String, Object> changes = new HashMap<>();
-            changes.put("name", name);
-            changes.put("description", description);
-            try {
-                String oldName = inputCategory.getName();
-                // Updating the passwords database
-                passwordsDatabase.updateCategory(inputCategory.getName(), changes);
-                // Updating the main window categories list and category description
-                FXMLUtils.updateListView(categoriesList, oldName, name);
-                if (StringUtils.isNotBlank(description)) {
-                    MainWindowController controller = (MainWindowController) App.getController();
-                    controller.showDescription(description);
-                } else {
-                    descriptionPane.setVisible(false);
-                }
-            } catch (IllegalArgumentException ex) {
-                label02.setText("The category does not exist and cannot be updated");
-                return;
-            } catch (Exception ex) {
-                App.error(window, "An error occured: " + ex, logger, PopupMode.OK);
+            String oldName = inputCategory.getName();
+            inputCategory.setName(name);
+            inputCategory.setDescription(description);
+            // Updating the main window categories list and category description
+            FXMLUtils.updateListView(categoriesList, oldName, name);
+            if (StringUtils.isNotBlank(description)) {
+                MainWindowController controller = (MainWindowController) App.getController();
+                controller.showDescription(description);
+            } else {
+                descriptionPane.setVisible(false);
             }
         }
         

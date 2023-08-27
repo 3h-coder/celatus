@@ -1,5 +1,8 @@
 package com.celatus.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 
 import com.celatus.App;
@@ -109,10 +112,12 @@ public class PasswordWindowController extends PopupWindowController {
         urlField.setText(inputPwdEntry.getUrl());
         identifierField.setText(inputPwdEntry.getIdentifier());
         emailField.setText(inputPwdEntry.getEmail());
+        this.password = inputPwdEntry.getPassword();
         passwordField.setText(inputPwdEntry.getPassword());
         revealedPasswordField.setText(inputPwdEntry.getPassword());
         passwordNotes.setText(inputPwdEntry.getNotes());
         createdLabel.setText("Created : " + inputPwdEntry.getCreationDate());
+        lastEditedLabel.setText("Last edited : " + inputPwdEntry.getLastEditDate());
     }
 
     // endregion
@@ -141,11 +146,15 @@ public class PasswordWindowController extends PopupWindowController {
         if (inputPwdEntry == null) {
             PasswordEntry pwdEntry = new PasswordEntry(name, url, notes, identifier, email, this.password);
             this.category.addPasswordEntry(pwdEntry);
-            controller.displayPasswords(category);
         } else {
-
+            inputPwdEntry.setName(name);
+            inputPwdEntry.setIdentifier(identifier);
+            inputPwdEntry.setPassword(this.password);
+            inputPwdEntry.setEmail(email);
+            inputPwdEntry.setNotes(notes);
         }
 
+        controller.displayPasswords(category);
         closeDialog();
     }
 

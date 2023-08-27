@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import com.celatus.util.CryptoUtils;
 
@@ -101,6 +102,16 @@ public class Category implements Recordable {
             throw new IllegalArgumentException("This password entry already exists in the password entries list! ");
         }
         this.passwordEntries.add(passwordEntry);
+    }
+
+    public void removePasswordEntry(PasswordEntry passwordEntry) {
+        if (!this.hasPasswordEntry(passwordEntry)) {
+            throw new IllegalArgumentException("This password entry does not exist in the password entries list! ");
+        }
+        this.passwordEntries.remove(passwordEntry);
+        if (this.passwordEntries.isEmpty()) {
+            this.passwordEntries = null;
+        }
     }
 
     @Override

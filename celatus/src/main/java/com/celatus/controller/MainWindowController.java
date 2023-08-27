@@ -37,8 +37,6 @@ public class MainWindowController extends BaseWindowController {
     // region =====Variables=====
 
     @FXML
-    private Label addPwdLabel;
-    @FXML
     private AnchorPane columnPane1;
     @FXML
     private SplitPane columnPane2;
@@ -46,6 +44,8 @@ public class MainWindowController extends BaseWindowController {
     private AnchorPane descriptionPane;
     @FXML
     private AnchorPane passwordsPane;
+    @FXML
+    private AnchorPane blankSpacePane;
     @FXML
     private TextArea catDescription;
     @FXML
@@ -78,6 +78,8 @@ public class MainWindowController extends BaseWindowController {
         // We set the proper bindings
         descriptionPane.maxHeightProperty().bind(catDescription.prefHeightProperty());
         descriptionPane.minHeightProperty().bind(catDescription.prefHeightProperty());
+        passwordsPane.maxHeightProperty().bind(passwordsTable.prefHeightProperty());
+        passwordsPane.minHeightProperty().bind(passwordsTable.prefHeightProperty());
         // We add our listeners
         catDescription.widthProperty().addListener((observable, oldValue, newValue) -> {
             FXMLUtils.adjustTextAreaHeight(catDescription);
@@ -116,12 +118,11 @@ public class MainWindowController extends BaseWindowController {
 
     public void displayPasswords(Category category) {
         passwordsTable.getItems().clear();
+        passwordsTable.setPrefHeight(0);
         if (category.getPasswordEntries() != null) {
-            addPwdLabel.setVisible(false);
             passwordsTable.setVisible(true);
             fillPasswordsTable(category); 
         } else {
-            addPwdLabel.setVisible(true);
             passwordsTable.setVisible(false);
         }
     }
@@ -169,14 +170,15 @@ public class MainWindowController extends BaseWindowController {
             ListCell<String> cell = new ListCell<>();
             cell.textProperty().bind(cell.itemProperty());
 
-            MenuItem editMenuItem = new MenuItem("Edit");
+            MenuItem editMenuItem = new MenuItem("edit");
+            MenuItem deleteMenuItem = new MenuItem("delete");
+
             editMenuItem.setOnAction(event -> {
                 String categoryName = cell.getItem();
                 Category category = App.getPasswordsDatabase().getCategory(categoryName);
                 openCategoryWindow(category);
             });
-
-            MenuItem deleteMenuItem = new MenuItem("Delete");
+            
             deleteMenuItem.setOnAction(event -> {
                 App.warn(window, "This is an irreversible action, and you will lose all the passwords in this category, are you sure you want to delete it?",
                         logger, PopupMode.YES_AND_NO);
@@ -226,14 +228,35 @@ public class MainWindowController extends BaseWindowController {
         categoriesList.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
             newCatContextMenu.hide();
         });
-        // Setting up the context menu for passwords
+        // Setting up the context menu for our passwords row in our passwords table
+        ContextMenu pwdContextMenu = new ContextMenu();
+        MenuItem editPwdMenuItem = new MenuItem("edit");
+        MenuItem deletePwdMenuItem = new MenuItem("delete");
+
+        editPwdMenuItem.setOnAction(event -> {
+            PasswordEntry current = passwordsTable.getSelectionModel().getSelectedItem();
+            openPasswordWindow(current);
+        });
+
+        deletePwdMenuItem.setOnAction(event -> {
+            App.warn(window, "This is an irreversible action, are you sure you want to delete it?",
+                        logger, PopupMode.YES_AND_NO);
+            if (App.getSignal("yes_signal") == true) {
+                PasswordEntry current = passwordsTable.getSelectionModel().getSelectedItem();
+                deletePasswordEntry(current);
+            } 
+        });
+
+        pwdContextMenu.getItems().addAll(editPwdMenuItem, deletePwdMenuItem);
+        this.passwordsTable.setContextMenu(pwdContextMenu);
+        // Setting up the context menu for our passwords column pane
         ContextMenu newPwdContextMenu = new ContextMenu();
         MenuItem newPwdMenuItem = new MenuItem("new password");
         newPwdMenuItem.setOnAction(event -> {
             openPasswordWindow(null);
         });
         newPwdContextMenu.getItems().add(newPwdMenuItem);
-        passwordsPane.addEventHandler(ContextMenuEvent.CONTEXT_MENU_REQUESTED, event -> {
+        blankSpacePane.addEventHandler(ContextMenuEvent.CONTEXT_MENU_REQUESTED, event -> {
             newPwdContextMenu.show(passwordsPane, event.getScreenX(), event.getScreenY());
             // we disable the new password creation if no category was selected
             for (MenuItem menuItem : newPwdContextMenu.getItems()) {
@@ -248,6 +271,9 @@ public class MainWindowController extends BaseWindowController {
             event.consume();
         });
         columnPane2.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
+            newPwdContextMenu.hide();
+        });
+        passwordsTable.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
             newPwdContextMenu.hide();
         });
     }
@@ -306,6 +332,17 @@ public class MainWindowController extends BaseWindowController {
         // Remove the description display
         catDescription.clear();
         catDescription.setPrefHeight(0);
+    }
+
+    private void deletePasswordEntry(PasswordEntry pwdEntry) {
+        PasswordsDatabase passwordsDatabase = App.getPasswordsDatabase();
+        String categoryName = this.categoriesList.getSelectionModel().getSelectedItem();
+        Category category = passwordsDatabase.getCategory(categoryName);
+        // Delete it
+        logger.info("Deleting the password entry " + pwdEntry.getName() + " : " + pwdEntry);
+        category.removePasswordEntry(pwdEntry);
+        // Refresh the passwords display for that category
+        displayPasswords(category);
     }
 
     private void openPasswordWindow(PasswordEntry pwdEntry) {

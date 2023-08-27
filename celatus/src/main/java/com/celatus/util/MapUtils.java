@@ -16,6 +16,7 @@ public class MapUtils {
     public static String mapToJson(Map map, boolean pretty) {
         String json = null;
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.findAndRegisterModules();
         try {
             if(pretty) {
                 json = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(map);
@@ -31,6 +32,7 @@ public class MapUtils {
     public static <T> String objectToJson(T obj, boolean pretty) {
         String json = null;
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.findAndRegisterModules();
          try {
             if(pretty) {
                 json = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
@@ -45,6 +47,7 @@ public class MapUtils {
 
     public static <T> T jsonToObject(String jsonString, Class<T> targetClass) {
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.findAndRegisterModules();
         try {
             return objectMapper.readValue(jsonString, targetClass);
         } catch (JsonProcessingException ex) {

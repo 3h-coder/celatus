@@ -124,7 +124,7 @@
     -fx-background-color: linear-gradient(to bottom, #8c8c8c, #cacac9);
     /*-fx-border-color: black;
     -fx-border-width: 0 0 0 1;*/
-    -fx-font-weight: 700
+    -fx-font-weight: 620
 }
 
 #passwordsTable .column-header-background {
@@ -145,15 +145,43 @@
     -fx-text-fill: white
 }
 
-#passwordsTable .table-row-cell:odd {
+#passwordsTable .table-row-cell {
+    -fx-background-color: #555657
+}
+
+#passwordsTable .table-row-cell:hover {
+    -fx-background-color: #8c8c8c
+}
+
+#passwordsTable .table-row-cell:selected{
+    -fx-background-color: #8c8c8c
+}
+
+/*#passwordsTable .table-row-cell:odd {
     -fx-background-color: #8c8c8c;
     -fx-background-insets: 0, 0 0 1 0;
+}
+
+#passwordsTable .table-row-cell:odd:hover {
+    -fx-background-color: #cacac9;
+}
+
+#passwordsTable .table-row-cell:odd:hover .table-cell{
+    -fx-text-fill: black
 }
 
 #passwordsTable .table-row-cell:even {
     -fx-background-color: #555657;
     -fx-background-insets: 0, 0 0 1 0;
 }
+
+#passwordsTable .table-row-cell:even:hover {
+    -fx-background-color: #cacac9;
+}
+
+#passwordsTable .table-row-cell:even:hover .table-cell{
+    -fx-text-fill: black
+}*/
 
 #catDescription .content {
     -fx-padding: 0 0 0 0;

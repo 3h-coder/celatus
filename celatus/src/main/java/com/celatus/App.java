@@ -123,6 +123,7 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
+        Thread.setDefaultUncaughtExceptionHandler(new CustomUncaughtExceptionHandler());
         launch();
     }
 
