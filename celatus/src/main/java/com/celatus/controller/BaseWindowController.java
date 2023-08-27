@@ -1,5 +1,7 @@
 package com.celatus.controller;
 
+import java.util.ArrayList;
+
 import com.celatus.App;
 import com.celatus.util.FXMLUtils;
 
@@ -10,11 +12,16 @@ import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
 import javafx.fxml.FXML;
 import javafx.stage.Screen;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.KeyCode;
 
@@ -47,6 +54,7 @@ public class BaseWindowController {
         Platform.runLater(() -> {
             window = getCurrentWindow();
             scene = window.getScene();
+            makeLabelsSelectable();
         });
     }
 
@@ -66,6 +74,55 @@ public class BaseWindowController {
         } catch (Exception ex) {
             App.error(window, "An unexpected error occured when trying to open " + fxml + ": " + ex, logger, PopupMode.OK);
             close();
+        }
+    }
+
+    private void makeLabelsSelectable() {
+        ArrayList<Node> labels = FXMLUtils.getAllNodesByClass(rootPane, Label.class);
+        for (Node node : labels) {
+                if (!(node.getParent() instanceof AnchorPane)) {
+                    continue;
+                }
+                Label label = (Label) node;
+                AnchorPane parentPane = (AnchorPane) label.getParent();
+                label.setOnMouseClicked(mouseEvent -> {
+                    if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
+                        if(mouseEvent.getClickCount() == 1){
+                            label.setVisible(false);
+                            TextField textField = new TextField(label.getText());
+                            textField.setEditable(false);
+                            textField.setStyle("-fx-background-color: transparent; -fx-border-width: 0; -fx-padding: 0 0 0 -1;");
+                            textField.setAlignment(label.getAlignment());
+                            textField.setPrefWidth(label.getWidth());
+                            parentPane.getChildren().add(textField);
+                            AnchorPane.setTopAnchor(textField, AnchorPane.getTopAnchor(label));
+                            AnchorPane.setBottomAnchor(textField, AnchorPane.getBottomAnchor(label));
+                            AnchorPane.setLeftAnchor(textField, AnchorPane.getLeftAnchor(label));
+                            AnchorPane.setRightAnchor(textField, AnchorPane.getRightAnchor(label));
+                            textField.setLayoutX(label.getLayoutX());
+
+                            textField.setOnKeyPressed(event -> {
+                                if(event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.ESCAPE)
+                                {
+                                    parentPane.getChildren().remove(textField);
+                                    label.setVisible(true);                               
+                                }
+                            });
+                            
+                        }
+                    }
+                
+                });
+                /*TextField textField = new TextField();
+                textField.setEditable(false); // Disable editing in the text field
+                textField.setStyle("-fx-background-color: transparent; -fx-border-width: 0; -fx-padding: 0 0 0 0; -fx-font-weight: 0"); // Make it look like a label
+                textField.setText(label.getText()); // Set the same text as the label
+                textField.setAlignment(label.getAlignment());
+                parentPane.getChildren().add(textField);
+                AnchorPane.setTopAnchor(textField, AnchorPane.getTopAnchor(label));
+                AnchorPane.setBottomAnchor(textField, AnchorPane.getBottomAnchor(label));
+                AnchorPane.setLeftAnchor(textField, AnchorPane.getLeftAnchor(label));
+                AnchorPane.setRightAnchor(textField, AnchorPane.getRightAnchor(label));*/
         }
     }
 

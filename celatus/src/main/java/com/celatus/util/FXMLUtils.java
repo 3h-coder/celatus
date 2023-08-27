@@ -2,6 +2,7 @@ package com.celatus.util;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.ArrayList;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
@@ -13,6 +14,7 @@ import com.celatus.App;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
@@ -34,6 +36,36 @@ public class FXMLUtils {
     private static final Logger logger = LogManager.getLogger(App.class.getName());
 
     // region =====General components=====
+
+    public static ArrayList<Node> getAllNodes(Parent root) {
+        ArrayList<Node> nodes = new ArrayList<Node>();
+        getAllChildren(root, nodes);
+        return nodes;
+    }
+
+    public static void getAllChildren(Parent parent, ArrayList<Node> nodes) {
+        for (var child : parent.getChildrenUnmodifiable()) {
+            nodes.add(child);
+            if (child instanceof Parent) {
+                getAllChildren((Parent)child, nodes);
+            }   
+        }
+    }
+
+    public static ArrayList<Node> getAllNodesByClass(Parent root, Class<?> nodeClass) {
+        ArrayList<Node> nodes = getAllNodes(root);
+        return filterNodesByClass(nodes, nodeClass);
+    }
+
+    public static ArrayList<Node> filterNodesByClass(ArrayList<Node> nodes, Class<?> clazz) {
+        ArrayList<Node> result = new ArrayList<>();
+        for (Node node : nodes) {
+            if (clazz.isInstance(node)) {
+                result.add(node);
+            }
+        }
+        return result;
+    }
 
     public static void setMaxWidth(double maxWidth, javafx.scene.layout.Region... regions) {
         for (var region : regions) {
