@@ -20,6 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -31,6 +32,38 @@ import javafx.stage.StageStyle;
 public class FXMLUtils {
 
     private static final Logger logger = LogManager.getLogger(App.class.getName());
+
+    // region =====General components=====
+
+    public static void setMaxWidth(double maxWidth, javafx.scene.layout.Region... regions) {
+        for (var region : regions) {
+            region.setMaxWidth(maxWidth);
+        } 
+    }
+
+    public static void setMinWidth(double minWidth, javafx.scene.layout.Region... regions) {
+        for (var region : regions) {
+            region.setMinWidth(minWidth);
+        } 
+    }
+
+    // endregion
+
+    // region =====Table Column=====
+
+    public static void setMaxWidth(double maxWidth, TableColumn... columns) {
+        for (var column : columns) {
+            column.setMaxWidth(maxWidth);
+        } 
+    }
+
+    public static void setMinWidth(double minWidth, TableColumn... columns) {
+        for (var column : columns) {
+            column.setMinWidth(minWidth);
+        } 
+    }
+
+    // endregion
 
     // region =====Text=====
 

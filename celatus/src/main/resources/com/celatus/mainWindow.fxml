@@ -57,6 +57,9 @@
                      <placeholder>
                         <Label text="" />
                      </placeholder>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
                   </TableView>
                </children>
             </AnchorPane>

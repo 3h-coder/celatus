@@ -288,6 +288,8 @@ public class MainWindowController extends BaseWindowController {
         TableColumn passwordColumn = new TableColumn("Password");
         TableColumn lastEditedColumn = new TableColumn("Last edited");
 
+        FXMLUtils.setMinWidth(100.0, nameColumn, identifierColumn, passwordColumn, lastEditedColumn);
+
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         identifierColumn.setCellValueFactory(new PropertyValueFactory<>("identifier"));
         passwordColumn.setCellValueFactory(new PropertyValueFactory<>("password"));

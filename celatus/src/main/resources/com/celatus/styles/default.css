@@ -86,6 +86,37 @@
     -fx-text-fill: black
 }
 
+.corner {
+    -fx-background-color: transparent
+}
+
+.scroll-bar:vertical,
+.scroll-bar:vertical .track,
+.scroll-bar:vertical .track-background,
+.scroll-bar:horizontal,
+.scroll-bar:horizontal .track,
+.scroll-bar:horizontal .track-background,
+.scroll-bar {
+    -fx-background-color: transparent
+}
+
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-opacity: 0;
+    -fx-padding: 2
+}
+
+.scroll-bar:vertical .thumb,
+.scroll-bar:horizontal .thumb {
+    -fx-background-color: #8c8c8c;
+    -fx-opacity: 0.5
+}
+
+.scroll-bar:vertical .thumb:hover,
+.scroll-bar:horizontal .thumb:hover {
+    -fx-opacity: 1
+}
+
 #rowPane1 {
     -fx-background-color: #353536;
     -fx-border-color: #8c8c8c;
