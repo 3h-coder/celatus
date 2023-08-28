@@ -156,7 +156,7 @@
     -fx-background-color: linear-gradient(to bottom, #8c8c8c, #cacac9);
     /*-fx-border-color: black;
     -fx-border-width: 0 0 0 1;*/
-    -fx-font-weight: 620
+    -fx-font-weight: 600
 }
 
 #passwordsTable .column-header-background {

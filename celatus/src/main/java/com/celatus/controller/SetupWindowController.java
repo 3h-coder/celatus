@@ -17,7 +17,7 @@ import javafx.scene.control.ContextMenu;
 /**
  * Controller of our setup window, used to (re)set our App's master password
  */
-public class SetupWindowController extends BaseWindowController {
+public class SetupWindowController extends DialogWindowController {
 
     // region =====Variables=====
 
@@ -92,10 +92,15 @@ public class SetupWindowController extends BaseWindowController {
             return;
         }
 
-        // We open the app
+        // We open the app, or go back to it
         try {
-            AuthHandler.setAppEntry(password);
-            switchToMainWindow();
+            if (App.getSignal("master_password_reset_signal")) {
+                AuthHandler.setAppEntry(password, true);
+                closeDialog();
+            } else {
+                AuthHandler.setAppEntry(password, false);
+                switchToMainWindow();
+            }   
         } catch (Exception ex) {
             App.error(window, ex, "An unexpected error occured", logger, PopupMode.OK, true);
             close();

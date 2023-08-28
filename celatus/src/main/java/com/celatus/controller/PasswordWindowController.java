@@ -159,6 +159,7 @@ public class PasswordWindowController extends PopupWindowController {
 
             inputPwdEntry.setName(name);
             inputPwdEntry.setIdentifier(identifier);
+            inputPwdEntry.setUrl(url);
             inputPwdEntry.setPassword(this.password);
             inputPwdEntry.setEmail(email);
             inputPwdEntry.setNotes(notes);

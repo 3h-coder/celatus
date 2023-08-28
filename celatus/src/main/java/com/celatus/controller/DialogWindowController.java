@@ -23,7 +23,9 @@ public class DialogWindowController extends BaseWindowController {
         super.initialize();
         Platform.runLater(() -> {
             owner = (Stage) window.getOwner();
-            FXMLUtils.addDarkOverlay(owner.getScene());
+            if (owner != null) {
+                FXMLUtils.addDarkOverlay(owner.getScene());
+            }  
         });
     }
 
@@ -33,7 +35,9 @@ public class DialogWindowController extends BaseWindowController {
 
     @FXML
     public void closeDialog() {
-        FXMLUtils.removeDarkOverlay(owner.getScene());
+        if (owner != null) {
+            FXMLUtils.removeDarkOverlay(owner.getScene());
+        }
         window.close();
     }
 

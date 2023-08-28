@@ -11,11 +11,11 @@
 <AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#windowKeyPressed" onMouseDragged="#onMouseDragged" onMousePressed="#onMousePressed" prefHeight="300.0" prefWidth="500.0" styleClass="AnchorPane" stylesheets="@styles/default.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.celatus.controller.SetupWindowController">
    <children>
       <AnchorPane fx:id="rowPane1" layoutY="2.0" prefHeight="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      <Button fx:id="closeButton" layoutX="324.0" layoutY="6.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#close" prefHeight="25.0" prefWidth="25.0" text="X" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <Button fx:id="closeButton" layoutX="324.0" layoutY="6.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#closeDialog" prefHeight="25.0" prefWidth="25.0" text="X" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
       <Button fx:id="minimizeButton" layoutX="294.0" layoutY="6.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#minimize" prefHeight="25.0" prefWidth="25.0" text="_" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="0.0" />
       <AnchorPane layoutY="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
          <children>
-            <Label id="warningLabel" fx:id="label01" alignment="CENTER" contentDisplay="TOP" prefHeight="66.0" prefWidth="400.0" text="Please first setup your master password. Your master password is not saved anywhere. Please make sure you write it down somewhere as there will be no way to recover your data!" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
+            <Label id="warningLabel" fx:id="label01" alignment="CENTER" contentDisplay="TOP" prefHeight="66.0" prefWidth="400.0" text="Please enter your master password. Your master password is not saved anywhere. Please make sure you write it down somewhere as there will be no way to recover your data!" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
                <font>
                   <Font size="14.0" />
                </font>

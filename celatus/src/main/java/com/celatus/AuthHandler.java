@@ -62,9 +62,13 @@ public class AuthHandler {
      * Performs all the necessary setup after the master password is set
      * @param password
      */
-    public static void setAppEntry(String password) {
+    public static void setAppEntry(String password, boolean masterPwdReset) {
         setAppKey(password);
-        App.setPasswordsDatabase(PasswordsDatabase.generateDefault());
+        if (masterPwdReset) {
+            DatabaseHandler.saveDatabase();
+        } else {
+            App.setPasswordsDatabase(PasswordsDatabase.generateDefault());
+        }
     }
 
     /** 

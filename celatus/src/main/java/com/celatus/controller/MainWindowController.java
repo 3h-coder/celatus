@@ -462,6 +462,15 @@ public class MainWindowController extends BaseWindowController {
         }
     }  
 
+    public void resetMasterPassword() {
+        App.addTempVariable("master_password_reset_signal", true);
+        try {
+            FXMLUtils.launchDialogWindow(window, "setupWindow");
+        } catch (Exception ex) {
+            App.error(window, ex, "An error occured", logger, PopupMode.OK, true);
+        }
+    }
+
     // endregion
     
     // endregion
