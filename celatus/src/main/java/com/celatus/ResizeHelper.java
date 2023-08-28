@@ -1,7 +1,5 @@
 package com.celatus;
 
-import com.celatus.util.FXMLUtils;
-
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
@@ -13,6 +11,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+/**
+ * Helper class to resize undecorated windows.
+ * Taken from : https://stackoverflow.com/questions/19455059/allow-user-to-resize-an-undecorated-stage (credits to https://stackoverflow.com/users/325554/alexander-berg)
+ */
 public class ResizeHelper {
 
     public static void addResizeListener(Stage stage) {

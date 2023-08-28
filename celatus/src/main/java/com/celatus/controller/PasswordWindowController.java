@@ -1,8 +1,6 @@
 package com.celatus.controller;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -11,18 +9,20 @@ import com.celatus.Category;
 import com.celatus.PasswordEntry;
 import com.celatus.PasswordsDatabase;
 import com.celatus.util.CustomDateUtils;
-import com.celatus.util.FXMLUtils;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 
+/**
+ * Controller of the window used to create and edit password entries
+ */
 public class PasswordWindowController extends PopupWindowController {
 
     // region =====Variables=====
@@ -106,10 +106,14 @@ public class PasswordWindowController extends PopupWindowController {
         this.title.setText(title);
     }
 
+    /**
+     * Fills the window fields in case we're editing an existing password entry
+     */
     public void fillFields() {
         if (inputPwdEntry == null) {
             return;
         }
+
         nameTextField.setText(inputPwdEntry.getName());
         urlField.setText(inputPwdEntry.getUrl());
         identifierField.setText(inputPwdEntry.getIdentifier());
@@ -126,11 +130,13 @@ public class PasswordWindowController extends PopupWindowController {
 
     // region =====Event Methods=====
 
+    /**
+     * Saves our password entry into the database, or updates it if it's an existing one
+     */
     @FXML
     private void savePassword() {
-        Scene appScene = owner.getScene();
-        @SuppressWarnings("unchecked") TableView<PasswordEntry> passwordsTable = (TableView<PasswordEntry>) appScene.lookup("#passwordsTable");
 
+        // We first check that none of the required fiels is blank
         if (!requiredFieldsNotBlank()) {
             return;
         }
@@ -145,10 +151,12 @@ public class PasswordWindowController extends PopupWindowController {
         this.category = passwordsDatabase.getCategory(this.category.getName());
         MainWindowController controller = (MainWindowController) App.getController();
 
+        // Saving the new password entry
         if (inputPwdEntry == null) {
             PasswordEntry pwdEntry = new PasswordEntry(name, url, notes, identifier, email, this.password);
             this.category.addPasswordEntry(pwdEntry);
             logger.info("Adding the following password entry to the " + this.category.getName() + "category : " + pwdEntry);
+        // Updating the exisiting password entry
         } else {
             inputPwdEntry.setName(name);
             inputPwdEntry.setIdentifier(identifier);
@@ -158,10 +166,15 @@ public class PasswordWindowController extends PopupWindowController {
             inputPwdEntry.setLastEditDate(LocalDateTime.now());
         }
 
+        // Refreshing the password entry view in the main window
         controller.displayPasswords(category);
         closeDialog();
     }
 
+    /**
+     * Separate method to check that all of our required fields are not blank
+     * @return <b>true</b> if no field is blank, <b>false</b> otherwise
+     */
     @FXML
     private boolean requiredFieldsNotBlank() {
 

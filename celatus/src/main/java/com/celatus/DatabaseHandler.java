@@ -9,10 +9,11 @@ import org.apache.logging.log4j.Logger;
 import com.celatus.controller.PopupMode;
 import com.celatus.util.CryptoUtils;
 
+/**
+ * Performs all the actions related to the database file
+ */
 public class DatabaseHandler {
 
-
-    
     // region =====Variables=====
 
     private static final Logger logger = LogManager.getLogger(DatabaseHandler.class.getName());
@@ -77,7 +78,7 @@ public class DatabaseHandler {
             // logger.debug("Saved data: " + rawData);
             CryptoUtils.encryptIntoFile(dbFilePath, rawData, App.getKey(), CryptoUtils.generateIV());
         } catch (Exception ex) {
-            App.error(App.getWindow(), "Could not properly save the passwords data: " + ex, logger, PopupMode.OK);
+            App.error(App.getWindow(), ex, "Could not properly save the passwords data", logger, PopupMode.OK, true);
         }
     }
 

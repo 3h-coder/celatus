@@ -2,7 +2,6 @@ package com.celatus.controller;
 
 import com.celatus.App;
 import com.celatus.AuthHandler;
-import com.celatus.PasswordsDatabase;
 
 import java.util.Map;
 
@@ -15,6 +14,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.control.ContextMenu;
 
+/**
+ * Controller of our setup window, used to (re)set our App's master password
+ */
 public class SetupWindowController extends BaseWindowController {
 
     // region =====Variables=====
@@ -75,25 +77,30 @@ public class SetupWindowController extends BaseWindowController {
         }
     }
 
+    /**
+     * Method used to open the access to the App's main window after checking the submitted master passwords.
+     */
     @FXML
     private void submitMasterPasswords() {
+        // We check the master password
         setPasswordsValue();
-
         Map<Boolean, String> passwordsCheckInfo = AuthHandler.checkPasswords(password, password2);
         boolean validPasswords = (boolean)passwordsCheckInfo.keySet().toArray()[0];
         if (!validPasswords) {
             String invalidPasswordsMessage = (String)passwordsCheckInfo.values().toArray()[0];
             warning(invalidPasswordsMessage);
-        } else {
-            try {
-                AuthHandler.setAppKey(password);
-                App.setPasswordsDatabase(PasswordsDatabase.generateDefault());
-                switchWindow("mainWindow");
-            } catch (Exception ex) {
-                App.error(window,"An unexpected error occured when trying to summon the main window : " + ex, logger, PopupMode.OK);
-                close();
-            }
+            return;
         }
+
+        // We open the app
+        try {
+            AuthHandler.setAppEntry(password);
+            switchToMainWindow();
+        } catch (Exception ex) {
+            App.error(window, ex, "An unexpected error occured", logger, PopupMode.OK, true);
+            close();
+        }
+        
     }
 
     @FXML
@@ -162,5 +169,4 @@ public class SetupWindowController extends BaseWindowController {
 
     // endregion
 
-    
 }

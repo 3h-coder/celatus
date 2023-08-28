@@ -1,12 +1,15 @@
 package com.celatus;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.celatus.util.CryptoUtils;
 
+/**
+ * Object used to store all of the attributes and information related to our password
+ */
 public class PasswordEntry implements Recordable {
 
     // region =====Variables=====
@@ -95,7 +98,7 @@ public class PasswordEntry implements Recordable {
 
     // endregion
 
-    // region =====Constructor=====
+    // region =====Constructors=====
 
     public PasswordEntry() {}
 

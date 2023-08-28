@@ -10,6 +10,9 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+/**
+ * Controller for our popup windows, which can be error, warning, or info windows
+ */
 public class PopupWindowController extends DialogWindowController {
     
     // region =====Variables=====
@@ -24,9 +27,6 @@ public class PopupWindowController extends DialogWindowController {
     private Button yesButton;
     @FXML
     private Button noButton;
-    
-    
-    private PopupMode mode;
 
     // endregion
 
@@ -43,6 +43,10 @@ public class PopupWindowController extends DialogWindowController {
         popupIcon.setImage(image);
     }
 
+    /**
+     * Sets the window according to the specified mode
+     * @param mode : For example OK, or YES_AND_NO
+     */
     @FXML
     public void setMode(PopupMode mode) {
         if (mode == PopupMode.OK) {
@@ -56,7 +60,6 @@ public class PopupWindowController extends DialogWindowController {
         }
     }
     // endregion
-
 
     // region =====Event Methods=====
 

@@ -1,10 +1,10 @@
 package com.celatus;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.celatus.util.CryptoUtils;
 
-import java.util.HashMap;
 
 public class AuthHandler {
     
@@ -56,6 +56,24 @@ public class AuthHandler {
      */
     public static void setAppKey(String password) {
         App.setKey(CryptoUtils.generateAESKey(password));
+    }
+
+    /**
+     * Performs all the necessary setup after the master password is set
+     * @param password
+     */
+    public static void setAppEntry(String password) {
+        setAppKey(password);
+        App.setPasswordsDatabase(PasswordsDatabase.generateDefault());
+    }
+
+    /** 
+    * Performs all the necessary setup after the valid password has been entered
+    */
+    public static void enterApp() {
+        PasswordsDatabase passwordsDatabase = PasswordsDatabase.fromRawData(DatabaseHandler.getRawData());
+        App.setPasswordsDatabase(passwordsDatabase);
+        App.setOriginalDatabaseHash(passwordsDatabase.hashCode());
     }
 
     // endregion

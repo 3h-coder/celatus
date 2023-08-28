@@ -351,7 +351,7 @@ public class MainWindowController extends BaseWindowController {
             FXMLUtils.launchDialogWindow(this.window, scene);
 
         } catch (Exception ex) {
-            App.error(this.window, "An error occured: " + ex, logger, PopupMode.OK);
+            App.error(this.window, ex, "An error occured", logger, PopupMode.OK, true);
         }  
     }
 
@@ -395,7 +395,7 @@ public class MainWindowController extends BaseWindowController {
             controller.setTitle(title);
             FXMLUtils.launchDialogWindow(this.window, scene);
         } catch (Exception ex) {
-            App.error(this.window, "An error occured: " + ex, logger, PopupMode.OK);
+            App.error(this.window, ex,"An error occured", logger, PopupMode.OK, true);
         }  
     }
     // endregion

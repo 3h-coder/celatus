@@ -2,15 +2,16 @@ package com.celatus;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Map;
-
 import com.celatus.util.CryptoUtils;
 
+/**
+ * Object to categorize and group passwords
+ */
 public class Category implements Recordable {
 
     // region =====Variables=====

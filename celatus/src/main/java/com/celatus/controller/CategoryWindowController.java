@@ -5,22 +5,21 @@ import com.celatus.Category;
 import com.celatus.PasswordsDatabase;
 import com.celatus.util.FXMLUtils;
 
-import java.util.Map;
-import java.util.HashMap;
-
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * Controller of the window used to create and edit categories
+ */
 public class CategoryWindowController extends DialogWindowController {
     
     // region =====Variables
@@ -59,6 +58,9 @@ public class CategoryWindowController extends DialogWindowController {
         });
     }
 
+    /**
+     * Fills the window fields in case we're editing an existing category
+     */
     public void fillFields() {
         if (inputCategory != null) {
             nameTextField.setText(inputCategory.getName());
@@ -98,6 +100,9 @@ public class CategoryWindowController extends DialogWindowController {
         }
     }  
     
+    /**
+     * Saves our category into the database (or updates it)
+     */
     @FXML
     private void saveCategory() {
         Scene appScene = owner.getScene();
@@ -106,6 +111,7 @@ public class CategoryWindowController extends DialogWindowController {
 
         String name = nameTextField.getText();
         String description = descriptionTextArea.getText();
+        // Checking required fields
         if (StringUtils.isBlank(name)) {
             label02.setText("This field is required");
             return;
@@ -114,6 +120,7 @@ public class CategoryWindowController extends DialogWindowController {
         Category category = new Category(name, description, null);
         PasswordsDatabase passwordsDatabase = App.getPasswordsDatabase();
 
+        // Saving the new category
         if (inputCategory == null) {
             try {
                 // Updating the passwords database
@@ -124,8 +131,9 @@ public class CategoryWindowController extends DialogWindowController {
                 label02.setText("This category already exists");
                 return;
             } catch (Exception ex) {
-                App.error(window, "An error occured: " + ex, logger, PopupMode.OK);
+                App.error(window, ex, "An error occured", logger, PopupMode.OK, true);
             }
+        // Updating the category
         } else {
             String oldName = inputCategory.getName();
             inputCategory.setName(name);

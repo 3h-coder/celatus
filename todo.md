@@ -1,4 +1,4 @@
-- make labels selectable (so we can copy paste their text) -> FXMLUtils + BaseWindowController init code
+- Allow full screen
 - create logo (and its icon)
 - option to change the master password
 - detect changes on password edition (no more last edit date update when no changes were made)

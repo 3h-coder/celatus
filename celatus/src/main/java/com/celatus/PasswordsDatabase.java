@@ -1,13 +1,14 @@
 package com.celatus;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import com.celatus.util.MapUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
+/**
+ * Object serving as our passwords database, meant to be json serialized
+ */
 public class PasswordsDatabase {
     
     // region =====Variables=====

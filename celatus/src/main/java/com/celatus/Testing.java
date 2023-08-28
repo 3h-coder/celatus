@@ -1,16 +1,19 @@
 package com.celatus;
 
 import java.security.Key;
-import java.util.Map;
-import java.util.HashMap;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.crypto.spec.IvParameterSpec;
 
 import com.celatus.util.CryptoUtils;
 import com.celatus.util.MapUtils;
 
+/**
+ * Class made for all of our non-unit tests
+ */
 public class Testing {
     
     public static void testDataEncryption() {

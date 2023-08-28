@@ -1,14 +1,14 @@
 package com.celatus.controller;
 
-import com.celatus.App;
 import com.celatus.util.FXMLUtils;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
 
-
-
+/** 
+* Base controller for all of our dialog window coontrollers
+*/
 public class DialogWindowController extends BaseWindowController {
 
     // region =====Variables=====

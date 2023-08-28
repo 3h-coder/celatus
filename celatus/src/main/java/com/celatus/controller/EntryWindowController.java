@@ -6,14 +6,14 @@ import com.celatus.DatabaseHandler;
 import com.celatus.PasswordsDatabase;
 
 import javafx.fxml.FXML;
-
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
-
-
+/**
+ * Controller of our entry window, after the master password has been set by the user
+ */
 public class EntryWindowController extends BaseWindowController {
 
     // region =====Variables=====
@@ -54,15 +54,16 @@ public class EntryWindowController extends BaseWindowController {
         }
     }
 
+    /**
+     * Method used to enter the App
+     */
     @FXML
     private void submitPassword() {
         setPasswordValue();
         
         if (AuthHandler.correctPassword(password)) {
-            PasswordsDatabase passwordsDatabase = PasswordsDatabase.fromRawData(DatabaseHandler.getRawData());
-            App.setPasswordsDatabase(passwordsDatabase);
-            App.setOriginalDatabaseHash(passwordsDatabase.hashCode());
-            switchWindow("mainWindow");
+            AuthHandler.enterApp();
+            switchToMainWindow();
         } else {
             warning("Incorrect master password");
         }     
