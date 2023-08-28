@@ -1,4 +1,4 @@
 - Allow full screen
 - create logo (and its icon)
 - option to change the master password
-- detect changes on password edition (no more last edit date update when no changes were made)
+- option to change the category for a password

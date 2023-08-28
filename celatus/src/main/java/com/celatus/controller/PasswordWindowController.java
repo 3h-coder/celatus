@@ -12,11 +12,9 @@ import com.celatus.util.CustomDateUtils;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
@@ -157,7 +155,8 @@ public class PasswordWindowController extends PopupWindowController {
             this.category.addPasswordEntry(pwdEntry);
             logger.info("Adding the following password entry to the " + this.category.getName() + "category : " + pwdEntry);
         // Updating the exisiting password entry
-        } else {
+        } else if (changesDetected()) {
+
             inputPwdEntry.setName(name);
             inputPwdEntry.setIdentifier(identifier);
             inputPwdEntry.setPassword(this.password);
@@ -201,6 +200,37 @@ public class PasswordWindowController extends PopupWindowController {
         }
 
         return allOk;
+    }
+
+    /**
+     * Detects whether or nto changes have been made to the password entry (in case of editing)
+     * @return
+     */
+    private boolean changesDetected() {
+
+        String name = nameTextField.getText();
+        String identifier = identifierField.getText();
+        String url = urlField.getText();
+        String email = emailField.getText();
+        String notes = passwordNotes.getText();
+
+        if (!StringUtils.equals(inputPwdEntry.getName(), name)) {
+            return true;
+        }
+        if (!StringUtils.equals(inputPwdEntry.getIdentifier(), identifier)) {
+            return true;
+        }
+        if (!StringUtils.equals(inputPwdEntry.getUrl(), url)) {
+            return true;
+        }
+        if (!StringUtils.equals(inputPwdEntry.getEmail(), email)) {
+            return true;
+        }
+        if (!StringUtils.equals(inputPwdEntry.getNotes(), notes)) {
+            return true;
+        }
+
+        return false;
     }
 
     // endregion

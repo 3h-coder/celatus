@@ -22,6 +22,7 @@
                   <Menu mnemonicParsing="false" text="File">
                      <items>
                         <MenuItem mnemonicParsing="false" onAction="#saveDatabase" text="Save" />
+                        <MenuItem mnemonicParsing="false" onAction="#resetMasterPassword" text="Change master password" />
                      </items>
                   </Menu>
                   <Menu mnemonicParsing="false" text="Settings">
