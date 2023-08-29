@@ -9,6 +9,7 @@ import com.celatus.Category;
 import com.celatus.PasswordEntry;
 import com.celatus.PasswordsDatabase;
 import com.celatus.util.CustomDateUtils;
+import com.celatus.util.FXMLUtils;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -154,6 +155,9 @@ public class PasswordWindowController extends AlertWindowController {
             PasswordEntry pwdEntry = new PasswordEntry(name, url, notes, identifier, email, this.password);
             this.category.addPasswordEntry(pwdEntry);
             logger.info("Adding the following password entry to the " + this.category.getName() + "category : " + pwdEntry);
+
+            closeDialog();
+            FXMLUtils.summonPopup(App.getWindow(), "Password entry created");
         // Updating the exisiting password entry
         } else if (changesDetected()) {
 
@@ -164,11 +168,12 @@ public class PasswordWindowController extends AlertWindowController {
             inputPwdEntry.setEmail(email);
             inputPwdEntry.setNotes(notes);
             inputPwdEntry.setLastEditDate(LocalDateTime.now());
-        }
 
+            closeDialog();
+            FXMLUtils.summonPopup(App.getWindow(), "Password entry updated");
+        }
         // Refreshing the password entry view in the main window
         controller.displayPasswords(category);
-        closeDialog();
     }
 
     /**

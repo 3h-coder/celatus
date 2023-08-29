@@ -79,6 +79,7 @@
 }*/
 
 .context-menu {
+    -fx-background-radius: 5px;
     -fx-background-color: #353536;
     -fx-border-color: #8c8c8c;
     -fx-border-radius: 5px;

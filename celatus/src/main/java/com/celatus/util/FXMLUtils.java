@@ -272,7 +272,7 @@ public class FXMLUtils {
 
         // Create a TranslateTransition to move the popup down right under the menu bar row
         TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.1), popup.getContent().get(0));
-        translateTransition.setByY(27);
+        translateTransition.setByY(28);
 
         // Create a FadeTransition
         FadeTransition fadeTransition = new FadeTransition(Duration.seconds(4.9), popup.getContent().get(0));

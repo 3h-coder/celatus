@@ -433,6 +433,9 @@ public class MainWindowController extends BaseWindowController {
         // Remove the description display
         catDescription.clear();
         catDescription.setPrefHeight(0);
+        passwordsTable.getItems().clear();
+        passwordsTable.setPrefHeight(0);
+        FXMLUtils.summonPopup(window, "Category " + categoryName + " deleted");
     }
 
     /**

@@ -133,6 +133,8 @@ public class CategoryWindowController extends DialogWindowController {
             } catch (Exception ex) {
                 App.error(window, ex, "An error occured", logger, AlertMode.OK, true);
             }
+            closeDialog();
+            FXMLUtils.summonPopup(App.getWindow(), "The category " + name + " has been added");
         // Updating the category
         } else {
             String oldName = inputCategory.getName();
@@ -146,9 +148,10 @@ public class CategoryWindowController extends DialogWindowController {
             } else {
                 descriptionPane.setVisible(false);
             }
+            closeDialog();
+            FXMLUtils.summonPopup(App.getWindow(), "Category updated");
         }
         
-        closeDialog();
     }
     
     // endregion
