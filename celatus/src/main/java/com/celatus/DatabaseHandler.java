@@ -6,7 +6,7 @@ import java.io.IOException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.celatus.controller.PopupMode;
+import com.celatus.controller.AlertMode;
 import com.celatus.util.CryptoUtils;
 
 /**
@@ -78,7 +78,7 @@ public class DatabaseHandler {
             // logger.debug("Saved data: " + rawData);
             CryptoUtils.encryptIntoFile(dbFilePath, rawData, App.getKey(), CryptoUtils.generateIV());
         } catch (Exception ex) {
-            App.error(App.getWindow(), ex, "Could not properly save the passwords data", logger, PopupMode.OK, true);
+            App.error(App.getWindow(), ex, "Could not properly save the passwords data", logger, AlertMode.OK, true);
         }
     }
 

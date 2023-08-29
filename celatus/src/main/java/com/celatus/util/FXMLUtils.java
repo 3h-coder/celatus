@@ -12,13 +12,15 @@ import java.util.HashMap;
 
 import com.celatus.App;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableView;
@@ -27,8 +29,10 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
 
 public class FXMLUtils {
@@ -133,7 +137,29 @@ public class FXMLUtils {
         textArea.setPrefHeight(MIN_HEIGHT + (linesNeeded-1) * LINE_HEIGHT);
         //logger.debug("Height set to : " + linesNeeded * LINE_HEIGHT);
         // Force a layout update by invalidating the layout
-        textArea.getParent().requestLayout();
+        if (textArea.getParent() != null) {
+            textArea.getParent().requestLayout();
+        }   
+    }
+
+    public static void adjustTextAreaDimensions(TextArea textArea) {
+        final double MIN_HEIGHT = 30.0;
+        final double LINE_HEIGHT = 19.0; // Minimum height to ensure readability
+        final double MAX_WIDTH = 300.0;
+
+        textArea.setMaxWidth(MAX_WIDTH);
+
+        double textwidth = computeTextWidth(textArea.getText(), textArea.getFont());
+        // logger.debug("textwidth: " + textwidth);
+        int linesNeeded = (int)Math.ceil(textwidth / MAX_WIDTH);
+        // logger.debug("linesNeeded: " + linesNeeded);
+
+        if (linesNeeded == 1) {
+            textArea.setMaxWidth(textwidth + 15.0);
+        }
+
+        textArea.setPrefHeight(MIN_HEIGHT + (linesNeeded-1) * LINE_HEIGHT);
+        textArea.setMinHeight(textArea.getPrefHeight());
     }
 
     // endregion 
@@ -221,6 +247,42 @@ public class FXMLUtils {
                 return;
             }
         }
+    }
+
+    public static void summonPopup(Stage window, String message) {
+        final double initialY = window.getY();
+
+        TextArea textArea = new TextArea(message);
+        textArea.setWrapText(true);
+        textArea.setEditable(false);
+        textArea.setMouseTransparent(true);
+        // textArea.getStyleClass().add("popup");
+        textArea.getStylesheets().add(App.class.getResource("styles/default.css").toExternalForm());
+        //textArea.setStyle("-fx-padding: 0 0 0 0; -fx-background-radius: 0 ;-fx-alignment: center; -fx-background-color: transparent; -fx-control-inner-background: black; -fx-control-inner-background-radius: 0");
+        adjustTextAreaDimensions(textArea);
+        
+        Popup popup = new Popup();
+
+        // The popup is located at the window's middle
+        popup.setX(window.getX() + window.getWidth() / 2);
+        popup.setY(window.getY());
+
+        popup.getContent().addAll(textArea);
+        popup.setAutoHide(true);
+
+        // Create a TranslateTransition to move the popup down right under the menu bar row
+        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.1), popup.getContent().get(0));
+        translateTransition.setByY(27);
+
+        // Create a FadeTransition
+        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(4.9), popup.getContent().get(0));
+        fadeTransition.setFromValue(1);
+        fadeTransition.setToValue(0);
+        fadeTransition.setOnFinished(event -> popup.hide());
+
+        popup.show(window);
+        translateTransition.play();
+        fadeTransition.play();
     }
 
     // endregion

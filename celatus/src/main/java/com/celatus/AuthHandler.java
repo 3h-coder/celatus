@@ -65,6 +65,7 @@ public class AuthHandler {
     public static void setAppEntry(String password, boolean masterPwdReset) {
         setAppKey(password);
         if (masterPwdReset) {
+            // encrypting the database with the new master password
             DatabaseHandler.saveDatabase();
         } else {
             App.setPasswordsDatabase(PasswordsDatabase.generateDefault());

@@ -51,7 +51,7 @@
 }
 
 .text-area {
-    -fx-background-radius: 0;
+    -fx-background-radius: 5;
     -fx-background-color :  #353536;
     -fx-text-fill: white;
     /*-fx-border-color: #8c8c8c;
@@ -66,6 +66,17 @@
 .text-area:focused {
     -fx-highlight-fill: #8c8c8c;
 }
+
+/*.popup {
+    -fx-background-radius: 5;
+    -fx-background-color :  #353536;
+    -fx-text-fill: white;
+}
+
+.popup .content {
+    -fx-background-radius: 0;
+    -fx-background-color :  #353536;
+}*/
 
 .context-menu {
     -fx-background-color: #353536;

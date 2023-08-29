@@ -21,7 +21,7 @@ import javafx.scene.control.TextField;
 /**
  * Controller of the window used to create and edit password entries
  */
-public class PasswordWindowController extends PopupWindowController {
+public class PasswordWindowController extends AlertWindowController {
 
     // region =====Variables=====
 

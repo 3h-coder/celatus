@@ -3,7 +3,7 @@ package com.celatus;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
-import com.celatus.controller.PopupMode;
+import com.celatus.controller.AlertMode;
 
 /**
  * Our custom implementation of the UncaughtExceptionHandler object
@@ -14,7 +14,7 @@ public class CustomUncaughtExceptionHandler implements Thread.UncaughtExceptionH
     @Override
     public void uncaughtException(Thread t, Throwable ex) {
 
-        App.error(App.getWindow(), ex, "An unexpected error occured", logger, PopupMode.OK, true);
+        App.error(App.getWindow(), ex, "An unexpected error occured", logger, AlertMode.OK, true);
         //_logger.error("Uncaught exception in thread " + t.getName() + ": " + e.getMessage(), e);
         
         // You can perform additional actions here, like closing resources, saving data, etc.

@@ -2,6 +2,7 @@ package com.celatus.controller;
 
 import com.celatus.App;
 import com.celatus.AuthHandler;
+import com.celatus.util.FXMLUtils;
 
 import java.util.Map;
 
@@ -97,12 +98,13 @@ public class SetupWindowController extends DialogWindowController {
             if (App.getSignal("master_password_reset_signal")) {
                 AuthHandler.setAppEntry(password, true);
                 closeDialog();
+                FXMLUtils.summonPopup(App.getWindow(), "Master password successfully changed");
             } else {
                 AuthHandler.setAppEntry(password, false);
                 switchToMainWindow();
             }   
         } catch (Exception ex) {
-            App.error(window, ex, "An unexpected error occured", logger, PopupMode.OK, true);
+            App.error(window, ex, "An unexpected error occured", logger, AlertMode.OK, true);
             close();
         }
         

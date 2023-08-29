@@ -149,7 +149,7 @@ public class MainWindowController extends BaseWindowController {
         if (originalDBHash == currentDBHash) {
             super.close();
         } else {
-            App.warn(window, "Unsaved changes detected, would you like to save these changes?", logger, PopupMode.YES_AND_NO);
+            App.warn(window, "Unsaved changes detected, would you like to save these changes?", logger, AlertMode.YES_AND_NO);
         }
         if (App.getSignal("yes_signal")) {
             saveDatabase();
@@ -237,7 +237,7 @@ public class MainWindowController extends BaseWindowController {
 
         deletePwdMenuItem.setOnAction(event -> {
             App.warn(window, "This is an irreversible action, are you sure you want to delete it?",
-                        logger, PopupMode.YES_AND_NO);
+                        logger, AlertMode.YES_AND_NO);
             if (App.getSignal("yes_signal") == true) {
                 PasswordEntry current = passwordsTable.getSelectionModel().getSelectedItem();
                 deletePasswordEntry(current);
@@ -289,7 +289,7 @@ public class MainWindowController extends BaseWindowController {
             
             deleteMenuItem.setOnAction(event -> {
                 App.warn(window, "This is an irreversible action, and you will lose all the passwords in this category, are you sure you want to delete it?",
-                        logger, PopupMode.YES_AND_NO);
+                        logger, AlertMode.YES_AND_NO);
                 if (App.getSignal("yes_signal") == true) {
                     String categoryName = cell.getItem();
                     FXMLUtils.removeFromListView(listView, categoryName);
@@ -390,7 +390,7 @@ public class MainWindowController extends BaseWindowController {
             FXMLUtils.launchDialogWindow(this.window, scene);
 
         } catch (Exception ex) {
-            App.error(this.window, ex, "An error occured", logger, PopupMode.OK, true);
+            App.error(this.window, ex, "An error occured", logger, AlertMode.OK, true);
         }  
     }
 
@@ -415,7 +415,7 @@ public class MainWindowController extends BaseWindowController {
             controller.setTitle(title);
             FXMLUtils.launchDialogWindow(this.window, scene);
         } catch (Exception ex) {
-            App.error(this.window, ex,"An error occured", logger, PopupMode.OK, true);
+            App.error(this.window, ex,"An error occured", logger, AlertMode.OK, true);
         }  
     }
 
@@ -457,6 +457,7 @@ public class MainWindowController extends BaseWindowController {
     public void saveDatabase() {
         try {
             DatabaseHandler.saveDatabase();
+            FXMLUtils.summonPopup(window, "Database successfully saved");
         } catch (Exception ex) {
             logger.error("An unexpected error occured while trying to save the passwords database: " + ex.getMessage());
         }
@@ -467,7 +468,7 @@ public class MainWindowController extends BaseWindowController {
         try {
             FXMLUtils.launchDialogWindow(window, "setupWindow");
         } catch (Exception ex) {
-            App.error(window, ex, "An error occured", logger, PopupMode.OK, true);
+            App.error(window, ex, "An error occured", logger, AlertMode.OK, true);
         }
     }
 

@@ -131,7 +131,7 @@ public class CategoryWindowController extends DialogWindowController {
                 label02.setText("This category already exists");
                 return;
             } catch (Exception ex) {
-                App.error(window, ex, "An error occured", logger, PopupMode.OK, true);
+                App.error(window, ex, "An error occured", logger, AlertMode.OK, true);
             }
         // Updating the category
         } else {

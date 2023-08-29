@@ -11,9 +11,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 /**
- * Controller for our popup windows, which can be error, warning, or info windows
+ * Controller for our alert windows, which can be error, warning, or info windows
  */
-public class PopupWindowController extends DialogWindowController {
+public class AlertWindowController extends DialogWindowController {
     
     // region =====Variables=====
 
@@ -48,12 +48,12 @@ public class PopupWindowController extends DialogWindowController {
      * @param mode : For example OK, or YES_AND_NO
      */
     @FXML
-    public void setMode(PopupMode mode) {
-        if (mode == PopupMode.OK) {
+    public void setMode(AlertMode mode) {
+        if (mode == AlertMode.OK) {
             okButton.setVisible(true);
             yesButton.setVisible(false);
             noButton.setVisible(false);
-        } else if (mode == PopupMode.YES_AND_NO) {
+        } else if (mode == AlertMode.YES_AND_NO) {
             okButton.setVisible(false);
             yesButton.setVisible(true);
             noButton.setVisible(true);

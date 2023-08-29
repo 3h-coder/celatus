@@ -11,14 +11,21 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
+import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import com.celatus.controller.BaseWindowController;
-import com.celatus.controller.PopupMode;
-import com.celatus.controller.PopupWindowController;
+import com.celatus.controller.AlertMode;
+import com.celatus.controller.AlertWindowController;
 import com.celatus.util.FXMLUtils;
 
 /**
@@ -125,6 +132,35 @@ public class App extends Application {
              
     }
 
+    /*public void start(final Stage primaryStage) {
+        primaryStage.setTitle("Popup Example");
+        final Popup popup = new Popup();
+        popup.setX(300);
+        popup.setY(200);
+        //popup.setAutoHide(true);
+        //popup.getContent().addAll(new Circle(25, 25, 50, Color.AQUAMARINE));
+        TextArea textArea = new TextArea();
+        textArea.setPrefWidth(300.0);
+        textArea.setPrefHeight(300.0);
+        popup.getContent().addAll(textArea);
+
+        Button show = new Button("Show");
+        show.setOnAction(event -> {
+            popup.show(primaryStage);
+        });
+
+        Button hide = new Button("Hide");
+        hide.setOnAction(event -> {
+            popup.hide();
+        });
+
+        HBox layout = new HBox(10);
+        layout.setStyle("-fx-background-color: cornsilk; -fx-padding: 10;");
+        layout.getChildren().addAll(show, hide);
+        primaryStage.setScene(new Scene(layout));
+        primaryStage.show();
+    }*/
+
     public static void main(String[] args) {
         Thread.setDefaultUncaughtExceptionHandler(new CustomUncaughtExceptionHandler());
         launch();
@@ -178,7 +214,7 @@ public class App extends Application {
      * Logs the provided error message and displays it into a pop-up window
      * @param error The error message
      */
-    public static void error(Stage window, Throwable error, String errorMessage, Logger logger, PopupMode mode, boolean printStackTrace) {
+    public static void error(Stage window, Throwable error, String errorMessage, Logger logger, AlertMode mode, boolean printStackTrace) {
         // Logging the error (and eventually the stack trace)
         errorMessage = errorMessage + " : " + error;
         if (logger != null) {
@@ -193,7 +229,7 @@ public class App extends Application {
         try {
             Map<String, Object> map = FXMLUtils.getSceneAndController("popupWindow");
             Scene scene = (Scene) map.get("Scene");
-            PopupWindowController controller = (PopupWindowController) map.get("Controller");
+            AlertWindowController controller = (AlertWindowController) map.get("Controller");
             
             Stage errorStage = new Stage();
             errorStage.initModality(Modality.APPLICATION_MODAL);
@@ -206,9 +242,9 @@ public class App extends Application {
             errorStage.showAndWait();
         } catch (IOException ex) {
             if (logger != null) {
-                 logger.error("Failed to popup the window: " + ex.getMessage());
+                 logger.error("Failed to alert the window: " + ex.getMessage());
             } else {
-                 _logger.error("Failed to popup the window: " + ex.getMessage());
+                 _logger.error("Failed to alert the window: " + ex.getMessage());
             }
         }  
     }
@@ -217,7 +253,7 @@ public class App extends Application {
      * Logs the provided warning message and displays it into a pop-up window
      * @param warning The warning message
      */
-    public static void warn(Stage window, String warning, Logger logger, PopupMode mode) {
+    public static void warn(Stage window, String warning, Logger logger, AlertMode mode) {
         // Logging the warning
         if (logger != null) {
             logger.warn("To user -> " + warning);
@@ -226,7 +262,7 @@ public class App extends Application {
         try {
             Map<String, Object> map = FXMLUtils.getSceneAndController("popupWindow");
             Scene scene = (Scene) map.get("Scene");
-            PopupWindowController controller = (PopupWindowController) map.get("Controller");
+            AlertWindowController controller = (AlertWindowController) map.get("Controller");
             
             Stage errorStage = new Stage();
             errorStage.initModality(Modality.APPLICATION_MODAL);
@@ -239,9 +275,9 @@ public class App extends Application {
             errorStage.showAndWait();
         } catch (IOException ex) {
             if (logger != null) {
-                 logger.error("Failed to popup the window: " + ex.getMessage());
+                 logger.error("Failed to alert the window: " + ex.getMessage());
             } else {
-                 _logger.error("Failed to popup the window: " + ex.getMessage());
+                 _logger.error("Failed to alert the window: " + ex.getMessage());
             }
         }
     }
