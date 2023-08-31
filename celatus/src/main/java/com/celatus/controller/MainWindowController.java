@@ -1,5 +1,8 @@
 package com.celatus.controller;
 
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.awt.Toolkit;
 import java.time.LocalDateTime;
 import java.util.Map;
 
@@ -228,11 +231,12 @@ public class MainWindowController extends BaseWindowController {
      */
     private void setPwdTableContextMenu() {
         
-
         ContextMenu pwdContextMenu = new ContextMenu();
         MenuItem editPwdMenuItem = new MenuItem("edit");
         MenuItem deletePwdMenuItem = new MenuItem("delete");
         Menu movePwdMenuItem = new Menu("move to");
+        MenuItem copyPwdMenuItem = new MenuItem("copy password");
+        MenuItem copyIdMenuItem = new MenuItem("copy identifier");
 
         editPwdMenuItem.setOnAction(event -> {
             PasswordEntry selectedPassword = passwordsTable.getSelectionModel().getSelectedItem();
@@ -240,16 +244,24 @@ public class MainWindowController extends BaseWindowController {
         });
 
         deletePwdMenuItem.setOnAction(event -> {
-            App.warn(window, "This is an irreversible action, are you sure you want to delete it?",
-                        logger, AlertMode.YES_AND_NO);
-            if (App.getSignal("yes_signal") == true) {
+            App.warn(this.window, "This is an irreversible action, are you sure you want to delete it?", logger, AlertMode.YES_AND_NO);
+            if (App.getSignal("yes_signal")) {
                 PasswordEntry selectedPassword = passwordsTable.getSelectionModel().getSelectedItem();
                 deletePasswordEntry(selectedPassword);
             } 
         });
 
-        
-        pwdContextMenu.getItems().addAll(editPwdMenuItem, deletePwdMenuItem, movePwdMenuItem);
+        copyPwdMenuItem.setOnAction(event -> {
+            PasswordEntry selectedPassword = passwordsTable.getSelectionModel().getSelectedItem();
+            copyPwdToClipBoard(selectedPassword.getPassword());
+        });
+
+        copyIdMenuItem.setOnAction(event -> {
+            PasswordEntry selectedPassword = passwordsTable.getSelectionModel().getSelectedItem();
+            copyIdToClipBoard(selectedPassword.getIdentifier());
+        });
+
+        pwdContextMenu.getItems().addAll(editPwdMenuItem, deletePwdMenuItem, movePwdMenuItem, copyPwdMenuItem, copyIdMenuItem);
         // Adding all of our categories to the "move to" menu, (except the selected one). This has to be done during runtime
         this.passwordsTable.addEventHandler(ContextMenuEvent.CONTEXT_MENU_REQUESTED, event -> {
             movePwdMenuItem.getItems().clear();
@@ -494,6 +506,16 @@ public class MainWindowController extends BaseWindowController {
         } 
     }
 
+    private void copyPwdToClipBoard(String password) {
+        copyToClipBoard(password);
+        FXMLUtils.summonPopup(this.window, "Password copied to the clipboard");
+    }
+
+    private void copyIdToClipBoard(String identifier) {
+        copyToClipBoard(identifier);
+        FXMLUtils.summonPopup(this.window, "Identifier copied to the clipboard");
+    }
+
     // endregion
 
     // region -----Menu Bar-----
@@ -518,6 +540,16 @@ public class MainWindowController extends BaseWindowController {
 
     // endregion
     
+    // region -----Utils-----
+
+    private void copyToClipBoard(String string) {
+        StringSelection stringSelection = new StringSelection(string);
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(stringSelection, null);
+    }
+
+    // endregion
+
     // endregion
 
 }
