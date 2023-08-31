@@ -18,6 +18,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -226,25 +227,44 @@ public class MainWindowController extends BaseWindowController {
      * Sets the context menu for our password entries table
      */
     private void setPwdTableContextMenu() {
+        
+
         ContextMenu pwdContextMenu = new ContextMenu();
         MenuItem editPwdMenuItem = new MenuItem("edit");
         MenuItem deletePwdMenuItem = new MenuItem("delete");
+        Menu movePwdMenuItem = new Menu("move to");
 
         editPwdMenuItem.setOnAction(event -> {
-            PasswordEntry current = passwordsTable.getSelectionModel().getSelectedItem();
-            openPasswordWindow(current);
+            PasswordEntry selectedPassword = passwordsTable.getSelectionModel().getSelectedItem();
+            openPasswordWindow(selectedPassword);
         });
 
         deletePwdMenuItem.setOnAction(event -> {
             App.warn(window, "This is an irreversible action, are you sure you want to delete it?",
                         logger, AlertMode.YES_AND_NO);
             if (App.getSignal("yes_signal") == true) {
-                PasswordEntry current = passwordsTable.getSelectionModel().getSelectedItem();
-                deletePasswordEntry(current);
+                PasswordEntry selectedPassword = passwordsTable.getSelectionModel().getSelectedItem();
+                deletePasswordEntry(selectedPassword);
             } 
         });
 
-        pwdContextMenu.getItems().addAll(editPwdMenuItem, deletePwdMenuItem);
+        
+        pwdContextMenu.getItems().addAll(editPwdMenuItem, deletePwdMenuItem, movePwdMenuItem);
+        // Adding all of our categories to the "move to" menu, (except the selected one). This has to be done during runtime
+        this.passwordsTable.addEventHandler(ContextMenuEvent.CONTEXT_MENU_REQUESTED, event -> {
+            movePwdMenuItem.getItems().clear();
+            String selectedCategory = categoriesList.getSelectionModel().getSelectedItem();
+            PasswordEntry selectedPassword = passwordsTable.getSelectionModel().getSelectedItem();
+            for (Category category : App.getPasswordsDatabase().getCategories()) {
+                String categoryName = category.getName();
+                if (StringUtils.equals(selectedCategory, categoryName)) {
+                    continue;
+                }
+                MenuItem menuItem = new MenuItem(categoryName);
+                menuItem.setOnAction(_event -> movePasswordEntry(selectedPassword, selectedCategory, categoryName));
+                movePwdMenuItem.getItems().add(menuItem);
+            }
+        });
         this.passwordsTable.setContextMenu(pwdContextMenu);
     }
 
@@ -453,6 +473,27 @@ public class MainWindowController extends BaseWindowController {
         displayPasswords(category);
     }
 
+    /**
+     * Moves a password entry from one category to another
+     * @param pwdEntry
+     * @param oldCatName : old category name, from where we take it
+     * @param newCatName : new category name, in where we put it
+     */
+    private void movePasswordEntry(PasswordEntry pwdEntry, String oldCatName, String newCatName) {
+        PasswordsDatabase database = App.getPasswordsDatabase();
+        Category oldCat = database.getCategory(oldCatName);
+        Category newCat = database.getCategory(newCatName);
+
+        try {
+            database.movePasswordEntry(pwdEntry, oldCat, newCat);
+            FXMLUtils.summonPopup(this.window, "The password has been moved to " + newCatName);
+            logger.info("Moved the password entry : " + pwdEntry.getName() + " from " + oldCatName + " to " + newCatName);
+            displayPasswords(oldCat);
+        } catch (IllegalArgumentException ex) {
+            App.error(this.window, ex, "An error occured", logger, AlertMode.OK, true);
+        } 
+    }
+
     // endregion
 
     // region -----Menu Bar-----
@@ -471,7 +512,7 @@ public class MainWindowController extends BaseWindowController {
         try {
             FXMLUtils.launchDialogWindow(window, "setupWindow");
         } catch (Exception ex) {
-            App.error(window, ex, "An error occured", logger, AlertMode.OK, true);
+            App.error(this.window, ex, "An error occured", logger, AlertMode.OK, true);
         }
     }
 

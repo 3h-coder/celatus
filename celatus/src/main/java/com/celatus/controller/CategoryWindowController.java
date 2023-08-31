@@ -131,7 +131,7 @@ public class CategoryWindowController extends DialogWindowController {
                 label02.setText("This category already exists");
                 return;
             } catch (Exception ex) {
-                App.error(window, ex, "An error occured", logger, AlertMode.OK, true);
+                App.error(this.window, ex, "An error occured", logger, AlertMode.OK, true);
             }
             closeDialog();
             FXMLUtils.summonPopup(App.getWindow(), "The category " + name + " has been added");

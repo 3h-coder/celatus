@@ -104,7 +104,7 @@ public class SetupWindowController extends DialogWindowController {
                 switchToMainWindow();
             }   
         } catch (Exception ex) {
-            App.error(window, ex, "An unexpected error occured", logger, AlertMode.OK, true);
+            App.error(this.window, ex, "An unexpected error occured", logger, AlertMode.OK, true);
             close();
         }
         

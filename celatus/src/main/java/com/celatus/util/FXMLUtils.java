@@ -16,7 +16,6 @@ import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -207,7 +206,7 @@ public class FXMLUtils {
 
     // endregion
 
-    // region =====Context Menu=====
+    // region =====Menus / Menu Items=====
 
     public static ContextMenu createContextMenu(String[] menuItems) {
         ContextMenu contextMenu = new ContextMenu();
@@ -216,6 +215,16 @@ public class FXMLUtils {
             contextMenu.getItems().add(item);
         }
         return contextMenu;
+    }
+
+    public static ArrayList<MenuItem> createMenuItems(String[] menuItems) {
+        ArrayList<MenuItem> result = new ArrayList<>();
+
+        for (String menuItem : menuItems) {
+            MenuItem item = new MenuItem(menuItem);
+            result.add(item);
+        }
+        return result;
     }
 
     // endregion
@@ -250,7 +259,6 @@ public class FXMLUtils {
     }
 
     public static void summonPopup(Stage window, String message) {
-        final double initialY = window.getY();
 
         TextArea textArea = new TextArea(message);
         textArea.setWrapText(true);

@@ -74,7 +74,7 @@ public class BaseWindowController {
             App.launchWindow(fxml);
             window.close();
         } catch (Exception ex) {
-            App.error(window, ex,"An unexpected error occured when trying to open " + fxml, logger, AlertMode.OK, true);
+            App.error(this.window, ex,"An unexpected error occured when trying to open " + fxml, logger, AlertMode.OK, true);
             close();
         }
     }

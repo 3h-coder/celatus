@@ -9,6 +9,8 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane fx:id="rootPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#windowKeyPressed" prefHeight="600.0" prefWidth="900.0" styleClass="AnchorPane" stylesheets="@styles/default.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.celatus.controller.MainWindowController">
@@ -38,6 +40,11 @@
                </menus>
             </MenuBar>
             <Button fx:id="maximizeButton" layoutX="849.0" layoutY="3.0" mnemonicParsing="false" onAction="#maximize" text="M" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="0.0" />
+            <ImageView fx:id="logo" fitHeight="25.0" fitWidth="35.0" layoutX="-82.0" layoutY="-61.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="2.0">
+               <image>
+                  <Image url="@images/logo.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
       <AnchorPane id="columnPane1" fx:id="columnPane1" layoutY="39.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="180.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="27.0">

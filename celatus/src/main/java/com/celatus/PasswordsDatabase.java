@@ -27,18 +27,6 @@ public class PasswordsDatabase {
         this.categories = categories;
     }
 
-    public Category getCategory(String categoryName) {
-        if (categories == null) {
-            return null;
-        }
-        for (Category category : categories) {
-            if(category.getName().equalsIgnoreCase(categoryName)) {
-                return category;
-            }
-        }
-        return null;
-    }
-
     // endregion
 
     // region =====Constructors=====
@@ -64,12 +52,24 @@ public class PasswordsDatabase {
         if (categories == null) {
             return false;
         }
-        for (Category category : categories) {
+        for (Category category : this.categories) {
             if(category.getName().equalsIgnoreCase(categoryName)) {
                 return true;
             }
         }
         return false;
+    }
+
+    public Category getCategory(String categoryName) {
+        if (categories == null) {
+            return null;
+        }
+        for (Category category : categories) {
+            if(category.getName().equalsIgnoreCase(categoryName)) {
+                return category;
+            }
+        }
+        return null;
     }
 
     public void addCategory(Category category) {
@@ -86,6 +86,27 @@ public class PasswordsDatabase {
         if (this.categories != null) {
             this.categories.remove(category);
         }
+    }
+
+    /**
+     * Moves a password Entry from one category to another
+     * @param pwdEntry
+     * @param oldCat
+     * @param newCat
+     */
+    public void movePasswordEntry(PasswordEntry pwdEntry, Category oldCat, Category newCat) {
+        if (!this.hasCategory(newCat)) {
+            throw new IllegalArgumentException("The category " + newCat.getName() + " does not exist.");
+        }
+        if (!this.hasCategory(oldCat)) {
+            throw new IllegalArgumentException("The category " + oldCat.getName() + " does not exist.");
+        }
+        if (!oldCat.hasPasswordEntry(pwdEntry)) {
+            throw new IllegalArgumentException("The category " + oldCat.getName() + " does not have such password entry.");
+        }
+
+        newCat.addPasswordEntry(pwdEntry);
+        oldCat.removePasswordEntry(pwdEntry);
     }
 
     /**
