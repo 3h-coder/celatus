@@ -1,6 +1,4 @@
 - Allow full screen
 - create logo (and its icon)
-- option to change the category for a password
-- option copy the password, or the identifier
 - option to open the website url
-- add ephemeral popups (like the ones on phone)
+- fix popup bugs (window clicking after popup)
