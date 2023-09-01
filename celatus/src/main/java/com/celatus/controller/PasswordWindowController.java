@@ -172,6 +172,7 @@ public class PasswordWindowController extends AlertWindowController {
             closeDialog();
             FXMLUtils.summonPopup(App.getWindow(), "Password entry updated");
         }
+        closeDialog();
         // Refreshing the password entry view in the main window
         controller.displayPasswords(category);
     }

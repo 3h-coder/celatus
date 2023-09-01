@@ -1,8 +1,5 @@
 package com.celatus.controller;
 
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
-import java.awt.Toolkit;
 import java.time.LocalDateTime;
 import java.util.Map;
 
@@ -13,6 +10,7 @@ import com.celatus.DatabaseHandler;
 import com.celatus.PasswordsDatabase;
 import com.celatus.ResizeHelper;
 import com.celatus.util.CustomDateUtils;
+import com.celatus.util.DesktopUtils;
 import com.celatus.util.FXMLUtils;
 
 import javafx.application.Platform;
@@ -188,7 +186,7 @@ public class MainWindowController extends BaseWindowController {
         setCatListViewContextMenu();
         // Setting up the context menu for our categories column pane
         setCatPaneContextMenu();
-        // Setting up the context menu for our passwords row in our passwords table
+        // Setting up the context menu for our passwords table
         setPwdTableContextMenu();
         // Setting up the context menu for our passwords column pane
         setPwdPaneContextMenu();
@@ -237,6 +235,7 @@ public class MainWindowController extends BaseWindowController {
         Menu movePwdMenuItem = new Menu("move to");
         MenuItem copyPwdMenuItem = new MenuItem("copy password");
         MenuItem copyIdMenuItem = new MenuItem("copy identifier");
+        MenuItem openWebMenuItem = new MenuItem("open website url");
 
         editPwdMenuItem.setOnAction(event -> {
             PasswordEntry selectedPassword = passwordsTable.getSelectionModel().getSelectedItem();
@@ -261,12 +260,26 @@ public class MainWindowController extends BaseWindowController {
             copyIdToClipBoard(selectedPassword.getIdentifier());
         });
 
-        pwdContextMenu.getItems().addAll(editPwdMenuItem, deletePwdMenuItem, movePwdMenuItem, copyPwdMenuItem, copyIdMenuItem);
-        // Adding all of our categories to the "move to" menu, (except the selected one). This has to be done during runtime
+        openWebMenuItem.setOnAction(event -> {
+            PasswordEntry selectedPassword = passwordsTable.getSelectionModel().getSelectedItem();
+            App.getHS().showDocument(selectedPassword.getUrl());
+        });
+
+        //  Runtime context menu calculations
         this.passwordsTable.addEventHandler(ContextMenuEvent.CONTEXT_MENU_REQUESTED, event -> {
-            movePwdMenuItem.getItems().clear();
             String selectedCategory = categoriesList.getSelectionModel().getSelectedItem();
             PasswordEntry selectedPassword = passwordsTable.getSelectionModel().getSelectedItem();
+            // No context menu if no selected password
+            if (selectedPassword == null) {
+                pwdContextMenu.getItems().clear();
+                return;
+            // If the context menu saw all of its items get erased, repopulate and show it
+            } else if (pwdContextMenu.getItems().isEmpty()) {
+                pwdContextMenu.getItems().addAll(editPwdMenuItem, deletePwdMenuItem, movePwdMenuItem, copyPwdMenuItem, copyIdMenuItem, openWebMenuItem);
+                pwdContextMenu.show(passwordsTable, event.getScreenX(), event.getScreenY());
+            }
+            // Adding all of our categories to the "move to" menu, (except the selected one).
+            movePwdMenuItem.getItems().clear();
             for (Category category : App.getPasswordsDatabase().getCategories()) {
                 String categoryName = category.getName();
                 if (StringUtils.equals(selectedCategory, categoryName)) {
@@ -276,7 +289,15 @@ public class MainWindowController extends BaseWindowController {
                 menuItem.setOnAction(_event -> movePasswordEntry(selectedPassword, selectedCategory, categoryName));
                 movePwdMenuItem.getItems().add(menuItem);
             }
+            // Disabling the open url option if no url
+            if (StringUtils.isBlank(selectedPassword.getUrl())) {
+                openWebMenuItem.setDisable(true);
+            } else {
+                openWebMenuItem	.setDisable(false);
+            }
         });
+
+        pwdContextMenu.getItems().addAll(editPwdMenuItem, deletePwdMenuItem, movePwdMenuItem, copyPwdMenuItem, copyIdMenuItem, openWebMenuItem);
         this.passwordsTable.setContextMenu(pwdContextMenu);
     }
 
@@ -358,6 +379,7 @@ public class MainWindowController extends BaseWindowController {
      */
     @SuppressWarnings("unchecked")
     private void setPasswordsTable() {
+
         TableColumn nameColumn = new TableColumn("Name");
         TableColumn identifierColumn = new TableColumn("Identifier");
         TableColumn passwordColumn = new TableColumn("Password");
@@ -370,6 +392,7 @@ public class MainWindowController extends BaseWindowController {
         passwordColumn.setCellValueFactory(new PropertyValueFactory<>("password"));
         lastEditedColumn.setCellValueFactory(new PropertyValueFactory<>("lastEditDate"));
 
+        // Hiding the password
         passwordColumn.setCellFactory(column -> {
             return new TableCell<PasswordEntry, String>() {
                 @Override
@@ -384,6 +407,7 @@ public class MainWindowController extends BaseWindowController {
             };
         });
 
+        // Making the date readable
         lastEditedColumn.setCellFactory(column -> {
             return new TableCell<PasswordEntry, LocalDateTime>() {
                 @Override
@@ -507,12 +531,12 @@ public class MainWindowController extends BaseWindowController {
     }
 
     private void copyPwdToClipBoard(String password) {
-        copyToClipBoard(password);
+        DesktopUtils.copyToClipBoard(password);
         FXMLUtils.summonPopup(this.window, "Password copied to the clipboard");
     }
 
     private void copyIdToClipBoard(String identifier) {
-        copyToClipBoard(identifier);
+        DesktopUtils.copyToClipBoard(identifier);
         FXMLUtils.summonPopup(this.window, "Identifier copied to the clipboard");
     }
 
@@ -536,16 +560,6 @@ public class MainWindowController extends BaseWindowController {
         } catch (Exception ex) {
             App.error(this.window, ex, "An error occured", logger, AlertMode.OK, true);
         }
-    }
-
-    // endregion
-    
-    // region -----Utils-----
-
-    private void copyToClipBoard(String string) {
-        StringSelection stringSelection = new StringSelection(string);
-        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-        clipboard.setContents(stringSelection, null);
     }
 
     // endregion

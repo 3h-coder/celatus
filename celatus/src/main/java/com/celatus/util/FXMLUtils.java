@@ -206,7 +206,7 @@ public class FXMLUtils {
 
     // endregion
 
-    // region =====Menus / Menu Items=====
+    // region =====Menu / Context Menu / Menu Items=====
 
     public static ContextMenu createContextMenu(String[] menuItems) {
         ContextMenu contextMenu = new ContextMenu();
@@ -225,6 +225,18 @@ public class FXMLUtils {
             result.add(item);
         }
         return result;
+    }
+
+    public static void disableAll(ContextMenu contextMenu) {
+        for (var item : contextMenu.getItems()) {
+            item.setDisable(true);
+        }
+    }
+
+    public static void enableAll(ContextMenu contextMenu) {
+        for (var item : contextMenu.getItems()) {
+            item.setDisable(false);
+        }
     }
 
     // endregion
@@ -264,9 +276,7 @@ public class FXMLUtils {
         textArea.setWrapText(true);
         textArea.setEditable(false);
         textArea.setMouseTransparent(true);
-        // textArea.getStyleClass().add("popup");
         textArea.getStylesheets().add(App.class.getResource("styles/default.css").toExternalForm());
-        //textArea.setStyle("-fx-padding: 0 0 0 0; -fx-background-radius: 0 ;-fx-alignment: center; -fx-background-color: transparent; -fx-control-inner-background: black; -fx-control-inner-background-radius: 0");
         adjustTextAreaDimensions(textArea);
         
         Popup popup = new Popup();

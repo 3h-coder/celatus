@@ -11,15 +11,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
+import javafx.application.HostServices;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -50,6 +44,7 @@ public class App extends Application {
     private static Map<String, Object> tmpVariables; // used to store any variable at runtime, such as signals 
     // -> (signals are boolean variables representing a signal sent from one window to the whole application)
 
+    private static HostServices hostServices;
     // endregion 
 
     // region =====Getters and Setters=====
@@ -98,6 +93,10 @@ public class App extends Application {
         return tmpVariables;
     }
 
+    public static HostServices getHS() {
+        return hostServices;
+    }
+
     // endregion
 
     // region =====Main Methods=====
@@ -122,6 +121,7 @@ public class App extends Application {
             
         }));
         
+        hostServices = getHostServices();
         if (DatabaseHandler.dbFileExists()) {
             launchWindow(stage, "entryWindow");
         } else {
