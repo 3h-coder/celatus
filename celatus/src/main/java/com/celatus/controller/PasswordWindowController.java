@@ -157,7 +157,7 @@ public class PasswordWindowController extends AlertWindowController {
             logger.info("Adding the following password entry to the " + this.category.getName() + "category : " + pwdEntry);
 
             closeDialog();
-            FXMLUtils.summonPopup(App.getWindow(), "Password entry created");
+            summonPopup(App.getWindow(), "Password entry created");
         // Updating the exisiting password entry
         } else if (changesDetected()) {
 
@@ -170,7 +170,7 @@ public class PasswordWindowController extends AlertWindowController {
             inputPwdEntry.setLastEditDate(LocalDateTime.now());
 
             closeDialog();
-            FXMLUtils.summonPopup(App.getWindow(), "Password entry updated");
+            summonPopup(App.getWindow(), "Password entry updated");
         }
         closeDialog();
         // Refreshing the password entry view in the main window

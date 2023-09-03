@@ -98,7 +98,7 @@ public class SetupWindowController extends DialogWindowController {
             if (App.getSignal("master_password_reset_signal")) {
                 AuthHandler.setAppEntry(password, true);
                 closeDialog();
-                FXMLUtils.summonPopup(App.getWindow(), "Master password successfully changed");
+                summonPopup(App.getWindow(), "Master password successfully changed");
             } else {
                 AuthHandler.setAppEntry(password, false);
                 switchToMainWindow();

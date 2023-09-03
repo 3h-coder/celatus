@@ -12,8 +12,6 @@ import java.util.HashMap;
 
 import com.celatus.App;
 
-import javafx.animation.FadeTransition;
-import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -28,10 +26,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Duration;
 
 
 public class FXMLUtils {
@@ -148,7 +144,7 @@ public class FXMLUtils {
 
         textArea.setMaxWidth(MAX_WIDTH);
 
-        double textwidth = computeTextWidth(textArea.getText(), textArea.getFont());
+        double textwidth = computeTextWidth(textArea.getText(), textArea.getFont()) + 2;
         // logger.debug("textwidth: " + textwidth);
         int linesNeeded = (int)Math.ceil(textwidth / MAX_WIDTH);
         // logger.debug("linesNeeded: " + linesNeeded);
@@ -195,7 +191,7 @@ public class FXMLUtils {
     @FXML
     public static <T> void adjustTableViewHeight(TableView<T> tableView) {
         double cellSize = tableView.getFixedCellSize();
-        tableView.setPrefHeight((tableView.getItems().size() * cellSize + 2) + 24.0);
+        tableView.setPrefHeight((tableView.getItems().size() * cellSize + 2) + cellSize);
     }
 
     @FXML
@@ -268,39 +264,6 @@ public class FXMLUtils {
                 return;
             }
         }
-    }
-
-    public static void summonPopup(Stage window, String message) {
-
-        TextArea textArea = new TextArea(message);
-        textArea.setWrapText(true);
-        textArea.setEditable(false);
-        textArea.setMouseTransparent(true);
-        textArea.getStylesheets().add(App.class.getResource("styles/default.css").toExternalForm());
-        adjustTextAreaDimensions(textArea);
-        
-        Popup popup = new Popup();
-
-        // The popup is located at the window's middle
-        popup.setX(window.getX() + window.getWidth() / 2);
-        popup.setY(window.getY());
-
-        popup.getContent().addAll(textArea);
-        popup.setAutoHide(true);
-
-        // Create a TranslateTransition to move the popup down right under the menu bar row
-        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.1), popup.getContent().get(0));
-        translateTransition.setByY(28);
-
-        // Create a FadeTransition
-        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(4.9), popup.getContent().get(0));
-        fadeTransition.setFromValue(1);
-        fadeTransition.setToValue(0);
-        fadeTransition.setOnFinished(event -> popup.hide());
-
-        popup.show(window);
-        translateTransition.play();
-        fadeTransition.play();
     }
 
     // endregion

@@ -67,16 +67,12 @@
     -fx-highlight-fill: #8c8c8c;
 }
 
-/*.popup {
-    -fx-background-radius: 5;
-    -fx-background-color :  #353536;
-    -fx-text-fill: white;
+.popup {
+    -fx-border-radius: 5px;
+    -fx-border-color: #8c8c8c;
+    -fx-border-width: 1 1 1 1
 }
 
-.popup .content {
-    -fx-background-radius: 0;
-    -fx-background-color :  #353536;
-}*/
 
 .context-menu {
     -fx-background-radius: 5px;
@@ -199,6 +195,16 @@
 
 #passwordsTable .table-row-cell:selected{
     -fx-background-color: #8c8c8c
+}
+
+#passwordsTable .scroll-bar:horizontal{
+    -fx-min-width: 0;
+    -fx-pref-width: 0;
+    -fx-max-width: 0;
+
+    -fx-min-height: 0;
+    -fx-pref-height: 0;
+    -fx-max-height: 0;
 }
 
 /*#passwordsTable .table-row-cell:odd {

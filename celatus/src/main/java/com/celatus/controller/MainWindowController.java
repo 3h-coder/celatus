@@ -169,7 +169,7 @@ public class MainWindowController extends BaseWindowController {
         }
         else {
             FXMLUtils.adjustTextAreaHeight(catDescription);
-        }
+        }      
     }
 
     // endregion
@@ -491,7 +491,7 @@ public class MainWindowController extends BaseWindowController {
         catDescription.setPrefHeight(0);
         passwordsTable.getItems().clear();
         passwordsTable.setPrefHeight(0);
-        FXMLUtils.summonPopup(window, "Category " + categoryName + " deleted");
+        summonPopup(window, "Category " + categoryName + " deleted");
     }
 
     /**
@@ -522,7 +522,7 @@ public class MainWindowController extends BaseWindowController {
 
         try {
             database.movePasswordEntry(pwdEntry, oldCat, newCat);
-            FXMLUtils.summonPopup(this.window, "The password has been moved to " + newCatName);
+            summonPopup(this.window, "The password has been moved to " + newCatName);
             logger.info("Moved the password entry : " + pwdEntry.getName() + " from " + oldCatName + " to " + newCatName);
             displayPasswords(oldCat);
         } catch (IllegalArgumentException ex) {
@@ -532,12 +532,12 @@ public class MainWindowController extends BaseWindowController {
 
     private void copyPwdToClipBoard(String password) {
         DesktopUtils.copyToClipBoard(password);
-        FXMLUtils.summonPopup(this.window, "Password copied to the clipboard");
+        summonPopup(this.window, "Password copied to the clipboard");
     }
 
     private void copyIdToClipBoard(String identifier) {
         DesktopUtils.copyToClipBoard(identifier);
-        FXMLUtils.summonPopup(this.window, "Identifier copied to the clipboard");
+        summonPopup(this.window, "Identifier copied to the clipboard");
     }
 
     // endregion
@@ -547,7 +547,7 @@ public class MainWindowController extends BaseWindowController {
     public void saveDatabase() {
         try {
             DatabaseHandler.saveDatabase();
-            FXMLUtils.summonPopup(window, "Database successfully saved");
+            summonPopup(window, "Database successfully saved");
         } catch (Exception ex) {
             logger.error("An unexpected error occured while trying to save the passwords database: " + ex.getMessage());
         }

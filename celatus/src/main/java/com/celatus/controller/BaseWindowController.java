@@ -8,6 +8,8 @@ import org.apache.logging.log4j.Logger;
 import com.celatus.App;
 import com.celatus.util.FXMLUtils;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
@@ -15,14 +17,24 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.Color;
+import javafx.stage.Popup;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+
 
 /**
  * Mother class of all of our controllers, coontains all common behaviour to all window controllers
@@ -35,6 +47,8 @@ public class BaseWindowController {
 
     @FXML
     protected AnchorPane rootPane;
+    @FXML
+    protected AnchorPane rowPane1;
     @FXML
     protected Button minimizeButton;
     @FXML
@@ -85,6 +99,41 @@ public class BaseWindowController {
     public void switchToMainWindow() {
         final String MAIN_WINDOW = "mainWindow";
         switchWindow(MAIN_WINDOW);
+    }
+
+    public void summonPopup(Stage window, String message) {
+
+        TextArea textArea = new TextArea(message);
+        textArea.setWrapText(true);
+        textArea.setEditable(false);
+        textArea.setMouseTransparent(true);
+        textArea.getStylesheets().add(App.class.getResource("styles/default.css").toExternalForm());
+        textArea.getStyleClass().add("popup");
+        //textArea.setBorder(new Border(new BorderStroke(Color.valueOf("#8c8c8c"), BorderStrokeStyle.SOLID, new CornerRadii(5.0), BorderWidths.DEFAULT)));
+        FXMLUtils.adjustTextAreaDimensions(textArea);
+        
+        Popup popup = new Popup();
+
+        // The popup is located at the window's middle
+        popup.setX(window.getX() + window.getWidth() / 2);
+        popup.setY(window.getY());
+
+        popup.getContent().addAll(textArea);
+        //popup.setAutoHide(true);
+
+        // Create a TranslateTransition to move the popup down right under the menu bar row
+        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.1), popup.getContent().get(0));
+        translateTransition.setByY(rowPane1.getHeight() / 2);
+
+        // Create a FadeTransition
+        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(4.9), popup.getContent().get(0));
+        fadeTransition.setFromValue(1);
+        fadeTransition.setToValue(0);
+        fadeTransition.setOnFinished(event -> popup.hide());
+
+        popup.show(window);
+        translateTransition.play();
+        fadeTransition.play();
     }
 
     /**
