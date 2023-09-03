@@ -37,9 +37,9 @@ public class PasswordWindowController extends AlertWindowController {
     @FXML
     private TextField emailField;
     @FXML
-    private PasswordField passwordField;
+    private PasswordField pwdField;
     @FXML
-    private TextField revealedPasswordField;
+    private TextField revealedPwdField;
     @FXML
     private TextArea passwordNotes;
     @FXML
@@ -90,13 +90,13 @@ public class PasswordWindowController extends AlertWindowController {
         Platform.runLater(() -> {
             fillFields();
             // Dynamic password update
-            passwordField.textProperty().addListener((observable, oldValue, newValue) -> {
+            pwdField.textProperty().addListener((observable, oldValue, newValue) -> {
                 password = newValue;
-                revealedPasswordField.setText(password);
+                revealedPwdField.setText(password);
             });
-            revealedPasswordField.textProperty().addListener((observable, oldValue, newValue) -> {
+            revealedPwdField.textProperty().addListener((observable, oldValue, newValue) -> {
                 password = newValue;
-                passwordField.setText(password);
+                pwdField.setText(password);
             });
         });
     }
@@ -118,8 +118,8 @@ public class PasswordWindowController extends AlertWindowController {
         identifierField.setText(inputPwdEntry.getIdentifier());
         emailField.setText(inputPwdEntry.getEmail());
         this.password = inputPwdEntry.getPassword();
-        passwordField.setText(inputPwdEntry.getPassword());
-        revealedPasswordField.setText(inputPwdEntry.getPassword());
+        pwdField.setText(inputPwdEntry.getPassword());
+        revealedPwdField.setText(inputPwdEntry.getPassword());
         passwordNotes.setText(inputPwdEntry.getNotes());
         createdLabel.setText("Created : " + CustomDateUtils.prettyDate(inputPwdEntry.getCreationDate()));
         lastEditedLabel.setText("Last edited : " + CustomDateUtils.prettyDate(inputPwdEntry.getLastEditDate()));
@@ -176,6 +176,22 @@ public class PasswordWindowController extends AlertWindowController {
         // Refreshing the password entry view in the main window
         controller.displayPasswords(category);
     }
+
+    @FXML
+    private void viewButtonClicked() {
+        if ("View".equals(viewButton.getText())) {
+            viewButton.setText("Hide");
+            pwdField.setVisible(false);
+            revealedPwdField.setVisible(true);
+            revealedPwdField.setText(password);
+        } else {
+            viewButton.setText("View");
+            revealedPwdField.setVisible(false);
+            pwdField.setVisible(true);
+            pwdField.setText(password);
+        } 
+    }
+    // region -----Utils-----
 
     /**
      * Separate method to check that all of our required fields are not blank
@@ -236,9 +252,15 @@ public class PasswordWindowController extends AlertWindowController {
         if (!StringUtils.equals(inputPwdEntry.getNotes(), notes)) {
             return true;
         }
+        if (!StringUtils.equals(inputPwdEntry.getPassword(), password)) {
+            return true;
+        }
 
         return false;
     }
+
+    // endregion
+
 
     // endregion
     

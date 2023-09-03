@@ -132,35 +132,6 @@ public class App extends Application {
              
     }
 
-    /*public void start(final Stage primaryStage) {
-        primaryStage.setTitle("Popup Example");
-        final Popup popup = new Popup();
-        popup.setX(300);
-        popup.setY(200);
-        //popup.setAutoHide(true);
-        //popup.getContent().addAll(new Circle(25, 25, 50, Color.AQUAMARINE));
-        TextArea textArea = new TextArea();
-        textArea.setPrefWidth(300.0);
-        textArea.setPrefHeight(300.0);
-        popup.getContent().addAll(textArea);
-
-        Button show = new Button("Show");
-        show.setOnAction(event -> {
-            popup.show(primaryStage);
-        });
-
-        Button hide = new Button("Hide");
-        hide.setOnAction(event -> {
-            popup.hide();
-        });
-
-        HBox layout = new HBox(10);
-        layout.setStyle("-fx-background-color: cornsilk; -fx-padding: 10;");
-        layout.getChildren().addAll(show, hide);
-        primaryStage.setScene(new Scene(layout));
-        primaryStage.show();
-    }*/
-
     public static void main(String[] args) {
         Thread.setDefaultUncaughtExceptionHandler(new CustomUncaughtExceptionHandler());
         launch();

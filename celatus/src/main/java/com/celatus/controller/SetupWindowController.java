@@ -2,7 +2,6 @@ package com.celatus.controller;
 
 import com.celatus.App;
 import com.celatus.AuthHandler;
-import com.celatus.util.FXMLUtils;
 
 import java.util.Map;
 
@@ -47,6 +46,7 @@ public class SetupWindowController extends DialogWindowController {
 
     private String password;
     private String password2;
+    private String rollbackPassword2; // used to prevent copy pasting into the confirm master password field
 
     // endregion
 
@@ -56,6 +56,25 @@ public class SetupWindowController extends DialogWindowController {
     public void initialize() {
         super.initialize();
         pwdField2.setContextMenu(new ContextMenu());
+        // Dynamic password update
+        pwdField.textProperty().addListener((observable, oldValue, newValue) -> {
+            password = newValue;
+            revealedPwdField.setText(password);
+        });
+        revealedPwdField.textProperty().addListener((observable, oldValue, newValue) -> {
+            password = newValue;
+            pwdField.setText(password);
+        });
+        pwdField2.textProperty().addListener((observable, oldValue, newValue) -> {
+            rollbackPassword2 = oldValue;
+            password2 = newValue;
+            revealedPwdField2.setText(password2);
+        });
+        revealedPwdField2.textProperty().addListener((observable, oldValue, newValue) -> {
+            rollbackPassword2 = oldValue;
+            password2 = newValue;
+            pwdField2.setText(password2);
+        });
     }
 
     @FXML
@@ -64,27 +83,12 @@ public class SetupWindowController extends DialogWindowController {
         label04.setVisible(true);
     } 
 
-    @FXML
-    private void setPasswordsValue() {
-        if ("View".equals(viewButton.getText())) {
-            password = pwdField.getText();
-        } else {
-            password = revealedPwdField.getText();
-        }
-        if ("View".equals(viewButton2.getText())) {
-            password2 = pwdField2.getText();
-        } else {
-            password2 = revealedPwdField2.getText();
-        }
-    }
-
     /**
      * Method used to open the access to the App's main window after checking the submitted master passwords.
      */
     @FXML
     private void submitMasterPasswords() {
         // We check the master password
-        setPasswordsValue();
         Map<Boolean, String> passwordsCheckInfo = AuthHandler.checkPasswords(password, password2);
         boolean validPasswords = (boolean)passwordsCheckInfo.keySet().toArray()[0];
         if (!validPasswords) {
@@ -98,6 +102,7 @@ public class SetupWindowController extends DialogWindowController {
             if (App.getSignal("master_password_reset_signal")) {
                 AuthHandler.setAppEntry(password, true);
                 closeDialog();
+                logger.info("Master password changed");
                 summonPopup(App.getWindow(), "Master password successfully changed");
             } else {
                 AuthHandler.setAppEntry(password, false);
@@ -135,23 +140,19 @@ public class SetupWindowController extends DialogWindowController {
         // Prevent copy pasting into this field
         if (event.isControlDown() && event.getCode() == KeyCode.V) {
             warning("Copy pasting is not allowed in this field");
-            pwdField2.setText(password2);
-            pwdField2.positionCaret(password2.length());
-        } else {
-            password2 = pwdField2.getText();
+            pwdField2.setText(rollbackPassword2);
+            pwdField2.positionCaret(rollbackPassword2.length());
         }
     }
 
     @FXML
     private void viewButtonClicked() {
         if ("View".equals(viewButton.getText())) {
-            password = pwdField.getText();
             viewButton.setText("Hide");
             pwdField.setVisible(false);
             revealedPwdField.setVisible(true);
             revealedPwdField.setText(password);
         } else {
-            password = revealedPwdField.getText();
             viewButton.setText("View");
             revealedPwdField.setVisible(false);
             pwdField.setVisible(true);

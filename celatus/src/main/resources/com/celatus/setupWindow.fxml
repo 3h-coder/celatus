@@ -20,7 +20,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label fx:id="label02" prefHeight="17.0" prefWidth="400.0" text="Please enter your master password " AnchorPane.bottomAnchor="160.0" AnchorPane.leftAnchor="20.0" />
+            <Label fx:id="label02" prefHeight="17.0" prefWidth="400.0" text="Master password" AnchorPane.bottomAnchor="160.0" AnchorPane.leftAnchor="20.0" />
             <PasswordField fx:id="pwdField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#goToPwdField2" onKeyPressed="#pwdFieldKeyPressed" prefHeight="25.0" prefWidth="400.0" styleClass="PasswordField" AnchorPane.bottomAnchor="130.0" AnchorPane.leftAnchor="20.0" />
             <TextField fx:id="revealedPwdField" onAction="#goToPwdField2" onKeyPressed="#pwdFieldKeyPressed" prefHeight="25.0" prefWidth="400.0" styleClass="PasswordField" visible="false" AnchorPane.bottomAnchor="130.0" AnchorPane.leftAnchor="20.0" />
             <Button fx:id="viewButton" mnemonicParsing="false" onAction="#viewButtonClicked" text="View" AnchorPane.bottomAnchor="130.0" AnchorPane.rightAnchor="20.0">
@@ -30,7 +30,7 @@
             </Button>
             <Label fx:id="label03" prefHeight="17.0" prefWidth="390.0" text="Confirm master password" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="20.0" />
             <PasswordField fx:id="pwdField2" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#submitMasterPasswords" onKeyPressed="#pwdField2KeyPressed" prefHeight="25.0" prefWidth="400.0" styleClass="PasswordField" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="20.0" />
-            <TextField fx:id="revealedPwdField2" onAction="#submitMasterPasswords" prefHeight="25.0" prefWidth="400.0" styleClass="PasswordField" visible="false" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="20.0" />
+            <TextField fx:id="revealedPwdField2" onAction="#submitMasterPasswords" onKeyPressed="#pwdField2KeyPressed" prefHeight="25.0" prefWidth="400.0" styleClass="PasswordField" visible="false" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="20.0" />
             <Button fx:id="viewButton2" mnemonicParsing="false" onAction="#viewButton2Clicked" text="View" AnchorPane.bottomAnchor="70.0" AnchorPane.rightAnchor="20.0">
                <cursor>
                   <Cursor fx:constant="HAND" />

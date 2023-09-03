@@ -3,6 +3,8 @@ package com.celatus;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.celatus.util.CryptoUtils;
 
 
@@ -21,6 +23,14 @@ public class AuthHandler {
     public static Map<Boolean, String> checkPasswords(String password1, String password2) {
 
         Map<Boolean, String> result = new HashMap();
+        if (StringUtils.isBlank(password1)) {
+            result.put(false, "Please enter your master password");
+            return result;
+        }
+        if (StringUtils.isBlank(password2)) {
+            result.put(false, "Please confirm the master password");
+            return result;
+        }
         if (!password1.equals(password2)) {
             result.put(false, "Both passwords do not match");
         } else {
