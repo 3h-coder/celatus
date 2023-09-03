@@ -17,6 +17,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -115,7 +116,7 @@ public class BaseWindowController {
         Popup popup = new Popup();
 
         // The popup is located at the window's middle
-        popup.setX(window.getX() + window.getWidth() / 2);
+        popup.setX(window.getX() + (window.getWidth() / 2) - (textArea.getWidth() / 2));
         popup.setY(window.getY());
 
         popup.getContent().addAll(textArea);
@@ -123,7 +124,7 @@ public class BaseWindowController {
 
         // Create a TranslateTransition to move the popup down right under the menu bar row
         TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.1), popup.getContent().get(0));
-        translateTransition.setByY(rowPane1.getHeight() / 2);
+        translateTransition.setByY((int)(rowPane1.getHeight() / 2)); // Converting it to int otherwise the text is blurry
 
         // Create a FadeTransition
         FadeTransition fadeTransition = new FadeTransition(Duration.seconds(4.9), popup.getContent().get(0));
