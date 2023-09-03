@@ -203,5 +203,34 @@ public class CryptoUtils {
         byte[] decryptedBytes = cipher.doFinal(encryptedBytes);
         return new String(decryptedBytes, StandardCharsets.UTF_8);
     }
+
+    /**
+     * To be completed
+     * @param maxLength
+     * @return
+     */
+    public static String generateRandomPwd(int maxLength) {
+
+        if (maxLength <= 0) {
+            throw new IllegalArgumentException("Maximum length must be greater than 0");
+        }
+
+        final String LOWERCASE_CHARACTERS = "abcdefghijklmnopqrstuvwxyz";
+        final String UPPERCASE_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        final String NUMERIC_CHARACTERS = "0123456789";
+        final String SPECIAL_CHARACTERS = "!@#$%^&*()-_+=<>?";
+        String allCharacters = LOWERCASE_CHARACTERS + UPPERCASE_CHARACTERS + NUMERIC_CHARACTERS + SPECIAL_CHARACTERS;
+
+        SecureRandom random = new SecureRandom();
+        String result = "";
+
+        for (int i = 0; i < maxLength; i++) {
+            int randomIndex = random.nextInt(allCharacters.length());
+            char randomChar = allCharacters.charAt(randomIndex);
+            result += randomChar;
+        }
+        
+        return result;
+    }
     // endregion
 }

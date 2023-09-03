@@ -8,6 +8,7 @@ import com.celatus.App;
 import com.celatus.Category;
 import com.celatus.PasswordEntry;
 import com.celatus.PasswordsDatabase;
+import com.celatus.util.CryptoUtils;
 import com.celatus.util.CustomDateUtils;
 import com.celatus.util.FXMLUtils;
 
@@ -190,6 +191,12 @@ public class PasswordWindowController extends AlertWindowController {
             pwdField.setVisible(true);
             pwdField.setText(password);
         } 
+    }
+
+    @FXML
+    private void generatePwd() {
+        String generatedPwd = CryptoUtils.generateRandomPwd(12);
+        pwdField.setText(generatedPwd);
     }
     // region -----Utils-----
 
