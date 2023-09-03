@@ -195,9 +195,10 @@ public class PasswordWindowController extends AlertWindowController {
 
     @FXML
     private void generatePwd() {
-        String generatedPwd = CryptoUtils.generateRandomPwd(12);
+        String generatedPwd = CryptoUtils.generateRandomPwd(16);
         pwdField.setText(generatedPwd);
     }
+
     // region -----Utils-----
 
     /**
@@ -233,7 +234,7 @@ public class PasswordWindowController extends AlertWindowController {
     }
 
     /**
-     * Detects whether or nto changes have been made to the password entry (in case of editing)
+     * Detects whether changes have been made or not to the password entry (in case of editing)
      * @return
      */
     private boolean changesDetected() {

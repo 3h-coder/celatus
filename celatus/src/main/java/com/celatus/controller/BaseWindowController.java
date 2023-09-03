@@ -213,14 +213,14 @@ public class BaseWindowController {
         stage.setIconified(true);
     }
 
-    public boolean isMaximized() {
+    /*public boolean isMaximized() {
         Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
         double minX = primaryScreenBounds.getMinX();
         double minY = primaryScreenBounds.getMinY();
         double screenWidth = primaryScreenBounds.getWidth();
         double screenHeight = primaryScreenBounds.getHeight();
         return window.getWidth() == screenWidth && window.getHeight() == screenHeight && window.getX() == minX && window.getY() == minY;
-    }
+    }*/
 
     public void maximize() {
         Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();

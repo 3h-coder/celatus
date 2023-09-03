@@ -151,12 +151,10 @@ public class SetupWindowController extends DialogWindowController {
             viewButton.setText("Hide");
             pwdField.setVisible(false);
             revealedPwdField.setVisible(true);
-            revealedPwdField.setText(password);
         } else {
             viewButton.setText("View");
             revealedPwdField.setVisible(false);
             pwdField.setVisible(true);
-            pwdField.setText(password);
         }    
     }
 
@@ -166,12 +164,10 @@ public class SetupWindowController extends DialogWindowController {
             viewButton2.setText("Hide");
             pwdField2.setVisible(false);
             revealedPwdField2.setVisible(true);
-            revealedPwdField2.setText(password2);
         } else {
             viewButton2.setText("View");
             revealedPwdField2.setVisible(false);
             pwdField2.setVisible(true);
-            pwdField2.setText(password2);
         } 
     }
 

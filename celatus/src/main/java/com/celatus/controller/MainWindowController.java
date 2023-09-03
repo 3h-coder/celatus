@@ -27,6 +27,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.SplitPane;
@@ -139,6 +141,18 @@ public class MainWindowController extends BaseWindowController {
         }
     }
 
+    /**
+     * Used whenever we resize the window, to prevent a glitch showing an empty description
+     */
+    private void controlCatDescription() {
+        if (StringUtils.isBlank(catDescription.getText())) {
+            catDescription.setPrefHeight(0);
+        }
+        else {
+            FXMLUtils.adjustTextAreaHeight(catDescription);
+        }
+    }
+
     // endregion
 
     // region =====Event Methods=====
@@ -164,14 +178,25 @@ public class MainWindowController extends BaseWindowController {
     @Override
     public void maximize() {
         super.maximize();
-        if (StringUtils.isBlank(catDescription.getText())) {
-            catDescription.setPrefHeight(0);
-        }
-        else {
-            FXMLUtils.adjustTextAreaHeight(catDescription);
-        }      
+        controlCatDescription();      
     }
 
+    @Override
+    public void windowKeyPressed(KeyEvent event) {
+        super.windowKeyPressed(event);
+        // Full screen
+        if (event.getCode() == KeyCode.F11) {
+            if (window.isMaximized()) {
+                window.setMaximized(false);
+                controlCatDescription();
+            } else {
+                window.setMaximized(true);
+            }
+        } else if (event.getCode() == KeyCode.ESCAPE && window.isMaximized()) {
+            window.setMaximized(false);
+            controlCatDescription();
+        }
+    }
     // endregion
 
     // region =====Back end / Menu Item Methods=====

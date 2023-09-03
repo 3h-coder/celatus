@@ -1,4 +1,4 @@
 - Allow full screen
+- keybinds and user settings
+- implement the saveRecords() method
 - create logo (and its icon)
-- option to open the website url
-- fix popup bugs (window clicking after popup)

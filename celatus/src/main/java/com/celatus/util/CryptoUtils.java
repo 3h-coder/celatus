@@ -206,12 +206,12 @@ public class CryptoUtils {
 
     /**
      * To be completed
-     * @param maxLength
+     * @param length
      * @return
      */
-    public static String generateRandomPwd(int maxLength) {
+    public static String generateRandomPwd(int length) {
 
-        if (maxLength <= 0) {
+        if (length <= 0) {
             throw new IllegalArgumentException("Maximum length must be greater than 0");
         }
 
@@ -219,18 +219,33 @@ public class CryptoUtils {
         final String UPPERCASE_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         final String NUMERIC_CHARACTERS = "0123456789";
         final String SPECIAL_CHARACTERS = "!@#$%^&*()-_+=<>?";
+
+        String password = "";
+        SecureRandom random = new SecureRandom();
+
+        // Ensure at least one uppercase character, one number, and one special character
+        password += UPPERCASE_CHARACTERS.charAt(random.nextInt(UPPERCASE_CHARACTERS.length()));
+        password += NUMERIC_CHARACTERS.charAt(random.nextInt(NUMERIC_CHARACTERS.length()));
+        password += SPECIAL_CHARACTERS.charAt(random.nextInt(SPECIAL_CHARACTERS.length()));
+
         String allCharacters = LOWERCASE_CHARACTERS + UPPERCASE_CHARACTERS + NUMERIC_CHARACTERS + SPECIAL_CHARACTERS;
 
-        SecureRandom random = new SecureRandom();
-        String result = "";
-
-        for (int i = 0; i < maxLength; i++) {
+        for (int i = 3; i < length; i++) { // Start from 3 to account for the initial characters
             int randomIndex = random.nextInt(allCharacters.length());
             char randomChar = allCharacters.charAt(randomIndex);
-            result += randomChar;
+            password += randomChar;
+        }
+
+        // Shuffle the password to randomize the positions of the required characters
+        char[] passwordChars = password.toString().toCharArray();
+        for (int i = passwordChars.length - 1; i > 0; i--) {
+            int swapIndex = random.nextInt(i + 1);
+            char temp = passwordChars[i];
+            passwordChars[i] = passwordChars[swapIndex];
+            passwordChars[swapIndex] = temp;
         }
         
-        return result;
+        return new String(passwordChars);
     }
     // endregion
 }
