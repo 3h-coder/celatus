@@ -29,6 +29,12 @@ public class MapUtils {
         return json;
     }
 
+    public static <T> Map<String, T> jsonToMap(String json) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.findAndRegisterModules();
+        return (Map<String, T>) jsonToObject(json, Map.class);
+    }
+
     public static <T> String objectToJson(T obj, boolean pretty) {
         String json = null;
         ObjectMapper objectMapper = new ObjectMapper();

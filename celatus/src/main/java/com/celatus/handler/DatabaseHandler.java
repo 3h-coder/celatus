@@ -1,4 +1,4 @@
-package com.celatus;
+package com.celatus.handler;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,6 +6,7 @@ import java.io.IOException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.celatus.App;
 import com.celatus.controller.AlertMode;
 import com.celatus.util.CryptoUtils;
 

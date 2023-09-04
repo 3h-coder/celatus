@@ -156,9 +156,6 @@ public class PasswordWindowController extends AlertWindowController {
             PasswordEntry pwdEntry = new PasswordEntry(name, url, notes, identifier, email, this.password);
             this.category.addPasswordEntry(pwdEntry);
             logger.info("Adding the following password entry to the " + this.category.getName() + "category : " + pwdEntry);
-
-            closeDialog();
-            summonPopup(App.getWindow(), "Password entry created");
         // Updating the exisiting password entry
         } else if (changesDetected()) {
 

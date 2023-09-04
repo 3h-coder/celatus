@@ -6,11 +6,13 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane fx:id="rootPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#windowKeyPressed" prefHeight="600.0" prefWidth="900.0" styleClass="AnchorPane" stylesheets="@styles/default.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.celatus.controller.MainWindowController">
@@ -21,26 +23,42 @@
             <Button fx:id="minimizeButton" layoutX="814.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#minimize" prefHeight="25.0" prefWidth="25.0" text="_" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="0.0" />
             <MenuBar fx:id="menuBar" layoutX="136.0" layoutY="8.0" prefHeight="26.0" prefWidth="155.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="715.0" AnchorPane.topAnchor="0.0">
                <menus>
-                  <Menu mnemonicParsing="false" text="File">
+                  <Menu fx:id="fileMenu" mnemonicParsing="false" text="File">
                      <items>
-                        <MenuItem mnemonicParsing="false" onAction="#saveDatabase" text="Save" />
-                        <MenuItem mnemonicParsing="false" onAction="#resetMasterPassword" text="Change master password" />
+                        <MenuItem mnemonicParsing="false" onAction="#saveDatabase" text="Save">
+                           <accelerator>
+                              <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                           </accelerator>
+                        </MenuItem>
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" onAction="#resetMasterPassword" text="Change master password">
+                           <accelerator>
+                              <KeyCodeCombination alt="DOWN" code="M" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                           </accelerator>
+                        </MenuItem>
                      </items>
                   </Menu>
-                  <Menu mnemonicParsing="false" text="Settings">
+                  <Menu fx:id="settingsMenu" mnemonicParsing="false" text="Settings">
                      <items>
-                        <MenuItem mnemonicParsing="false" text="Theme" />
+                        <Menu mnemonicParsing="false" text="Theme">
+                          <items>
+                            <MenuItem mnemonicParsing="false" text="Action 1" />
+                          </items>
+                        </Menu>
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" text="Open settings" />
                      </items>
                   </Menu>
-                  <Menu mnemonicParsing="false" text="Help">
+                  <Menu fx:id="helpMenu" mnemonicParsing="false" text="Help">
                      <items>
                         <MenuItem mnemonicParsing="false" text="About" />
+                        <MenuItem mnemonicParsing="false" text="Release Notes" />
                      </items>
                   </Menu>
                </menus>
             </MenuBar>
             <Button fx:id="maximizeButton" layoutX="849.0" layoutY="3.0" mnemonicParsing="false" onAction="#maximize" text="M" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="0.0" />
-            <ImageView fx:id="logo" fitHeight="25.0" fitWidth="35.0" layoutX="-82.0" layoutY="-61.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="2.0">
+            <ImageView fx:id="logo" fitHeight="25.0" fitWidth="25.0" layoutX="-82.0" layoutY="-61.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="2.0">
                <image>
                   <Image url="@images/logo.png" />
                </image>
@@ -73,7 +91,7 @@
             </AnchorPane>
             <AnchorPane fx:id="blankSpacePane" prefHeight="388.0" prefWidth="720.0">
                <children>
-                  <Label fx:id="addPwdLabel" alignment="CENTER" opacity="0.85" text="Right click + new password" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="250.0" AnchorPane.topAnchor="100.0" />
+                  <Label fx:id="addPwdLabel" alignment="CENTER" opacity="0.85" text="Right click -&gt; new password or Shift + P" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="250.0" AnchorPane.topAnchor="100.0" />
                </children>
             </AnchorPane>
          </items>

@@ -6,9 +6,9 @@ import java.util.Map;
 import com.celatus.App;
 import com.celatus.Category;
 import com.celatus.PasswordEntry;
-import com.celatus.DatabaseHandler;
 import com.celatus.PasswordsDatabase;
 import com.celatus.ResizeHelper;
+import com.celatus.handler.DatabaseHandler;
 import com.celatus.util.CustomDateUtils;
 import com.celatus.util.DesktopUtils;
 import com.celatus.util.FXMLUtils;
@@ -28,6 +28,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -59,6 +61,12 @@ public class MainWindowController extends BaseWindowController {
     private TableView<PasswordEntry> passwordsTable;
     @FXML
     private MenuBar menuBar;
+    @FXML
+    private Menu fileMenu;
+    @FXML
+    private Menu settingsMenu;
+    @FXML
+    private Menu helpMenu;
     @FXML
     private ListView<String> categoriesList;
 
@@ -196,6 +204,16 @@ public class MainWindowController extends BaseWindowController {
             window.setMaximized(false);
             controlCatDescription();
         }
+        // New password
+        if (event.isShiftDown() && event.getCode() == KeyCode.P) {
+            String selectedCategory = categoriesList.getSelectionModel().getSelectedItem();
+            if (selectedCategory == null) {
+                summonPopup(window, "You must select a category first");
+                return;
+            }
+
+            openPasswordWindow(null);
+        }
     }
     // endregion
 
@@ -223,9 +241,12 @@ public class MainWindowController extends BaseWindowController {
     private void setPwdPaneContextMenu() {
         ContextMenu newPwdContextMenu = new ContextMenu();
         MenuItem newPwdMenuItem = new MenuItem("new password");
+
+        newPwdMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.P, KeyCombination.SHIFT_DOWN));
         newPwdMenuItem.setOnAction(event -> {
             openPasswordWindow(null);
         });
+
         newPwdContextMenu.getItems().add(newPwdMenuItem);
         blankSpacePane.addEventHandler(ContextMenuEvent.CONTEXT_MENU_REQUESTED, event -> {
             newPwdContextMenu.show(passwordsPane, event.getScreenX(), event.getScreenY());

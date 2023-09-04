@@ -1,10 +1,12 @@
-package com.celatus;
+package com.celatus.handler;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.celatus.App;
+import com.celatus.PasswordsDatabase;
 import com.celatus.util.CryptoUtils;
 
 

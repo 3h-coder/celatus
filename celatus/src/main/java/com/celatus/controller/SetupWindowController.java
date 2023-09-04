@@ -1,7 +1,7 @@
 package com.celatus.controller;
 
 import com.celatus.App;
-import com.celatus.AuthHandler;
+import com.celatus.handler.AuthHandler;
 
 import java.util.Map;
 

@@ -18,6 +18,8 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import com.celatus.controller.BaseWindowController;
+import com.celatus.handler.DatabaseHandler;
+import com.celatus.handler.SettingsHandler;
 import com.celatus.controller.AlertMode;
 import com.celatus.controller.AlertWindowController;
 import com.celatus.util.FXMLUtils;
@@ -43,6 +45,8 @@ public class App extends Application {
 
     private static Map<String, Object> tmpVariables; // used to store any variable at runtime, such as signals 
     // -> (signals are boolean variables representing a signal sent from one window to the whole application)
+
+    private static Settings settings; // user settings
 
     private static HostServices hostServices;
     // endregion 
@@ -79,6 +83,10 @@ public class App extends Application {
 
     public static Stage getWindow() {
         return (Stage) scene.getWindow();
+    }
+
+    public static Settings getSettings() {
+        return settings;
     }
 
     public static BaseWindowController getController() {
@@ -122,6 +130,9 @@ public class App extends Application {
         }));
         
         hostServices = getHostServices();
+        // settings = SettingsHandler.loadSettings();
+        //_logger.debug("Settings: " + settings);
+
         if (DatabaseHandler.dbFileExists()) {
             launchWindow(stage, "entryWindow");
         } else {

@@ -5,6 +5,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -13,6 +15,11 @@
       <AnchorPane fx:id="rowPane1" layoutY="2.0" prefHeight="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
       <Button fx:id="closeButton" layoutX="324.0" layoutY="6.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#closeDialog" prefHeight="25.0" prefWidth="25.0" text="X" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
       <Button fx:id="minimizeButton" layoutX="294.0" layoutY="6.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#minimize" prefHeight="25.0" prefWidth="25.0" text="_" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="0.0" />
+      <ImageView fx:id="logo" fitHeight="25.0" fitWidth="25.0" layoutX="-72.0" layoutY="-51.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="2.0">
+         <image>
+            <Image url="@images/logo.png" />
+         </image>
+      </ImageView>
       <AnchorPane layoutY="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
          <children>
             <Label id="warningLabel" fx:id="label01" alignment="CENTER" contentDisplay="TOP" prefHeight="66.0" prefWidth="400.0" text="Please enter your master password. Your master password is not saved anywhere. Please make sure you write it down somewhere as there will be no way to recover your data!" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
