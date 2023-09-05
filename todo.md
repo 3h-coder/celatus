@@ -1,4 +1,4 @@
-- keybinds and user settings
+- themes and properties
 - implement the saveRecords() method
 - create logo (and its icon)
 - auto update system

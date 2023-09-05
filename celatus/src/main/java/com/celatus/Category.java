@@ -3,11 +3,14 @@ package com.celatus;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
 import com.celatus.util.CryptoUtils;
+import com.celatus.util.CustomDateUtils;
 
 /**
  * Object to categorize and group passwords
@@ -22,6 +25,7 @@ public class Category implements Recordable {
     private List<PasswordEntry> passwordEntries;
     private LocalDateTime creationDate;
     private LocalDateTime lastEditDate;
+    private List<Map<String, String>> records;
 
     // endregion
 
@@ -184,6 +188,18 @@ public class Category implements Recordable {
         long creationDateTimeStamp = this.creationDate.atZone(ZoneId.systemDefault()).toEpochSecond();
         String toBeHashed = String.valueOf(creationDateTimeStamp) + this.name;
         this.id = "CAT" + CryptoUtils.getSHA256Hash(toBeHashed).toUpperCase().substring(0, 8);
+    }
+
+    public void saveRecord() {
+        Map<String, String> record = new HashMap<>();
+        record.put("Date", CustomDateUtils.prettyDate(LocalDateTime.now()));
+        record.put("name", this.name);
+        record.put("description", this.description);
+
+        if (this.records == null) {
+            this.records = new ArrayList<Map<String, String>>();
+            this.records.add(record);
+        }
     }
 
     // endregion

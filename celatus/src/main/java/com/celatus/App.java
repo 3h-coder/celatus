@@ -19,7 +19,6 @@ import javafx.stage.StageStyle;
 
 import com.celatus.controller.BaseWindowController;
 import com.celatus.handler.DatabaseHandler;
-import com.celatus.handler.SettingsHandler;
 import com.celatus.controller.AlertMode;
 import com.celatus.controller.AlertWindowController;
 import com.celatus.util.FXMLUtils;

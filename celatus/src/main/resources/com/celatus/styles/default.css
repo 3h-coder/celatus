@@ -139,6 +139,57 @@
     -fx-border-width: 1 0 0 0
 }
 
+.table-view {
+    -fx-background-color: transparent;
+}
+
+.table-view .column-header {
+    -fx-background-color: linear-gradient(to bottom, #8c8c8c, #cacac9);
+    /*-fx-border-color: black;
+    -fx-border-width: 0 0 0 1;*/
+    -fx-font-weight: 600
+}
+
+.table-view .column-header-background {
+    -fx-background-color: linear-gradient(to bottom, #8c8c8c, #cacac9);
+}
+
+.table-view .column-header-background .label {
+    -fx-background-color: transparent;
+    -fx-text-fill: black;
+}
+
+.table-view .column-header-background .filler {
+    -fx-background-color: transparent;
+}
+
+.table-view .table-cell {
+    -fx-border-color: transparent;
+    -fx-text-fill: white
+}
+
+.table-view .table-row-cell {
+    -fx-background-color: #555657
+}
+
+.table-view .table-row-cell:hover {
+    -fx-background-color: #8c8c8c
+}
+
+.table-view .table-row-cell:selected{
+    -fx-background-color: #8c8c8c
+}
+
+.table-view .scroll-bar:horizontal{
+    -fx-min-width: 0;
+    -fx-pref-width: 0;
+    -fx-max-width: 0;
+
+    -fx-min-height: 0;
+    -fx-pref-height: 0;
+    -fx-max-height: 0;
+}
+
 
 /* Setup window*/
 
@@ -159,14 +210,14 @@
     -fx-padding: 0 0 0 0;
 }
 
-#passwordsTable {
+/*#passwordsTable {
     -fx-background-color: transparent;
 }
 
 #passwordsTable .column-header {
     -fx-background-color: linear-gradient(to bottom, #8c8c8c, #cacac9);
     /*-fx-border-color: black;
-    -fx-border-width: 0 0 0 1;*/
+    -fx-border-width: 0 0 0 1;
     -fx-font-weight: 600
 }
 
@@ -210,7 +261,7 @@
     -fx-max-height: 0;
 }
 
-/*#passwordsTable .table-row-cell:odd {
+#passwordsTable .table-row-cell:odd {
     -fx-background-color: #8c8c8c;
     -fx-background-insets: 0, 0 0 1 0;
 }

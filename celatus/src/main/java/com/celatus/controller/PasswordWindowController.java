@@ -1,6 +1,10 @@
 package com.celatus.controller;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -14,19 +18,24 @@ import com.celatus.util.FXMLUtils;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 
 /**
  * Controller of the window used to create and edit password entries
  */
-public class PasswordWindowController extends AlertWindowController {
+public class PasswordWindowController extends DialogWindowController {
 
     // region =====Variables=====
 
+    @FXML
+    private AnchorPane rowPane2;
     @FXML
     private Label title;
     @FXML
@@ -52,15 +61,36 @@ public class PasswordWindowController extends AlertWindowController {
     @FXML
     private Label checkIdentifierLabel;
     @FXML
-    private Label checkEmailLabel;
-    @FXML
     private Label checkPasswordLabel;
     @FXML
+    private Label nameLabel;
+    @FXML
+    private Label urlLabel;
+    @FXML
+    private Label identifierLabel;
+    @FXML
+    private Label emailLabel;
+    @FXML
+    private Label passwordLabel;
+    @FXML
+    private Label notesLabel;
+    @FXML
     private Button viewButton;
+    @FXML
+    private Button generatePwdButton;
+    @FXML
+    private Button saveButton;
+    @FXML
+    private Button recordsButton;
+    @FXML
+    private TableView<String> recordsTable;
 
     private Category category;
     private PasswordEntry inputPwdEntry;
     private String password;
+    private boolean recordMode;
+    private List<Node> defaultModeElements;
+    private List<Node> recordModeElements;
 
     // endregion
 
@@ -99,11 +129,32 @@ public class PasswordWindowController extends AlertWindowController {
                 password = newValue;
                 pwdField.setText(password);
             });
+            // We set the record mode to false
+            recordMode = false;
+            // We set the mode items
+            setModesItems();
         });
     }
 
     public void setTitle(String title) {
         this.title.setText(title);
+    }
+
+    public void setModesItems() {
+        // default mode
+        defaultModeElements = new ArrayList<Node>();
+
+        Collections.addAll(defaultModeElements, 
+        nameTextField, urlField, identifierField, emailField, pwdField, passwordNotes,
+        createdLabel, lastEditedLabel, checkNameLabel, checkIdentifierLabel, checkPasswordLabel,
+        nameLabel, urlLabel, identifierLabel, emailLabel, passwordLabel, notesLabel, saveButton,
+        viewButton, generatePwdButton);
+
+        // records mode
+        recordModeElements = new ArrayList<Node>();
+
+        Collections.addAll(recordModeElements,
+        recordsTable);
     }
 
     /**
@@ -194,6 +245,26 @@ public class PasswordWindowController extends AlertWindowController {
     private void generatePwd() {
         String generatedPwd = CryptoUtils.generateRandomPwd(16);
         pwdField.setText(generatedPwd);
+    }
+
+    @FXML
+    private void recordsButtonClicked() {
+        /*var records = inputPwdEntry.getRecords();
+        if (records == null || records.isEmpty()) {
+            summonPopup(window, "no records to display");
+            return;
+        }*/
+        // We invert the recordMode's value (false to true, true to false)
+        recordMode = !recordMode;
+        if (recordMode) {
+            FXMLUtils.hideElements(defaultModeElements.toArray(new Node[defaultModeElements.size()]));
+            FXMLUtils.showElements(recordModeElements.toArray(new Node[recordModeElements.size()]));
+            recordsButton.setText("\u2190 Back"); // ← Back
+        } else {
+            FXMLUtils.showElements(defaultModeElements.toArray(new Node[defaultModeElements.size()]));
+            FXMLUtils.hideElements(recordModeElements.toArray(new Node[recordModeElements.size()]));
+            recordsButton.setText("History");
+        }
     }
 
     // region -----Utils-----

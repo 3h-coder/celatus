@@ -204,6 +204,10 @@ public class MainWindowController extends BaseWindowController {
             window.setMaximized(false);
             controlCatDescription();
         }
+        // New category
+        if (event.isShiftDown() && event.getCode() == KeyCode.C) {
+            openCategoryWindow(null);
+        }
         // New password
         if (event.isShiftDown() && event.getCode() == KeyCode.P) {
             String selectedCategory = categoriesList.getSelectionModel().getSelectedItem();
@@ -211,9 +215,9 @@ public class MainWindowController extends BaseWindowController {
                 summonPopup(window, "You must select a category first");
                 return;
             }
-
             openPasswordWindow(null);
         }
+        
     }
     // endregion
 

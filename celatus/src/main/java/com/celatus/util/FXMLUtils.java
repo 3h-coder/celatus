@@ -3,6 +3,7 @@ package com.celatus.util;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
@@ -42,7 +43,7 @@ public class FXMLUtils {
         return nodes;
     }
 
-    public static void getAllChildren(Parent parent, ArrayList<Node> nodes) {
+    private static void getAllChildren(Parent parent, ArrayList<Node> nodes) {
         for (var child : parent.getChildrenUnmodifiable()) {
             nodes.add(child);
             if (child instanceof Parent) {
@@ -56,7 +57,7 @@ public class FXMLUtils {
         return filterNodesByClass(nodes, nodeClass);
     }
 
-    public static ArrayList<Node> filterNodesByClass(ArrayList<Node> nodes, Class<?> clazz) {
+    private static ArrayList<Node> filterNodesByClass(ArrayList<Node> nodes, Class<?> clazz) {
         ArrayList<Node> result = new ArrayList<>();
         for (Node node : nodes) {
             if (clazz.isInstance(node)) {
@@ -64,6 +65,79 @@ public class FXMLUtils {
             }
         }
         return result;
+    }
+
+    public static void hideAllChildren(Parent parent, Node... exceptions) {
+        var children = getAllNodes(parent);
+        // Removing all the children of our exceptions from the list
+        if (exceptions != null) {
+            for (Node element : exceptions) {
+                if (!(element instanceof Parent)) {
+                    continue;
+                }
+                for (var child : ((Parent)element).getChildrenUnmodifiable()) {
+                    children.remove(child);
+                }
+            }
+        }
+        // Hiding the elements in the list
+        for (Node child : children) {
+            if (exceptions != null && Arrays.asList(exceptions).contains(child)) {
+                continue;
+            }
+            try {
+                child.setVisible(false);
+            } catch (Exception ex) {
+                logger.debug("Cannot hide the element : " + child);
+            }
+        }
+    }
+
+    public static void showAllChildren(Parent parent, Node... exceptions) {
+
+        var children = getAllNodes(parent);
+        // Removing all the children of our exceptions from the list
+        if (exceptions != null) {
+            for (Node element : exceptions) {
+                if (!(element instanceof Parent)) {
+                    continue;
+                }
+                for (var child : ((Parent)element).getChildrenUnmodifiable()) {
+                    children.remove(child);
+                }
+            }
+        }
+        // Hiding the elements in the list
+        for (Node child : children) {
+            if (exceptions != null && Arrays.asList(exceptions).contains(child)) {
+                continue;
+            }
+            try {
+                child.setVisible(true);
+            } catch (Exception ex) {
+                logger.debug("Cannot show the element : " + child);
+            }
+        }
+    }
+
+    public static void hideElements(Node... elements) {
+        for (Node element : elements) {
+            try {
+                element.setVisible(false);
+            } catch (Exception ex) {
+                logger.debug("Cannot hide the element: " + element);
+            }
+        }
+    }
+
+    public static void showElements(Node... elements) {
+        for (Node element : elements) {
+            try {
+                element.setVisible(true);
+            } catch (Exception ex) {
+                logger.debug("Cannot show the element: " + element);
+            }
+        }
     }
 
     public static void setMaxWidth(double maxWidth, javafx.scene.layout.Region... regions) {

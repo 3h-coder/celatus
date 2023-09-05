@@ -5,10 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
-
 public class Settings implements Map<String, Object> {
     
     private Map<String, Object> settingsMap = new HashMap<>();

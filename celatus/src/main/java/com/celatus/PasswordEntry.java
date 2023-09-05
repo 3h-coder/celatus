@@ -2,10 +2,15 @@ package com.celatus;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
 import com.celatus.util.CryptoUtils;
+import com.celatus.util.CustomDateUtils;
 
 /**
  * Object used to store all of the attributes and information related to our password
@@ -23,6 +28,7 @@ public class PasswordEntry implements Recordable {
     private String password;
     private LocalDateTime creationDate;
     private LocalDateTime lastEditDate;
+    private List<Map<String, String>> records;
 
     // endregion
 
@@ -40,8 +46,16 @@ public class PasswordEntry implements Recordable {
         this.email = email;
     }
 
+    public List<Map<String, String>> getRecords() {
+        return records;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public void setName(String value) {
+        this.name = value.strip();
     }
 
     public String getUrl() {
@@ -66,10 +80,6 @@ public class PasswordEntry implements Recordable {
 
     public void setLastEditDate(LocalDateTime lastEditDate) {
         this.lastEditDate = lastEditDate;
-    }
-
-    public void setName(String value) {
-        this.name = value.strip();
     }
 
     public String getNotes() {
@@ -205,6 +215,22 @@ public class PasswordEntry implements Recordable {
         long creationDateTimeStamp = this.creationDate.atZone(ZoneId.systemDefault()).toEpochSecond();
         String toBeHashed = String.valueOf(creationDateTimeStamp) + this.name;
         this.id = "PE" + CryptoUtils.getSHA256Hash(toBeHashed).toUpperCase().substring(0, 8);
+    }
+
+    public void saveRecord() {
+        Map<String, String> record = new HashMap<>();
+        record.put("Date", CustomDateUtils.prettyDate(LocalDateTime.now()));
+        record.put("name", this.name);
+        record.put("identifier", this.identifier);
+        record.put("password", this.password);
+        record.put("email", this.email);
+        record.put("url", this.url);
+        record.put("notes", this.notes);
+
+        if (this.records == null) {
+            this.records = new ArrayList<Map<String, String>>();
+            this.records.add(record);
+        }
     }
 
     // endregion

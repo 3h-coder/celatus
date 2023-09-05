@@ -46,7 +46,11 @@
                           </items>
                         </Menu>
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Open settings" />
+                        <MenuItem mnemonicParsing="false" text="Open settings">
+                           <accelerator>
+                              <KeyCodeCombination alt="UP" code="S" control="UP" meta="UP" shift="DOWN" shortcut="UP" />
+                           </accelerator>
+                        </MenuItem>
                      </items>
                   </Menu>
                   <Menu fx:id="helpMenu" mnemonicParsing="false" text="Help">
@@ -68,6 +72,7 @@
       <AnchorPane id="columnPane1" fx:id="columnPane1" layoutY="39.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="180.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="27.0">
          <children>
             <ListView fx:id="categoriesList" fixedCellSize="24.0" layoutX="-6.0" layoutY="14.0" prefHeight="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <Label layoutX="76.0" layoutY="224.0" opacity="0.8" text="Right click -&gt; new category or Shift+C" wrapText="true" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="200.0" />
          </children>
       </AnchorPane>
       <SplitPane fx:id="columnPane2" dividerPositions="0.0, 0.5" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" orientation="VERTICAL" prefHeight="0.0" prefWidth="160.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="180.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="27.0">
@@ -91,7 +96,7 @@
             </AnchorPane>
             <AnchorPane fx:id="blankSpacePane" prefHeight="388.0" prefWidth="720.0">
                <children>
-                  <Label fx:id="addPwdLabel" alignment="CENTER" opacity="0.85" text="Right click -&gt; new password or Shift + P" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="250.0" AnchorPane.topAnchor="100.0" />
+                  <Label fx:id="addPwdLabel" alignment="CENTER" opacity="0.8" text="Right click -&gt; new password or Shift+P" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="250.0" AnchorPane.topAnchor="100.0" />
                </children>
             </AnchorPane>
          </items>

@@ -19,6 +19,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
@@ -39,6 +40,8 @@ public class BaseWindowController {
 
     protected final Logger logger = LogManager.getLogger(this.getClass().toString().replace("class ", ""));
 
+    @FXML
+    protected ImageView logo;
     @FXML
     protected AnchorPane rootPane;
     @FXML
@@ -74,7 +77,8 @@ public class BaseWindowController {
     }
 
     /**
-     * Switches window with the provided one. In other terms, closes the current window to open the specified one.
+     * Switches window with the provided one. In other terms, closes the current window to open the specified one.<p>
+     * <b>Note :</b> This will make the new window the App's main window
      * @param fxml
      */
     public void switchWindow(String fxml) {
@@ -91,8 +95,15 @@ public class BaseWindowController {
      * Switches to the application's main window
      */
     public void switchToMainWindow() {
-        final String MAIN_WINDOW = "mainWindow";
-        switchWindow(MAIN_WINDOW);
+        switchWindow("mainWindow");
+    }
+
+    public void switchScene(String fxml) {
+        try {
+            scene.setRoot(FXMLUtils.loadFXML(fxml));
+        } catch (Exception ex) {
+            App.error(this.window, ex, "An error occured", logger, AlertMode.OK, true);
+        }
     }
 
     public void summonPopup(Stage window, String message) {
@@ -109,7 +120,7 @@ public class BaseWindowController {
         Popup popup = new Popup();
 
         // The popup is located at the window's middle
-        popup.setX(window.getX() + (window.getWidth() / 2) - (textArea.getWidth() / 2));
+        popup.setX(window.getX() + (window.getWidth() / 2) - (FXMLUtils.computeTextWidth(textArea.getText(), textArea.getFont()) + 2) / 2);
         popup.setY(window.getY());
 
         popup.getContent().addAll(textArea);
