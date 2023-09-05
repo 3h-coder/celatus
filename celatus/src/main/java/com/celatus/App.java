@@ -282,9 +282,19 @@ public class App extends Application {
         }
     }
 
+    // Overall it's better to use extract instead of get since they're meant to be temporary and deleted asap
     public static Object getTempVariable(String key) {
         if (tmpVariables != null) {
             return tmpVariables.get(key);
+        }
+        return null;
+    }
+
+    public static Object extractTempVariable(String key) {
+        if (tmpVariables != null && tmpVariables.containsKey(key)) {
+            var variable = tmpVariables.get(key);
+            tmpVariables.remove(key);
+            return variable;
         }
         return null;
     }

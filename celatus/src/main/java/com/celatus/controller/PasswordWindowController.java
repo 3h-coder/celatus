@@ -155,12 +155,25 @@ public class PasswordWindowController extends DialogWindowController {
             password = newValue;
             pwdField.setText(password);
         });
+        // recordsTable
+        recordsTable.getSelectionModel().selectedItemProperty().addListener((observable, oldSelection, newSelection) -> {
+            if (recordsTable.getSelectionModel().getSelectedItems().isEmpty()) {
+                // No item is selected, disable the button
+                viewRecordButton.setDisable(true);
+            } else {
+                // At least one item is selected, enable the button
+                viewRecordButton.setDisable(false);
+            }
+        });
     }
 
     public void setTitle(String title) {
         this.title.setText(title);
     }
 
+    /**
+     * Adds the concerned items in the appropriate mode array
+     */
     public void setModesItems() {
         // default mode
         defaultModeElements = new ArrayList<Node>();
@@ -226,6 +239,7 @@ public class PasswordWindowController extends DialogWindowController {
         recordsTable.sort();
 
     }
+    
     // endregion
 
     // region =====Event Methods=====
@@ -316,6 +330,17 @@ public class PasswordWindowController extends DialogWindowController {
         }
     }
 
+    @FXML
+    private void viewRecordButtonClicked() {
+        String selectedDate = recordsTable.getSelectionModel().getSelectedItem().getDate();
+        Map <String, String> foundRecord = findRecord(selectedDate);
+        if (foundRecord != null) {
+            App.addTempVariable("password_record", foundRecord);
+            var coordinates = FXMLUtils.findOuterCoordinatesForWindow(window, 40);
+            launchWindow("viewPasswordWindow", coordinates.get("X"), coordinates.get("Y"));
+        }
+    }
+
     // region -----Utils-----
 
     /**
@@ -387,8 +412,22 @@ public class PasswordWindowController extends DialogWindowController {
         return StringUtils.isNotBlank(detectedChanges);
     }
 
-    // endregion
+    private Map<String, String> findRecord(String dateString) {
+        if (inputPwdEntry == null || inputPwdEntry.getRecords() == null) {
+            return null;
+        }
 
+        Map<String, String> record = null;
+        for (var entry : inputPwdEntry.getRecords().entrySet()) {
+            if (entry.getKey() != dateString) {
+                continue;
+            }
+
+            record = entry.getValue();
+        }
+        return record;
+    }
+    // endregion
 
     // endregion
     

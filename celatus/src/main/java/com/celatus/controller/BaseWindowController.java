@@ -1,6 +1,7 @@
 package com.celatus.controller;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,6 +29,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Popup;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 
@@ -77,16 +79,47 @@ public class BaseWindowController {
     }
 
     /**
+     * Launches a window on top of the current one
+     * @param fxml : the name of the fxml file (without the ".fxml" suffix)
+     */
+    public void launchWindow(String fxml) {
+        try {
+            Map<String, Object> map = FXMLUtils.getSceneAndController(fxml);
+            Scene scene = (Scene) map.get("Scene");
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.initStyle(StageStyle.UNDECORATED);
+            stage.show();
+        } catch (Exception ex) {
+            App.error(this.window, ex, "An error occured", logger, AlertMode.OK, true);
+        }
+    }
+
+    public void launchWindow(String fxml, double X, double Y) {
+        try {
+            Map<String, Object> map = FXMLUtils.getSceneAndController(fxml);
+            Scene scene = (Scene) map.get("Scene");
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.initStyle(StageStyle.UNDECORATED);
+            stage.setX(X); stage.setY(Y);
+            stage.show();
+        } catch (Exception ex) {
+            App.error(this.window, ex, "An error occured", logger, AlertMode.OK, true);
+        }
+    }
+
+    /**
      * Switches window with the provided one. In other terms, closes the current window to open the specified one.<p>
      * <b>Note :</b> This will make the new window the App's main window
-     * @param fxml
+     * @param fxml : the name of the fxml file (without the ".fxml" suffix)
      */
-    public void switchWindow(String fxml) {
+    public void switchAppWindow(String fxml) {
         try {
             App.launchWindow(fxml);
             window.close();
         } catch (Exception ex) {
-            App.error(this.window, ex,"An unexpected error occured when trying to open " + fxml, logger, AlertMode.OK, true);
+            App.error(this.window, ex, "An unexpected error occured when trying to open" + fxml, logger, AlertMode.OK, true);
             close();
         }
     }
@@ -95,9 +128,13 @@ public class BaseWindowController {
      * Switches to the application's main window
      */
     public void switchToMainWindow() {
-        switchWindow("mainWindow");
+        switchAppWindow("mainWindow");
     }
 
+    /**
+     * Changes the scene of the current window
+     * @param fxml
+     */
     public void switchScene(String fxml) {
         try {
             scene.setRoot(FXMLUtils.loadFXML(fxml));
@@ -106,6 +143,11 @@ public class BaseWindowController {
         }
     }
 
+    /**
+     * Summons a 5 seconds popup on top of the given window
+     * @param window
+     * @param message
+     */
     public void summonPopup(Stage window, String message) {
 
         TextArea textArea = new TextArea(message);
@@ -190,27 +232,25 @@ public class BaseWindowController {
     @FXML
     public void windowKeyPressed(KeyEvent event) {
         // Quit program on alt + F4
-        if (event.isAltDown() && event.getCode() == KeyCode.F4) {
-            close();
-        }
+        /*if (event.isAltDown() && event.getCode() == KeyCode.F4) {
+            logger.debug("App controller: " + App.getController());
+        }*/
     }
 
     @FXML
     public void onMousePressed(MouseEvent event) {
-        Stage window = getCurrentWindow();
         xOffset = window.getX() - event.getScreenX();
         yOffset = window.getY() - event.getScreenY();
     }
 
     @FXML
     public void onMouseDragged(MouseEvent event) {
-        Stage window = getCurrentWindow();
         window.setX(event.getScreenX() + xOffset);
         window.setY(event.getScreenY() + yOffset);
     }
 
     public void close() {
-        Platform.exit();
+        window.close();
     }
 
     public void minimize() {

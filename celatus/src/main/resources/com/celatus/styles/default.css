@@ -2,6 +2,8 @@
 
 .AnchorPane {
     -fx-background-color : #555657;
+    -fx-border-color: #8c8c8c;
+    -fx-border-width: 0
 }
 
 .split-pane {

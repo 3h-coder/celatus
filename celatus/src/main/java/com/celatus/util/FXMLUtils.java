@@ -13,8 +13,10 @@ import java.util.HashMap;
 
 import com.celatus.App;
 
+import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -27,6 +29,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -338,6 +341,18 @@ public class FXMLUtils {
                 return;
             }
         }
+    }
+
+    public static Map<String, Double> findOuterCoordinatesForWindow(Stage primaryStage, double radius) {
+        Map<String, Double> outerCoords = new HashMap<>();
+
+        double newX = primaryStage.getX() + primaryStage.getWidth() + Math.random() * radius;
+        double newY = primaryStage.getY() + Math.random() * radius;
+
+        outerCoords.put("X", newX);
+        outerCoords.put("Y", newY);
+
+        return outerCoords;
     }
 
     // endregion
