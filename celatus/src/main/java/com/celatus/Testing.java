@@ -167,6 +167,13 @@ public class Testing {
         System.out.println(UserAction.CHANGE_MASTER_PWD);
     }
 
+    public static void testLastIndexOf() {
+        String string = "ha, ho, hu, hi, he, ";
+        String empty = "";
+        System.out.println(string.substring(0, string.lastIndexOf(",")));
+        System.out.println(empty.substring(0, empty.lastIndexOf(",")));
+    }
+
 
     public static void main(String[] args) {
         //testDataEncryption();
@@ -182,6 +189,7 @@ public class Testing {
         // testWriteSettings();
         //testLoadSettings();
         //testEnumString();
+        testLastIndexOf();
     }
 
 }

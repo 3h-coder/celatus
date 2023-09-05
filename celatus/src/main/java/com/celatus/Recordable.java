@@ -6,5 +6,5 @@ package com.celatus;
 public interface Recordable {
     
     void calculateID();
-    void saveRecord();
+    void saveRecord(String changes);
 }

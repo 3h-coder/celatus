@@ -2,10 +2,8 @@ package com.celatus;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -28,7 +26,7 @@ public class PasswordEntry implements Recordable {
     private String password;
     private LocalDateTime creationDate;
     private LocalDateTime lastEditDate;
-    private List<Map<String, String>> records;
+    private Map<String, Map<String, String>> records;
 
     // endregion
 
@@ -44,10 +42,6 @@ public class PasswordEntry implements Recordable {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public List<Map<String, String>> getRecords() {
-        return records;
     }
 
     public String getName() {
@@ -106,6 +100,10 @@ public class PasswordEntry implements Recordable {
         this.password = password;
     }
 
+    public Map<String, Map<String, String>> getRecords() {
+        return records;
+    }
+
     // endregion
 
     // region =====Constructors=====
@@ -140,6 +138,7 @@ public class PasswordEntry implements Recordable {
         result = prime * result + ((password == null) ? 0 : password.hashCode());
         result = prime * result + ((creationDate == null) ? 0 : creationDate.hashCode());
         result = prime * result + ((lastEditDate == null) ? 0 : lastEditDate.hashCode());
+        result = prime * result + ((records == null) ? 0 : records.hashCode());
         return result;
     }
 
@@ -197,14 +196,19 @@ public class PasswordEntry implements Recordable {
                 return false;
         } else if (!lastEditDate.equals(other.lastEditDate))
             return false;
+        if (records == null) {
+            if (other.records != null)
+                return false;
+        } else if (!records.equals(other.records))
+            return false;
         return true;
     }
 
     @Override
     public String toString() {
         return "PasswordEntry [id=" + id + ", name=" + name + ", url=" + url + ", notes=" + notes + ", identifier="
-                + identifier + ", email=" + email + ", password=**********" + ", creationDate=" + creationDate
-                + ", lastEditDate=" + lastEditDate + "]";
+                + identifier + ", email=" + email + ", password=" + password + ", creationDate=" + creationDate
+                + ", lastEditDate=" + lastEditDate + ", records=" + records + "]";
     }
 
     // endregion
@@ -217,20 +221,22 @@ public class PasswordEntry implements Recordable {
         this.id = "PE" + CryptoUtils.getSHA256Hash(toBeHashed).toUpperCase().substring(0, 8);
     }
 
-    public void saveRecord() {
+    public void saveRecord(String changes) {
         Map<String, String> record = new HashMap<>();
-        record.put("Date", CustomDateUtils.prettyDate(LocalDateTime.now()));
         record.put("name", this.name);
         record.put("identifier", this.identifier);
         record.put("password", this.password);
         record.put("email", this.email);
         record.put("url", this.url);
         record.put("notes", this.notes);
+        record.put("changes", changes);
 
         if (this.records == null) {
-            this.records = new ArrayList<Map<String, String>>();
-            this.records.add(record);
+            this.records = new HashMap<>();
         }
+
+        this.records.put(CustomDateUtils.prettyDate(LocalDateTime.now()), record);
+
     }
 
     // endregion

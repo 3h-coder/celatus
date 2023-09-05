@@ -12,16 +12,20 @@ import com.celatus.App;
 import com.celatus.Category;
 import com.celatus.PasswordEntry;
 import com.celatus.PasswordsDatabase;
+import com.celatus.RecordEntry;
 import com.celatus.util.CryptoUtils;
 import com.celatus.util.CustomDateUtils;
 import com.celatus.util.FXMLUtils;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -83,14 +87,21 @@ public class PasswordWindowController extends DialogWindowController {
     @FXML
     private Button recordsButton;
     @FXML
-    private TableView<String> recordsTable;
+    private Button viewRecordButton;
+    @FXML
+    private TableView<RecordEntry> recordsTable;
+    @FXML
+    private TableColumn<RecordEntry, String> dateColumn;
+    @FXML
+    private TableColumn<RecordEntry, String> changesColumn;
 
-    private Category category;
-    private PasswordEntry inputPwdEntry;
-    private String password;
-    private boolean recordMode;
-    private List<Node> defaultModeElements;
-    private List<Node> recordModeElements;
+    private Category category; // the password entry's category
+    private PasswordEntry inputPwdEntry; // the password entry we are editing
+    private String password; // the current password (displayed on the window)
+    private boolean recordMode; // whether we are in recordMode or not (recordMode refers to when we hide the default elements to view the password entry's history)
+    private List<Node> defaultModeElements; // list where we store the default UI elements
+    private List<Node> recordModeElements; // list where we store the record mode UI elements
+    private String detectedChanges; // detected changes from the user (what is on the UI vs what is stored in the object)
 
     // endregion
 
@@ -116,23 +127,33 @@ public class PasswordWindowController extends DialogWindowController {
 
     // region =====Window Methods=====
 
+    @Override
     public void initialize() {
         super.initialize();
         Platform.runLater(() -> {
             fillFields();
-            // Dynamic password update
-            pwdField.textProperty().addListener((observable, oldValue, newValue) -> {
-                password = newValue;
-                revealedPwdField.setText(password);
-            });
-            revealedPwdField.textProperty().addListener((observable, oldValue, newValue) -> {
-                password = newValue;
-                pwdField.setText(password);
-            });
+            // We add our listeners
+            addListeners();
             // We set the record mode to false
             recordMode = false;
             // We set the mode items
             setModesItems();
+            // We set the record button
+            setRecordButton();
+            // we intialize the detected changes
+            detectedChanges = "";
+        });
+    }
+
+    public void addListeners() {
+        // Dynamic password updates
+        pwdField.textProperty().addListener((observable, oldValue, newValue) -> {
+            password = newValue;
+            revealedPwdField.setText(password);
+        });
+        revealedPwdField.textProperty().addListener((observable, oldValue, newValue) -> {
+            password = newValue;
+            pwdField.setText(password);
         });
     }
 
@@ -154,7 +175,7 @@ public class PasswordWindowController extends DialogWindowController {
         recordModeElements = new ArrayList<Node>();
 
         Collections.addAll(recordModeElements,
-        recordsTable);
+        recordsTable, viewRecordButton);
     }
 
     /**
@@ -177,6 +198,34 @@ public class PasswordWindowController extends DialogWindowController {
         lastEditedLabel.setText("Last edited : " + CustomDateUtils.prettyDate(inputPwdEntry.getLastEditDate()));
     }
 
+    public void setRecordButton() {
+        if (inputPwdEntry == null || inputPwdEntry.getRecords() == null) {
+            recordsButton.setDisable(true);
+        }   
+    }
+    
+    public void fillRecordsTable() {
+        if (inputPwdEntry == null || inputPwdEntry.getRecords() == null) {
+            return;
+        }
+
+        // Convert the records map into ObservableList of RecordEntry
+        ObservableList<RecordEntry> recordEntries = FXCollections.observableArrayList();
+        inputPwdEntry.getRecords().forEach((date, record) ->
+                recordEntries.add(new RecordEntry(date, (String)((Map)record).get("changes"))));
+
+        recordsTable.setItems(recordEntries);
+
+        // Bind the columns to the data
+        dateColumn.setCellValueFactory(cellData -> cellData.getValue().dateProperty());
+        changesColumn.setCellValueFactory(cellData -> cellData.getValue().changesProperty());
+
+        // Sorting our records from newest to oldest
+        recordsTable.getSortOrder().add(dateColumn);
+        dateColumn.setSortType(TableColumn.SortType.DESCENDING);
+        recordsTable.sort();
+
+    }
     // endregion
 
     // region =====Event Methods=====
@@ -210,6 +259,10 @@ public class PasswordWindowController extends DialogWindowController {
         // Updating the exisiting password entry
         } else if (changesDetected()) {
 
+            // We save the record and changes first
+            inputPwdEntry.saveRecord(detectedChanges);
+
+            // We update the password entry
             inputPwdEntry.setName(name);
             inputPwdEntry.setIdentifier(identifier);
             inputPwdEntry.setUrl(url);
@@ -249,16 +302,12 @@ public class PasswordWindowController extends DialogWindowController {
 
     @FXML
     private void recordsButtonClicked() {
-        /*var records = inputPwdEntry.getRecords();
-        if (records == null || records.isEmpty()) {
-            summonPopup(window, "no records to display");
-            return;
-        }*/
         // We invert the recordMode's value (false to true, true to false)
         recordMode = !recordMode;
         if (recordMode) {
             FXMLUtils.hideElements(defaultModeElements.toArray(new Node[defaultModeElements.size()]));
             FXMLUtils.showElements(recordModeElements.toArray(new Node[recordModeElements.size()]));
+            fillRecordsTable();
             recordsButton.setText("\u2190 Back"); // ← Back
         } else {
             FXMLUtils.showElements(defaultModeElements.toArray(new Node[defaultModeElements.size()]));
@@ -314,25 +363,28 @@ public class PasswordWindowController extends DialogWindowController {
         String notes = passwordNotes.getText();
 
         if (!StringUtils.equals(inputPwdEntry.getName(), name)) {
-            return true;
+            detectedChanges += "name, ";
         }
         if (!StringUtils.equals(inputPwdEntry.getIdentifier(), identifier)) {
-            return true;
+            detectedChanges += "identifier, ";
         }
         if (!StringUtils.equals(inputPwdEntry.getUrl(), url)) {
-            return true;
+            detectedChanges += "url, ";
         }
         if (!StringUtils.equals(inputPwdEntry.getEmail(), email)) {
-            return true;
+            detectedChanges += "email, ";
         }
         if (!StringUtils.equals(inputPwdEntry.getNotes(), notes)) {
-            return true;
+            detectedChanges += "notes, ";
         }
         if (!StringUtils.equals(inputPwdEntry.getPassword(), password)) {
-            return true;
+            detectedChanges += "password, ";
         }
 
-        return false;
+        if (detectedChanges.contains(",")) {
+            detectedChanges = detectedChanges.substring(0, detectedChanges.lastIndexOf(","));
+        }
+        return StringUtils.isNotBlank(detectedChanges);
     }
 
     // endregion

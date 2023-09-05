@@ -190,7 +190,7 @@ public class Category implements Recordable {
         this.id = "CAT" + CryptoUtils.getSHA256Hash(toBeHashed).toUpperCase().substring(0, 8);
     }
 
-    public void saveRecord() {
+    public void saveRecord(String changes) {
         Map<String, String> record = new HashMap<>();
         record.put("Date", CustomDateUtils.prettyDate(LocalDateTime.now()));
         record.put("name", this.name);
