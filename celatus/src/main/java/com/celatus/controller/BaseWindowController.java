@@ -97,6 +97,7 @@ public class BaseWindowController {
             Map<String, Object> map = FXMLUtils.getSceneAndController(fxml);
             Scene scene = (Scene) map.get("Scene");
             Stage stage = new Stage();
+            stage.initOwner(this.window);
             stage.setScene(scene);
             stage.initStyle(StageStyle.UNDECORATED);
             stage.show();
@@ -110,6 +111,7 @@ public class BaseWindowController {
             Map<String, Object> map = FXMLUtils.getSceneAndController(fxml);
             Scene scene = (Scene) map.get("Scene");
             Stage stage = new Stage();
+            stage.initOwner(this.window);
             stage.setScene(scene);
             stage.initStyle(StageStyle.UNDECORATED);
             stage.setX(X); stage.setY(Y);
