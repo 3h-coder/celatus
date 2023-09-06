@@ -22,7 +22,7 @@
       </ImageView>
       <AnchorPane layoutY="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
          <children>
-            <Label id="warningLabel" fx:id="label01" alignment="CENTER" contentDisplay="TOP" prefHeight="66.0" prefWidth="400.0" text="Please enter your master password. Your master password is not saved anywhere. Please make sure you write it down somewhere as there will be no way to recover your data!" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
+            <Label id="warningLabel" fx:id="label01" alignment="CENTER" contentDisplay="TOP" prefHeight="66.0" prefWidth="400.0" text="Please enter your master password. Your master password is not saved anywhere. Please make sure you write it down somewhere as there will be no way to recover your data!" textAlignment="JUSTIFY" wrapText="true" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
                <font>
                   <Font size="14.0" />
                </font>

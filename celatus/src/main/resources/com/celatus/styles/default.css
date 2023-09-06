@@ -1,13 +1,13 @@
 /* All windows */
 
 .AnchorPane {
-    -fx-background-color : #555657;
+    -fx-background-color : #3e3e3e;
     -fx-border-color: #8c8c8c;
     -fx-border-width: 0
 }
 
 .split-pane {
-    -fx-background-color : #555657;
+    -fx-background-color : #3e3e3e;
     -fx-box-border: transparent;
     -fx-border-width: 0;
     -fx-padding: 0 0 0 0;
@@ -19,7 +19,7 @@
 }
 
 .button {
-    -fx-background-color :  #353536;
+    -fx-background-color :  #2b2b2b;
     -fx-text-fill: white
 }
 
@@ -47,14 +47,14 @@
 }
 
 .text-field {
-    -fx-background-color :  #353536;
+    -fx-background-color :  #2b2b2b;
     -fx-text-fill: white;
     -fx-highlight-fill: #8c8c8c
 }
 
 .text-area {
     -fx-background-radius: 5;
-    -fx-background-color :  #353536;
+    -fx-background-color :  #2b2b2b;
     -fx-text-fill: white;
     /*-fx-border-color: #8c8c8c;
     -fx-border-width: 1 1 1 1;*/
@@ -62,7 +62,7 @@
 
 .text-area .content{
     -fx-background-radius: 0;
-    -fx-background-color :  #353536;
+    -fx-background-color :  #2b2b2b;
 }
 
 .text-area:focused {
@@ -77,7 +77,7 @@
 
 .context-menu {
     -fx-background-radius: 5px;
-    -fx-background-color: #353536;
+    -fx-background-color: #2b2b2b;
     -fx-border-color: #8c8c8c;
     -fx-border-radius: 5px;
     -fx-border-width: 1 1 1 1
@@ -131,7 +131,7 @@
 }
 
 #rowPane1 {
-    -fx-background-color: #353536;
+    -fx-background-color: #2b2b2b;
     -fx-border-color: #8c8c8c;
     -fx-border-width: 0 0 1 0
 }
@@ -139,57 +139,6 @@
 #bottomRow {
     -fx-border-color: #8c8c8c;
     -fx-border-width: 1 0 0 0
-}
-
-.table-view {
-    -fx-background-color: transparent;
-}
-
-.table-view .column-header {
-    -fx-background-color: linear-gradient(to bottom, #8c8c8c, #cacac9);
-    /*-fx-border-color: black;
-    -fx-border-width: 0 0 0 1;*/
-    -fx-font-weight: 600
-}
-
-.table-view .column-header-background {
-    -fx-background-color: linear-gradient(to bottom, #8c8c8c, #cacac9);
-}
-
-.table-view .column-header-background .label {
-    -fx-background-color: transparent;
-    -fx-text-fill: black;
-}
-
-.table-view .column-header-background .filler {
-    -fx-background-color: transparent;
-}
-
-.table-view .table-cell {
-    -fx-border-color: transparent;
-    -fx-text-fill: white
-}
-
-.table-view .table-row-cell {
-    -fx-background-color: #555657
-}
-
-.table-view .table-row-cell:hover {
-    -fx-background-color: #8c8c8c
-}
-
-.table-view .table-row-cell:selected{
-    -fx-background-color: #8c8c8c
-}
-
-.table-view .scroll-bar:horizontal{
-    -fx-min-width: 0;
-    -fx-pref-width: 0;
-    -fx-max-width: 0;
-
-    -fx-min-height: 0;
-    -fx-pref-height: 0;
-    -fx-max-height: 0;
 }
 
 
@@ -203,7 +152,7 @@
 /* Main window */
 
 #descriptionPane {
-    -fx-background-color: #353536;
+    -fx-background-color: #2b2b2b;
     -fx-border-color: #8c8c8c;
     -fx-border-width: 0 0 1 0
 }
@@ -212,7 +161,7 @@
     -fx-padding: 0 0 0 0;
 }
 
-/*#passwordsTable {
+#passwordsTable {
     -fx-background-color: transparent;
 }
 
@@ -220,7 +169,7 @@
     -fx-background-color: linear-gradient(to bottom, #8c8c8c, #cacac9);
     /*-fx-border-color: black;
     -fx-border-width: 0 0 0 1;
-    -fx-font-weight: 600
+    -fx-font-weight: 600*/
 }
 
 #passwordsTable .column-header-background {
@@ -242,7 +191,7 @@
 }
 
 #passwordsTable .table-row-cell {
-    -fx-background-color: #555657
+    -fx-background-color: #3e3e3e
 }
 
 #passwordsTable .table-row-cell:hover {
@@ -250,7 +199,8 @@
 }
 
 #passwordsTable .table-row-cell:selected{
-    -fx-background-color: #8c8c8c
+    -fx-background-color: #8c8c8c;
+    -fx-border-color: white
 }
 
 #passwordsTable .scroll-bar:horizontal{
@@ -263,7 +213,7 @@
     -fx-max-height: 0;
 }
 
-#passwordsTable .table-row-cell:odd {
+/*#passwordsTable .table-row-cell:odd {
     -fx-background-color: #8c8c8c;
     -fx-background-insets: 0, 0 0 1 0;
 }
@@ -277,7 +227,7 @@
 }
 
 #passwordsTable .table-row-cell:even {
-    -fx-background-color: #555657;
+    -fx-background-color: #3e3e3e;
     -fx-background-insets: 0, 0 0 1 0;
 }
 
@@ -294,8 +244,8 @@
 }
 
 #menuBar {
-    -fx-background-color : #353536;
-    -fx-selection-bar: #555657
+    -fx-background-color : #2b2b2b;
+    -fx-selection-bar: #3e3e3e
 }
 
 #menuBar .menu:hover{
@@ -319,7 +269,7 @@
 }
 
 #columnPane1 {
-    -fx-background-color: #353536;
+    -fx-background-color: #2b2b2b;
     -fx-border-color: #8c8c8c;
     -fx-border-width: 0 1 0 0 /* top right bottom left*/
 }
@@ -338,13 +288,100 @@
 }
 
 #categoriesList .list-cell:hover {
-    -fx-background-color: #555657;
+    -fx-background-color: #3e3e3e;
 }
 
 #categoriesList .list-cell:selected {
-    -fx-background-color: #555657;
+    -fx-background-color: #3e3e3e;
 }
 
 #categoriesList .list-cell:empty {
     
 }
+
+/* View Password Window */
+
+#recordsTable {
+    -fx-background-color: #8c8c8c;
+    /*-fx-border-color: #8c8c8c;*/
+}
+
+#recordsTable .column-header {
+    -fx-background-color: linear-gradient(to bottom, #8c8c8c, #cacac9);
+    /*-fx-border-color: black;
+    -fx-border-width: 0 0 0 1;
+    -fx-font-weight: 600*/
+}
+
+#recordsTable .column-header-background {
+    -fx-background-color: linear-gradient(to bottom, #8c8c8c, #cacac9);
+}
+
+#recordsTable .column-header-background .label {
+    -fx-background-color: transparent;
+    -fx-text-fill: black;
+}
+
+#recordsTable .column-header-background .filler {
+    -fx-background-color: transparent;
+}
+
+#recordsTable .table-cell {
+    -fx-border-color: transparent;
+    -fx-text-fill: white
+}
+
+#recordsTable .table-row-cell {
+    /*-fx-border-color: #8c8c8c;*/
+    -fx-background-color: #2b2b2b
+}
+
+#recordsTable .table-row-cell:hover {
+    -fx-background-color: #8c8c8c
+}
+
+#recordsTable .table-row-cell:selected{
+    -fx-background-color: #8c8c8c;
+    -fx-border-color: white
+}
+
+#recordsTable .table-row-cell:selected .table-cell{
+    -fx-text-fill: black;
+    -fx-font-weight: 700
+}
+
+#recordsTable .scroll-bar:horizontal{
+    -fx-min-width: 0;
+    -fx-pref-width: 0;
+    -fx-max-width: 0;
+
+    -fx-min-height: 0;
+    -fx-pref-height: 0;
+    -fx-max-height: 0;
+}
+
+/*#recordsTable .table-row-cell:odd {
+    -fx-background-color: #8c8c8c;
+    -fx-background-insets: 0, 0 0 1 0;
+}
+
+#recordsTable .table-row-cell:odd:hover {
+    -fx-background-color: #cacac9;
+}
+
+#recordsTable .table-row-cell:odd:hover .table-cell{
+    -fx-text-fill: black
+}
+
+#recordsTable .table-row-cell:even {
+    -fx-background-color: #3e3e3e;
+    -fx-background-insets: 0, 0 0 1 0;
+}
+
+#recordsTable .table-row-cell:even:hover {
+    -fx-background-color: #cacac9;
+}
+
+#recordsTable .table-row-cell:even:hover .table-cell{
+    -fx-text-fill: black
+}*/
