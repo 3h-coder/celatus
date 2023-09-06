@@ -188,11 +188,23 @@ public class BaseWindowController {
         FadeTransition fadeTransition = new FadeTransition(Duration.seconds(4.9), popup.getContent().get(0));
         fadeTransition.setFromValue(1);
         fadeTransition.setToValue(0);
-        fadeTransition.setOnFinished(event -> popup.hide());
+        fadeTransition.setOnFinished(event -> {
+            popup.hide();
+        });
 
+        // Only one popup at a time
+        removeNotificationPopup();
+        App.addTempVariable("notification_popup", popup);
         popup.show(window);
         translateTransition.play();
         fadeTransition.play();
+    }
+
+    public void removeNotificationPopup() {
+        Popup popup = (Popup)App.extractTempVariable("notification_popup");
+        if (popup != null) {
+            popup.hide();
+        }
     }
 
     /**

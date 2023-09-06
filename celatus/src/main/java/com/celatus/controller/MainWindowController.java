@@ -25,6 +25,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.KeyCode;
@@ -57,6 +58,8 @@ public class MainWindowController extends BaseWindowController {
     private AnchorPane blankSpacePane;
     @FXML
     private TextArea catDescription;
+    @FXML
+    private TextField searchBar;
     @FXML
     private TableView<PasswordEntry> passwordsTable;
     @FXML
@@ -171,15 +174,15 @@ public class MainWindowController extends BaseWindowController {
         int originalDBHash = App.getOriginalDatabaseHash();
         int currentDBHash = App.getPasswordsDatabase().hashCode();
         if (originalDBHash == currentDBHash) {
-            App.exit();
+            super.close();
         } else {
             App.warn(window, "Unsaved changes detected, would you like to save these changes?", logger, AlertMode.YES_AND_NO);
         }
         if (App.getSignal("yes_signal")) {
             saveDatabase();
-            App.exit();
+            super.close();
         } else if (App.getSignal("no_signal")) {
-            App.exit();
+            super.close();
         }    
     }
 
@@ -220,6 +223,18 @@ public class MainWindowController extends BaseWindowController {
         
     }
     
+    @FXML
+    public void searchBarKeyPressed(KeyEvent event) {
+        if (event.getCode() == KeyCode.ESCAPE) {
+            searchBar.getParent().requestFocus();
+        }
+    }
+
+    @FXML
+    public void searchPassword() {
+        summonNotificationPopup(window, "test");
+    }
+
     // endregion
 
     // region =====Back end / Menu Item Methods=====
