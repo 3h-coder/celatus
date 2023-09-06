@@ -1,6 +1,6 @@
 # Celatus (DEV ongoing)
 This project is a simple light weight and easy to use desktop password manager.
-It is built upon JavaFX and Maven.
+It is built upon JavaFX and Maven and licensed under the [GPL-3](LICENSE) license.
 
 ![mainWindow image](https://i.imgur.com/efnfXaS.png)
 
@@ -11,7 +11,7 @@ It is built upon JavaFX and Maven.
 - **Password search (WIP)** : Find your passwords easily through the search bar.
 - **Cross-Platform** : Runs on Windows, MacOS and Linux.
 
-## User Guide
+## User Guide [To be written]
 
 
-## Developer Guide
+## Developer Guide [To be written]
