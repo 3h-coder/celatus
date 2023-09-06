@@ -20,6 +20,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -30,6 +31,7 @@ import javafx.stage.Popup;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.Window;
 import javafx.util.Duration;
 
 
@@ -60,6 +62,8 @@ public class BaseWindowController {
     private static double xOffset = 0;
     private static double yOffset = 0;
 
+    private boolean altF4Detected = false;
+
     // endregion
 
     // region =====Window Methods=====
@@ -70,7 +74,13 @@ public class BaseWindowController {
             window = getCurrentWindow();
             scene = window.getScene();
             makeLabelsSelectable();
+            setOnCloseRequest();
+            setIcon();
         });
+    }
+
+    public void setIcon() {
+        this.window.getIcons().add(new Image(App.class.getResourceAsStream("images/logo.png")));
     }
 
     @FXML
@@ -148,7 +158,7 @@ public class BaseWindowController {
      * @param window
      * @param message
      */
-    public void summonPopup(Stage window, String message) {
+    public void summonNotificationPopup(Stage window, String message) {
 
         TextArea textArea = new TextArea(message);
         textArea.setWrapText(true);
@@ -232,9 +242,19 @@ public class BaseWindowController {
     @FXML
     public void windowKeyPressed(KeyEvent event) {
         // Quit program on alt + F4
-        /*if (event.isAltDown() && event.getCode() == KeyCode.F4) {
-            logger.debug("App controller: " + App.getController());
-        }*/
+        if (event.isAltDown() && event.getCode() == KeyCode.F4) {
+            this.altF4Detected = true;
+        }
+    }
+
+    public void setOnCloseRequest() {
+        this.window.setOnCloseRequest(event -> {
+            // The default alt+F4 only closes the foreground window, not the whole app
+            if (this.altF4Detected) {
+                event.consume();
+                App.exit();
+            }
+        });
     }
 
     @FXML

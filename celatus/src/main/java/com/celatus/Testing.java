@@ -174,6 +174,20 @@ public class Testing {
         System.out.println(empty.substring(0, empty.lastIndexOf(",")));
     }
 
+    public static void testNestedDict() {
+        HashMap<String, Object> map = new HashMap<>();
+        HashMap<String, Object> nested1 = new HashMap<>();
+        HashMap<String, Object> nested2 = new HashMap<>();
+
+        nested2.put("final", "string");
+        nested1.put("nested2", nested2);
+        nested1.put("hey", "hoy");
+        map.put("nested1", nested1);
+
+        System.out.println("Map: " + map);
+        System.out.println(map.get("final"));
+    }
+
 
     public static void main(String[] args) {
         //testDataEncryption();
@@ -189,7 +203,8 @@ public class Testing {
         // testWriteSettings();
         //testLoadSettings();
         //testEnumString();
-        testLastIndexOf();
+        //testLastIndexOf();
+        testNestedDict();
     }
 
 }

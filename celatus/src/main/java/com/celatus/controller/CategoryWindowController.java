@@ -134,7 +134,7 @@ public class CategoryWindowController extends DialogWindowController {
                 App.error(this.window, ex, "An error occured", logger, AlertMode.OK, true);
             }
             closeDialog();
-            summonPopup(App.getWindow(), "The category " + name + " has been added");
+            summonNotificationPopup(App.getWindow(), "The category " + name + " has been added");
         // Updating the category
         } else {
             String oldName = inputCategory.getName();
@@ -149,7 +149,7 @@ public class CategoryWindowController extends DialogWindowController {
                 descriptionPane.setVisible(false);
             }
             closeDialog();
-            summonPopup(App.getWindow(), "Category updated");
+            summonNotificationPopup(App.getWindow(), "Category updated");
         }
         
     }

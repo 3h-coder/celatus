@@ -103,7 +103,7 @@ public class SetupWindowController extends DialogWindowController {
                 AuthHandler.setAppEntry(password, true);
                 closeDialog();
                 logger.info("Master password changed");
-                summonPopup(App.getWindow(), "Master password successfully changed");
+                summonNotificationPopup(App.getWindow(), "Master password successfully changed");
             } else {
                 AuthHandler.setAppEntry(password, false);
                 switchToMainWindow();

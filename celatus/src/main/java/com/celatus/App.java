@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 
 import javafx.application.Application;
 import javafx.application.HostServices;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -40,7 +41,7 @@ public class App extends Application {
 
     private static int originalDatabaseHash; // used to check unsaved modifications
 
-    private static BaseWindowController controller; // controller associated with the current scene
+    private static BaseWindowController controller; // controller associated with the app scene
 
     private static Map<String, Object> tmpVariables; // used to store any variable at runtime, such as signals 
     // -> (signals are boolean variables representing a signal sent from one window to the whole application)
@@ -110,7 +111,7 @@ public class App extends Application {
 
     @Override
     public void init(){
-       // Nothing for now
+        Platform.setImplicitExit(false);
     }
 
     @Override
@@ -140,6 +141,12 @@ public class App extends Application {
 
         // launchWindow(stage, "mainWindow");
              
+    }
+
+    public static void exit() {
+        _logger.info("--------------------Application Shutdown--------------------");
+        Platform.exit();
+        System.exit(0);
     }
 
     public static void main(String[] args) {

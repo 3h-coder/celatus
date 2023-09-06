@@ -171,15 +171,15 @@ public class MainWindowController extends BaseWindowController {
         int originalDBHash = App.getOriginalDatabaseHash();
         int currentDBHash = App.getPasswordsDatabase().hashCode();
         if (originalDBHash == currentDBHash) {
-            super.close();
+            App.exit();
         } else {
             App.warn(window, "Unsaved changes detected, would you like to save these changes?", logger, AlertMode.YES_AND_NO);
         }
         if (App.getSignal("yes_signal")) {
             saveDatabase();
-            super.close();
+            App.exit();
         } else if (App.getSignal("no_signal")) {
-            super.close();
+            App.exit();
         }    
     }
 
@@ -212,7 +212,7 @@ public class MainWindowController extends BaseWindowController {
         if (event.isShiftDown() && event.getCode() == KeyCode.P) {
             String selectedCategory = categoriesList.getSelectionModel().getSelectedItem();
             if (selectedCategory == null) {
-                summonPopup(window, "You must select a category first");
+                summonNotificationPopup(window, "You must select a category first");
                 return;
             }
             openPasswordWindow(null);
@@ -542,7 +542,7 @@ public class MainWindowController extends BaseWindowController {
         catDescription.setPrefHeight(0);
         passwordsTable.getItems().clear();
         passwordsTable.setPrefHeight(0);
-        summonPopup(window, "Category " + categoryName + " deleted");
+        summonNotificationPopup(window, "Category " + categoryName + " deleted");
     }
 
     /**
@@ -573,7 +573,7 @@ public class MainWindowController extends BaseWindowController {
 
         try {
             database.movePasswordEntry(pwdEntry, oldCat, newCat);
-            summonPopup(this.window, "The password has been moved to " + newCatName);
+            summonNotificationPopup(this.window, "The password has been moved to " + newCatName);
             logger.info("Moved the password entry : " + pwdEntry.getName() + " from " + oldCatName + " to " + newCatName);
             displayPasswords(oldCat);
         } catch (IllegalArgumentException ex) {
@@ -583,12 +583,12 @@ public class MainWindowController extends BaseWindowController {
 
     private void copyPwdToClipBoard(String password) {
         DesktopUtils.copyToClipBoard(password);
-        summonPopup(this.window, "Password copied to the clipboard");
+        summonNotificationPopup(this.window, "Password copied to the clipboard");
     }
 
     private void copyIdToClipBoard(String identifier) {
         DesktopUtils.copyToClipBoard(identifier);
-        summonPopup(this.window, "Identifier copied to the clipboard");
+        summonNotificationPopup(this.window, "Identifier copied to the clipboard");
     }
 
     // endregion
@@ -598,7 +598,7 @@ public class MainWindowController extends BaseWindowController {
     public void saveDatabase() {
         try {
             DatabaseHandler.saveDatabase();
-            summonPopup(window, "Database successfully saved");
+            summonNotificationPopup(window, "Database successfully saved");
         } catch (Exception ex) {
             logger.error("An unexpected error occured while trying to save the passwords database: " + ex.getMessage());
         }

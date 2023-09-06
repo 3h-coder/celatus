@@ -286,7 +286,7 @@ public class PasswordWindowController extends DialogWindowController {
             inputPwdEntry.setLastEditDate(LocalDateTime.now());
 
             closeDialog();
-            summonPopup(App.getWindow(), "Password entry updated");
+            summonNotificationPopup(App.getWindow(), "Password entry updated");
         }
         closeDialog();
         // Refreshing the password entry view in the main window

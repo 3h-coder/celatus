@@ -1,4 +1,9 @@
-- themes and properties
-- implement the saveRecords() method
-- create logo (and its icon)
-- auto update system
+## P1
+- Password Search
+- Add light theme
+
+## P2
+- New version detection and update
+
+## P3
+- Logo redesign
