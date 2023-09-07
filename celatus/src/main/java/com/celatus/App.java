@@ -6,6 +6,7 @@ import java.io.StringWriter;
 import java.security.Key;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,6 +21,7 @@ import javafx.stage.StageStyle;
 
 import com.celatus.controller.BaseWindowController;
 import com.celatus.handler.DatabaseHandler;
+import com.celatus.handler.PropertyHandler;
 import com.celatus.controller.AlertMode;
 import com.celatus.controller.AlertWindowController;
 import com.celatus.util.FXMLUtils;
@@ -45,8 +47,11 @@ public class App extends Application {
 
     private static Map<String, Object> tmpVariables; // used to store any variable at runtime, such as signals 
     // -> (signals are boolean variables representing a signal sent from one window to the whole application)
+    
+    private static Properties properties;
 
     private static HostServices hostServices;
+
     // endregion 
 
     // region =====Getters and Setters=====
@@ -95,6 +100,10 @@ public class App extends Application {
         return tmpVariables;
     }
 
+    public static Properties getProperties() {
+        return properties;
+    }
+
     public static HostServices getHS() {
         return hostServices;
     }
@@ -124,8 +133,7 @@ public class App extends Application {
         }));
         
         hostServices = getHostServices();
-        // settings = SettingsHandler.loadSettings();
-        //_logger.debug("Settings: " + settings);
+        loadProperties();
 
         if (DatabaseHandler.dbFileExists()) {
             launchWindow(stage, "entryWindow");
@@ -151,6 +159,13 @@ public class App extends Application {
     // endregion
 
     // region =====Secondary Methods=====
+
+    public void loadProperties() {
+        if (!PropertyHandler.propertyFileExists()) {
+            PropertyHandler.createDefaultProperties();
+        }
+        properties = PropertyHandler.readProperties();
+    }
 
     /**
      * Launches a window, making it the application's top layer current window.
@@ -311,6 +326,16 @@ public class App extends Application {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Saves a property
+     * @param key
+     * @param value
+     */
+    public static void saveProperty(String key, String value) {
+        properties.setProperty(key, value);
+        PropertyHandler.writeProperties(properties);
     }
 
     // endregion

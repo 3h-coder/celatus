@@ -87,7 +87,8 @@ public class MainWindowController extends BaseWindowController {
         Platform.runLater(() -> {
             performGraphicalSetup();
         });
-        //logger.debug(App.getPasswordsDatabase());    
+        // logger.debug(App.getProperties());
+        // logger.debug(App.getPasswordsDatabase());    
     }
 
     /**

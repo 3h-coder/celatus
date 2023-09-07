@@ -19,7 +19,7 @@ public class DatabaseHandler {
 
     private static final Logger logger = LogManager.getLogger(DatabaseHandler.class.getName());
 
-    private static final String dbFilePath = "passwords.clts";
+    private static final String DB_FILE_PATH = "passwords.clts";
 
     private static String rawData;
 
@@ -40,7 +40,7 @@ public class DatabaseHandler {
      * @return
      */
     public static boolean dbFileExists() {
-        File file = new File(dbFilePath);
+        File file = new File(DB_FILE_PATH);
         return file.exists();
     }
 
@@ -50,7 +50,7 @@ public class DatabaseHandler {
      */
     public static void concealDatabase() throws IOException {
         if (dbFileExists()) {
-            CryptoUtils.hideFile(dbFilePath, true);
+            CryptoUtils.hideFile(DB_FILE_PATH, true);
         }
     }
 
@@ -74,10 +74,10 @@ public class DatabaseHandler {
     private static void dbToEncryptedFile(boolean fileExists) {
         try {
             if (fileExists) {
-                CryptoUtils.unhideFile(dbFilePath);
+                CryptoUtils.unhideFile(DB_FILE_PATH);
             }
             // logger.debug("Saved data: " + rawData);
-            CryptoUtils.encryptIntoFile(dbFilePath, rawData, App.getKey(), CryptoUtils.generateIV());
+            CryptoUtils.encryptIntoFile(DB_FILE_PATH, rawData, App.getKey(), CryptoUtils.generateIV());
         } catch (Exception ex) {
             App.error(App.getWindow(), ex, "Could not properly save the passwords data", logger, AlertMode.OK, true);
         }
@@ -89,7 +89,7 @@ public class DatabaseHandler {
     public static void parseRawDataFromDatabase() {
         if (dbFileExists()) {
             try {
-                rawData = CryptoUtils.decryptFile(dbFilePath, App.getKey());
+                rawData = CryptoUtils.decryptFile(DB_FILE_PATH, App.getKey());
             } catch (Exception ex) {
                 rawData = null;
             }

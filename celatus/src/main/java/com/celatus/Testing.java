@@ -5,12 +5,13 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.crypto.spec.IvParameterSpec;
 
-import com.celatus.controller.AlertMode;
 import com.celatus.util.CryptoUtils;
 import com.celatus.util.MapUtils;
+import com.celatus.handler.PropertyHandler;
 
 /**
  * Class made for all of our non-unit tests
@@ -164,6 +165,16 @@ public class Testing {
         System.out.println(map.get("final"));
     }
 
+    public static void testReadProperties() {
+        System.out.println(PropertyHandler.readProperties());
+    }
+
+    public static void testWriteProperties() {
+        Properties properties = PropertyHandler.readProperties();
+        properties.setProperty("testKey", "testValue");
+        PropertyHandler.writeProperties(properties);
+        System.out.println(PropertyHandler.readProperties());
+    }
 
     public static void main(String[] args) {
         //testDataEncryption();
@@ -180,7 +191,9 @@ public class Testing {
         //testLoadSettings();
         //testEnumString();
         //testLastIndexOf();
-        testNestedDict();
+        //testNestedDict();
+        //testReadProperties();
+        //testWriteProperties();
     }
 
 }

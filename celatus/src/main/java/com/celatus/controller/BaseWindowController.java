@@ -3,6 +3,7 @@ package com.celatus.controller;
 import java.security.Key;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Properties;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -81,6 +82,7 @@ public class BaseWindowController {
             enableAnchorPaneFocusOnClick();
             setOnCloseRequest();
             setIcon();
+            loadTheme();
         });
     }
 
@@ -91,6 +93,15 @@ public class BaseWindowController {
     @FXML
     public Stage getCurrentWindow() {
         return (Stage) rootPane.getScene().getWindow();
+    }
+
+    @FXML
+    public void loadTheme() {
+        Properties properties = App.getProperties();
+        if ("light".equals(properties.getProperty("theme"))) {
+            rootPane.getStylesheets().clear();
+            rootPane.getStylesheets().add(App.class.getResource("styles/light.css").toExternalForm());
+        }
     }
 
     /**
