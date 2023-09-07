@@ -17,6 +17,7 @@ import com.celatus.util.FXMLUtils;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ListCell;
@@ -36,6 +37,7 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Popup;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.MenuBar;
 
@@ -107,11 +109,11 @@ public class MainWindowController extends BaseWindowController {
         catDescription.widthProperty().addListener((observable, oldValue, newValue) -> {
             FXMLUtils.adjustTextAreaHeight(catDescription);
         });
-        searchBar.focusedProperty().addListener((observable, oldValue, newValue) -> {
+        /*searchBar.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) {
                 searchBar.requestFocus();
             }
-        });
+        });*/
         // We disable the split pane divider
         columnPane2.lookupAll(".split-pane-divider").stream().forEach(div ->  div.setMouseTransparent(true) );
         // We fill up the categories list view and set up the context menus
@@ -257,9 +259,11 @@ public class MainWindowController extends BaseWindowController {
         KeyCode eventCode = event.getCode();
         // String eventText = event.getText();
 
-        if (eventCode == KeyCode.ESCAPE) {
+        if (eventCode == KeyCode.ESCAPE || eventCode == KeyCode.TAB) {
             // Disabling the onKeyTyped other wise it is triggered
             searchBar.setOnKeyTyped(keyTypedEvent -> {});
+            searchBar.getParent().requestFocus();
+
             return;
         }
         // Re-enabling onKeyTyped if not the escape key
@@ -275,10 +279,18 @@ public class MainWindowController extends BaseWindowController {
     public void searchBarOnAction() {
         var searchResult = searchPassword();
         if (searchResult.isEmpty()) {
-            summonNotificationPopup(window, "No password with that name", searchBar);
+            summonNotificationPopup(window, "No password with that name");
         } else {
             displayPasswords(searchResult);
         }
+    }
+
+    @FXML
+    public void searchBarOnMouseClicked() {
+        Popup popup = (Popup)App.getTempVariable("notification_popup");
+        if (popup != null) {
+            FXMLUtils.enableKeyTransfer((TextArea)popup.getContent().get(0), searchBar);
+        }  
     }
 
     /**
@@ -289,7 +301,7 @@ public class MainWindowController extends BaseWindowController {
     public List<PasswordEntry> searchPassword() {
         // We deselect the selected category
         categoriesList.getSelectionModel().clearSelection();
-        
+
         String passwordName = searchBar.getText();
         passwordName = passwordName.toLowerCase();
         PasswordsDatabase database = App.getPasswordsDatabase();

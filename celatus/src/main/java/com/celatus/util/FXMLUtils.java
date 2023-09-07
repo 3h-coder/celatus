@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -13,6 +14,7 @@ import java.util.HashMap;
 
 import com.celatus.App;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -24,6 +26,9 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputControl;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
@@ -52,20 +57,20 @@ public class FXMLUtils {
         }
     }
 
-    public static ArrayList<Node> getAllNodesByClass(Parent root, Class<?> nodeClass) {
+    public static <T> ArrayList<T> getAllNodesByClass(Parent root, Class<T> nodeClass) {
         ArrayList<Node> nodes = getAllNodes(root);
         return filterNodesByClass(nodes, nodeClass);
     }
-
-    private static ArrayList<Node> filterNodesByClass(ArrayList<Node> nodes, Class<?> clazz) {
-        ArrayList<Node> result = new ArrayList<>();
+    
+    private static <T> ArrayList<T> filterNodesByClass(ArrayList<Node> nodes, Class<T> clazz) {
+        ArrayList<T> result = new ArrayList<>();
         for (Node node : nodes) {
             if (clazz.isInstance(node)) {
-                result.add(node);
+                result.add(clazz.cast(node));
             }
         }
         return result;
-    }
+    }    
 
     public static void hideAllChildren(Parent parent, Node... exceptions) {
         var children = getAllNodes(parent);
@@ -189,7 +194,76 @@ public class FXMLUtils {
 
     // endregion
 
-    // region =====TextArea=====
+    // region =====TextArea / TextField=====
+
+    /**
+     * Transfers any key typed from the sender to the receiver, also handles the enter and back space keys
+     * @param sender
+     * @param receiver
+     */
+    public static void enableKeyTransfer(TextInputControl sender, TextInputControl receiver) {
+        // On key pressed
+        sender.setOnKeyPressed(event -> {
+            KeyCode eventCode = event.getCode();
+            // Ignore the text input if alt or ctrl is pressed
+            if (event.isControlDown() || event.isAltDown()) {
+                //App.addTempVariable("ignore_key", true);
+                return;
+            }
+            // Trigger the onAction() if it's the enter key
+            if (eventCode == KeyCode.ENTER) {
+                if (receiver instanceof TextField) {
+                    ((TextField)receiver).fireEvent(new ActionEvent());;
+                // It's a text area so we need a new line
+                } else if (receiver instanceof TextArea) {
+                    TextArea textAreaReceiver = (TextArea) receiver;
+                    int caretPosition = textAreaReceiver.getCaretPosition();
+                    String text = textAreaReceiver.getText();
+                    String newText = text.substring(0, caretPosition) + "\n" + text.substring(caretPosition);
+                    textAreaReceiver.setText(newText);
+                    textAreaReceiver.positionCaret(caretPosition + 1);
+                }
+            }
+            // Text handling
+            String receiverText = receiver.getText();
+            String eventText = event.getText();
+            String selectedText = receiver.getSelectedText();
+            if ((eventCode == KeyCode.DELETE || eventCode == KeyCode.BACK_SPACE) && StringUtils.isNotBlank(receiverText)) {
+                // deleting the selected text (if there is any)
+                if (StringUtils.isNotBlank(selectedText)) {
+                    receiver.replaceSelection("");
+                    return;
+                }
+                // deleting the last character
+                receiverText = receiverText.substring(0, receiverText.length() - 1);
+                receiver.setText(receiverText);
+                receiver.positionCaret(receiverText.length());
+            } else if (StringUtils.isNotBlank(eventText)) {
+                // replacing the selected text (if there is any)
+                if (StringUtils.isNotBlank(selectedText)) {
+                    receiver.replaceSelection(eventText);
+                    return;
+                }
+                // adding the character
+                receiverText += eventText;
+                receiver.setText(receiverText);
+                receiver.positionCaret(receiverText.length());
+                // trigger the receiver onKeyPressed
+                var receiverOnKeyPressed = receiver.getOnKeyPressed();
+                if (receiverOnKeyPressed != null) {
+                    receiverOnKeyPressed.handle(event);
+                }  
+            }
+        });
+        // On key typed
+        sender.setOnKeyTyped(event -> {
+            // Ignore the text input if alt or ctrl is pressed
+            var receiverOnKeyTyped = receiver.getOnKeyTyped();
+            if (receiverOnKeyTyped != null) {
+                receiverOnKeyTyped.handle(event);
+            }
+        });
+    }
 
     public static void adjustTextAreaHeight(TextArea textArea) {
         final double MIN_HEIGHT = 30.0;

@@ -36,7 +36,6 @@ import javafx.stage.Popup;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.stage.Window;
 import javafx.util.Duration;
 
 
@@ -79,6 +78,7 @@ public class BaseWindowController {
             window = getCurrentWindow();
             scene = window.getScene();
             makeLabelsSelectable();
+            enableAnchorPaneFocusOnClick();
             setOnCloseRequest();
             setIcon();
         });
@@ -174,6 +174,11 @@ public class BaseWindowController {
         textArea.getStyleClass().add("popup");
         //textArea.setBorder(new Border(new BorderStroke(Color.valueOf("#8c8c8c"), BorderStrokeStyle.SOLID, new CornerRadii(5.0), BorderWidths.DEFAULT)));
         FXMLUtils.adjustTextAreaDimensions(textArea);
+        // Enable key transfer to the window's focused textfield or text area
+        var sceneFocusOwner = window.getScene().getFocusOwner();
+        if (sceneFocusOwner instanceof TextInputControl) {
+            FXMLUtils.enableKeyTransfer(textArea, (TextInputControl)sceneFocusOwner);
+        }
         
         Popup popup = new Popup();
 
@@ -204,80 +209,6 @@ public class BaseWindowController {
         fadeTransition.play();
     }
 
-    /**
-     * Summons a 5 seconds popup on top of the given window
-     * @param window
-     * @param message
-     * @param keyReceiver
-     */
-    public void summonNotificationPopup(Stage window, String message, TextInputControl keyReceiver) {
-        TextArea textArea = new TextArea(message);
-        textArea.setWrapText(true);
-        textArea.setEditable(false);
-        textArea.setMouseTransparent(true);
-        // Sending the keys to our keyReceiver
-        textArea.setOnKeyPressed(event -> {
-            KeyCode eventCode = event.getCode();
-            // Trigger the onAction() if it's the enter key
-            if (eventCode == KeyCode.ENTER) {
-                if (keyReceiver instanceof TextField) {
-                    ((TextField)keyReceiver).fireEvent(new ActionEvent());;
-                // It's a text area so we need a new line
-                } else if (keyReceiver instanceof TextArea) {
-                    TextArea textAreaReceiver = (TextArea) keyReceiver;
-                    int caretPosition = textAreaReceiver.getCaretPosition();
-                    String text = textAreaReceiver.getText();
-                    String newText = text.substring(0, caretPosition) + "\n" + text.substring(caretPosition);
-                    textAreaReceiver.setText(newText);
-                    textAreaReceiver.positionCaret(caretPosition + 1);
-                }
-            }
-            String keyReceiverText = keyReceiver.getText();
-            String eventText = event.getText();
-            if ((eventCode == KeyCode.DELETE || eventCode == KeyCode.BACK_SPACE) && StringUtils.isNotBlank(keyReceiverText)) {
-                keyReceiverText = keyReceiverText.substring(0, keyReceiverText.length() - 1);
-                keyReceiver.setText(keyReceiverText);
-                keyReceiver.positionCaret(keyReceiverText.length());
-            } else if (StringUtils.isNotBlank(eventText)) {
-                keyReceiverText += eventText;
-                keyReceiver.setText(keyReceiverText);
-                keyReceiver.positionCaret(keyReceiverText.length());
-                // trigger the onKeyPressed
-            }
-        });
-        textArea.getStylesheets().add(App.class.getResource("styles/default.css").toExternalForm());
-        textArea.getStyleClass().add("popup");
-        //textArea.setBorder(new Border(new BorderStroke(Color.valueOf("#8c8c8c"), BorderStrokeStyle.SOLID, new CornerRadii(5.0), BorderWidths.DEFAULT)));
-        FXMLUtils.adjustTextAreaDimensions(textArea);
-        
-        Popup popup = new Popup();
-
-        // The popup is located at the window's middle
-        popup.setX(window.getX() + (window.getWidth() / 2) - (FXMLUtils.computeTextWidth(textArea.getText(), textArea.getFont()) + 2) / 2);
-        popup.setY(window.getY());
-
-        popup.getContent().addAll(textArea);
-        //popup.setAutoHide(true);
-
-        // Create a TranslateTransition to move the popup down right under the menu bar row
-        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.1), popup.getContent().get(0));
-        translateTransition.setByY((int)(rowPane1.getHeight() / 2)); // Converting it to int otherwise the text is blurry
-
-        // Create a FadeTransition
-        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(4.9), popup.getContent().get(0));
-        fadeTransition.setFromValue(1);
-        fadeTransition.setToValue(0);
-        fadeTransition.setOnFinished(event -> {
-            popup.hide();
-        });
-
-        // Only one popup at a time
-        removeNotificationPopup();
-        App.addTempVariable("notification_popup", popup);
-        popup.show(window);
-        translateTransition.play();
-        fadeTransition.play();
-    }
 
     public void removeNotificationPopup() {
         Popup popup = (Popup)App.extractTempVariable("notification_popup");
@@ -290,12 +221,11 @@ public class BaseWindowController {
      * Browses the window to find all first layer labels (under an anchor pane) and make them selectable upon clicking on them
      */
     private void makeLabelsSelectable() {
-        ArrayList<Node> labels = FXMLUtils.getAllNodesByClass(rootPane, Label.class);
-        for (Node node : labels) {
-            if (!(node.getParent() instanceof AnchorPane)) {
+        ArrayList<Label> labels = FXMLUtils.getAllNodesByClass(rootPane, Label.class);
+        for (Label label : labels) {
+            if (!(label.getParent() instanceof AnchorPane)) {
                 continue;
             }
-            Label label = (Label) node;
             AnchorPane parentPane = (AnchorPane) label.getParent();
             label.setOnMouseClicked(mouseEvent -> {
                 if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
@@ -328,6 +258,16 @@ public class BaseWindowController {
         }
     }
 
+    private void enableAnchorPaneFocusOnClick() {
+        ArrayList<Node> nodes = FXMLUtils.getAllNodes(rootPane);
+        for (Node node : nodes) {
+            if (node instanceof AnchorPane && node.getOnMouseClicked() == null) {
+                node.setOnMouseClicked(event -> {
+                    node.requestFocus();
+                });
+            }
+        }
+    }
     // endregion
     
     // region =====Event Methods=====
