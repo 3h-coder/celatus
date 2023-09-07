@@ -46,8 +46,6 @@ public class App extends Application {
     private static Map<String, Object> tmpVariables; // used to store any variable at runtime, such as signals 
     // -> (signals are boolean variables representing a signal sent from one window to the whole application)
 
-    private static Settings settings; // user settings
-
     private static HostServices hostServices;
     // endregion 
 
@@ -83,10 +81,6 @@ public class App extends Application {
 
     public static Stage getWindow() {
         return (Stage) scene.getWindow();
-    }
-
-    public static Settings getSettings() {
-        return settings;
     }
 
     public static BaseWindowController getController() {

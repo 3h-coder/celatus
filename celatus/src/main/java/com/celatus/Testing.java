@@ -9,7 +9,6 @@ import java.util.Map;
 import javax.crypto.spec.IvParameterSpec;
 
 import com.celatus.controller.AlertMode;
-import com.celatus.handler.SettingsHandler;
 import com.celatus.util.CryptoUtils;
 import com.celatus.util.MapUtils;
 
@@ -138,29 +137,6 @@ public class Testing {
         if (map.containsKey("test")) {
             System.out.println("haha");
         }
-    }
-
-    public static void testWriteSettings() {
-        Map<String, Object> settingsMap = new HashMap<>();
-        Map<String, Object> nested = new HashMap<>();
-        nested.put("key1", "value1");
-        nested.put("key2", "value2");
-        nested.put("key3", AlertMode.OK);
-        settingsMap.put("machine", "windows");
-        settingsMap.put("nested", nested);
-        try {
-            SettingsHandler.saveSettings(new Settings(settingsMap));
-        } catch (Exception ex) {
-            System.out.println(ex);
-        }
-    }
-
-    public static void testLoadSettings() {
-        try {
-            System.out.println(SettingsHandler.loadSettings());
-        } catch (Exception ex) {
-            System.out.println(ex);
-        }     
     }
 
     public static void testEnumString() {
