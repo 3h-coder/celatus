@@ -282,11 +282,14 @@ public class MainWindowController extends BaseWindowController {
     @FXML
     public void searchBarOnAction() {
         var searchResult = searchPassword();
+        if (searchResult == null) {
+            return;
+        }
         if (searchResult.isEmpty()) {
             summonNotificationPopup(window, "No password with that name");
-        } else {
-            displayPasswords(searchResult);
+            return;
         }
+        displayPasswords(searchResult);
     }
 
     @FXML
@@ -306,13 +309,14 @@ public class MainWindowController extends BaseWindowController {
         // We deselect the selected category
         categoriesList.getSelectionModel().clearSelection();
 
+        PasswordsDatabase database = App.getPasswordsDatabase();
+        List<PasswordEntry> found = new ArrayList<>();
+
         String passwordName = searchBar.getText();
         if (StringUtils.isBlank(passwordName)) {
             return null;
         }
         passwordName = passwordName.toLowerCase();
-        PasswordsDatabase database = App.getPasswordsDatabase();
-        List<PasswordEntry> found = new ArrayList<>();
         for (Category cat : database.getCategories()) {
             if (cat.getPasswordEntries() == null) {
                 continue;
