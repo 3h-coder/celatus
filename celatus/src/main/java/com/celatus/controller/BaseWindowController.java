@@ -1,8 +1,10 @@
 package com.celatus.controller;
 
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,12 +14,15 @@ import com.celatus.util.FXMLUtils;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputControl;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -161,11 +166,85 @@ public class BaseWindowController {
      * @param message
      */
     public void summonNotificationPopup(Stage window, String message) {
-
         TextArea textArea = new TextArea(message);
         textArea.setWrapText(true);
         textArea.setEditable(false);
         textArea.setMouseTransparent(true);
+        textArea.getStylesheets().add(App.class.getResource("styles/default.css").toExternalForm());
+        textArea.getStyleClass().add("popup");
+        //textArea.setBorder(new Border(new BorderStroke(Color.valueOf("#8c8c8c"), BorderStrokeStyle.SOLID, new CornerRadii(5.0), BorderWidths.DEFAULT)));
+        FXMLUtils.adjustTextAreaDimensions(textArea);
+        
+        Popup popup = new Popup();
+
+        // The popup is located at the window's middle
+        popup.setX(window.getX() + (window.getWidth() / 2) - (FXMLUtils.computeTextWidth(textArea.getText(), textArea.getFont()) + 2) / 2);
+        popup.setY(window.getY());
+
+        popup.getContent().addAll(textArea);
+        //popup.setAutoHide(true);
+
+        // Create a TranslateTransition to move the popup down right under the menu bar row
+        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.1), popup.getContent().get(0));
+        translateTransition.setByY((int)(rowPane1.getHeight() / 2)); // Converting it to int otherwise the text is blurry
+
+        // Create a FadeTransition
+        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(4.9), popup.getContent().get(0));
+        fadeTransition.setFromValue(1);
+        fadeTransition.setToValue(0);
+        fadeTransition.setOnFinished(event -> {
+            popup.hide();
+        });
+
+        // Only one popup at a time
+        removeNotificationPopup();
+        App.addTempVariable("notification_popup", popup);
+        popup.show(window);
+        translateTransition.play();
+        fadeTransition.play();
+    }
+
+    /**
+     * Summons a 5 seconds popup on top of the given window
+     * @param window
+     * @param message
+     * @param keyReceiver
+     */
+    public void summonNotificationPopup(Stage window, String message, TextInputControl keyReceiver) {
+        TextArea textArea = new TextArea(message);
+        textArea.setWrapText(true);
+        textArea.setEditable(false);
+        textArea.setMouseTransparent(true);
+        // Sending the keys to our keyReceiver
+        textArea.setOnKeyPressed(event -> {
+            KeyCode eventCode = event.getCode();
+            // Trigger the onAction() if it's the enter key
+            if (eventCode == KeyCode.ENTER) {
+                if (keyReceiver instanceof TextField) {
+                    ((TextField)keyReceiver).fireEvent(new ActionEvent());;
+                // It's a text area so we need a new line
+                } else if (keyReceiver instanceof TextArea) {
+                    TextArea textAreaReceiver = (TextArea) keyReceiver;
+                    int caretPosition = textAreaReceiver.getCaretPosition();
+                    String text = textAreaReceiver.getText();
+                    String newText = text.substring(0, caretPosition) + "\n" + text.substring(caretPosition);
+                    textAreaReceiver.setText(newText);
+                    textAreaReceiver.positionCaret(caretPosition + 1);
+                }
+            }
+            String keyReceiverText = keyReceiver.getText();
+            String eventText = event.getText();
+            if ((eventCode == KeyCode.DELETE || eventCode == KeyCode.BACK_SPACE) && StringUtils.isNotBlank(keyReceiverText)) {
+                keyReceiverText = keyReceiverText.substring(0, keyReceiverText.length() - 1);
+                keyReceiver.setText(keyReceiverText);
+                keyReceiver.positionCaret(keyReceiverText.length());
+            } else if (StringUtils.isNotBlank(eventText)) {
+                keyReceiverText += eventText;
+                keyReceiver.setText(keyReceiverText);
+                keyReceiver.positionCaret(keyReceiverText.length());
+                // trigger the onKeyPressed
+            }
+        });
         textArea.getStylesheets().add(App.class.getResource("styles/default.css").toExternalForm());
         textArea.getStyleClass().add("popup");
         //textArea.setBorder(new Border(new BorderStroke(Color.valueOf("#8c8c8c"), BorderStrokeStyle.SOLID, new CornerRadii(5.0), BorderWidths.DEFAULT)));

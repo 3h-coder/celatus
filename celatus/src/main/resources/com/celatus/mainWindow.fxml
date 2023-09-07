@@ -43,7 +43,8 @@
                      <items>
                         <Menu mnemonicParsing="false" text="Theme">
                           <items>
-                            <MenuItem mnemonicParsing="false" text="Action 1" />
+                            <MenuItem mnemonicParsing="false" text="Default (dark)" />
+                              <MenuItem mnemonicParsing="false" text="Light" />
                           </items>
                         </Menu>
                      </items>
@@ -66,12 +67,12 @@
       </AnchorPane>
       <AnchorPane id="columnPane1" fx:id="columnPane1" layoutY="39.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="180.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="27.0">
          <children>
-            <ImageView fx:id="magGlassImage" fitHeight="18.0" fitWidth="18.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="12.0" AnchorPane.topAnchor="10.0">
+            <ImageView fx:id="magGlassImage" fitHeight="25.0" fitWidth="25.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="12.0" AnchorPane.topAnchor="10.0">
                <image>
                   <Image url="@images/magGlass.png" />
                </image>
             </ImageView>
-            <TextField fx:id="searchBar" layoutX="31.0" layoutY="18.0" onAction="#searchPassword" onKeyPressed="#searchBarKeyPressed" promptText="Search password" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+            <TextField fx:id="searchBar" layoutX="31.0" layoutY="18.0" onAction="#searchBarOnAction" onKeyPressed="#searchBarKeyPressed" onKeyTyped="#searchBarKeyTyped" promptText="Search password" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="11.0" />
             <ListView fx:id="categoriesList" fixedCellSize="24.0" layoutX="-6.0" layoutY="14.0" prefHeight="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0" />
          </children>
       </AnchorPane>

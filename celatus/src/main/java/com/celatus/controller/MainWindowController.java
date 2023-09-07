@@ -1,6 +1,8 @@
 package com.celatus.controller;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import com.celatus.App;
@@ -105,6 +107,11 @@ public class MainWindowController extends BaseWindowController {
         catDescription.widthProperty().addListener((observable, oldValue, newValue) -> {
             FXMLUtils.adjustTextAreaHeight(catDescription);
         });
+        searchBar.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                searchBar.requestFocus();
+            }
+        });
         // We disable the split pane divider
         columnPane2.lookupAll(".split-pane-divider").stream().forEach(div ->  div.setMouseTransparent(true) );
         // We fill up the categories list view and set up the context menus
@@ -137,6 +144,12 @@ public class MainWindowController extends BaseWindowController {
         }
     }
 
+    private void fillPasswordsTable(List<PasswordEntry> passwordEntries) {
+        for (PasswordEntry pwdEntry : passwordEntries) {
+            FXMLUtils.addToTableView(passwordsTable, pwdEntry);
+        }
+    }
+
     /**
      * Displays all the password entries of the selected category, refreshing the view
      * @param category
@@ -147,6 +160,22 @@ public class MainWindowController extends BaseWindowController {
         if (category.getPasswordEntries() != null) {
             passwordsTable.setVisible(true);
             fillPasswordsTable(category); 
+        } else {
+            passwordsTable.setVisible(false);
+        }
+    }
+
+    /**
+     * Displays all the given password entries
+     * @param category
+     */
+    public void displayPasswords(List<PasswordEntry> passwordEntries) {
+        passwordsTable.getItems().clear();
+        passwordsTable.setPrefHeight(0);
+        catDescription.setPrefHeight(0);
+        if (passwordEntries != null && !passwordEntries.isEmpty()) {
+            passwordsTable.setVisible(true);
+            fillPasswordsTable(passwordEntries); 
         } else {
             passwordsTable.setVisible(false);
         }
@@ -222,17 +251,61 @@ public class MainWindowController extends BaseWindowController {
         }
         
     }
-    
+
     @FXML
     public void searchBarKeyPressed(KeyEvent event) {
-        if (event.getCode() == KeyCode.ESCAPE) {
-            searchBar.getParent().requestFocus();
+        KeyCode eventCode = event.getCode();
+        // String eventText = event.getText();
+
+        if (eventCode == KeyCode.ESCAPE) {
+            // Disabling the onKeyTyped other wise it is triggered
+            searchBar.setOnKeyTyped(keyTypedEvent -> {});
+            return;
         }
+        // Re-enabling onKeyTyped if not the escape key
+        searchBar.setOnKeyTyped(keyTypedEvent -> searchBarKeyTyped(keyTypedEvent));
     }
 
     @FXML
-    public void searchPassword() {
-        summonNotificationPopup(window, "test");
+    public void searchBarKeyTyped(KeyEvent event) {
+        displayPasswords(searchPassword());
+    }
+
+    @FXML
+    public void searchBarOnAction() {
+        var searchResult = searchPassword();
+        if (searchResult.isEmpty()) {
+            summonNotificationPopup(window, "No password with that name", searchBar);
+        } else {
+            displayPasswords(searchResult);
+        }
+    }
+
+    /**
+     * Searches for the given password, and displays all the passwords that contain its name.
+     * @param passwordName
+     */
+    @FXML
+    public List<PasswordEntry> searchPassword() {
+        // We deselect the selected category
+        categoriesList.getSelectionModel().clearSelection();
+        
+        String passwordName = searchBar.getText();
+        passwordName = passwordName.toLowerCase();
+        PasswordsDatabase database = App.getPasswordsDatabase();
+        List<PasswordEntry> found = new ArrayList<>();
+        for (Category cat : database.getCategories()) {
+            if (cat.getPasswordEntries() == null) {
+                continue;
+            }
+            for (PasswordEntry pwdEntry : cat.getPasswordEntries()) {
+                String pwdEntryName = pwdEntry.getName().toLowerCase();
+                if (pwdEntryName.startsWith(passwordName)) {
+                    found.add(pwdEntry);
+                }
+            }
+        }
+        return found;
     }
 
     // endregion
