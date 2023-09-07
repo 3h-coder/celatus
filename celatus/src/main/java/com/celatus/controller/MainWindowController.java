@@ -17,7 +17,6 @@ import com.celatus.util.FXMLUtils;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ListCell;
@@ -228,6 +227,7 @@ public class MainWindowController extends BaseWindowController {
         super.windowKeyPressed(event);
         // Full screen
         if (event.getCode() == KeyCode.F11) {
+            removeNotificationPopup();
             if (window.isMaximized()) {
                 window.setMaximized(false);
                 controlCatDescription();
@@ -235,15 +235,18 @@ public class MainWindowController extends BaseWindowController {
                 window.setMaximized(true);
             }
         } else if (event.getCode() == KeyCode.ESCAPE && window.isMaximized()) {
+            removeNotificationPopup();
             window.setMaximized(false);
             controlCatDescription();
         }
         // New category
         if (event.isShiftDown() && event.getCode() == KeyCode.C) {
+            removeNotificationPopup();
             openCategoryWindow(null);
         }
         // New password
         if (event.isShiftDown() && event.getCode() == KeyCode.P) {
+            removeNotificationPopup();
             String selectedCategory = categoriesList.getSelectionModel().getSelectedItem();
             if (selectedCategory == null) {
                 summonNotificationPopup(window, "You must select a category first");
@@ -303,6 +306,9 @@ public class MainWindowController extends BaseWindowController {
         categoriesList.getSelectionModel().clearSelection();
 
         String passwordName = searchBar.getText();
+        if (StringUtils.isBlank(passwordName)) {
+            return null;
+        }
         passwordName = passwordName.toLowerCase();
         PasswordsDatabase database = App.getPasswordsDatabase();
         List<PasswordEntry> found = new ArrayList<>();
@@ -418,7 +424,7 @@ public class MainWindowController extends BaseWindowController {
 
         //  Runtime context menu calculations
         this.passwordsTable.addEventHandler(ContextMenuEvent.CONTEXT_MENU_REQUESTED, event -> {
-            String selectedCategory = categoriesList.getSelectionModel().getSelectedItem();
+
             PasswordEntry selectedPassword = passwordsTable.getSelectionModel().getSelectedItem();
             // No context menu if no selected password
             if (selectedPassword == null) {
@@ -429,15 +435,16 @@ public class MainWindowController extends BaseWindowController {
                 pwdContextMenu.getItems().addAll(editPwdMenuItem, deletePwdMenuItem, movePwdMenuItem, copyPwdMenuItem, copyIdMenuItem, openWebMenuItem);
                 pwdContextMenu.show(passwordsTable, event.getScreenX(), event.getScreenY());
             }
-            // Adding all of our categories to the "move to" menu, (except the selected one).
+            // Adding all of our categories to the "move to" menu, (except the password's one).
+            String passwordCategory = selectedPassword.findCategory().getName();
             movePwdMenuItem.getItems().clear();
             for (Category category : App.getPasswordsDatabase().getCategories()) {
                 String categoryName = category.getName();
-                if (StringUtils.equals(selectedCategory, categoryName)) {
+                if (StringUtils.equals(passwordCategory, categoryName)) {
                     continue;
                 }
                 MenuItem menuItem = new MenuItem(categoryName);
-                menuItem.setOnAction(_event -> movePasswordEntry(selectedPassword, selectedCategory, categoryName));
+                menuItem.setOnAction(_event -> movePasswordEntry(selectedPassword, passwordCategory, categoryName));
                 movePwdMenuItem.getItems().add(menuItem);
             }
             // Disabling the open url option if no url
@@ -675,7 +682,9 @@ public class MainWindowController extends BaseWindowController {
             database.movePasswordEntry(pwdEntry, oldCat, newCat);
             summonNotificationPopup(this.window, "The password has been moved to " + newCatName);
             logger.info("Moved the password entry : " + pwdEntry.getName() + " from " + oldCatName + " to " + newCatName);
-            displayPasswords(oldCat);
+            if (categoriesList.getSelectionModel().getSelectedItem() != null) {
+                displayPasswords(oldCat);
+            }
         } catch (IllegalArgumentException ex) {
             App.error(this.window, ex, "An error occured", logger, AlertMode.OK, true);
         } 

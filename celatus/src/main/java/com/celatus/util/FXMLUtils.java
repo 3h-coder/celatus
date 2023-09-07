@@ -227,6 +227,9 @@ public class FXMLUtils {
             // Text handling
             String receiverText = receiver.getText();
             String eventText = event.getText();
+            if (event.isShiftDown()) {
+                eventText = eventText.toUpperCase();
+            }
             String selectedText = receiver.getSelectedText();
             if ((eventCode == KeyCode.DELETE || eventCode == KeyCode.BACK_SPACE) && StringUtils.isNotBlank(receiverText)) {
                 // deleting the selected text (if there is any)
@@ -258,6 +261,26 @@ public class FXMLUtils {
         // On key typed
         sender.setOnKeyTyped(event -> {
             // Ignore the text input if alt or ctrl is pressed
+            var receiverOnKeyTyped = receiver.getOnKeyTyped();
+            if (receiverOnKeyTyped != null) {
+                receiverOnKeyTyped.handle(event);
+            }
+        });
+    }
+
+    /**
+     * Transfers key events from the sender to the receiver node
+     * @param sender
+     * @param receiver
+     */
+    public static void transferKeyEvents(TextInputControl sender, Node receiver) {
+        sender.setOnKeyPressed(event -> {
+            var receiverOnKeyPressed = receiver.getOnKeyPressed();
+                if (receiverOnKeyPressed != null) {
+                    receiverOnKeyPressed.handle(event);
+                }  
+        });
+        sender.setOnKeyTyped(event -> {
             var receiverOnKeyTyped = receiver.getOnKeyTyped();
             if (receiverOnKeyTyped != null) {
                 receiverOnKeyTyped.handle(event);

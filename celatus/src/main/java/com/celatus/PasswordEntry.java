@@ -211,6 +211,16 @@ public class PasswordEntry implements Recordable {
                 + ", lastEditDate=" + lastEditDate + ", records=" + records + "]";
     }
 
+    public Category findCategory() {
+        PasswordsDatabase database = App.getPasswordsDatabase();
+        for (Category cat : database.getCategories()) {
+            if (cat.hasPasswordEntry(this)) {
+                return cat;
+            }
+        }
+        return null;
+    }
+
     // endregion
     
     // region =====Interface Methods=====

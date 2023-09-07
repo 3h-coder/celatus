@@ -178,6 +178,12 @@ public class BaseWindowController {
         var sceneFocusOwner = window.getScene().getFocusOwner();
         if (sceneFocusOwner instanceof TextInputControl) {
             FXMLUtils.enableKeyTransfer(textArea, (TextInputControl)sceneFocusOwner);
+        } else if (sceneFocusOwner.getOnKeyPressed() != null || sceneFocusOwner.getOnKeyTyped() != null) {
+            // Transfer key events to the window's scene root
+            FXMLUtils.transferKeyEvents(textArea, sceneFocusOwner);
+        } else {
+            // Transfer key events to the window's scene root
+            FXMLUtils.transferKeyEvents(textArea, window.getScene().getRoot());
         }
         
         Popup popup = new Popup();
@@ -258,6 +264,9 @@ public class BaseWindowController {
         }
     }
 
+    /**
+     * Sets up all the anchor panes so that they get focus whenever the user clicks on them
+     */
     private void enableAnchorPaneFocusOnClick() {
         ArrayList<Node> nodes = FXMLUtils.getAllNodes(rootPane);
         for (Node node : nodes) {
