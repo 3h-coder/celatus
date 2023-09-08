@@ -286,7 +286,7 @@ public class MainWindowController extends BaseWindowController {
             return;
         }
         if (searchResult.isEmpty()) {
-            summonNotificationPopup(window, "No password with that name");
+            summonNotificationPopup(window, "No password found");
             return;
         }
         displayPasswords(searchResult);
@@ -725,6 +725,16 @@ public class MainWindowController extends BaseWindowController {
         } catch (Exception ex) {
             App.error(this.window, ex, "An error occured", logger, AlertMode.OK, true);
         }
+    }
+
+    public void defaultThemeSelected() {
+        App.saveProperty("theme", "default");
+        loadTheme();
+    }
+
+    public void lightThemeSelected() {
+        App.saveProperty("theme", "light");
+        loadTheme();
     }
 
     // endregion

@@ -101,6 +101,9 @@ public class BaseWindowController {
         if ("light".equals(properties.getProperty("theme"))) {
             rootPane.getStylesheets().clear();
             rootPane.getStylesheets().add(App.class.getResource("styles/light.css").toExternalForm());
+        } else {
+            rootPane.getStylesheets().clear();
+            rootPane.getStylesheets().add(App.class.getResource("styles/default.css").toExternalForm());
         }
     }
 

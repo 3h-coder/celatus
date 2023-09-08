@@ -1,13 +1,13 @@
 /* -------------------------All windows------------------------- */
 
 .AnchorPane {
-    -fx-background-color : #e6e6e6;
-    -fx-border-color: #353535;
+    -fx-background-color : #dfdfdf;
+    -fx-border-color: #2b2b2b;
     -fx-border-width: 0
 }
 
 .split-pane {
-    -fx-background-color : #e6e6e6;
+    -fx-background-color : #dfdfdf;
     -fx-box-border: transparent;
     -fx-border-width: 0;
     -fx-padding: 0 0 0 0;
@@ -19,18 +19,18 @@
 }
 
 .button {
-    -fx-background-color :  #afafaf;
+    -fx-background-color :  #bdbaba;
     -fx-text-fill: black
 }
 
 .button:hover {
-    -fx-background-color: #cacac9;
+    -fx-background-color: #cecece;
     -fx-text-fill: black;
 }
 
 .label {
     -fx-text-fill: black;
-    /*-fx-border-color: #353535;
+    /*-fx-border-color: #2b2b2b;
     -fx-border-width: 1 1 1 1*/
 }
 
@@ -47,38 +47,39 @@
 }
 
 .text-field {
-    -fx-background-color :  #afafaf;
+    -fx-background-color :  #bdbaba;
     -fx-text-fill: black;
-    -fx-highlight-fill: #353535
+    -fx-prompt-text-fill: rgb(0, 0, 0, 0.5);
+    -fx-highlight-fill: #2b2b2b
 }
 
 .text-area {
     -fx-background-radius: 5;
-    -fx-background-color :  #afafaf;
+    -fx-background-color :  #bdbaba;
     -fx-text-fill: black;
-    /*-fx-border-color: #353535;
+    /*-fx-border-color: #2b2b2b;
     -fx-border-width: 1 1 1 1;*/
 }
 
 .text-area .content{
     -fx-background-radius: 0;
-    -fx-background-color :  #afafaf;
+    -fx-background-color :  #bdbaba;
 }
 
 .text-area:focused {
-    -fx-highlight-fill: #353535;
+    -fx-highlight-fill: #2b2b2b;
 }
 
 .popup {
     -fx-border-radius: 5px;
-    -fx-border-color: #353535;
+    -fx-border-color: #2b2b2b;
     -fx-border-width: 1 1 1 1
 }
 
 .context-menu {
     -fx-background-radius: 5px;
-    -fx-background-color: #afafaf;
-    -fx-border-color: #353535;
+    -fx-background-color: #bdbaba;
+    -fx-border-color: #2b2b2b;
     -fx-border-radius: 5px;
     -fx-border-width: 1 1 1 1
 }
@@ -88,7 +89,7 @@
 }
 
 .context-menu .menu-item:focused {
-    -fx-background-color: #353535;
+    -fx-background-color: #cecece;
 }
 
 .context-menu .menu-item:focused .label {
@@ -100,7 +101,7 @@
 }
 
 /*.menu .separator .line {
-    -fx-border-color: #353535
+    -fx-border-color: #2b2b2b
 }*/
 
 .scroll-bar:vertical,
@@ -121,7 +122,7 @@
 
 .scroll-bar:vertical .thumb,
 .scroll-bar:horizontal .thumb {
-    -fx-background-color: #353535;
+    -fx-background-color: #2b2b2b;
     -fx-opacity: 0.5
 }
 
@@ -131,13 +132,13 @@
 }
 
 #rowPane1 {
-    -fx-background-color: #afafaf;
-    -fx-border-color: #353535;
+    -fx-background-color: #bdbaba;
+    -fx-border-color: #2b2b2b;
     -fx-border-width: 0 0 1 0
 }
 
 #bottomRow {
-    -fx-border-color: #353535;
+    -fx-border-color: #2b2b2b;
     -fx-border-width: 1 0 0 0
 }
 
@@ -152,14 +153,14 @@
 /* -------------------------Main window------------------------- */
 
 #searchBar {
-    -fx-border-color: #353535;
+    -fx-border-color: #2b2b2b;
     -fx-border-width: 0 0 1 0;
     -fx-padding: 0 0 0 0
 }
 
 #descriptionPane {
-    -fx-background-color: #afafaf;
-    -fx-border-color: #353535;
+    -fx-background-color: #bdbaba;
+    -fx-border-color: #2b2b2b;
     -fx-border-width: 0 0 1 0
 }
 
@@ -172,19 +173,19 @@
 }
 
 #passwordsTable .column-header {
-    -fx-background-color: linear-gradient(to bottom, #353535, #cacac9);
+    -fx-background-color: #868686;
     /*-fx-border-color: black;
     -fx-border-width: 0 0 0 1;
     -fx-font-weight: 600*/
 }
 
 #passwordsTable .column-header-background {
-    -fx-background-color: linear-gradient(to bottom, #353535, #cacac9);
+    -fx-background-color: #868686;
 }
 
 #passwordsTable .column-header-background .label {
     -fx-background-color: transparent;
-    -fx-text-fill: black;
+    -fx-text-fill: white;
 }
 
 #passwordsTable .column-header-background .filler {
@@ -197,16 +198,17 @@
 }
 
 #passwordsTable .table-row-cell {
-    -fx-background-color: #e6e6e6
+    -fx-background-color: #dfdfdf
 }
 
 #passwordsTable .table-row-cell:hover {
-    -fx-background-color: #353535
+    -fx-background-color: #cecece
 }
 
 #passwordsTable .table-row-cell:selected{
-    -fx-background-color: #353535;
-    -fx-border-color: black
+    -fx-background-color: #cecece;
+    -fx-border-color: black;
+    -fx-border-width: 1 0 1 0
 }
 
 #passwordsTable .scroll-bar:horizontal{
@@ -220,12 +222,12 @@
 }
 
 /*#passwordsTable .table-row-cell:odd {
-    -fx-background-color: #353535;
+    -fx-background-color: #2b2b2b;
     -fx-background-insets: 0, 0 0 1 0;
 }
 
 #passwordsTable .table-row-cell:odd:hover {
-    -fx-background-color: #cacac9;
+    -fx-background-color: #494949;
 }
 
 #passwordsTable .table-row-cell:odd:hover .table-cell{
@@ -233,12 +235,12 @@
 }
 
 #passwordsTable .table-row-cell:even {
-    -fx-background-color: #e6e6e6;
+    -fx-background-color: #cecece;
     -fx-background-insets: 0, 0 0 1 0;
 }
 
 #passwordsTable .table-row-cell:even:hover {
-    -fx-background-color: #cacac9;
+    -fx-background-color: #494949;
 }
 
 #passwordsTable .table-row-cell:even:hover .table-cell{
@@ -250,8 +252,8 @@
 }
 
 #menuBar {
-    -fx-background-color : #afafaf;
-    -fx-selection-bar: #e6e6e6
+    -fx-background-color : #bdbaba;
+    -fx-selection-bar: #cecece
 }
 
 #menuBar .menu:hover{
@@ -271,12 +273,12 @@
 }
 
 .menu-item:focused {
-    -fx-background-color: #cacac9;
+    -fx-background-color: #cecece;
 }
 
 #columnPane1 {
-    -fx-background-color: #afafaf;
-    -fx-border-color: #353535;
+    -fx-background-color: #bdbaba;
+    -fx-border-color: #2b2b2b;
     -fx-border-width: 0 1 0 0 /* top right bottom left*/
 }
 
@@ -294,11 +296,11 @@
 }
 
 #categoriesList .list-cell:hover {
-    -fx-background-color: #e6e6e6;
+    -fx-background-color: #cecece;
 }
 
 #categoriesList .list-cell:selected {
-    -fx-background-color: #e6e6e6;
+    -fx-background-color: #cecece;
 }
 
 #categoriesList .list-cell:empty {
@@ -308,24 +310,24 @@
 /* -------------------------View Password Window------------------------- */
 
 #recordsTable {
-    -fx-background-color: #353535;
-    /*-fx-border-color: #353535;*/
+    -fx-background-color: transparent;
+    /*-fx-border-color: #2b2b2b;*/
 }
 
 #recordsTable .column-header {
-    -fx-background-color: linear-gradient(to bottom, #353535, #cacac9);
+    -fx-background-color: #868686;
     /*-fx-border-color: black;
     -fx-border-width: 0 0 0 1;
     -fx-font-weight: 600*/
 }
 
 #recordsTable .column-header-background {
-    -fx-background-color: linear-gradient(to bottom, #353535, #cacac9);
+    -fx-background-color: #868686;
 }
 
 #recordsTable .column-header-background .label {
     -fx-background-color: transparent;
-    -fx-text-fill: black;
+    -fx-text-fill: white;
 }
 
 #recordsTable .column-header-background .filler {
@@ -338,22 +340,22 @@
 }
 
 #recordsTable .table-row-cell {
-    /*-fx-border-color: #353535;*/
-    -fx-background-color: #afafaf
+    /*-fx-border-color: #2b2b2b;*/
+    -fx-background-color: #bdbaba
 }
 
 #recordsTable .table-row-cell:hover {
-    -fx-background-color: #353535
+    -fx-background-color: #cecece
 }
 
 #recordsTable .table-row-cell:selected{
-    -fx-background-color: #353535;
-    -fx-border-color: black
+    -fx-background-color: #cecece;
+    -fx-border-color: black;
+    -fx-border-width: 1 1 1 1
 }
 
 #recordsTable .table-row-cell:selected .table-cell{
     -fx-text-fill: black;
-    -fx-font-weight: 700
 }
 
 #recordsTable .scroll-bar:horizontal{
@@ -367,12 +369,12 @@
 }
 
 /*#recordsTable .table-row-cell:odd {
-    -fx-background-color: #353535;
+    -fx-background-color: #2b2b2b;
     -fx-background-insets: 0, 0 0 1 0;
 }
 
 #recordsTable .table-row-cell:odd:hover {
-    -fx-background-color: #cacac9;
+    -fx-background-color: #494949;
 }
 
 #recordsTable .table-row-cell:odd:hover .table-cell{
@@ -380,12 +382,12 @@
 }
 
 #recordsTable .table-row-cell:even {
-    -fx-background-color: #e6e6e6;
+    -fx-background-color: #cecece;
     -fx-background-insets: 0, 0 0 1 0;
 }
 
 #recordsTable .table-row-cell:even:hover {
-    -fx-background-color: #cacac9;
+    -fx-background-color: #494949;
 }
 
 #recordsTable .table-row-cell:even:hover .table-cell{

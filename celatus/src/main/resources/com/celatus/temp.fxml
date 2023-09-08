@@ -16,7 +16,7 @@
 <?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="rootPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#windowKeyPressed" prefHeight="600.0" prefWidth="900.0" styleClass="AnchorPane" stylesheets="@styles/default.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.celatus.controller.MainWindowController">
+<AnchorPane fx:id="rootPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#windowKeyPressed" prefHeight="600.0" prefWidth="900.0" styleClass="AnchorPane" stylesheets="@styles/light.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.celatus.controller.MainWindowController">
    <children>
       <AnchorPane id="rowPane1" fx:id="rowPane1" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -43,8 +43,8 @@
                      <items>
                         <Menu mnemonicParsing="false" text="Theme">
                           <items>
-                            <MenuItem fx:id="defaultThemeMenuItem" mnemonicParsing="false" onAction="#defaultThemeSelected" text="Default (dark)" />
-                              <MenuItem fx:id="lightThemeMenuItem" mnemonicParsing="false" onAction="#lightThemeSelected" text="Light" />
+                            <MenuItem mnemonicParsing="false" text="Default (dark)" />
+                              <MenuItem mnemonicParsing="false" text="Light" />
                           </items>
                         </Menu>
                      </items>

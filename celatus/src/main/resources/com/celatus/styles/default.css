@@ -49,6 +49,7 @@
 .text-field {
     -fx-background-color :  #2b2b2b;
     -fx-text-fill: white;
+    -fx-prompt-text-fill: rgb(255, 255, 255, 0.5);
     -fx-highlight-fill: #8c8c8c
 }
 
@@ -206,7 +207,8 @@
 
 #passwordsTable .table-row-cell:selected{
     -fx-background-color: #8c8c8c;
-    -fx-border-color: white
+    -fx-border-color: white;
+    -fx-border-width: 1 0 1 0
 }
 
 #passwordsTable .scroll-bar:horizontal{
@@ -308,7 +310,7 @@
 /* -------------------------View Password Window------------------------- */
 
 #recordsTable {
-    -fx-background-color: #8c8c8c;
+    -fx-background-color: transparent;
     /*-fx-border-color: #8c8c8c;*/
 }
 
@@ -348,12 +350,12 @@
 
 #recordsTable .table-row-cell:selected{
     -fx-background-color: #8c8c8c;
-    -fx-border-color: white
+    -fx-border-color: white;
+    -fx-border-width: 1 1 1 1
 }
 
 #recordsTable .table-row-cell:selected .table-cell{
-    -fx-text-fill: black;
-    -fx-font-weight: 700
+    -fx-text-fill: white;
 }
 
 #recordsTable .scroll-bar:horizontal{
