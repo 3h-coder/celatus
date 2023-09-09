@@ -31,3 +31,6 @@ replay_pid*
 
 # Password database file
 *.clts
+
+# App properties
+app.properies
