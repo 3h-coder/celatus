@@ -1,5 +1,8 @@
 package com.celatus.handler;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -7,6 +10,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.HashMap;
 
 import com.celatus.App;
 
@@ -14,7 +20,22 @@ public class PropertyHandler {
 
     // region =====Variables=====
 
-    static final String PROPERTIES_FILE_PATH = "app.properties";
+    private static final Logger logger = LogManager.getLogger(PropertyHandler.class.getName());
+
+    private static final String PROPERTIES_FILE_PATH = "app.properties";
+
+    private static HashMap<String, List<String>> propertyMap;
+
+    // endregion
+
+    // region =====Static Init=====
+
+    static {
+        propertyMap = new HashMap<>();
+        // The first elemnt of the list is the default
+        propertyMap.put("theme", List.of("default", "light"));
+        propertyMap.put("show_password", List.of("false", "true"));
+    }
 
     // endregion
 
@@ -46,6 +67,34 @@ public class PropertyHandler {
     public static void createDefaultProperties() {
         Properties properties = new Properties();
         properties.setProperty("theme", "default");
+        writeProperties(properties);
+    }
+
+    /**
+     * Deletes unknown properties and resets unkown values to default, before saving them.
+     * @param properties
+     */
+    public static void checkProperties(Properties properties) {
+
+        for (var entry : properties.entrySet()) {
+            String propertyName = (String)entry.getKey();
+            String propertyValue = (String)entry.getValue();
+
+            // Removing unkown properties
+            if (!propertyMap.containsKey(propertyName)) {
+                logger.debug("Unknown property : " + propertyName + " -> removing it.");
+                properties.remove(propertyName);
+                continue;
+            }
+            // Resetting unknown values
+            if (!propertyMap.get(propertyName).contains(propertyValue)) {
+                logger.debug("The following value is not recognized for the " + propertyName + " property: " + propertyValue);
+                String defaultProperty = propertyMap.get(propertyName).get(0);
+                logger.debug("Setting " + propertyName + " to " + defaultProperty);
+                properties.setProperty(propertyName, defaultProperty);
+            }
+        }
+        // Saving the properties
         writeProperties(properties);
     }
 

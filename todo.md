@@ -1,10 +1,10 @@
 ## P1
-- Add light theme
+- Implement ctrl + Z and ctrl + Y
 
 ## P2
-- New version detection and update
 - Advanced password search
-- Implement ctrl + Z and ctrl + Y
+- Other settings/properties
 
 ## P3
 - Logo redesign
+- New version detection and update

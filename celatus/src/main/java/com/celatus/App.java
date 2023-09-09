@@ -165,6 +165,7 @@ public class App extends Application {
             PropertyHandler.createDefaultProperties();
         }
         properties = PropertyHandler.readProperties();
+        PropertyHandler.checkProperties(properties);
     }
 
     /**

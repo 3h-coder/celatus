@@ -73,7 +73,7 @@
                </image>
             </ImageView>
             <TextField fx:id="searchBar" layoutX="31.0" layoutY="18.0" onAction="#searchBarOnAction" onKeyPressed="#searchBarKeyPressed" onKeyTyped="#searchBarKeyTyped" onMouseClicked="#searchBarOnMouseClicked" promptText="Search password" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="11.0" />
-            <ListView fx:id="categoriesList" fixedCellSize="24.0" layoutX="-6.0" layoutY="14.0" prefHeight="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0" />
+            <ListView fx:id="categoriesList" fixedCellSize="26.0" layoutX="-6.0" layoutY="14.0" prefHeight="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0" />
          </children>
       </AnchorPane>
       <SplitPane fx:id="columnPane2" dividerPositions="0.0, 0.5" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" orientation="VERTICAL" prefHeight="0.0" prefWidth="160.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="180.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="27.0">

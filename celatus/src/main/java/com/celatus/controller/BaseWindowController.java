@@ -184,9 +184,9 @@ public class BaseWindowController {
         textArea.setWrapText(true);
         textArea.setEditable(false);
         textArea.setMouseTransparent(true);
-        textArea.getStylesheets().add(App.class.getResource("styles/default.css").toExternalForm());
+        String theme = App.getProperties().getProperty("theme");
+        textArea.getStylesheets().add(App.class.getResource("styles/" + theme + ".css").toExternalForm());
         textArea.getStyleClass().add("popup");
-        //textArea.setBorder(new Border(new BorderStroke(Color.valueOf("#8c8c8c"), BorderStrokeStyle.SOLID, new CornerRadii(5.0), BorderWidths.DEFAULT)));
         FXMLUtils.adjustTextAreaDimensions(textArea);
         // Enable key transfer to the window's focused textfield or text area
         var sceneFocusOwner = window.getScene().getFocusOwner();
