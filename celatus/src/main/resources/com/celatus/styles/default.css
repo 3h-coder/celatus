@@ -292,7 +292,7 @@
 
 #categoriesList .list-cell {
     -fx-background-color: transparent;
-    -fx-text-size: 14px;
+    -fx-font-size: 13px;
     -fx-text-fill: white
 }
 

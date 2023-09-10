@@ -1,11 +1,9 @@
 package com.celatus.controller;
 
-import java.security.Key;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,8 +13,6 @@ import com.celatus.util.FXMLUtils;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
@@ -74,6 +70,7 @@ public class BaseWindowController {
     // region =====Window Methods=====
 
     public void initialize() {
+        loadTheme();
         // We have to make sure the scene is fully initialized to properly set up our variables
         Platform.runLater(() -> {
             window = getCurrentWindow();
@@ -82,7 +79,6 @@ public class BaseWindowController {
             enableAnchorPaneFocusOnClick();
             setOnCloseRequest();
             setIcon();
-            loadTheme();
         });
     }
 
@@ -98,13 +94,9 @@ public class BaseWindowController {
     @FXML
     public void loadTheme() {
         Properties properties = App.getProperties();
-        if ("light".equals(properties.getProperty("theme"))) {
-            rootPane.getStylesheets().clear();
-            rootPane.getStylesheets().add(App.class.getResource("styles/light.css").toExternalForm());
-        } else {
-            rootPane.getStylesheets().clear();
-            rootPane.getStylesheets().add(App.class.getResource("styles/default.css").toExternalForm());
-        }
+        String theme = properties.getProperty("theme");
+        rootPane.getStylesheets().clear();
+        rootPane.getStylesheets().add(App.class.getResource("styles/" + theme + ".css").toExternalForm());
     }
 
     /**

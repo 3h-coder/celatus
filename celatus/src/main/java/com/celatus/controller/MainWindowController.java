@@ -11,6 +11,7 @@ import com.celatus.PasswordEntry;
 import com.celatus.PasswordsDatabase;
 import com.celatus.ResizeHelper;
 import com.celatus.handler.DatabaseHandler;
+import com.celatus.handler.SearchHandler;
 import com.celatus.util.CustomDateUtils;
 import com.celatus.util.DesktopUtils;
 import com.celatus.util.FXMLUtils;
@@ -304,31 +305,10 @@ public class MainWindowController extends BaseWindowController {
      * Searches for the given password, and displays all the passwords that contain its name.
      * @param passwordName
      */
-    @FXML
     public List<PasswordEntry> searchPassword() {
         // We deselect the selected category
         categoriesList.getSelectionModel().clearSelection();
-
-        PasswordsDatabase database = App.getPasswordsDatabase();
-        List<PasswordEntry> found = new ArrayList<>();
-
-        String passwordName = searchBar.getText();
-        if (StringUtils.isBlank(passwordName)) {
-            return null;
-        }
-        passwordName = passwordName.toLowerCase();
-        for (Category cat : database.getCategories()) {
-            if (cat.getPasswordEntries() == null) {
-                continue;
-            }
-            for (PasswordEntry pwdEntry : cat.getPasswordEntries()) {
-                String pwdEntryName = pwdEntry.getName().toLowerCase();
-                if (pwdEntryName.startsWith(passwordName)) {
-                    found.add(pwdEntry);
-                }
-            }
-        }
-        return found;
+        return SearchHandler.searchPassword(searchBar.getText());
     }
 
     // endregion
