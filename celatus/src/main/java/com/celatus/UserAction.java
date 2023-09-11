@@ -1,15 +1,11 @@
 package com.celatus;
 
+/**
+ * Enum used to handle Ctrl+Z and Ctrl+Y
+ */
 public enum UserAction {
-    CHANGE_MASTER_PWD,
-    COPY_IDENTIFIER,
-    COPY_PASSWORD,
-    DELETE_SELECTED,
-    FULL_SCREEN,
-    NEW_CATEGORY,
-    NEW_PASSWORD,
-    OPEN_SETTINGS,
-    OPEN_WEBSITE,
-    SAVE_DATABASE,
+    CREATE,
+    MOVE,
+    DELETE
 }
 

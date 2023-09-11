@@ -13,6 +13,8 @@ public class MapUtils {
 
     private static final Logger logger = LogManager.getLogger(App.class.getName());
 
+    // region =====Json Serialization=====
+
     public static String mapToJson(Map map, boolean pretty) {
         String json = null;
         ObjectMapper objectMapper = new ObjectMapper();
@@ -61,5 +63,27 @@ public class MapUtils {
             return null;
         }     
     }
+
+    // endregion
     
+    // region =====List Maps=====
+    // (Maps that follow the scheme : Map<Integer, T>, and are sorted in ascending order)
+
+    public static <T> void removeAllAfter(int index, Map<Integer, T> map) {
+        for (int key : map.keySet()) {
+            if (key <= index) continue;
+            map.remove(key);
+        }
+    }
+
+    public static <T> void remove(int index, Map<Integer, T> map) {
+        map.remove(index);
+        for (int key : map.keySet()) {
+            if (key > index) {
+                key--;
+            }
+        }
+    }
+
+    // endregion
 }
