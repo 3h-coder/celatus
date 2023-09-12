@@ -1,9 +1,8 @@
 ## P1
-- Implement ctrl + Z and ctrl + Y
+- Move categories up and down
 
 ## P2
-- Advanced password search
-- Other settings/properties
+- Finish menu bar
 
 ## P3
 - Logo redesign

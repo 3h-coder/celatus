@@ -133,6 +133,8 @@ public class CategoryWindowController extends DialogWindowController {
             } catch (Exception ex) {
                 App.error(this.window, ex, "An error occured", logger, AlertMode.OK, true);
             }
+            // Adding the creation to the action tracker
+            App.getActionTracker().addCatCreation(category);
             closeDialog();
             summonNotificationPopup(App.getWindow(), "The category " + name + " has been added");
         // Updating the category

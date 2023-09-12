@@ -110,15 +110,10 @@ public class MainWindowController extends BaseWindowController {
         catDescription.widthProperty().addListener((observable, oldValue, newValue) -> {
             FXMLUtils.adjustTextAreaHeight(catDescription);
         });
-        /*searchBar.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue) {
-                searchBar.requestFocus();
-            }
-        });*/
         // We disable the split pane divider
         columnPane2.lookupAll(".split-pane-divider").stream().forEach(div ->  div.setMouseTransparent(true) );
         // We fill up the categories list view and set up the context menus
-        fillCategories();
+        displayCategories();
         // We set our context menus and passwords table
         setContextMenus();
         setPasswordsTable();
@@ -135,9 +130,14 @@ public class MainWindowController extends BaseWindowController {
         FXMLUtils.adjustTextAreaHeight(catDescription);
     }
 
-    private void fillCategories() {
+    private void displayCategories() {
+        String selectedCategory = categoriesList.getSelectionModel().getSelectedItem();
+        categoriesList.getItems().clear();
         for (Category category : App.getPasswordsDatabase().getCategories()) {
             FXMLUtils.addToListView(categoriesList, category.getName());
+        }
+        if (selectedCategory != null) {
+            categoriesList.getSelectionModel().select(selectedCategory);
         }
     }
 
@@ -266,6 +266,8 @@ public class MainWindowController extends BaseWindowController {
                 Category category = App.getPasswordsDatabase().getCategory(selectedCategory);
                 displayPasswords(category);
             }
+
+            displayCategories();
         }
         // Ctrl+Y
         if (event.isControlDown() && eventCode == KeyCode.Y) {
@@ -276,6 +278,8 @@ public class MainWindowController extends BaseWindowController {
                 Category category = App.getPasswordsDatabase().getCategory(selectedCategory);
                 displayPasswords(category);
             }
+
+            displayCategories();
         }        
     }
 
@@ -510,6 +514,7 @@ public class MainWindowController extends BaseWindowController {
                     String categoryName = cell.getItem();
                     FXMLUtils.removeFromListView(listView, categoryName);
                     deleteCategory(categoryName);
+                    // clearing the selection
                     this.categoriesList.getSelectionModel().clearSelection();
                 }  
             });
@@ -648,6 +653,9 @@ public class MainWindowController extends BaseWindowController {
         Category category = passwordsDatabase.getCategory(categoryName);
         // Delete it
         logger.info("Deleting the category " + categoryName + " : " + category);
+        // Registering the category in our action tracker
+        App.getActionTracker().addCatRemoval(category);
+        // Removing it from the database
         passwordsDatabase.removeCategory(category);
         // Remove the description display
         catDescription.clear();
@@ -667,7 +675,7 @@ public class MainWindowController extends BaseWindowController {
         Category category = passwordsDatabase.getCategory(categoryName);
         // Delete it
         logger.info("Deleting the password entry " + pwdEntry.getName() + " : " + pwdEntry);
-        App.getActionTracker().addRemoval(pwdEntry, categoryName);
+        App.getActionTracker().addPwdRemoval(pwdEntry, categoryName);
         logger.debug("action tracker: " + App.getActionTracker());
         category.removePasswordEntry(pwdEntry);
         // Refresh the passwords display for that category
@@ -687,7 +695,7 @@ public class MainWindowController extends BaseWindowController {
 
         try {
             database.movePasswordEntry(pwdEntry, oldCat, newCat);
-            App.getActionTracker().addMovement(pwdEntry, oldCatName, newCatName);
+            App.getActionTracker().addPwdMovement(pwdEntry, oldCatName, newCatName);
             logger.debug("action tracker: " + App.getActionTracker());
             summonNotificationPopup(this.window, "The password has been moved to " + newCatName);
             logger.info("Moved the password entry : " + pwdEntry.getName() + " from " + oldCatName + " to " + newCatName);

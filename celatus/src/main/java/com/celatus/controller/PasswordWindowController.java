@@ -268,7 +268,7 @@ public class PasswordWindowController extends DialogWindowController {
             PasswordEntry pwdEntry = new PasswordEntry(name, url, notes, identifier, email, this.password);
             this.category.addPasswordEntry(pwdEntry);
             // Add the creation to the action tracker
-            App.getActionTracker().addCreation(pwdEntry, this.category.getName());
+            App.getActionTracker().addPwdCreation(pwdEntry, this.category.getName());
             logger.info("Adding the following password entry to the " + this.category.getName() + "category : " + pwdEntry);
         // Updating the exisiting password entry
         } else if (changesDetected()) {
