@@ -51,7 +51,7 @@
                   </Menu>
                   <Menu fx:id="helpMenu" mnemonicParsing="false" text="Help">
                      <items>
-                        <MenuItem mnemonicParsing="false" text="About" />
+                        <MenuItem mnemonicParsing="false" onAction="#openReadMe" text="About" />
                         <MenuItem mnemonicParsing="false" text="Release Notes" />
                      </items>
                   </Menu>

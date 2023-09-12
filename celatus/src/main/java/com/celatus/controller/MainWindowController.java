@@ -741,6 +741,11 @@ public class MainWindowController extends BaseWindowController {
         loadTheme();
     }
 
+    public void openReadMe() {
+        final String READ_ME_URL = "https://github.com/3h-coder/celatus/blob/main/README.md";
+        App.getHS().showDocument(READ_ME_URL);
+    }
+
     // endregion
 
     // endregion
