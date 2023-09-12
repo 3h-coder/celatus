@@ -190,6 +190,7 @@ public class BaseWindowController {
         } else {
             // Transfer key events to the window's scene root
             FXMLUtils.transferKeyEvents(textArea, window.getScene().getRoot());
+            logger.debug("sent it to : " + window.getScene().getRoot());
         }
         
         Popup popup = new Popup();
@@ -221,6 +222,11 @@ public class BaseWindowController {
         fadeTransition.play();
     }
 
+
+    public boolean notifPopupShown() {
+        Popup popup = (Popup)App.extractTempVariable("notification_popup");
+        return popup != null;
+    }
 
     public void removeNotificationPopup() {
         Popup popup = (Popup)App.extractTempVariable("notification_popup");

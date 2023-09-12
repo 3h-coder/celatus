@@ -2,7 +2,7 @@
 This project is a simple light weight and easy to use desktop password manager.
 It is built upon JavaFX and Maven and licensed under the [GPL-3](LICENSE) license.
 
-![mainWindow image](https://i.imgur.com/efnfXaS.png)
+![mainWindow image](https://i.imgur.com/U1VTiqi.png)
 
 ## Features
 - **Secure password storage** : The file is encrypted through AES 256, and the key is not stored anywhere, but calculated upon entry attempts.

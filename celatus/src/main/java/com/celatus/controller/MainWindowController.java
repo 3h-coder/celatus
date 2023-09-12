@@ -122,11 +122,39 @@ public class MainWindowController extends BaseWindowController {
     }
 
     private void addListeners() {
+        categoriesList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            String categoryName = newValue;
+            if (StringUtils.isBlank(newValue)) {
+                return;
+            }
+            showCategory(categoryName);
+        });
         catDescription.widthProperty().addListener((observable, oldValue, newValue) -> {
             FXMLUtils.adjustTextAreaHeight(catDescription);
         });
     }
 
+    /**
+     * Displays the category's description as well as all of its passwords
+     * @param categoryName
+     */
+    public void showCategory(String categoryName) {
+        Category category = App.getPasswordsDatabase().getCategory(categoryName);
+        String categoryDescription = category.getDescription();
+        if (StringUtils.isNotBlank(categoryDescription)) {
+            showDescription(categoryDescription);
+        } else {
+            catDescription.clear();
+            catDescription.setPrefHeight(0);                  
+        } 
+        // Displaying all the password entries   
+        displayPasswords(category);
+    }
+
+    /**
+     * Displays the given description in the description pane
+     * @param description
+     */
     @FXML
     public void showDescription(String description) {
         descriptionPane.setVisible(true);
@@ -134,6 +162,9 @@ public class MainWindowController extends BaseWindowController {
         FXMLUtils.adjustTextAreaHeight(catDescription);
     }
 
+    /**
+     * Displays all the categories of our database
+     */
     private void displayCategories() {
         String selectedCategory = categoriesList.getSelectionModel().getSelectedItem();
         categoriesList.getItems().clear();
@@ -145,12 +176,20 @@ public class MainWindowController extends BaseWindowController {
         }
     }
 
+    /**
+     * Fills the password table with the given category's password entries
+     * @param cat
+     */
     private void fillPasswordsTable(Category cat) {
         for (PasswordEntry pwdEntry : cat.getPasswordEntries()) {
             FXMLUtils.addToTableView(passwordsTable, pwdEntry);
         }
     }
 
+    /**
+     * Fills the password table with the given password enties list
+     * @param passwordEntries
+     */
     private void fillPasswordsTable(List<PasswordEntry> passwordEntries) {
         for (PasswordEntry pwdEntry : passwordEntries) {
             FXMLUtils.addToTableView(passwordsTable, pwdEntry);
@@ -246,20 +285,13 @@ public class MainWindowController extends BaseWindowController {
             window.setMaximized(false);
             controlCatDescription();
         }
-        // New category
-        if (event.isShiftDown() && eventCode == KeyCode.C) {
-            removeNotificationPopup();
-            openCategoryWindow(null);
+        // New category (only if there is a notification popup, otherwise it overlaps with the accelerator)
+        if (event.isShiftDown() && eventCode == KeyCode.C && notifPopupShown()) {
+            openCatWindow();
         }
-        // New password
-        if (event.isShiftDown() && eventCode == KeyCode.P) {
-            removeNotificationPopup();
-            String selectedCategory = categoriesList.getSelectionModel().getSelectedItem();
-            if (selectedCategory == null) {
-                summonNotificationPopup(window, "You must select a category first");
-                return;
-            }
-            openPasswordWindow(null);
+        // New password (same here)
+        if (event.isShiftDown() && eventCode == KeyCode.P && notifPopupShown()) {
+            openPwdWindow();
         }
         // Ctrl+Z
         if (event.isControlDown() && eventCode == KeyCode.Z) {
@@ -478,6 +510,8 @@ public class MainWindowController extends BaseWindowController {
     private void setCatPaneContextMenu() {
         ContextMenu newCatContextMenu = new ContextMenu();
         MenuItem newCatMenuItem = new MenuItem("new category");
+        
+        newCatMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.C, KeyCombination.SHIFT_DOWN));
         newCatMenuItem.setOnAction(event -> {
             openCategoryWindow(null);
         });
@@ -499,7 +533,6 @@ public class MainWindowController extends BaseWindowController {
      */
     private void setCatListViewContextMenu() {
         this.categoriesList.setCellFactory( (listView) -> {
-            PasswordsDatabase database = App.getPasswordsDatabase();
 
             ListCell<String> cell = new ListCell<>();
             cell.textProperty().bind(cell.itemProperty());
@@ -527,18 +560,14 @@ public class MainWindowController extends BaseWindowController {
                 }  
             });
 
-            moveUpItem.setAccelerator(new KeyCodeCombination(KeyCode.UP, KeyCombination.SHIFT_DOWN));
+            moveUpItem.setAccelerator(new KeyCodeCombination(KeyCode.U, KeyCombination.SHIFT_DOWN));
             moveUpItem.setOnAction(event ->  {
-                Category category = database.getCategory(cell.getItem());
-                database.moveCategoryUp(category);
-                displayCategories();
+                moveCategoryUp();
             });
 
-            moveDownItem.setAccelerator(new KeyCodeCombination(KeyCode.DOWN, KeyCombination.SHIFT_DOWN));
+            moveDownItem.setAccelerator(new KeyCodeCombination(KeyCode.D, KeyCombination.SHIFT_DOWN));
             moveDownItem.setOnAction(event ->  {
-                Category category = database.getCategory(cell.getItem());
-                database.moveCategoryDown(category);
-                displayCategories();
+                moveCategoryDown();
             });
 
             ContextMenu contextMenu = new ContextMenu();
@@ -547,16 +576,7 @@ public class MainWindowController extends BaseWindowController {
 
             cell.setOnMouseClicked(event -> {
                 String categoryName = cell.getItem();
-                Category category = App.getPasswordsDatabase().getCategory(categoryName);
-                String categoryDescription = category.getDescription();
-                if (StringUtils.isNotBlank(categoryDescription)) {
-                    showDescription(categoryDescription);
-                } else {
-                    catDescription.clear();
-                    catDescription.setPrefHeight(0);                  
-                } 
-                // Displaying all the password entries   
-                displayPasswords(category);
+                showCategory(categoryName);
             });
             
             return cell;
@@ -688,6 +708,34 @@ public class MainWindowController extends BaseWindowController {
     }
 
     /**
+     * Moves the selected category up in the list
+     */
+    public void moveCategoryUp() {
+        PasswordsDatabase database = App.getPasswordsDatabase();
+        String selectedCategory = categoriesList.getSelectionModel().getSelectedItem();
+        if (selectedCategory == null) {
+            return;
+        }
+        Category category = database.getCategory(selectedCategory);
+        database.moveCategoryUp(category);
+        displayCategories();
+    }
+
+    /**
+     * Moves the selected category down in the list
+     */
+    public void moveCategoryDown() {
+        PasswordsDatabase database = App.getPasswordsDatabase();
+        String selectedCategory = categoriesList.getSelectionModel().getSelectedItem();
+        if (selectedCategory == null) {
+            return;
+        }
+        Category category = database.getCategory(selectedCategory);
+        database.moveCategoryDown(category);
+        displayCategories();
+    }
+
+    /**
      * Deletes the given password entry from the database
      * @param pwdEntry
      */
@@ -742,6 +790,23 @@ public class MainWindowController extends BaseWindowController {
     // endregion
 
     // region -----Menu Bar-----
+
+    // Used for the fxml file
+    public void openCatWindow() {
+        removeNotificationPopup();
+        openCategoryWindow(null);
+    }
+
+    // Used for the fxml file
+    public void openPwdWindow() {
+        removeNotificationPopup();
+        String selectedCategory = categoriesList.getSelectionModel().getSelectedItem();
+        if (selectedCategory == null) {
+            summonNotificationPopup(window, "You must select a category first");
+            return;
+        }
+        openPasswordWindow(null);
+    }
 
     public void saveDatabase() {
         try {

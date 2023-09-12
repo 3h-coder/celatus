@@ -4,6 +4,8 @@ import com.celatus.util.FXMLUtils;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 /** 
@@ -33,6 +35,15 @@ public class DialogWindowController extends BaseWindowController {
 
     // region =====Event Methods=====
 
+    @Override
+    public void windowKeyPressed(KeyEvent event) {
+        super.windowKeyPressed(event);
+        KeyCode eventCode = event.getCode();
+        if (eventCode == KeyCode.ESCAPE) {
+            closeDialog();
+        }
+    }
+    
     @FXML
     public void closeDialog() {
         if (owner != null) {

@@ -22,11 +22,7 @@ public class SearchHandler {
 
     private static final Logger logger = LogManager.getLogger(SearchHandler.class.getName());
 
-    private static PasswordsDatabase database;
-
-    static {
-        database = App.getPasswordsDatabase();
-    }
+    private static PasswordsDatabase database = App.getPasswordsDatabase();
 
     // endregion
 
@@ -48,6 +44,10 @@ public class SearchHandler {
     }
 
     private static List<PasswordEntry> advancedSearch(String searchEntry) {
+        if ("-all".equals(searchEntry)) {
+            return getAllPasswordEntries();
+        }
+
         String searchPrefix = "";
         String searchQuery = "";
 
@@ -71,6 +71,19 @@ public class SearchHandler {
             default:
                 return null;
         }
+    }
+
+    private static List<PasswordEntry> getAllPasswordEntries() {
+        List<PasswordEntry> searchResult = new ArrayList<>();
+        for (Category cat : database.getCategories()) {
+            if (cat.getPasswordEntries() == null) {
+                continue;
+            }
+            for (PasswordEntry pwdEntry : cat.getPasswordEntries()) {
+                searchResult.add(pwdEntry);
+            }
+        }
+        return searchResult;
     }
 
     private static List<PasswordEntry> searchByName(String pwdName) {
@@ -148,7 +161,6 @@ public class SearchHandler {
 
         return searchResult;
     }
-
 
     // endregion
     

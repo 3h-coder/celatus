@@ -26,12 +26,33 @@
                <menus>
                   <Menu fx:id="fileMenu" mnemonicParsing="false" text="File">
                      <items>
+                        <MenuItem mnemonicParsing="false" onAction="#openCatWindow" text="New category">
+                           <accelerator>
+                              <KeyCodeCombination alt="UP" code="C" control="UP" meta="UP" shift="DOWN" shortcut="UP" />
+                           </accelerator>
+                        </MenuItem>
+                        <MenuItem mnemonicParsing="false" onAction="#moveCategoryUp" text="Move up">
+                           <accelerator>
+                              <KeyCodeCombination alt="UP" code="U" control="UP" meta="UP" shift="DOWN" shortcut="UP" />
+                           </accelerator>
+                        </MenuItem>
+                        <MenuItem mnemonicParsing="false" onAction="#moveCategoryDown" text="Move down">
+                           <accelerator>
+                              <KeyCodeCombination alt="UP" code="D" control="UP" meta="UP" shift="DOWN" shortcut="UP" />
+                           </accelerator>
+                        </MenuItem>
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" onAction="#openPwdWindow" text="New password entry">
+                           <accelerator>
+                              <KeyCodeCombination alt="UP" code="P" control="UP" meta="UP" shift="DOWN" shortcut="UP" />
+                           </accelerator>
+                        </MenuItem>
+                        <SeparatorMenuItem mnemonicParsing="false" />
                         <MenuItem mnemonicParsing="false" onAction="#saveDatabase" text="Save">
                            <accelerator>
                               <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                            </accelerator>
                         </MenuItem>
-                        <SeparatorMenuItem mnemonicParsing="false" />
                         <MenuItem mnemonicParsing="false" onAction="#resetMasterPassword" text="Change master password">
                            <accelerator>
                               <KeyCodeCombination alt="DOWN" code="M" control="UP" meta="UP" shift="UP" shortcut="UP" />

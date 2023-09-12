@@ -29,6 +29,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 
 /**
@@ -254,6 +256,10 @@ public class PasswordWindowController extends DialogWindowController {
         if (!requiredFieldsNotBlank()) {
             return;
         }
+        // We then check that the fields are valid
+        /*if (!allFieldsValid()) {
+            return;
+        }*/
 
         String name = nameTextField.getText();
         String identifier = identifierField.getText();
@@ -373,6 +379,24 @@ public class PasswordWindowController extends DialogWindowController {
         }
 
         return allOk;
+    }
+
+    /**
+     * Checks for the validity of certain fields
+     * @return
+     */
+    @FXML
+    private boolean allFieldsValid() {
+        boolean allOK = true;
+
+        checkNameLabel.setText(null);
+        String name = nameTextField.getText();
+        if (name.startsWith("-")) {
+            checkNameLabel.setText("The name cannot start with '-'");
+            allOK=false;
+        }
+
+        return allOK;
     }
 
     /**

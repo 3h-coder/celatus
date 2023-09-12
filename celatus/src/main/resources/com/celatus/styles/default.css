@@ -96,13 +96,14 @@
     /*-fx-text-fill: black*/
 }
 
+/*.menu .separator .line, context-menu .separator .line {
+    -fx-border-color: #8c8c8c;
+    -fx-border-width: 0.3
+}*/
+
 .corner {
     -fx-background-color: transparent
 }
-
-/*.menu .separator .line {
-    -fx-border-color: #8c8c8c
-}*/
 
 .scroll-bar:vertical,
 .scroll-bar:vertical .track,

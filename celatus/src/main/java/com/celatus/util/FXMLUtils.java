@@ -276,9 +276,9 @@ public class FXMLUtils {
     public static void transferKeyEvents(TextInputControl sender, Node receiver) {
         sender.setOnKeyPressed(event -> {
             var receiverOnKeyPressed = receiver.getOnKeyPressed();
-                if (receiverOnKeyPressed != null) {
-                    receiverOnKeyPressed.handle(event);
-                }  
+            if (receiverOnKeyPressed != null) {
+                receiverOnKeyPressed.handle(event);
+            }  
         });
         sender.setOnKeyTyped(event -> {
             var receiverOnKeyTyped = receiver.getOnKeyTyped();

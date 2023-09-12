@@ -6,15 +6,11 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.celatus.App;
-import com.celatus.PasswordsDatabase;
-import com.celatus.Category;
-import com.celatus.PasswordEntry;
-import com.celatus.UserAction;
 import com.celatus.util.MapUtils;
 
 /**
- * Class used to perform Ctrl+Z and Ctrl+Y on the main window
+ * Class used to perform Ctrl+Z and Ctrl+Y on the main window.
+ * Currently supports the creation, deletion and displacement of password entries, as well as the creation and deletion of categories.
  */
 public class ActionTracker {
 

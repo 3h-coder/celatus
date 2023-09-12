@@ -1,8 +1,8 @@
 ## P1
-- Fix arrow actions and keybinds
+- Finish menu bar
 
 ## P2
-- Finish menu bar
+- Start deployment tests
 
 ## P3
 - Logo redesign
