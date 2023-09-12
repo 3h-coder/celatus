@@ -60,6 +60,7 @@ public class DatabaseHandler {
     public static void saveDatabase() {
         rawData = App.getPasswordsDatabase().toRawData();
         App.setOriginalDatabaseHash(App.getPasswordsDatabase().hashCode());
+        App.getActionTracker().clear();
 
         if (!dbFileExists()) {
             logger.info("Creating the passwords database file.");

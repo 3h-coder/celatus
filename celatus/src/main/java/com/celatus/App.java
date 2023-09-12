@@ -47,6 +47,8 @@ public class App extends Application {
 
     private static Map<String, Object> tmpVariables; // used to store any variable at runtime, such as signals 
     // -> (signals are boolean variables representing a signal sent from one window to the whole application)
+
+    private static ActionTracker actionTracker; // action tracker used for ctrl+Z and ctrl+Y
     
     private static Properties properties;
 
@@ -100,6 +102,10 @@ public class App extends Application {
         return tmpVariables;
     }
 
+    public static ActionTracker getActionTracker() {
+        return actionTracker;
+    }
+
     public static Properties getProperties() {
         return properties;
     }
@@ -120,29 +126,15 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
 
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            // Code to be executed when the application is shutting down
-            // This can include cleanup tasks or saving data
-            try{
-                DatabaseHandler.concealDatabase();
-            } catch(IOException ex) {
-                _logger.error("An unexpected error occured while trying to conceal the passwords database: " + ex.getMessage());
-            }
-            _logger.info("--------------------Application Shutdown--------------------");
-            
-        }));
-        
-        hostServices = getHostServices();
+        setShutdownHook();
+        initVariables();
         loadProperties();
 
         if (DatabaseHandler.dbFileExists()) {
             launchWindow(stage, "entryWindow");
         } else {
             launchWindow(stage, "setupWindow");
-        }
-
-        // launchWindow(stage, "mainWindow");
-             
+        }     
     }
 
     public static void exit() {
@@ -159,6 +151,25 @@ public class App extends Application {
     // endregion
 
     // region =====Secondary Methods=====
+
+    private void initVariables() {
+        actionTracker = new ActionTracker();
+        hostServices = getHostServices();
+    }
+
+    private void setShutdownHook() {
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            // Code to be executed when the application is shutting down
+            // This can include cleanup tasks or saving data
+            try{
+                DatabaseHandler.concealDatabase();
+            } catch(IOException ex) {
+                _logger.error("An unexpected error occured while trying to conceal the passwords database: " + ex.getMessage());
+            }
+            _logger.info("--------------------Application Shutdown--------------------");
+            
+        }));
+    }
 
     public void loadProperties() {
         if (!PropertyHandler.propertyFileExists()) {

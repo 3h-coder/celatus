@@ -140,10 +140,6 @@ public class Testing {
         }
     }
 
-    public static void testEnumString() {
-        System.out.println(UserAction.CHANGE_MASTER_PWD);
-    }
-
     public static void testLastIndexOf() {
         String string = "ha, ho, hu, hi, he, ";
         String empty = "";

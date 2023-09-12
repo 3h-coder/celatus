@@ -227,8 +227,9 @@ public class MainWindowController extends BaseWindowController {
     @Override
     public void windowKeyPressed(KeyEvent event) {
         super.windowKeyPressed(event);
+        KeyCode eventCode = event.getCode();
         // Full screen
-        if (event.getCode() == KeyCode.F11) {
+        if (eventCode == KeyCode.F11) {
             removeNotificationPopup();
             if (window.isMaximized()) {
                 window.setMaximized(false);
@@ -236,18 +237,18 @@ public class MainWindowController extends BaseWindowController {
             } else {
                 window.setMaximized(true);
             }
-        } else if (event.getCode() == KeyCode.ESCAPE && window.isMaximized()) {
+        } else if (eventCode == KeyCode.ESCAPE && window.isMaximized()) {
             removeNotificationPopup();
             window.setMaximized(false);
             controlCatDescription();
         }
         // New category
-        if (event.isShiftDown() && event.getCode() == KeyCode.C) {
+        if (event.isShiftDown() && eventCode == KeyCode.C) {
             removeNotificationPopup();
             openCategoryWindow(null);
         }
         // New password
-        if (event.isShiftDown() && event.getCode() == KeyCode.P) {
+        if (event.isShiftDown() && eventCode == KeyCode.P) {
             removeNotificationPopup();
             String selectedCategory = categoriesList.getSelectionModel().getSelectedItem();
             if (selectedCategory == null) {
@@ -256,7 +257,26 @@ public class MainWindowController extends BaseWindowController {
             }
             openPasswordWindow(null);
         }
-        
+        // Ctrl+Z
+        if (event.isControlDown() && eventCode == KeyCode.Z) {
+            App.getActionTracker().goBackwards();
+
+            String selectedCategory = categoriesList.getSelectionModel().getSelectedItem();
+            if (selectedCategory != null) {
+                Category category = App.getPasswordsDatabase().getCategory(selectedCategory);
+                displayPasswords(category);
+            }
+        }
+        // Ctrl+Y
+        if (event.isControlDown() && eventCode == KeyCode.Y) {
+            App.getActionTracker().goForwards();
+
+            String selectedCategory = categoriesList.getSelectionModel().getSelectedItem();
+            if (selectedCategory != null) {
+                Category category = App.getPasswordsDatabase().getCategory(selectedCategory);
+                displayPasswords(category);
+            }
+        }        
     }
 
     @FXML
@@ -385,7 +405,7 @@ public class MainWindowController extends BaseWindowController {
         });
 
         deletePwdMenuItem.setOnAction(event -> {
-            App.warn(this.window, "This is an irreversible action, are you sure you want to delete it?", logger, AlertMode.YES_AND_NO);
+            App.warn(this.window, "Are you sure you want to delete it?", logger, AlertMode.YES_AND_NO);
             if (App.getSignal("yes_signal")) {
                 PasswordEntry selectedPassword = passwordsTable.getSelectionModel().getSelectedItem();
                 deletePasswordEntry(selectedPassword);
@@ -647,6 +667,8 @@ public class MainWindowController extends BaseWindowController {
         Category category = passwordsDatabase.getCategory(categoryName);
         // Delete it
         logger.info("Deleting the password entry " + pwdEntry.getName() + " : " + pwdEntry);
+        App.getActionTracker().addRemoval(pwdEntry, categoryName);
+        logger.debug("action tracker: " + App.getActionTracker());
         category.removePasswordEntry(pwdEntry);
         // Refresh the passwords display for that category
         displayPasswords(category);
@@ -665,6 +687,8 @@ public class MainWindowController extends BaseWindowController {
 
         try {
             database.movePasswordEntry(pwdEntry, oldCat, newCat);
+            App.getActionTracker().addMovement(pwdEntry, oldCatName, newCatName);
+            logger.debug("action tracker: " + App.getActionTracker());
             summonNotificationPopup(this.window, "The password has been moved to " + newCatName);
             logger.info("Moved the password entry : " + pwdEntry.getName() + " from " + oldCatName + " to " + newCatName);
             if (categoriesList.getSelectionModel().getSelectedItem() != null) {

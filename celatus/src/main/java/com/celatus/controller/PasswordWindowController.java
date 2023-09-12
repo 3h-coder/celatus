@@ -261,14 +261,14 @@ public class PasswordWindowController extends DialogWindowController {
         String email = emailField.getText();
         String notes = passwordNotes.getText();
 
-        PasswordsDatabase passwordsDatabase = App.getPasswordsDatabase();
-        this.category = passwordsDatabase.getCategory(this.category.getName());
         MainWindowController controller = (MainWindowController) App.getController();
 
         // Saving the new password entry
         if (inputPwdEntry == null) {
             PasswordEntry pwdEntry = new PasswordEntry(name, url, notes, identifier, email, this.password);
             this.category.addPasswordEntry(pwdEntry);
+            // Add the creation to the action tracker
+            App.getActionTracker().addCreation(pwdEntry, this.category.getName());
             logger.info("Adding the following password entry to the " + this.category.getName() + "category : " + pwdEntry);
         // Updating the exisiting password entry
         } else if (changesDetected()) {
