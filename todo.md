@@ -1,5 +1,5 @@
 ## P1
-- Move categories up and down
+- Fix arrow actions and keybinds
 
 ## P2
 - Finish menu bar

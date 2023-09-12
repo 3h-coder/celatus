@@ -354,6 +354,30 @@ public class FXMLUtils {
     public static void updateListView(ListView<String> listView, String element, String newValue) {
         Collections.replaceAll(listView.getItems(), element, newValue);
     }
+
+    @FXML
+    public static void moveUp(ListView<String> listView, String element) {
+        var list = listView.getItems();
+        int index = list.indexOf(element);
+        if (index == 0) {
+            return;
+        }
+        String tmp = list.get(index - 1);
+        list.set(index - 1, element);
+        list.set(index, tmp);
+    }
+
+    @FXML
+    public static void moveDown(ListView<String> listView, String element) {
+        var list = listView.getItems();
+        int index = list.indexOf(element);
+        if (index == list.size() - 1) {
+            return;
+        }
+        String tmp = list.get(index + 1);
+        list.set(index + 1, element);
+        list.set(index, tmp);
+    }
     
     // endregion
 

@@ -102,16 +102,11 @@ public class MainWindowController extends BaseWindowController {
         // We make the window resizable
         ResizeHelper.addResizeListener(window);
         // We set the proper bindings
-        descriptionPane.maxHeightProperty().bind(catDescription.prefHeightProperty());
-        descriptionPane.minHeightProperty().bind(catDescription.prefHeightProperty());
-        passwordsPane.maxHeightProperty().bind(passwordsTable.prefHeightProperty());
-        passwordsPane.minHeightProperty().bind(passwordsTable.prefHeightProperty());
+        setBindings();
         // We add our listeners
-        catDescription.widthProperty().addListener((observable, oldValue, newValue) -> {
-            FXMLUtils.adjustTextAreaHeight(catDescription);
-        });
+        addListeners();
         // We disable the split pane divider
-        columnPane2.lookupAll(".split-pane-divider").stream().forEach(div ->  div.setMouseTransparent(true) );
+        columnPane2.lookupAll(".split-pane-divider").stream().forEach(div ->  div.setMouseTransparent(true));
         // We fill up the categories list view and set up the context menus
         displayCategories();
         // We set our context menus and passwords table
@@ -119,8 +114,17 @@ public class MainWindowController extends BaseWindowController {
         setPasswordsTable();
     }
 
-    public void test() {
-        logger.debug("test");
+    private void setBindings() {
+        descriptionPane.maxHeightProperty().bind(catDescription.prefHeightProperty());
+        descriptionPane.minHeightProperty().bind(catDescription.prefHeightProperty());
+        passwordsPane.maxHeightProperty().bind(passwordsTable.prefHeightProperty());
+        passwordsPane.minHeightProperty().bind(passwordsTable.prefHeightProperty());
+    }
+
+    private void addListeners() {
+        catDescription.widthProperty().addListener((observable, oldValue, newValue) -> {
+            FXMLUtils.adjustTextAreaHeight(catDescription);
+        });
     }
 
     @FXML
@@ -495,11 +499,15 @@ public class MainWindowController extends BaseWindowController {
      */
     private void setCatListViewContextMenu() {
         this.categoriesList.setCellFactory( (listView) -> {
+            PasswordsDatabase database = App.getPasswordsDatabase();
+
             ListCell<String> cell = new ListCell<>();
             cell.textProperty().bind(cell.itemProperty());
 
             MenuItem editMenuItem = new MenuItem("edit");
             MenuItem deleteMenuItem = new MenuItem("delete");
+            MenuItem moveUpItem = new MenuItem("move up");
+            MenuItem moveDownItem = new MenuItem("move down");
 
             editMenuItem.setOnAction(event -> {
                 String categoryName = cell.getItem();
@@ -519,8 +527,22 @@ public class MainWindowController extends BaseWindowController {
                 }  
             });
 
+            moveUpItem.setAccelerator(new KeyCodeCombination(KeyCode.UP, KeyCombination.SHIFT_DOWN));
+            moveUpItem.setOnAction(event ->  {
+                Category category = database.getCategory(cell.getItem());
+                database.moveCategoryUp(category);
+                displayCategories();
+            });
+
+            moveDownItem.setAccelerator(new KeyCodeCombination(KeyCode.DOWN, KeyCombination.SHIFT_DOWN));
+            moveDownItem.setOnAction(event ->  {
+                Category category = database.getCategory(cell.getItem());
+                database.moveCategoryDown(category);
+                displayCategories();
+            });
+
             ContextMenu contextMenu = new ContextMenu();
-            contextMenu.getItems().addAll(editMenuItem, deleteMenuItem);
+            contextMenu.getItems().addAll(editMenuItem, deleteMenuItem, moveUpItem, moveDownItem);
             cell.setContextMenu(contextMenu);
 
             cell.setOnMouseClicked(event -> {

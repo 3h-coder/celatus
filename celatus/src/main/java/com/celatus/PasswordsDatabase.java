@@ -110,6 +110,34 @@ public class PasswordsDatabase {
     }
 
     /**
+     * Moves a category up in the categories list
+     * @param cat
+     */
+    public void moveCategoryUp(Category cat) {
+        int index = this.categories.indexOf(cat);
+        if (index == 0) {
+            return;
+        }
+        Category tmp = this.categories.get(index - 1);
+        this.categories.set(index - 1, cat);
+        this.categories.set(index, tmp);
+    }
+
+    /**
+     * Moves a category down in the categories list
+     * @param cat
+     */
+    public void moveCategoryDown(Category cat) {
+        int index = this.categories.indexOf(cat);
+        if (index == this.categories.size() - 1) {
+            return;
+        }
+        Category tmp = this.categories.get(index + 1);
+        this.categories.set(index + 1, cat);
+        this.categories.set(index, tmp);
+    }
+
+    /**
      * @return The PasswordDatabase object as a json string
      */
     public String toRawData() {

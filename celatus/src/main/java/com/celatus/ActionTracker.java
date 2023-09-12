@@ -62,51 +62,6 @@ public class ActionTracker {
         currentActionIndex = 0;
     }
 
-    public void addCatCreation(Category category) {
-        incrementIndex();
-        HashMap<String, Object> action = new HashMap<>();
-        action.put("action", UserAction.CREATE);
-        action.put("category", category);
-        actions.put(currentActionIndex, action);
-    }
-
-    public void addCatRemoval(Category category) {
-        incrementIndex();
-        HashMap<String, Object> action = new HashMap<>();
-        action.put("action", UserAction.DELETE);
-        action.put("category", category);
-        actions.put(currentActionIndex, action);
-    }
-
-    public void addPwdCreation(PasswordEntry pwdEntry, String categoryName) {
-        incrementIndex();
-        HashMap<String, Object> action = new HashMap<>();
-        action.put("action", UserAction.CREATE);
-        action.put("pwdEntry", pwdEntry);
-        action.put("category", categoryName);
-        actions.put(currentActionIndex, action);
-
-    }
-
-    public void addPwdRemoval(PasswordEntry pwdEntry, String categoryName) {
-        incrementIndex();
-        HashMap<String, Object> action = new HashMap<>();
-        action.put("action", UserAction.DELETE);
-        action.put("pwdEntry", pwdEntry);
-        action.put("category", categoryName);
-        actions.put(currentActionIndex, action);
-    }
-
-    public void addPwdMovement(PasswordEntry pwdEntry, String oldCat, String newCat) {
-        incrementIndex();
-        HashMap<String, Object> action = new HashMap<>();
-        action.put("action", UserAction.MOVE);
-        action.put("pwdEntry", pwdEntry);
-        action.put("oldCat", oldCat);
-        action.put("newCat", newCat);
-        actions.put(currentActionIndex, action);
-    }
-
     public void goBackwards() {
         if (currentActionIndex == 0) {
             return;
@@ -169,6 +124,59 @@ public class ActionTracker {
         }
     }
 
+    // region -----Category-----
+
+    public void addCatCreation(Category category) {
+        incrementIndex();
+        HashMap<String, Object> action = new HashMap<>();
+        action.put("action", UserAction.CREATE);
+        action.put("category", category);
+        actions.put(currentActionIndex, action);
+    }
+
+    public void addCatRemoval(Category category) {
+        incrementIndex();
+        HashMap<String, Object> action = new HashMap<>();
+        action.put("action", UserAction.DELETE);
+        action.put("category", category);
+        actions.put(currentActionIndex, action);
+    }
+
+    // endregion
+
+    // region -----Password Entry-----
+
+    public void addPwdCreation(PasswordEntry pwdEntry, String categoryName) {
+        incrementIndex();
+        HashMap<String, Object> action = new HashMap<>();
+        action.put("action", UserAction.CREATE);
+        action.put("pwdEntry", pwdEntry);
+        action.put("category", categoryName);
+        actions.put(currentActionIndex, action);
+
+    }
+
+    public void addPwdRemoval(PasswordEntry pwdEntry, String categoryName) {
+        incrementIndex();
+        HashMap<String, Object> action = new HashMap<>();
+        action.put("action", UserAction.DELETE);
+        action.put("pwdEntry", pwdEntry);
+        action.put("category", categoryName);
+        actions.put(currentActionIndex, action);
+    }
+
+    public void addPwdMovement(PasswordEntry pwdEntry, String oldCat, String newCat) {
+        incrementIndex();
+        HashMap<String, Object> action = new HashMap<>();
+        action.put("action", UserAction.MOVE);
+        action.put("pwdEntry", pwdEntry);
+        action.put("oldCat", oldCat);
+        action.put("newCat", newCat);
+        actions.put(currentActionIndex, action);
+    }
+
+    // endregion
+
     @Override
     public String toString() {
         return "ActionTracker [actions=" + actions + ", currentActionIndex=" + currentActionIndex + "]";
@@ -196,6 +204,8 @@ public class ActionTracker {
         return actions.get(currentActionIndex);
     }
 
+    // region -----Category-----
+
     private void undoCatCreation(Category category) {
         logger.debug("Undoing the creation of the category : " + category.getName());
         App.getPasswordsDatabase().removeCategory(category);
@@ -215,6 +225,10 @@ public class ActionTracker {
         logger.debug("Redoing the deletion of the category : " + category.getName());
         App.getPasswordsDatabase().removeCategory(category);
     }
+
+    // endregion
+
+    // region -----Password Entry-----
 
     private void undoPwdCreation(PasswordEntry pwdEntry) {
         logger.debug("Undoing the creation of the password entry : " + pwdEntry.getName() + " (" + pwdEntry.getId() + ")");
@@ -255,6 +269,8 @@ public class ActionTracker {
         Category newCategory = database.getCategory(newCat);
         database.movePasswordEntry(pwdEntry, oldCategory, newCategory);
     }
+
+    // endregion
 
     // endregion
     
