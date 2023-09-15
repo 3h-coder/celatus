@@ -179,7 +179,7 @@ public class Testing {
         //testDataDecrytionFromfile();
         //testMapToJson();
         //testDataDecrytionFromfile("This is just a test passphrase to test", "passwords.clts");
-        // testObjToJson();
+        testObjToJson();
         //testJsonToObj();
         //testIdFromDateTime();
         //testRemoveFromMap();

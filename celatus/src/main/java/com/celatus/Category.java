@@ -39,6 +39,14 @@ public class Category implements Recordable {
         return name;
     }
 
+    public LocalDateTime getCreationDate() {
+        return creationDate;
+    }
+
+    /*public void setCreationDate(LocalDateTime creationDate) {
+        this.creationDate = creationDate;
+    }*/
+
     public void setName(String value) {
         this.name = value.strip();
     }

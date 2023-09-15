@@ -80,8 +80,8 @@ public class PasswordEntry implements Recordable {
         return notes;
     }
 
-    public void setNotes(String description) {
-        this.notes = description;
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
     public String getIdentifier() {

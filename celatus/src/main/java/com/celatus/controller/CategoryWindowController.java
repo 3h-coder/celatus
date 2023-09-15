@@ -15,6 +15,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 
+import java.time.LocalDateTime;
+
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -142,6 +144,7 @@ public class CategoryWindowController extends DialogWindowController {
             String oldName = inputCategory.getName();
             inputCategory.setName(name);
             inputCategory.setDescription(description);
+            inputCategory.setLastEditDate(LocalDateTime.now());
             // Updating the main window categories list and category description
             FXMLUtils.updateListView(categoriesList, oldName, name);
             if (StringUtils.isNotBlank(description)) {
