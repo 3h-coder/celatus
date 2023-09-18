@@ -130,7 +130,10 @@ public class MainWindowController extends BaseWindowController {
             showCategory(categoryName);
         });
         catDescription.widthProperty().addListener((observable, oldValue, newValue) -> {
-            FXMLUtils.adjustTextAreaHeight(catDescription);
+            String selectedCategory = categoriesList.getSelectionModel().getSelectedItem();
+            if (selectedCategory != null) {
+                FXMLUtils.adjustTextAreaHeight(catDescription);
+            }
         });
     }
 
