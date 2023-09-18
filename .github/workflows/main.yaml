@@ -1,7 +1,7 @@
 name: Java Formatter
 
 on:
-  commit:
+  push:
     branches: main
 
 jobs:
