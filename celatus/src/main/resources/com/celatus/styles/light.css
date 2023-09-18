@@ -148,7 +148,7 @@
 /* -------------------------Setup window------------------------- */
 
 #warningLabel {
-    -fx-text-fill: #fcba03;
+    -fx-text-fill: #ff7b00;
     -fx-font-size: 14px;
 }
 

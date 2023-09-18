@@ -244,6 +244,9 @@ public class BaseWindowController {
             if (!(label.getParent() instanceof AnchorPane)) {
                 continue;
             }
+            if (label.getStyleClass().contains("badFieldLabel")) {
+                continue;
+            }
             AnchorPane parentPane = (AnchorPane) label.getParent();
             label.setOnMouseClicked(mouseEvent -> {
                 if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
