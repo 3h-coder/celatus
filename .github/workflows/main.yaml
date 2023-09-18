@@ -2,7 +2,7 @@ name: Java Formatter
 
 on:
   push:
-    branches: [ master ]
+    branches: main
 
 jobs:
 
