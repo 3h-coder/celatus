@@ -43,7 +43,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Label fx:id="label04" prefHeight="17.0" prefWidth="400.0" styleClass="badFieldLabel" visible="false" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="20.0" />
+            <Label fx:id="label04" prefHeight="17.0" prefWidth="400.0" styleClass="badFieldLabel" visible="false" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="20.0" />
             <Button fx:id="enterButton" mnemonicParsing="false" onAction="#submitMasterPasswords" prefHeight="25.0" prefWidth="80.0" text="Enter" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="210.0" AnchorPane.rightAnchor="210.0">
                <cursor>
                   <Cursor fx:constant="HAND" />
