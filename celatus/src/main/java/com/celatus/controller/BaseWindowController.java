@@ -43,7 +43,7 @@ public class BaseWindowController {
 
     // region =====Variables=====
 
-    protected final Logger logger = LogManager.getLogger(this.getClass().toString().replace("class ", ""));
+    protected final Logger logger = LogManager.getLogger( this.getClass().toString().replace("class ", ""));
 
     @FXML
     protected ImageView logo;
