@@ -69,12 +69,13 @@ public class PasswordWindowController extends DialogWindowController {
   private String password; // the current password (displayed on the window)
   private boolean
       recordMode; // whether we are in recordMode or not (recordMode refers to when we hide the
-                  // default elements to view the password entry's history)
+  // default elements to view the password entry's history)
   private List<Node> defaultModeElements; // list where we store the default UI elements
   private List<Node> recordModeElements; // list where we store the record mode UI elements
   private String
       detectedChanges; // detected changes from the user (what is on the UI vs what is stored in the
-                       // object)
+
+  // object)
 
   // endregion
 

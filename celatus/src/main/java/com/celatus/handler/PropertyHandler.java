@@ -13,7 +13,6 @@ import java.util.Properties;
 import java.util.List;
 import java.util.HashMap;
 
-
 public class PropertyHandler {
 
   // region =====Variables=====
