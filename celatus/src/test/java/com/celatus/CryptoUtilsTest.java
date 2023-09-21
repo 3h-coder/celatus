@@ -42,7 +42,7 @@ public class CryptoUtilsTest {
   @Test
   public void
       testDataDecryption() { // The decrypted text block should be equal to the plain text original
-                             // input
+    // input
     String password = "haha";
     String textBlock =
         "This just a simple test to see if my data deciphering function actually works.";
