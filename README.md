@@ -11,7 +11,8 @@ It is built upon JavaFX and Maven and licensed under the [GPL-3](LICENSE) licens
 - **Password search** : Find your passwords easily through the search bar.
 - **Cross-Platform** : Runs on Windows, MacOS and Linux.
 
-## User Guide [To be written]
+## User Guide
+
+Find the user guide [here](docs/User%20Guide.MD).
 
 
-## Developer Guide [To be written]
