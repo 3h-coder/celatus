@@ -73,6 +73,8 @@
                   <Menu fx:id="helpMenu" mnemonicParsing="false" text="Help">
                      <items>
                         <MenuItem mnemonicParsing="false" onAction="#openReadMe" text="About" />
+                        <MenuItem mnemonicParsing="false" onAction="#openUserGuide" text="User Guide" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
                         <MenuItem mnemonicParsing="false" text="Release Notes" />
                      </items>
                   </Menu>

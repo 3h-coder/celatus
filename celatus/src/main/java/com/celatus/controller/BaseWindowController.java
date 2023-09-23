@@ -200,7 +200,6 @@ public class BaseWindowController {
     } else {
       // Transfer key events to the window's scene root
       FXMLUtils.transferKeyEvents(textArea, window.getScene().getRoot());
-      logger.debug("sent it to : " + window.getScene().getRoot());
     }
 
     Popup popup = new Popup();

@@ -225,15 +225,15 @@ public class CryptoUtils {
   }
 
   /**
-   * To be completed
+   * Generates a random password containing at least one uppercase character, one numeric character and one special character.
    *
-   * @param length
-   * @return
+   * @param length : The password's length, 6 minimum.
+   * @return The generated password
    */
   public static String generateRandomPwd(int length) {
 
-    if (length <= 0) {
-      throw new IllegalArgumentException("Maximum length must be greater than 0");
+    if (length < 6) {
+      throw new IllegalArgumentException("Maximum length cannot be lower than 6");
     }
 
     final String LOWERCASE_CHARACTERS = "abcdefghijklmnopqrstuvwxyz";

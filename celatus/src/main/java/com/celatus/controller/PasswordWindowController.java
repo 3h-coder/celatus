@@ -344,7 +344,7 @@ public class PasswordWindowController extends DialogWindowController {
     Map<String, String> foundRecord = findRecord(selectedDate);
     if (foundRecord != null) {
       App.addTempVariable("password_record", foundRecord);
-      var coordinates = FXMLUtils.findOuterCoordinatesForWindow(window, 40);
+      var coordinates = FXMLUtils.findOuterCoordinatesForWindow(window, 40, 510, 420);
       launchWindow("viewPasswordWindow", coordinates.get("X"), coordinates.get("Y"));
     }
   }
