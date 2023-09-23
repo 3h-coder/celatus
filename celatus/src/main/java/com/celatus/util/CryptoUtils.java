@@ -225,7 +225,8 @@ public class CryptoUtils {
   }
 
   /**
-   * Generates a random password containing at least one uppercase character, one numeric character and one special character.
+   * Generates a random password containing at least one uppercase character, one numeric character
+   * and one special character.
    *
    * @param length : The password's length, 6 minimum.
    * @return The generated password

@@ -473,9 +473,9 @@ public class FXMLUtils {
   }
 
   /**
-   * Calculates the coordinates to spawn the new window on the owner window's right
-   * while making it stay within the screen bounds.
-   * 
+   * Calculates the coordinates to spawn the new window on the owner window's right while making it
+   * stay within the screen bounds.
+   *
    * @param primaryStage : The "owner" window
    * @param radius : The maximum range near the primary stage
    * @param newWindowWidth : The width of the window we want to spawn
@@ -484,21 +484,25 @@ public class FXMLUtils {
    */
   public static Map<String, Double> findOuterCoordinatesForWindow(
       Stage primaryStage, double radius, double newWindowWidth, double newWindowHeight) {
-        Map<String, Double> outerCoords = new HashMap<>();
-        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-        double screenWidth = screenBounds.getWidth();
-        double screenHeight = screenBounds.getHeight();
+    Map<String, Double> outerCoords = new HashMap<>();
+    Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+    double screenWidth = screenBounds.getWidth();
+    double screenHeight = screenBounds.getHeight();
 
-        double newX = Math.min(primaryStage.getX() + primaryStage.getWidth() + Math.random() * radius, 
-                               screenWidth - newWindowWidth - Math.random() * radius);
-        double newY = Math.min(primaryStage.getY() + Math.random() * radius, 
-                               screenHeight - newWindowHeight - Math.random() * radius);
+    double newX =
+        Math.min(
+            primaryStage.getX() + primaryStage.getWidth() + Math.random() * radius,
+            screenWidth - newWindowWidth - Math.random() * radius);
+    double newY =
+        Math.min(
+            primaryStage.getY() + Math.random() * radius,
+            screenHeight - newWindowHeight - Math.random() * radius);
 
-        outerCoords.put("X", newX);
-        outerCoords.put("Y", newY);
+    outerCoords.put("X", newX);
+    outerCoords.put("Y", newY);
 
-        return outerCoords;
-      }
+    return outerCoords;
+  }
 
   // endregion
 
