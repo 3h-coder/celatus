@@ -11,6 +11,13 @@ import java.util.Properties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.celatus.controller.AlertMode;
+import com.celatus.controller.AlertWindowController;
+import com.celatus.controller.BaseWindowController;
+import com.celatus.handler.DatabaseHandler;
+import com.celatus.handler.PropertyHandler;
+import com.celatus.util.FXMLUtils;
+
 import javafx.application.Application;
 import javafx.application.HostServices;
 import javafx.application.Platform;
@@ -18,13 +25,6 @@ import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
-import com.celatus.controller.BaseWindowController;
-import com.celatus.handler.DatabaseHandler;
-import com.celatus.handler.PropertyHandler;
-import com.celatus.controller.AlertMode;
-import com.celatus.controller.AlertWindowController;
-import com.celatus.util.FXMLUtils;
 
 /** JavaFX App */
 public class App extends Application {
@@ -43,9 +43,9 @@ public class App extends Application {
 
   private static BaseWindowController controller; // controller associated with the app scene
 
-  private static Map<String, Object>
-      tmpVariables; // used to store any variable at runtime, such as signals
-  // -> (signals are boolean variables representing a signal sent from one window to the whole
+  private static Map<String, Object> tmpVariables; // used to store any variable at runtime, such as signals
+  // -> (signals are boolean variables representing a signal sent from one window
+  // to the whole
   // application)
 
   private static ActionTracker actionTracker; // action tracker used for ctrl+Z and ctrl+Y
@@ -131,9 +131,9 @@ public class App extends Application {
     loadProperties();
 
     if (DatabaseHandler.dbFileExists()) {
-      launchWindow(stage, "entryWindow");
+      launchWindow(stage, "entryWindow", false);
     } else {
-      launchWindow(stage, "setupWindow");
+      launchWindow(stage, "setupWindow", false);
     }
   }
 
@@ -190,14 +190,15 @@ public class App extends Application {
    * @param fxml
    * @throws IOException
    */
-  public static void launchWindow(String fxml) throws IOException {
+  public static void launchWindow(String fxml, boolean resizable) throws IOException {
     Map<String, Object> map = FXMLUtils.getSceneAndController(fxml);
     App.scene = (Scene) map.get("Scene");
     App.controller = (BaseWindowController) map.get("Controller");
 
     Stage stage = new Stage();
     stage.setScene(scene);
-    stage.initStyle(StageStyle.UNDECORATED);
+    stage.setResizable(resizable);
+    stage.initStyle(StageStyle.DECORATED);
     stage.show();
   }
 
@@ -207,13 +208,14 @@ public class App extends Application {
    * @param fxml
    * @throws IOException
    */
-  public static void launchWindow(Stage stage, String fxml) throws IOException {
+  public static void launchWindow(Stage stage, String fxml, boolean resizable) throws IOException {
     Map<String, Object> map = FXMLUtils.getSceneAndController(fxml);
     App.scene = (Scene) map.get("Scene");
     App.controller = (BaseWindowController) map.get("Controller");
 
-    stage.initStyle(StageStyle.UNDECORATED);
     stage.setScene(scene);
+    stage.setResizable(resizable);
+    stage.initStyle(StageStyle.DECORATED);
     stage.show();
   }
 
@@ -223,7 +225,7 @@ public class App extends Application {
    * @param fxml The view to switch to
    * @throws IOException
    */
-  //  /!\ Do not use! Currently not working properly
+  // /!\ Do not use! Currently not working properly
   public static void setView(String fxml) throws IOException {
     scene.setRoot(FXMLUtils.loadFXML(fxml));
   }
@@ -327,7 +329,8 @@ public class App extends Application {
     }
   }
 
-  // Overall it's better to use extract instead of get since they're meant to be temporary and
+  // Overall it's better to use extract instead of get since they're meant to be
+  // temporary and
   // deleted asap
   public static Object getTempVariable(String key) {
     if (tmpVariables != null) {

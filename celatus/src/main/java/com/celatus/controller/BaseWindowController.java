@@ -19,9 +19,9 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextInputControl;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputControl;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -36,22 +36,29 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 /**
- * Mother class of all of our controllers, coontains all common behaviour to all window controllers
+ * Mother class of all of our controllers, coontains all common behaviour to all
+ * window controllers
  */
 public class BaseWindowController {
 
   // region =====Variables=====
 
-  protected final Logger logger =
-      LogManager.getLogger(this.getClass().toString().replace("class ", ""));
+  protected final Logger logger = LogManager.getLogger(this.getClass().toString().replace("class ", ""));
 
-  @FXML protected ImageView logo;
-  @FXML protected AnchorPane rootPane;
-  @FXML protected AnchorPane rowPane1;
-  @FXML protected Button minimizeButton;
-  @FXML protected Button closeButton;
-  @FXML protected Scene scene;
-  @FXML protected Stage window;
+  @FXML
+  protected ImageView logo;
+  @FXML
+  protected AnchorPane rootPane;
+  @FXML
+  protected AnchorPane rowPane1;
+  @FXML
+  protected Button minimizeButton;
+  @FXML
+  protected Button closeButton;
+  @FXML
+  protected Scene scene;
+  @FXML
+  protected Stage window;
 
   private static double xOffset = 0;
   private static double yOffset = 0;
@@ -64,7 +71,8 @@ public class BaseWindowController {
 
   public void initialize() {
     loadTheme();
-    // We have to make sure the scene is fully initialized to properly set up our variables
+    // We have to make sure the scene is fully initialized to properly set up our
+    // variables
     Platform.runLater(
         () -> {
           window = getCurrentWindow();
@@ -131,16 +139,18 @@ public class BaseWindowController {
   }
 
   /**
-   * Switches window with the provided one. In other terms, closes the current window to open the
+   * Switches window with the provided one. In other terms, closes the current
+   * window to open the
    * specified one.
    *
-   * <p><b>Note :</b> This will make the new window the App's main window
+   * <p>
+   * <b>Note :</b> This will make the new window the App's main window
    *
    * @param fxml : the name of the fxml file (without the ".fxml" suffix)
    */
-  public void switchAppWindow(String fxml) {
+  public void switchAppWindow(String fxml, boolean resizable) {
     try {
-      App.launchWindow(fxml);
+      App.launchWindow(fxml, resizable);
       window.close();
     } catch (Exception ex) {
       App.error(
@@ -156,7 +166,7 @@ public class BaseWindowController {
 
   /** Switches to the application's main window */
   public void switchToMainWindow() {
-    switchAppWindow("mainWindow");
+    switchAppWindow("mainWindow", true);
   }
 
   /**
@@ -214,15 +224,14 @@ public class BaseWindowController {
     popup.getContent().addAll(textArea);
     // popup.setAutoHide(true);
 
-    // Create a TranslateTransition to move the popup down right under the menu bar row
-    TranslateTransition translateTransition =
-        new TranslateTransition(Duration.seconds(0.1), popup.getContent().get(0));
+    // Create a TranslateTransition to move the popup down right under the menu bar
+    // row
+    TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.1), popup.getContent().get(0));
     translateTransition.setByY(
         (int) (rowPane1.getHeight() / 2)); // Converting it to int otherwise the text is blurry
 
     // Create a FadeTransition
-    FadeTransition fadeTransition =
-        new FadeTransition(Duration.seconds(4.9), popup.getContent().get(0));
+    FadeTransition fadeTransition = new FadeTransition(Duration.seconds(4.9), popup.getContent().get(0));
     fadeTransition.setFromValue(1);
     fadeTransition.setToValue(0);
     fadeTransition.setOnFinished(
@@ -251,7 +260,8 @@ public class BaseWindowController {
   }
 
   /**
-   * Browses the window to find all first layer labels (under an anchor pane) and make them
+   * Browses the window to find all first layer labels (under an anchor pane) and
+   * make them
    * selectable upon clicking on them
    */
   private void makeLabelsSelectable() {
@@ -296,7 +306,10 @@ public class BaseWindowController {
     }
   }
 
-  /** Sets up all the anchor panes so that they get focus whenever the user clicks on them */
+  /**
+   * Sets up all the anchor panes so that they get focus whenever the user clicks
+   * on them
+   */
   private void enableAnchorPaneFocusOnClick() {
     ArrayList<Node> nodes = FXMLUtils.getAllNodes(rootPane);
     for (Node node : nodes) {
@@ -353,14 +366,17 @@ public class BaseWindowController {
     stage.setIconified(true);
   }
 
-  /*public boolean isMaximized() {
-      Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-      double minX = primaryScreenBounds.getMinX();
-      double minY = primaryScreenBounds.getMinY();
-      double screenWidth = primaryScreenBounds.getWidth();
-      double screenHeight = primaryScreenBounds.getHeight();
-      return window.getWidth() == screenWidth && window.getHeight() == screenHeight && window.getX() == minX && window.getY() == minY;
-  }*/
+  /*
+   * public boolean isMaximized() {
+   * Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+   * double minX = primaryScreenBounds.getMinX();
+   * double minY = primaryScreenBounds.getMinY();
+   * double screenWidth = primaryScreenBounds.getWidth();
+   * double screenHeight = primaryScreenBounds.getHeight();
+   * return window.getWidth() == screenWidth && window.getHeight() == screenHeight
+   * && window.getX() == minX && window.getY() == minY;
+   * }
+   */
 
   public void maximize() {
     Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
