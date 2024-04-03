@@ -4,11 +4,11 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 /** Class used for our password entry and category record tables */
-public class RecordEntry {
+public class RecordEntryView {
   private String date;
   private String changes;
 
-  public RecordEntry(String date, String changes) {
+  public RecordEntryView(String date, String changes) {
     this.date = date;
     this.changes = changes;
   }
