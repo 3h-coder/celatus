@@ -1,4 +1,4 @@
-package com.celatus;
+package com.celatus.models;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;

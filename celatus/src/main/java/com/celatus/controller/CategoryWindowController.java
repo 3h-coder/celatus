@@ -1,8 +1,12 @@
 package com.celatus.controller;
 
+import java.time.LocalDateTime;
+
+import org.apache.commons.lang3.StringUtils;
+
 import com.celatus.App;
-import com.celatus.Category;
-import com.celatus.PasswordsDatabase;
+import com.celatus.models.Category;
+import com.celatus.models.PasswordsDatabase;
 import com.celatus.util.FXMLUtils;
 
 import javafx.application.Platform;
@@ -15,19 +19,19 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 
-import java.time.LocalDateTime;
-
-import org.apache.commons.lang3.StringUtils;
-
 /** Controller of the window used to create and edit categories */
 public class CategoryWindowController extends DialogWindowController {
 
   // region =====Variables
 
-  @FXML private Label title;
-  @FXML private Label label02;
-  @FXML private TextField nameTextField;
-  @FXML private TextArea descriptionTextArea;
+  @FXML
+  private Label title;
+  @FXML
+  private Label label02;
+  @FXML
+  private TextField nameTextField;
+  @FXML
+  private TextArea descriptionTextArea;
 
   private Category inputCategory;
 

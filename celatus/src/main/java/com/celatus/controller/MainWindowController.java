@@ -4,13 +4,15 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.celatus.App;
-import com.celatus.Category;
-import com.celatus.PasswordEntry;
-import com.celatus.PasswordsDatabase;
 import com.celatus.ResizeHelper;
 import com.celatus.handler.DatabaseHandler;
 import com.celatus.handler.SearchHandler;
+import com.celatus.models.Category;
+import com.celatus.models.PasswordEntry;
+import com.celatus.models.PasswordsDatabase;
 import com.celatus.util.CustomDateUtils;
 import com.celatus.util.DesktopUtils;
 import com.celatus.util.FXMLUtils;
@@ -22,7 +24,9 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -37,29 +41,38 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Popup;
-import javafx.scene.control.SplitPane;
-import javafx.scene.control.MenuBar;
-
-import org.apache.commons.lang3.StringUtils;
 
 /** The controller of the App's main window */
 public class MainWindowController extends BaseWindowController {
 
   // region =====Variables=====
 
-  @FXML private AnchorPane columnPane1;
-  @FXML private SplitPane columnPane2;
-  @FXML private AnchorPane descriptionPane;
-  @FXML private AnchorPane passwordsPane;
-  @FXML private AnchorPane blankSpacePane;
-  @FXML private TextArea catDescription;
-  @FXML private TextField searchBar;
-  @FXML private TableView<PasswordEntry> passwordsTable;
-  @FXML private MenuBar menuBar;
-  @FXML private Menu fileMenu;
-  @FXML private Menu settingsMenu;
-  @FXML private Menu helpMenu;
-  @FXML private ListView<String> categoriesList;
+  @FXML
+  private AnchorPane columnPane1;
+  @FXML
+  private SplitPane columnPane2;
+  @FXML
+  private AnchorPane descriptionPane;
+  @FXML
+  private AnchorPane passwordsPane;
+  @FXML
+  private AnchorPane blankSpacePane;
+  @FXML
+  private TextArea catDescription;
+  @FXML
+  private TextField searchBar;
+  @FXML
+  private TableView<PasswordEntry> passwordsTable;
+  @FXML
+  private MenuBar menuBar;
+  @FXML
+  private Menu fileMenu;
+  @FXML
+  private Menu settingsMenu;
+  @FXML
+  private Menu helpMenu;
+  @FXML
+  private ListView<String> categoriesList;
 
   // endregion
 
@@ -77,7 +90,10 @@ public class MainWindowController extends BaseWindowController {
     // logger.debug(App.getPasswordsDatabase());
   }
 
-  /** Performs all the graphical setup such as the window dimensions or the context menus */
+  /**
+   * Performs all the graphical setup such as the window dimensions or the context
+   * menus
+   */
   private void performGraphicalSetup() {
     // We set the minimum window dimensions
     window.setMinWidth(900);
@@ -193,7 +209,8 @@ public class MainWindowController extends BaseWindowController {
   }
 
   /**
-   * Displays all the password entries of the selected category, refreshing the view
+   * Displays all the password entries of the selected category, refreshing the
+   * view
    *
    * @param category
    */
@@ -225,7 +242,10 @@ public class MainWindowController extends BaseWindowController {
     }
   }
 
-  /** Used whenever we resize the window, to prevent a glitch showing an empty description */
+  /**
+   * Used whenever we resize the window, to prevent a glitch showing an empty
+   * description
+   */
   private void controlCatDescription() {
     if (StringUtils.isBlank(catDescription.getText())) {
       catDescription.setPrefHeight(0);
@@ -284,7 +304,8 @@ public class MainWindowController extends BaseWindowController {
       window.setMaximized(false);
       controlCatDescription();
     }
-    // New category (only if there is a notification popup, otherwise it overlaps with the
+    // New category (only if there is a notification popup, otherwise it overlaps
+    // with the
     // accelerator)
     if (event.isShiftDown() && eventCode == KeyCode.C && notifPopupShown()) {
       openCatWindow();
@@ -326,7 +347,8 @@ public class MainWindowController extends BaseWindowController {
 
     if (eventCode == KeyCode.ESCAPE || eventCode == KeyCode.TAB) {
       // Disabling the onKeyTyped other wise it is triggered
-      searchBar.setOnKeyTyped(keyTypedEvent -> {});
+      searchBar.setOnKeyTyped(keyTypedEvent -> {
+      });
       searchBar.getParent().requestFocus();
 
       return;
@@ -362,7 +384,8 @@ public class MainWindowController extends BaseWindowController {
   }
 
   /**
-   * Searches for the given password, and displays all the passwords that contain its name.
+   * Searches for the given password, and displays all the passwords that contain
+   * its name.
    *
    * @param passwordName
    */
@@ -475,7 +498,7 @@ public class MainWindowController extends BaseWindowController {
           App.getHS().showDocument(selectedPassword.getUrl());
         });
 
-    //  Runtime context menu calculations
+    // Runtime context menu calculations
     this.passwordsTable.addEventHandler(
         ContextMenuEvent.CONTEXT_MENU_REQUESTED,
         event -> {
@@ -497,7 +520,8 @@ public class MainWindowController extends BaseWindowController {
                     openWebMenuItem);
             pwdContextMenu.show(passwordsTable, event.getScreenX(), event.getScreenY());
           }
-          // Adding all of our categories to the "move to" menu, (except the password's one).
+          // Adding all of our categories to the "move to" menu, (except the password's
+          // one).
           String passwordCategory = selectedPassword.findCategory().getName();
           movePwdMenuItem.getItems().clear();
           for (Category category : App.getPasswordsDatabase().getCategories()) {
@@ -892,8 +916,7 @@ public class MainWindowController extends BaseWindowController {
   }
 
   public void openUserGuide() {
-    final String USER_GUIDE_URL =
-        "https://github.com/3h-coder/celatus/blob/main/docs/User%20Guide.MD";
+    final String USER_GUIDE_URL = "https://github.com/3h-coder/celatus/blob/main/docs/User%20Guide.MD";
     App.getHS().showDocument(USER_GUIDE_URL);
   }
 

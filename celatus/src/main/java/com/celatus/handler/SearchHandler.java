@@ -1,17 +1,16 @@
 package com.celatus.handler;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import com.celatus.App;
-import com.celatus.Category;
-import com.celatus.PasswordsDatabase;
-import com.celatus.PasswordEntry;
-
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.celatus.App;
+import com.celatus.models.Category;
+import com.celatus.models.PasswordEntry;
+import com.celatus.models.PasswordsDatabase;
 
 /** Static class containing the password search methods */
 public class SearchHandler {

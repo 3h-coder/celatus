@@ -9,9 +9,9 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 import com.celatus.App;
-import com.celatus.Category;
-import com.celatus.PasswordEntry;
-import com.celatus.RecordEntry;
+import com.celatus.models.Category;
+import com.celatus.models.PasswordEntry;
+import com.celatus.models.RecordEntry;
 import com.celatus.util.CryptoUtils;
 import com.celatus.util.CustomDateUtils;
 import com.celatus.util.FXMLUtils;
@@ -35,45 +35,71 @@ public class PasswordWindowController extends DialogWindowController {
 
   // region =====Variables=====
 
-  @FXML private AnchorPane rowPane2;
-  @FXML private Label title;
-  @FXML private TextField nameTextField;
-  @FXML private TextField urlField;
-  @FXML private TextField identifierField;
-  @FXML private TextField emailField;
-  @FXML private PasswordField pwdField;
-  @FXML private TextField revealedPwdField;
-  @FXML private TextArea passwordNotes;
-  @FXML private Label createdLabel;
-  @FXML private Label lastEditedLabel;
-  @FXML private Label checkNameLabel;
-  @FXML private Label checkIdentifierLabel;
-  @FXML private Label checkPasswordLabel;
-  @FXML private Label nameLabel;
-  @FXML private Label urlLabel;
-  @FXML private Label identifierLabel;
-  @FXML private Label emailLabel;
-  @FXML private Label passwordLabel;
-  @FXML private Label notesLabel;
-  @FXML private Button viewButton;
-  @FXML private Button generatePwdButton;
-  @FXML private Button saveButton;
-  @FXML private Button recordsButton;
-  @FXML private Button viewRecordButton;
-  @FXML private TableView<RecordEntry> recordsTable;
-  @FXML private TableColumn<RecordEntry, String> dateColumn;
-  @FXML private TableColumn<RecordEntry, String> changesColumn;
+  @FXML
+  private AnchorPane rowPane2;
+  @FXML
+  private Label title;
+  @FXML
+  private TextField nameTextField;
+  @FXML
+  private TextField urlField;
+  @FXML
+  private TextField identifierField;
+  @FXML
+  private TextField emailField;
+  @FXML
+  private PasswordField pwdField;
+  @FXML
+  private TextField revealedPwdField;
+  @FXML
+  private TextArea passwordNotes;
+  @FXML
+  private Label createdLabel;
+  @FXML
+  private Label lastEditedLabel;
+  @FXML
+  private Label checkNameLabel;
+  @FXML
+  private Label checkIdentifierLabel;
+  @FXML
+  private Label checkPasswordLabel;
+  @FXML
+  private Label nameLabel;
+  @FXML
+  private Label urlLabel;
+  @FXML
+  private Label identifierLabel;
+  @FXML
+  private Label emailLabel;
+  @FXML
+  private Label passwordLabel;
+  @FXML
+  private Label notesLabel;
+  @FXML
+  private Button viewButton;
+  @FXML
+  private Button generatePwdButton;
+  @FXML
+  private Button saveButton;
+  @FXML
+  private Button recordsButton;
+  @FXML
+  private Button viewRecordButton;
+  @FXML
+  private TableView<RecordEntry> recordsTable;
+  @FXML
+  private TableColumn<RecordEntry, String> dateColumn;
+  @FXML
+  private TableColumn<RecordEntry, String> changesColumn;
 
   private Category category; // the password entry's category
   private PasswordEntry inputPwdEntry; // the password entry we are editing
   private String password; // the current password (displayed on the window)
-  private boolean
-      recordMode; // whether we are in recordMode or not (recordMode refers to when we hide the
+  private boolean recordMode; // whether we are in recordMode or not (recordMode refers to when we hide the
   // default elements to view the password entry's history)
   private List<Node> defaultModeElements; // list where we store the default UI elements
   private List<Node> recordModeElements; // list where we store the record mode UI elements
-  private String
-      detectedChanges; // detected changes from the user (what is on the UI vs what is stored in the
+  private String detectedChanges; // detected changes from the user (what is on the UI vs what is stored in the
 
   // object)
 
@@ -226,8 +252,7 @@ public class PasswordWindowController extends DialogWindowController {
     inputPwdEntry
         .getRecords()
         .forEach(
-            (date, record) ->
-                recordEntries.add(new RecordEntry(date, (String) ((Map) record).get("changes"))));
+            (date, record) -> recordEntries.add(new RecordEntry(date, (String) ((Map) record).get("changes"))));
 
     recordsTable.setItems(recordEntries);
 
@@ -245,7 +270,10 @@ public class PasswordWindowController extends DialogWindowController {
 
   // region =====Event Methods=====
 
-  /** Saves our password entry into the database, or updates it if it's an existing one */
+  /**
+   * Saves our password entry into the database, or updates it if it's an existing
+   * one
+   */
   @FXML
   private void savePassword() {
 
@@ -254,9 +282,11 @@ public class PasswordWindowController extends DialogWindowController {
       return;
     }
     // We then check that the fields are valid
-    /*if (!allFieldsValid()) {
-        return;
-    }*/
+    /*
+     * if (!allFieldsValid()) {
+     * return;
+     * }
+     */
 
     String name = nameTextField.getText();
     String identifier = identifierField.getText();
@@ -268,8 +298,7 @@ public class PasswordWindowController extends DialogWindowController {
 
     // Saving the new password entry
     if (inputPwdEntry == null) {
-      PasswordEntry pwdEntry =
-          new PasswordEntry(name, url, notes, identifier, email, this.password);
+      PasswordEntry pwdEntry = new PasswordEntry(name, url, notes, identifier, email, this.password);
       this.category.addPasswordEntry(pwdEntry);
       // Add the creation to the action tracker
       App.getActionTracker().addPwdCreation(pwdEntry, this.category.getName());
@@ -404,7 +433,8 @@ public class PasswordWindowController extends DialogWindowController {
   }
 
   /**
-   * Detects whether changes have been made or not to the password entry (in case of editing)
+   * Detects whether changes have been made or not to the password entry (in case
+   * of editing)
    *
    * @return
    */

@@ -16,6 +16,9 @@ import com.celatus.controller.AlertWindowController;
 import com.celatus.controller.BaseWindowController;
 import com.celatus.handler.DatabaseHandler;
 import com.celatus.handler.PropertyHandler;
+import com.celatus.models.ActionTracker;
+import com.celatus.models.CustomUncaughtExceptionHandler;
+import com.celatus.models.PasswordsDatabase;
 import com.celatus.util.FXMLUtils;
 
 import javafx.application.Application;

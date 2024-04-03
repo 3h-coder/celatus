@@ -1,4 +1,4 @@
-package com.celatus;
+package com.celatus.interfaces;
 
 /** Interface for objects that are meant to be saved in our database */
 public interface Recordable {

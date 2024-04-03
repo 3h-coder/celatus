@@ -6,7 +6,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 import com.celatus.App;
-import com.celatus.PasswordsDatabase;
+import com.celatus.models.PasswordsDatabase;
 import com.celatus.util.CryptoUtils;
 
 public class AuthHandler {
@@ -14,13 +14,16 @@ public class AuthHandler {
   // region =====Static Methods=====
 
   /**
-   * Checks whether two passwords match and if they respect the password constraints
+   * Checks whether two passwords match and if they respect the password
+   * constraints
    *
    * @param password1 : The first password
    * @param password2 : The second password
-   * @return A unique entry Map with the key saying whether or not the passwords are equal and
-   *     valid, and the value being a string explaining why the passwords are not valid, if they are
-   *     not.
+   * @return A unique entry Map with the key saying whether or not the passwords
+   *         are equal and
+   *         valid, and the value being a string explaining why the passwords are
+   *         not valid, if they are
+   *         not.
    */
   public static Map<Boolean, String> checkPasswords(String password1, String password2) {
 
@@ -86,10 +89,11 @@ public class AuthHandler {
     }
   }
 
-  /** Performs all the necessary setup after the valid password has been entered */
+  /**
+   * Performs all the necessary setup after the valid password has been entered
+   */
   public static void enterApp() {
-    PasswordsDatabase passwordsDatabase =
-        PasswordsDatabase.fromRawData(DatabaseHandler.getRawData());
+    PasswordsDatabase passwordsDatabase = PasswordsDatabase.fromRawData(DatabaseHandler.getRawData());
     App.setPasswordsDatabase(passwordsDatabase);
     App.setOriginalDatabaseHash(passwordsDatabase.hashCode());
   }
