@@ -46,11 +46,9 @@ public class App extends Application {
 
   private static BaseWindowController controller; // controller associated with the app scene
 
-  private static Map<String, Object>
-      tmpVariables; // used to store any variable at runtime, such as signals
+  private static Map<String, Object> tmpVariables; // used to store any variable at runtime, such as signals
   // -> (signals are boolean variables representing a signal sent from one window
-  // to the whole
-  // application)
+  // to the whole application)
 
   private static ActionTracker actionTracker; // action tracker used for ctrl+Z and ctrl+Y
 
