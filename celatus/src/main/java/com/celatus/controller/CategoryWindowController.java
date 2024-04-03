@@ -24,14 +24,10 @@ public class CategoryWindowController extends DialogWindowController {
 
   // region =====Variables
 
-  @FXML
-  private Label title;
-  @FXML
-  private Label label02;
-  @FXML
-  private TextField nameTextField;
-  @FXML
-  private TextArea descriptionTextArea;
+  @FXML private Label title;
+  @FXML private Label label02;
+  @FXML private TextField nameTextField;
+  @FXML private TextArea descriptionTextArea;
 
   private Category inputCategory;
 

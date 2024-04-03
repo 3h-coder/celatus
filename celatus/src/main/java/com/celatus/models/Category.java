@@ -80,8 +80,7 @@ public class Category implements Recordable {
 
   // region =====Constructor=====
 
-  public Category() {
-  }
+  public Category() {}
 
   public Category(String name, String description, List<PasswordEntry> passwordEntries) {
     this.creationDate = LocalDateTime.now();
@@ -147,43 +146,28 @@ public class Category implements Recordable {
 
   @Override
   public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
+    if (this == obj) return true;
+    if (obj == null) return false;
+    if (getClass() != obj.getClass()) return false;
     Category other = (Category) obj;
     if (id == null) {
-      if (other.id != null)
-        return false;
-    } else if (!id.equals(other.id))
-      return false;
+      if (other.id != null) return false;
+    } else if (!id.equals(other.id)) return false;
     if (name == null) {
-      if (other.name != null)
-        return false;
-    } else if (!name.equals(other.name))
-      return false;
+      if (other.name != null) return false;
+    } else if (!name.equals(other.name)) return false;
     if (description == null) {
-      if (other.description != null)
-        return false;
-    } else if (!description.equals(other.description))
-      return false;
+      if (other.description != null) return false;
+    } else if (!description.equals(other.description)) return false;
     if (passwordEntries == null) {
-      if (other.passwordEntries != null)
-        return false;
-    } else if (!passwordEntries.equals(other.passwordEntries))
-      return false;
+      if (other.passwordEntries != null) return false;
+    } else if (!passwordEntries.equals(other.passwordEntries)) return false;
     if (creationDate == null) {
-      if (other.creationDate != null)
-        return false;
-    } else if (!creationDate.equals(other.creationDate))
-      return false;
+      if (other.creationDate != null) return false;
+    } else if (!creationDate.equals(other.creationDate)) return false;
     if (lastEditDate == null) {
-      if (other.lastEditDate != null)
-        return false;
-    } else if (!lastEditDate.equals(other.lastEditDate))
-      return false;
+      if (other.lastEditDate != null) return false;
+    } else if (!lastEditDate.equals(other.lastEditDate)) return false;
     return true;
   }
 

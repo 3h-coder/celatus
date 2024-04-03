@@ -12,10 +12,7 @@ import com.celatus.interfaces.Recordable;
 import com.celatus.util.CryptoUtils;
 import com.celatus.util.CustomDateUtils;
 
-/**
- * Object used to store all of the attributes and information related to our
- * password
- */
+/** Object used to store all of the attributes and information related to our password */
 public class PasswordEntry implements Recordable {
 
   // region =====Variables=====
@@ -111,8 +108,7 @@ public class PasswordEntry implements Recordable {
 
   // region =====Constructors=====
 
-  public PasswordEntry() {
-  }
+  public PasswordEntry() {}
 
   public PasswordEntry(
       String name, String url, String notes, String identifier, String email, String password) {
@@ -155,63 +151,40 @@ public class PasswordEntry implements Recordable {
 
   @Override
   public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
+    if (this == obj) return true;
+    if (obj == null) return false;
+    if (getClass() != obj.getClass()) return false;
     PasswordEntry other = (PasswordEntry) obj;
     if (id == null) {
-      if (other.id != null)
-        return false;
-    } else if (!id.equals(other.id))
-      return false;
+      if (other.id != null) return false;
+    } else if (!id.equals(other.id)) return false;
     if (name == null) {
-      if (other.name != null)
-        return false;
-    } else if (!name.equals(other.name))
-      return false;
+      if (other.name != null) return false;
+    } else if (!name.equals(other.name)) return false;
     if (url == null) {
-      if (other.url != null)
-        return false;
-    } else if (!url.equals(other.url))
-      return false;
+      if (other.url != null) return false;
+    } else if (!url.equals(other.url)) return false;
     if (notes == null) {
-      if (other.notes != null)
-        return false;
-    } else if (!notes.equals(other.notes))
-      return false;
+      if (other.notes != null) return false;
+    } else if (!notes.equals(other.notes)) return false;
     if (identifier == null) {
-      if (other.identifier != null)
-        return false;
-    } else if (!identifier.equals(other.identifier))
-      return false;
+      if (other.identifier != null) return false;
+    } else if (!identifier.equals(other.identifier)) return false;
     if (email == null) {
-      if (other.email != null)
-        return false;
-    } else if (!email.equals(other.email))
-      return false;
+      if (other.email != null) return false;
+    } else if (!email.equals(other.email)) return false;
     if (password == null) {
-      if (other.password != null)
-        return false;
-    } else if (!password.equals(other.password))
-      return false;
+      if (other.password != null) return false;
+    } else if (!password.equals(other.password)) return false;
     if (creationDate == null) {
-      if (other.creationDate != null)
-        return false;
-    } else if (!creationDate.equals(other.creationDate))
-      return false;
+      if (other.creationDate != null) return false;
+    } else if (!creationDate.equals(other.creationDate)) return false;
     if (lastEditDate == null) {
-      if (other.lastEditDate != null)
-        return false;
-    } else if (!lastEditDate.equals(other.lastEditDate))
-      return false;
+      if (other.lastEditDate != null) return false;
+    } else if (!lastEditDate.equals(other.lastEditDate)) return false;
     if (records == null) {
-      if (other.records != null)
-        return false;
-    } else if (!records.equals(other.records))
-      return false;
+      if (other.records != null) return false;
+    } else if (!records.equals(other.records)) return false;
     return true;
   }
 

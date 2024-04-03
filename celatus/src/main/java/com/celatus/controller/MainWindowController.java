@@ -47,32 +47,19 @@ public class MainWindowController extends BaseWindowController {
 
   // region =====Variables=====
 
-  @FXML
-  private AnchorPane columnPane1;
-  @FXML
-  private SplitPane columnPane2;
-  @FXML
-  private AnchorPane descriptionPane;
-  @FXML
-  private AnchorPane passwordsPane;
-  @FXML
-  private AnchorPane blankSpacePane;
-  @FXML
-  private TextArea catDescription;
-  @FXML
-  private TextField searchBar;
-  @FXML
-  private TableView<PasswordEntry> passwordsTable;
-  @FXML
-  private MenuBar menuBar;
-  @FXML
-  private Menu fileMenu;
-  @FXML
-  private Menu settingsMenu;
-  @FXML
-  private Menu helpMenu;
-  @FXML
-  private ListView<String> categoriesList;
+  @FXML private AnchorPane columnPane1;
+  @FXML private SplitPane columnPane2;
+  @FXML private AnchorPane descriptionPane;
+  @FXML private AnchorPane passwordsPane;
+  @FXML private AnchorPane blankSpacePane;
+  @FXML private TextArea catDescription;
+  @FXML private TextField searchBar;
+  @FXML private TableView<PasswordEntry> passwordsTable;
+  @FXML private MenuBar menuBar;
+  @FXML private Menu fileMenu;
+  @FXML private Menu settingsMenu;
+  @FXML private Menu helpMenu;
+  @FXML private ListView<String> categoriesList;
 
   // endregion
 
@@ -90,10 +77,7 @@ public class MainWindowController extends BaseWindowController {
     // logger.debug(App.getPasswordsDatabase());
   }
 
-  /**
-   * Performs all the graphical setup such as the window dimensions or the context
-   * menus
-   */
+  /** Performs all the graphical setup such as the window dimensions or the context menus */
   private void performGraphicalSetup() {
     // We set the minimum window dimensions
     window.setMinWidth(900);
@@ -209,8 +193,7 @@ public class MainWindowController extends BaseWindowController {
   }
 
   /**
-   * Displays all the password entries of the selected category, refreshing the
-   * view
+   * Displays all the password entries of the selected category, refreshing the view
    *
    * @param category
    */
@@ -242,10 +225,7 @@ public class MainWindowController extends BaseWindowController {
     }
   }
 
-  /**
-   * Used whenever we resize the window, to prevent a glitch showing an empty
-   * description
-   */
+  /** Used whenever we resize the window, to prevent a glitch showing an empty description */
   private void controlCatDescription() {
     if (StringUtils.isBlank(catDescription.getText())) {
       catDescription.setPrefHeight(0);
@@ -347,8 +327,7 @@ public class MainWindowController extends BaseWindowController {
 
     if (eventCode == KeyCode.ESCAPE || eventCode == KeyCode.TAB) {
       // Disabling the onKeyTyped other wise it is triggered
-      searchBar.setOnKeyTyped(keyTypedEvent -> {
-      });
+      searchBar.setOnKeyTyped(keyTypedEvent -> {});
       searchBar.getParent().requestFocus();
 
       return;
@@ -384,8 +363,7 @@ public class MainWindowController extends BaseWindowController {
   }
 
   /**
-   * Searches for the given password, and displays all the passwords that contain
-   * its name.
+   * Searches for the given password, and displays all the passwords that contain its name.
    *
    * @param passwordName
    */
@@ -916,7 +894,8 @@ public class MainWindowController extends BaseWindowController {
   }
 
   public void openUserGuide() {
-    final String USER_GUIDE_URL = "https://github.com/3h-coder/celatus/blob/main/docs/User%20Guide.MD";
+    final String USER_GUIDE_URL =
+        "https://github.com/3h-coder/celatus/blob/main/docs/User%20Guide.MD";
     App.getHS().showDocument(USER_GUIDE_URL);
   }
 

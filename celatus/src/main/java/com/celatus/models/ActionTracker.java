@@ -11,10 +11,8 @@ import com.celatus.enums.UserAction;
 import com.celatus.util.MapUtils;
 
 /**
- * Class used to perform Ctrl+Z and Ctrl+Y on the main window. Currently
- * supports the creation,
- * deletion and displacement of password entries, as well as the creation and
- * deletion of
+ * Class used to perform Ctrl+Z and Ctrl+Y on the main window. Currently supports the creation,
+ * deletion and displacement of password entries, as well as the creation and deletion of
  * categories.
  */
 public class ActionTracker {
@@ -41,7 +39,7 @@ public class ActionTracker {
    * public int getCurrentActionIndex() {
    * return currentActionIndex;
    * }
-   * 
+   *
    * public void setCurrentActionIndex(int currentActionIndex) {
    * this.currentActionIndex = currentActionIndex;
    * }

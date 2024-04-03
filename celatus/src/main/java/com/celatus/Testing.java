@@ -20,7 +20,8 @@ public class Testing {
 
   public static void testDataEncryption() {
     String password = "haha";
-    String textBlock = "This just a simple test to see if my data encryption function actually works.";
+    String textBlock =
+        "This just a simple test to see if my data encryption function actually works.";
     Key key = CryptoUtils.generateAESKey(password);
     IvParameterSpec iv = CryptoUtils.generateIv();
     IvParameterSpec iv2 = CryptoUtils.generateIv();
@@ -32,10 +33,12 @@ public class Testing {
     System.out.println("Second Block\n" + encryptedBlock2);
   }
 
-  public static void testDataDecryption() { // The decrypted text block should be equal to the plain text original
+  public static void
+      testDataDecryption() { // The decrypted text block should be equal to the plain text original
     // input
     String password = "haha";
-    String textBlock = "This just a simple test to see if my data deciphering function actually works.";
+    String textBlock =
+        "This just a simple test to see if my data deciphering function actually works.";
     Key key = CryptoUtils.generateAESKey(password);
     IvParameterSpec iv = CryptoUtils.generateIv();
     IvParameterSpec iv2 = CryptoUtils.generateIv();
@@ -50,7 +53,8 @@ public class Testing {
 
   public static void testDataEncryptionIntoFile() {
     String password = "haha";
-    String textBlock = "This just a simple test to see if my data encryption function actually works.";
+    String textBlock =
+        "This just a simple test to see if my data encryption function actually works.";
     Key key = CryptoUtils.generateAESKey(password);
     byte[] iv = CryptoUtils.generateIV();
 
@@ -102,20 +106,22 @@ public class Testing {
 
   public static void testObjToJson() {
     PasswordsDatabase pwdDB = PasswordsDatabase.generateDefault();
-    PasswordEntry pwdEntry = new PasswordEntry(
-        "Facebook",
-        "https://facebook.com",
-        null,
-        "fake.email@gmail.com",
-        "fake.email@gmail.com",
-        "password");
+    PasswordEntry pwdEntry =
+        new PasswordEntry(
+            "Facebook",
+            "https://facebook.com",
+            null,
+            "fake.email@gmail.com",
+            "fake.email@gmail.com",
+            "password");
     pwdDB.getCategory("Social Media").addPasswordEntry(pwdEntry);
     System.out.println(MapUtils.objectToJson(pwdDB, true));
   }
 
   public static void testJsonToObj() {
-    String json = "{\"categories\":[{\"name\":\"General\",\"passwordEntries\":null},{\"name\":\"Emails\",\"passwordEntries\":null},{\"name\":\"Social"
-        + " media\",\"passwordEntries\":[{\"name\":\"Facebook\",\"description\":null,\"identifier\":\"fake.email@gmail.com\",\"password\":\"password\"}]},{\"name\":\"Administrative\",\"passwordEntries\":null},{\"name\":\"Shopping\",\"passwordEntries\":null},{\"name\":\"Miscellaneous\",\"passwordEntries\":null}]}";
+    String json =
+        "{\"categories\":[{\"name\":\"General\",\"passwordEntries\":null},{\"name\":\"Emails\",\"passwordEntries\":null},{\"name\":\"Social"
+            + " media\",\"passwordEntries\":[{\"name\":\"Facebook\",\"description\":null,\"identifier\":\"fake.email@gmail.com\",\"password\":\"password\"}]},{\"name\":\"Administrative\",\"passwordEntries\":null},{\"name\":\"Shopping\",\"passwordEntries\":null},{\"name\":\"Miscellaneous\",\"passwordEntries\":null}]}";
     PasswordsDatabase pwdDB = MapUtils.jsonToObject(json, PasswordsDatabase.class);
     System.out.println(pwdDB);
   }
