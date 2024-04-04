@@ -1,16 +1,15 @@
 package com.celatus.util;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.HashMap;
 
 import com.celatus.App;
 
@@ -24,8 +23,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
@@ -198,7 +197,8 @@ public class FXMLUtils {
   // region =====TextArea / TextField=====
 
   /**
-   * Transfers any key typed from the sender to the receiver, also handles the enter and back space
+   * Transfers any key typed from the sender to the receiver, also handles the
+   * enter and back space
    * keys
    *
    * @param sender
@@ -224,8 +224,7 @@ public class FXMLUtils {
               TextArea textAreaReceiver = (TextArea) receiver;
               int caretPosition = textAreaReceiver.getCaretPosition();
               String text = textAreaReceiver.getText();
-              String newText =
-                  text.substring(0, caretPosition) + "\n" + text.substring(caretPosition);
+              String newText = text.substring(0, caretPosition) + "\n" + text.substring(caretPosition);
               textAreaReceiver.setText(newText);
               textAreaReceiver.positionCaret(caretPosition + 1);
             }
@@ -305,15 +304,10 @@ public class FXMLUtils {
 
     double width = textArea.getWidth();
     double textwidth = computeTextWidth(textArea.getText(), textArea.getFont());
-    /*logger.debug("width: " + width);
-    logger.debug("textwidth: " + textwidth);
-    logger.debug("textWidth / width: " + (textwidth / width));*/
 
     int linesNeeded = (int) Math.ceil(textwidth / width);
-    // logger.debug("Lines needed: " + linesNeeded);
     textArea.setPrefHeight(MIN_HEIGHT + (linesNeeded - 1) * LINE_HEIGHT);
-    // logger.debug("Height set to : " + linesNeeded * LINE_HEIGHT);
-    // Force a layout update by invalidating the layout
+    // Force a layout update
     if (textArea.getParent() != null) {
       textArea.getParent().requestLayout();
     }
@@ -327,9 +321,7 @@ public class FXMLUtils {
     textArea.setMaxWidth(MAX_WIDTH);
 
     double textwidth = computeTextWidth(textArea.getText(), textArea.getFont()) + 2;
-    // logger.debug("textwidth: " + textwidth);
     int linesNeeded = (int) Math.ceil(textwidth / MAX_WIDTH);
-    // logger.debug("linesNeeded: " + linesNeeded);
 
     if (linesNeeded == 1) {
       textArea.setMaxWidth(textwidth + 15.0);
@@ -473,12 +465,13 @@ public class FXMLUtils {
   }
 
   /**
-   * Calculates the coordinates to spawn the new window on the owner window's right while making it
+   * Calculates the coordinates to spawn the new window on the owner window's
+   * right while making it
    * stay within the screen bounds.
    *
-   * @param primaryStage : The "owner" window
-   * @param radius : The maximum range near the primary stage
-   * @param newWindowWidth : The width of the window we want to spawn
+   * @param primaryStage    : The "owner" window
+   * @param radius          : The maximum range near the primary stage
+   * @param newWindowWidth  : The width of the window we want to spawn
    * @param newWindowHeight : The height of the window we want to spawn
    * @return
    */
@@ -489,14 +482,12 @@ public class FXMLUtils {
     double screenWidth = screenBounds.getWidth();
     double screenHeight = screenBounds.getHeight();
 
-    double newX =
-        Math.min(
-            primaryStage.getX() + primaryStage.getWidth() + Math.random() * radius,
-            screenWidth - newWindowWidth - Math.random() * radius);
-    double newY =
-        Math.min(
-            primaryStage.getY() + Math.random() * radius,
-            screenHeight - newWindowHeight - Math.random() * radius);
+    double newX = Math.min(
+        primaryStage.getX() + primaryStage.getWidth() + Math.random() * radius,
+        screenWidth - newWindowWidth - Math.random() * radius);
+    double newY = Math.min(
+        primaryStage.getY() + Math.random() * radius,
+        screenHeight - newWindowHeight - Math.random() * radius);
 
     outerCoords.put("X", newX);
     outerCoords.put("Y", newY);

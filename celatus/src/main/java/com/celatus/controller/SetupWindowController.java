@@ -1,40 +1,51 @@
 package com.celatus.controller;
 
+import java.util.Map;
+
 import com.celatus.App;
 import com.celatus.handler.AuthHandler;
-
-import java.util.Map;
+import com.celatus.util.FXMLUtils;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.KeyCode;
-import javafx.scene.control.ContextMenu;
+import javafx.scene.input.KeyEvent;
 
 /** Controller of our setup window, used to (re)set our App's master password */
 public class SetupWindowController extends DialogWindowController {
 
   // region =====Variables=====
 
-  @FXML private PasswordField pwdField;
-  @FXML private PasswordField pwdField2;
-  @FXML private Button viewButton;
-  @FXML private Button viewButton2;
-  @FXML private Button enterButton;
-  @FXML private TextField revealedPwdField;
-  @FXML private TextField revealedPwdField2;
-  @FXML private Label label01;
-  @FXML private Label label02;
-  @FXML private Label label03;
-  @FXML private Label label04;
+  @FXML
+  private PasswordField pwdField;
+  @FXML
+  private PasswordField pwdField2;
+  @FXML
+  private Button viewButton;
+  @FXML
+  private Button viewButton2;
+  @FXML
+  private Button enterButton;
+  @FXML
+  private TextField revealedPwdField;
+  @FXML
+  private TextField revealedPwdField2;
+  @FXML
+  private Label label01;
+  @FXML
+  private Label label02;
+  @FXML
+  private Label label03;
+  @FXML
+  private Label label04;
 
   private String password;
   private String password2;
-  private String
-      rollbackPassword2; // used to prevent copy pasting into the confirm master password field
+  private String rollbackPassword2; // used to prevent copy pasting into the confirm master password field
 
   // endregion
 
@@ -83,8 +94,14 @@ public class SetupWindowController extends DialogWindowController {
     label04.setVisible(true);
   }
 
+  @FXML
+  public void displayMinimizeAndCloseButtons() {
+    FXMLUtils.showElements(closeButton, minimizeButton);
+  }
+
   /**
-   * Method used to open the access to the App's main window after checking the submitted master
+   * Method used to open the access to the App's main window after checking the
+   * submitted master
    * passwords.
    */
   @FXML

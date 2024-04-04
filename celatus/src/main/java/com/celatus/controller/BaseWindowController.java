@@ -36,22 +36,29 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 /**
- * Mother class of all of our controllers, coontains all common behaviour to all window controllers
+ * Mother class of all of our controllers, contains all common behaviour to all
+ * window controllers
  */
-public class BaseWindowController {
+public abstract class BaseWindowController {
 
   // region =====Variables=====
 
-  protected final Logger logger =
-      LogManager.getLogger(this.getClass().toString().replace("class ", ""));
+  protected final Logger logger = LogManager.getLogger(this.getClass().toString().replace("class ", ""));
 
-  @FXML protected ImageView logo;
-  @FXML protected AnchorPane rootPane;
-  @FXML protected AnchorPane rowPane1;
-  @FXML protected Button minimizeButton;
-  @FXML protected Button closeButton;
-  @FXML protected Scene scene;
-  @FXML protected Stage window;
+  @FXML
+  protected ImageView logo;
+  @FXML
+  protected AnchorPane rootPane;
+  @FXML
+  protected AnchorPane rowPane1;
+  @FXML
+  protected Button minimizeButton;
+  @FXML
+  protected Button closeButton;
+  @FXML
+  protected Scene scene;
+  @FXML
+  protected Stage window;
 
   private static double xOffset = 0;
   private static double yOffset = 0;
@@ -132,10 +139,12 @@ public class BaseWindowController {
   }
 
   /**
-   * Switches window with the provided one. In other terms, closes the current window to open the
+   * Switches window with the provided one. In other terms, closes the current
+   * window to open the
    * specified one.
    *
-   * <p><b>Note :</b> This will make the new window the App's main window
+   * <p>
+   * <b>Note :</b> This will make the new window the App's main window
    *
    * @param fxml : the name of the fxml file (without the ".fxml" suffix)
    */
@@ -185,9 +194,7 @@ public class BaseWindowController {
     textArea.setEditable(false);
     textArea.setMouseTransparent(true);
     String theme = App.getProperties().getProperty("theme");
-    textArea
-        .getStylesheets()
-        .add(App.class.getResource("styles/" + theme + ".css").toExternalForm());
+    textArea.getStylesheets().add(App.class.getResource("styles/" + theme + ".css").toExternalForm());
     textArea.getStyleClass().add("popup");
     FXMLUtils.adjustTextAreaDimensions(textArea);
     // Enable key transfer to the window's focused textfield or text area
@@ -196,7 +203,7 @@ public class BaseWindowController {
       FXMLUtils.enableKeyTransfer(textArea, (TextInputControl) sceneFocusOwner);
     } else if (sceneFocusOwner.getOnKeyPressed() != null
         || sceneFocusOwner.getOnKeyTyped() != null) {
-      // Transfer key events to the window's scene root
+      // Transfer key events to the window's scene focus owner
       FXMLUtils.transferKeyEvents(textArea, sceneFocusOwner);
     } else {
       // Transfer key events to the window's scene root
@@ -217,14 +224,12 @@ public class BaseWindowController {
 
     // Create a TranslateTransition to move the popup down right under the menu bar
     // row
-    TranslateTransition translateTransition =
-        new TranslateTransition(Duration.seconds(0.1), popup.getContent().get(0));
+    TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.1), popup.getContent().get(0));
     translateTransition.setByY(
         (int) (rowPane1.getHeight() / 2)); // Converting it to int otherwise the text is blurry
 
     // Create a FadeTransition
-    FadeTransition fadeTransition =
-        new FadeTransition(Duration.seconds(4.9), popup.getContent().get(0));
+    FadeTransition fadeTransition = new FadeTransition(Duration.seconds(4.9), popup.getContent().get(0));
     fadeTransition.setFromValue(1);
     fadeTransition.setToValue(0);
     fadeTransition.setOnFinished(
@@ -253,7 +258,8 @@ public class BaseWindowController {
   }
 
   /**
-   * Browses the window to find all first layer labels (under an anchor pane) and make them
+   * Browses the window to find all first layer labels (under an anchor pane) and
+   * make them
    * selectable upon clicking on them
    */
   private void makeLabelsSelectable() {
@@ -298,7 +304,10 @@ public class BaseWindowController {
     }
   }
 
-  /** Sets up all the anchor panes so that they get focus whenever the user clicks on them */
+  /**
+   * Sets up all the anchor panes so that they get focus whenever the user clicks
+   * on them
+   */
   private void enableAnchorPaneFocusOnClick() {
     ArrayList<Node> nodes = FXMLUtils.getAllNodes(rootPane);
     for (Node node : nodes) {
@@ -331,6 +340,7 @@ public class BaseWindowController {
             event.consume();
             App.exit();
           }
+          close();
         });
   }
 
@@ -350,23 +360,13 @@ public class BaseWindowController {
     window.close();
   }
 
+  /** Currently not used */
   public void minimize() {
     Stage stage = (Stage) minimizeButton.getScene().getWindow();
     stage.setIconified(true);
   }
 
-  /*
-   * public boolean isMaximized() {
-   * Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-   * double minX = primaryScreenBounds.getMinX();
-   * double minY = primaryScreenBounds.getMinY();
-   * double screenWidth = primaryScreenBounds.getWidth();
-   * double screenHeight = primaryScreenBounds.getHeight();
-   * return window.getWidth() == screenWidth && window.getHeight() == screenHeight
-   * && window.getX() == minX && window.getY() == minY;
-   * }
-   */
-
+  /** Currently not used */
   public void maximize() {
     Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
     double minX = primaryScreenBounds.getMinX();
