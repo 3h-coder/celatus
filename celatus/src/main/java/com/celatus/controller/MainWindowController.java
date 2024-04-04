@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 import com.celatus.App;
+import com.celatus.enums.Signal;
 import com.celatus.handler.DatabaseHandler;
 import com.celatus.handler.SearchHandler;
 import com.celatus.models.Category;
@@ -269,10 +270,10 @@ public class MainWindowController extends BaseWindowController {
           logger,
           AlertMode.YES_AND_NO);
     }
-    if (App.getSignal("yes_signal")) {
+    if (App.getSignal(Signal.YES)) {
       saveDatabase();
       super.close();
-    } else if (App.getSignal("no_signal")) {
+    } else if (App.getSignal(Signal.NO)) {
       super.close();
     }
   }
@@ -463,7 +464,7 @@ public class MainWindowController extends BaseWindowController {
 
     editPwdMenuItem.setOnAction(
         event -> {
-          PasswordEntry selectedPassword = passwordsTable.getSelectionModel().getSelectedItem();
+          PasswordEntry selectedPassword = getSelectedPassword();
           openPasswordWindow(selectedPassword);
         });
 
@@ -471,35 +472,39 @@ public class MainWindowController extends BaseWindowController {
         event -> {
           App.warn(
               this.window, "Are you sure you want to delete it?", logger, AlertMode.YES_AND_NO);
-          if (App.getSignal("yes_signal")) {
-            PasswordEntry selectedPassword = passwordsTable.getSelectionModel().getSelectedItem();
+          if (App.getSignal(Signal.YES)) {
+            PasswordEntry selectedPassword = getSelectedPassword();
             deletePasswordEntry(selectedPassword);
           }
         });
 
     copyPwdMenuItem.setOnAction(
         event -> {
-          PasswordEntry selectedPassword = passwordsTable.getSelectionModel().getSelectedItem();
+          PasswordEntry selectedPassword = getSelectedPassword();
           copyPwdToClipBoard(selectedPassword.getPassword());
         });
 
     copyIdMenuItem.setOnAction(
         event -> {
-          PasswordEntry selectedPassword = passwordsTable.getSelectionModel().getSelectedItem();
+          PasswordEntry selectedPassword = getSelectedPassword();
           copyIdToClipBoard(selectedPassword.getIdentifier());
         });
 
     openWebMenuItem.setOnAction(
         event -> {
-          PasswordEntry selectedPassword = passwordsTable.getSelectionModel().getSelectedItem();
-          App.getHS().showDocument(selectedPassword.getUrl());
+          PasswordEntry selectedPassword = getSelectedPassword();
+          String url = selectedPassword.getUrl();
+          if (!url.startsWith("http")) {
+            url = "https://" + url;
+          }
+          App.getHS().showDocument(url);
         });
 
     // Runtime context menu calculations
     this.passwordsTable.addEventHandler(
         ContextMenuEvent.CONTEXT_MENU_REQUESTED,
         event -> {
-          PasswordEntry selectedPassword = passwordsTable.getSelectionModel().getSelectedItem();
+          PasswordEntry selectedPassword = getSelectedPassword();
           // No context menu if no selected password
           if (selectedPassword == null) {
             pwdContextMenu.getItems().clear();
@@ -527,8 +532,7 @@ public class MainWindowController extends BaseWindowController {
               continue;
             }
             MenuItem menuItem = new MenuItem(categoryName);
-            menuItem.setOnAction(
-                _event -> movePasswordEntry(selectedPassword, passwordCategory, categoryName));
+            menuItem.setOnAction(_event -> movePasswordEntry(selectedPassword, passwordCategory, categoryName));
             movePwdMenuItem.getItems().add(menuItem);
           }
           // Disabling the open url option if no url
@@ -548,7 +552,12 @@ public class MainWindowController extends BaseWindowController {
             copyPwdMenuItem,
             copyIdMenuItem,
             openWebMenuItem);
-    this.passwordsTable.setContextMenu(pwdContextMenu);
+
+    passwordsTable.setContextMenu(pwdContextMenu);
+  }
+
+  private PasswordEntry getSelectedPassword() {
+    return passwordsTable.getSelectionModel().getSelectedItem();
   }
 
   /** Sets the context menu of our categories pane */
@@ -607,7 +616,7 @@ public class MainWindowController extends BaseWindowController {
                         + " category, are you sure you want to delete it?",
                     logger,
                     AlertMode.YES_AND_NO);
-                if (App.getSignal("yes_signal") == true) {
+                if (App.getSignal(Signal.YES) == true) {
                   String categoryName = cell.getItem();
                   FXMLUtils.removeFromListView(listView, categoryName);
                   deleteCategory(categoryName);

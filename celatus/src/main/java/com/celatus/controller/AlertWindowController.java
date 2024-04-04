@@ -3,6 +3,7 @@ package com.celatus.controller;
 import java.io.IOException;
 
 import com.celatus.App;
+import com.celatus.enums.Signal;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -10,16 +11,24 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-/** Controller for our alert windows, which can be error, warning, or info windows */
+/**
+ * Controller for our alert windows, which can be error, warning, or info
+ * windows
+ */
 public class AlertWindowController extends DialogWindowController {
 
   // region =====Variables=====
 
-  @FXML private ImageView popupIcon;
-  @FXML private Label mainMessage;
-  @FXML private Button okButton;
-  @FXML private Button yesButton;
-  @FXML private Button noButton;
+  @FXML
+  private ImageView popupIcon;
+  @FXML
+  private Label mainMessage;
+  @FXML
+  private Button okButton;
+  @FXML
+  private Button yesButton;
+  @FXML
+  private Button noButton;
 
   // endregion
 
@@ -59,20 +68,20 @@ public class AlertWindowController extends DialogWindowController {
   // region =====Event Methods=====
 
   public void sendOKSignal() {
-    logger.info("Sending the signal: OK");
-    App.addTempVariable("ok_signal", true);
+    logger.info("Sending the signal: " + Signal.OK);
+    App.addTempVariable(Signal.OK.toString(), true);
     closeDialog();
   }
 
   public void sendYesSignal() {
-    logger.info("Sending the signal: YES");
-    App.addTempVariable("yes_signal", true);
+    logger.info("Sending the signal: " + Signal.YES);
+    App.addTempVariable(Signal.YES.toString(), true);
     closeDialog();
   }
 
   public void sendNoSignal() {
-    logger.info("Sending the signal: NO");
-    App.addTempVariable("no_signal", true);
+    logger.info("Sending the signal: " + Signal.NO);
+    App.addTempVariable(Signal.NO.toString(), true);
     closeDialog();
   }
 

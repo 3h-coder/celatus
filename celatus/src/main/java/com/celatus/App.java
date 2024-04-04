@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 import com.celatus.controller.AlertMode;
 import com.celatus.controller.AlertWindowController;
 import com.celatus.controller.BaseWindowController;
+import com.celatus.enums.Signal;
 import com.celatus.handler.DatabaseHandler;
 import com.celatus.handler.PropertyHandler;
 import com.celatus.models.ActionTracker;
@@ -54,7 +55,7 @@ public class App extends Application {
 
   private static Properties properties;
 
-  private static HostServices hostServices;
+  private static HostServices hostServices; // Used to open up the password's website
 
   // endregion
 
@@ -332,8 +333,7 @@ public class App extends Application {
   }
 
   // Overall it's better to use extract instead of get since they're meant to be
-  // temporary and
-  // deleted asap
+  // temporary and deleted asap
   public static Object getTempVariable(String key) {
     if (tmpVariables != null) {
       return tmpVariables.get(key);
@@ -348,6 +348,10 @@ public class App extends Application {
       return variable;
     }
     return null;
+  }
+
+  public static boolean getSignal(Signal signal) {
+    return getSignal(signal.toString());
   }
 
   /**
