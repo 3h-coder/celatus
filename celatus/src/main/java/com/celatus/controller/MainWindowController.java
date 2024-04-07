@@ -928,6 +928,11 @@ public class MainWindowController extends BaseWindowController {
     App.getHS().showDocument(USER_GUIDE_URL);
   }
 
+  public void openReleaseNotes() {
+    final String USER_GUIDE_URL = "https://github.com/3h-coder/celatus/blob/main/docs/Release%20Notes.MD";
+    App.getHS().showDocument(USER_GUIDE_URL);
+  }
+
   // endregion
 
   // endregion
