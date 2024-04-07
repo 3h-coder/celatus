@@ -72,7 +72,7 @@
                         <MenuItem mnemonicParsing="false" onAction="#openReadMe" text="About" />
                         <MenuItem mnemonicParsing="false" onAction="#openUserGuide" text="User Guide" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Release Notes" />
+                        <MenuItem mnemonicParsing="false" onAction="#openReleaseNotes" text="Release Notes" />
                      </items>
                   </Menu>
                </menus>
