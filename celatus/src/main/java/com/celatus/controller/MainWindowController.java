@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.celatus.App;
 import com.celatus.enums.Signal;
+import com.celatus.enums.UserSettings;
 import com.celatus.handler.DatabaseHandler;
 import com.celatus.handler.SearchHandler;
 import com.celatus.models.Category;
@@ -303,8 +304,7 @@ public class MainWindowController extends BaseWindowController {
       controlCatDescription();
     }
     // New category (only if there is a notification popup, otherwise it overlaps
-    // with the
-    // accelerator)
+    // with the accelerator)
     if (event.isShiftDown() && eventCode == KeyCode.C && notifPopupShown()) {
       openCatWindow();
     }
@@ -621,7 +621,7 @@ public class MainWindowController extends BaseWindowController {
                   FXMLUtils.removeFromListView(listView, categoryName);
                   deleteCategory(categoryName);
                   // clearing the selection
-                  this.categoriesList.getSelectionModel().clearSelection();
+                  categoriesList.getSelectionModel().clearSelection();
                 }
               });
 
@@ -651,37 +651,19 @@ public class MainWindowController extends BaseWindowController {
         });
   }
 
-  /** Sets the password entries table */
+  /** Sets the password entries table, formatting the columns appropriately. */
   @SuppressWarnings("unchecked")
   private void setPasswordsTable() {
 
     TableColumn nameColumn = new TableColumn("Name");
     TableColumn identifierColumn = new TableColumn("Identifier");
-    TableColumn passwordColumn = new TableColumn("Password");
     TableColumn lastEditedColumn = new TableColumn("Last edited");
 
-    FXMLUtils.setMinWidth(100.0, nameColumn, identifierColumn, passwordColumn, lastEditedColumn);
+    FXMLUtils.setMinWidth(100.0, nameColumn, identifierColumn, lastEditedColumn);
 
     nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
     identifierColumn.setCellValueFactory(new PropertyValueFactory<>("identifier"));
-    passwordColumn.setCellValueFactory(new PropertyValueFactory<>("password"));
     lastEditedColumn.setCellValueFactory(new PropertyValueFactory<>("lastEditDate"));
-
-    // Hiding the password
-    passwordColumn.setCellFactory(
-        column -> {
-          return new TableCell<PasswordEntry, String>() {
-            @Override
-            protected void updateItem(String item, boolean empty) {
-              super.updateItem(item, empty);
-              if (item == null || empty) {
-                setText(null);
-              } else {
-                setText("\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022");
-              }
-            }
-          };
-        });
 
     // Making the date readable
     lastEditedColumn.setCellFactory(
@@ -699,9 +681,40 @@ public class MainWindowController extends BaseWindowController {
           };
         });
 
-    this.passwordsTable
+    TableColumn passwordColumn = ConstructPasswordColumn();
+
+    passwordsTable
         .getColumns()
         .addAll(nameColumn, identifierColumn, passwordColumn, lastEditedColumn);
+  }
+
+  /**
+   * Constructs the password column, taking into account the passwords visible
+   * setting
+   */
+  @SuppressWarnings({ "unchecked", "rawtypes" })
+  private TableColumn ConstructPasswordColumn() {
+    TableColumn passwordColumn = new TableColumn("Password");
+    passwordColumn.setCellValueFactory(new PropertyValueFactory<>("password"));
+    passwordColumn.setCellFactory(
+        column -> {
+          return new TableCell<PasswordEntry, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+              super.updateItem(item, empty);
+              if (item == null || empty) {
+                setText(null);
+              } else if (Boolean.valueOf(appProperties.getProperty(UserSettings.PASSWORDS_VISIBLE.toString()))) {
+                setText(item);
+              } else {
+                setText("\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022");
+              }
+            }
+          };
+        });
+    FXMLUtils.setMinWidth(100.0, passwordColumn);
+
+    return passwordColumn;
   }
 
   /**
@@ -816,6 +829,7 @@ public class MainWindowController extends BaseWindowController {
     Category category = passwordsDatabase.getCategory(categoryName);
     // Delete it
     logger.info("Deleting the password entry " + pwdEntry.getName() + " : " + pwdEntry);
+    // Register the action in our action tracker
     App.getActionTracker().addPwdRemoval(pwdEntry, categoryName);
     logger.debug("action tracker: " + App.getActionTracker());
     category.removePasswordEntry(pwdEntry);
@@ -909,13 +923,25 @@ public class MainWindowController extends BaseWindowController {
   }
 
   public void defaultThemeSelected() {
-    App.saveProperty("theme", "default");
+    App.saveProperty(UserSettings.THEME.toString(), "default");
     loadTheme();
   }
 
   public void lightThemeSelected() {
-    App.saveProperty("theme", "light");
+    App.saveProperty(UserSettings.THEME.toString(), "light");
     loadTheme();
+  }
+
+  public void togglePwdsVisibilitySetting() {
+    // Save the new property value
+    var pwdVisibilityPropertyKey = UserSettings.PASSWORDS_VISIBLE.toString();
+    var currentVisibility = Boolean.valueOf(appProperties.getProperty(pwdVisibilityPropertyKey));
+    App.saveProperty(pwdVisibilityPropertyKey, String.valueOf(!currentVisibility));
+
+    // Refresh the column
+    TableColumn passwordColumn = ConstructPasswordColumn();
+    passwordsTable.getColumns().set(2, passwordColumn);
+
   }
 
   public void openReadMe() {

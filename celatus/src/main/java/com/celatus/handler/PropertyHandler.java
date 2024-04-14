@@ -3,6 +3,8 @@ package com.celatus.handler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.celatus.enums.UserSettings;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -29,9 +31,9 @@ public class PropertyHandler {
 
   static {
     propertyMap = new HashMap<>();
-    // The first elemnt of the list is the default
-    propertyMap.put("theme", List.of("default", "light"));
-    propertyMap.put("show_password", List.of("false", "true"));
+    // The first element of the list is the default
+    propertyMap.put(UserSettings.THEME.toString(), List.of("default", "light"));
+    propertyMap.put(UserSettings.PASSWORDS_VISIBLE.toString(), List.of("false", "true"));
   }
 
   // endregion
@@ -63,12 +65,17 @@ public class PropertyHandler {
 
   public static void createDefaultProperties() {
     Properties properties = new Properties();
-    properties.setProperty("theme", "default");
+    for (var entry : propertyMap.entrySet()) {
+      String setting = entry.getKey();
+      String defaultValue = entry.getValue().get(0);
+      properties.setProperty(setting, defaultValue);
+    }
     writeProperties(properties);
   }
 
   /**
-   * Deletes unknown properties and resets unkown values to default, before saving them.
+   * Deletes unknown properties and resets unkown values to default, before saving
+   * them.
    *
    * @param properties
    */

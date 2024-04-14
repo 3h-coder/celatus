@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.celatus.App;
+import com.celatus.enums.UserSettings;
 import com.celatus.util.FXMLUtils;
 
 import javafx.animation.FadeTransition;
@@ -45,6 +46,8 @@ public abstract class BaseWindowController {
 
   protected final Logger logger = LogManager.getLogger(this.getClass().toString().replace("class ", ""));
 
+  protected Properties appProperties;
+
   @FXML
   protected ImageView logo;
   @FXML
@@ -70,6 +73,7 @@ public abstract class BaseWindowController {
   // region =====Window Methods=====
 
   public void initialize() {
+    appProperties = App.getProperties();
     loadTheme();
     // We have to make sure the scene is fully initialized to properly set up our
     // variables
@@ -95,8 +99,7 @@ public abstract class BaseWindowController {
 
   @FXML
   public void loadTheme() {
-    Properties properties = App.getProperties();
-    String theme = properties.getProperty("theme");
+    String theme = appProperties.getProperty(UserSettings.THEME.toString());
     rootPane.getStylesheets().clear();
     rootPane
         .getStylesheets()
@@ -193,7 +196,7 @@ public abstract class BaseWindowController {
     textArea.setWrapText(true);
     textArea.setEditable(false);
     textArea.setMouseTransparent(true);
-    String theme = App.getProperties().getProperty("theme");
+    String theme = App.getProperties().getProperty(UserSettings.THEME.toString());
     textArea.getStylesheets().add(App.class.getResource("styles/" + theme + ".css").toExternalForm());
     textArea.getStyleClass().add("popup");
     FXMLUtils.adjustTextAreaDimensions(textArea);
