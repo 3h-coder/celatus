@@ -932,6 +932,7 @@ public class MainWindowController extends BaseWindowController {
     loadTheme();
   }
 
+  @SuppressWarnings("unchecked")
   public void togglePwdsVisibilitySetting() {
     // Save the new property value
     var pwdVisibilityPropertyKey = UserSettings.PASSWORDS_VISIBLE.toString();
@@ -939,8 +940,14 @@ public class MainWindowController extends BaseWindowController {
     App.saveProperty(pwdVisibilityPropertyKey, String.valueOf(!currentVisibility));
 
     // Refresh the column
-    TableColumn passwordColumn = ConstructPasswordColumn();
-    passwordsTable.getColumns().set(2, passwordColumn);
+    var tableColumns = passwordsTable.getColumns();
+    var currentPasswordColumn = tableColumns.stream()
+        .filter(col -> "Password".equals(col.getText()))
+        .findFirst()
+        .get();
+    var index = tableColumns.indexOf(currentPasswordColumn);
+    var newPasswordColumn = ConstructPasswordColumn();
+    tableColumns.set(index, newPasswordColumn);
 
   }
 
