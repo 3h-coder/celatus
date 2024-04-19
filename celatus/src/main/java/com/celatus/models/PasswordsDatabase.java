@@ -29,7 +29,8 @@ public class PasswordsDatabase {
 
   // region =====Constructors=====
 
-  public PasswordsDatabase() {}
+  public PasswordsDatabase() {
+  }
 
   public PasswordsDatabase(List<Category> categories) {
     this.categories = categories;
@@ -91,10 +92,6 @@ public class PasswordsDatabase {
 
   /**
    * Moves a password Entry from one category to another
-   *
-   * @param pwdEntry
-   * @param oldCat
-   * @param newCat
    */
   public void movePasswordEntry(PasswordEntry pwdEntry, Category oldCat, Category newCat) {
     if (!this.hasCategory(newCat)) {
@@ -114,8 +111,6 @@ public class PasswordsDatabase {
 
   /**
    * Moves a category up in the categories list
-   *
-   * @param cat
    */
   public void moveCategoryUp(Category cat) {
     int index = this.categories.indexOf(cat);
@@ -129,8 +124,6 @@ public class PasswordsDatabase {
 
   /**
    * Moves a category down in the categories list
-   *
-   * @param cat
    */
   public void moveCategoryDown(Category cat) {
     int index = this.categories.indexOf(cat);
@@ -159,13 +152,18 @@ public class PasswordsDatabase {
 
   @Override
   public boolean equals(Object obj) {
-    if (this == obj) return true;
-    if (obj == null) return false;
-    if (getClass() != obj.getClass()) return false;
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
     PasswordsDatabase other = (PasswordsDatabase) obj;
     if (categories == null) {
-      if (other.categories != null) return false;
-    } else if (!categories.equals(other.categories)) return false;
+      if (other.categories != null)
+        return false;
+    } else if (!categories.equals(other.categories))
+      return false;
     return true;
   }
 
@@ -179,16 +177,16 @@ public class PasswordsDatabase {
   // region =====Static Methods=====
 
   /**
-   * @return a default PasswordsDatabase object with a few categories and no password entries.
+   * @return a default PasswordsDatabase object with a few categories and no
+   *         password entries.
    */
   public static PasswordsDatabase generateDefault() {
-    List<Category> categoriesList =
-        Arrays.asList(
-            new Category("General", "General passwords", null),
-            new Category("Emails", "For example your gmail passwords", null),
-            new Category("Social media", "Social media passwords", null),
-            new Category("Administrative", "Administrative passwords", null),
-            new Category("Shopping", "For example eBay, Amazon or Sephora", null));
+    List<Category> categoriesList = Arrays.asList(
+        new Category("General", "General passwords", null),
+        new Category("Emails", "For example your gmail passwords", null),
+        new Category("Social media", "Social media passwords", null),
+        new Category("Administrative", "Administrative passwords", null),
+        new Category("Shopping", "For example eBay, Amazon or Sephora", null));
     return new PasswordsDatabase(new ArrayList<>(categoriesList));
   }
 

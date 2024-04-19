@@ -24,10 +24,14 @@ public class CategoryWindowController extends DialogWindowController {
 
   // region =====Variables
 
-  @FXML private Label title;
-  @FXML private Label label02;
-  @FXML private TextField nameTextField;
-  @FXML private TextArea descriptionTextArea;
+  @FXML
+  private Label title;
+  @FXML
+  private Label label02;
+  @FXML
+  private TextField nameTextField;
+  @FXML
+  private TextArea descriptionTextArea;
 
   private Category inputCategory;
 
@@ -131,8 +135,7 @@ public class CategoryWindowController extends DialogWindowController {
       App.getActionTracker().addCatCreation(category);
       closeDialog();
       summonNotificationPopup(App.getWindow(), "The category " + name + " has been added");
-      // Updating the category
-    } else {
+    } else { // Updating the category
       String oldName = inputCategory.getName();
       inputCategory.setName(name);
       inputCategory.setDescription(description);

@@ -225,8 +225,8 @@ public abstract class BaseWindowController {
     popup.getContent().addAll(textArea);
     // popup.setAutoHide(true);
 
-    // Create a TranslateTransition to move the popup down right under the menu bar
-    // row
+    // Create a TranslateTransition to move the popup down
+    // right under the menu bar row
     TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.1), popup.getContent().get(0));
     translateTransition.setByY(
         (int) (rowPane1.getHeight() / 2)); // Converting it to int otherwise the text is blurry
@@ -278,6 +278,7 @@ public abstract class BaseWindowController {
         continue;
       }
       AnchorPane parentPane = (AnchorPane) label.getParent();
+
       label.setOnMouseClicked(
           mouseEvent -> {
             if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
@@ -339,7 +340,7 @@ public abstract class BaseWindowController {
   }
 
   public void setOnCloseRequest() {
-    this.window.setOnCloseRequest(
+    window.setOnCloseRequest(
         event -> {
           // The default alt+F4 only closes the foreground window, not the whole app
           if (this.altF4Detected) {
