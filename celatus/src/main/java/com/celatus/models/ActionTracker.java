@@ -41,16 +41,6 @@ public class ActionTracker {
     return actions;
   }
 
-  /*
-   * public int getCurrentActionIndex() {
-   * return currentActionIndex;
-   * }
-   *
-   * public void setCurrentActionIndex(int currentActionIndex) {
-   * this.currentActionIndex = currentActionIndex;
-   * }
-   */
-
   // endregion
 
   // region =====Constructor=====

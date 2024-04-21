@@ -53,7 +53,7 @@ public class App extends Application {
 
   private static ActionTracker actionTracker; // action tracker used for ctrl+Z and ctrl+Y
 
-  private static Properties properties;
+  private static Properties properties; // App and user properties
 
   private static HostServices hostServices; // Used to open up the password's website
 

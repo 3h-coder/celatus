@@ -56,36 +56,7 @@ public class SetupWindowController extends DialogWindowController {
     super.initialize();
     pwdField2.setContextMenu(new ContextMenu());
     // Dynamic password update
-    pwdField
-        .textProperty()
-        .addListener(
-            (observable, oldValue, newValue) -> {
-              password = newValue;
-              revealedPwdField.setText(password);
-            });
-    revealedPwdField
-        .textProperty()
-        .addListener(
-            (observable, oldValue, newValue) -> {
-              password = newValue;
-              pwdField.setText(password);
-            });
-    pwdField2
-        .textProperty()
-        .addListener(
-            (observable, oldValue, newValue) -> {
-              rollbackPassword2 = oldValue;
-              password2 = newValue;
-              revealedPwdField2.setText(password2);
-            });
-    revealedPwdField2
-        .textProperty()
-        .addListener(
-            (observable, oldValue, newValue) -> {
-              rollbackPassword2 = oldValue;
-              password2 = newValue;
-              pwdField2.setText(password2);
-            });
+    addTextChangedListeners();
   }
 
   @FXML
@@ -139,6 +110,39 @@ public class SetupWindowController extends DialogWindowController {
     } else {
       revealedPwdField2.requestFocus();
     }
+  }
+
+  private void addTextChangedListeners() {
+    pwdField
+        .textProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              password = newValue;
+              revealedPwdField.setText(password);
+            });
+    revealedPwdField
+        .textProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              password = newValue;
+              pwdField.setText(password);
+            });
+    pwdField2
+        .textProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              rollbackPassword2 = oldValue;
+              password2 = newValue;
+              revealedPwdField2.setText(password2);
+            });
+    revealedPwdField2
+        .textProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              rollbackPassword2 = oldValue;
+              password2 = newValue;
+              pwdField2.setText(password2);
+            });
   }
 
   // endregion

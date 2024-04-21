@@ -67,15 +67,26 @@ public class MapUtils {
   // endregion
 
   // region =====List Maps=====
-  // (Maps that follow the scheme : Map<Integer, T>, and are sorted in ascending order)
+  // (Maps that follow the scheme : Map<Integer, T>, and are sorted in ascending
+  // order)
 
+  /**
+   * Removes all of the entry sets of the given map where the key is higher
+   * than the given index.
+   */
   public static <T> void removeAllAfter(int index, Map<Integer, T> map) {
     for (int key : map.keySet()) {
-      if (key <= index) continue;
+      if (key <= index)
+        continue;
       map.remove(key);
     }
   }
 
+  /**
+   * Removes the key value pair of the given map at the given key index,
+   * and decrements the integer values of all higher indexes.
+   * Similar to removing the first element of a queue.
+   */
   public static <T> void remove(int index, Map<Integer, T> map) {
     map.remove(index);
     for (int key : map.keySet()) {
