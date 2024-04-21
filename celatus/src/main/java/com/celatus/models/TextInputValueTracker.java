@@ -33,6 +33,8 @@ public class TextInputValueTracker {
     public TextInputValueTracker() {
         values = new HashMap<Integer, String>();
         currentValueIndex = 0;
+
+        registerNewValue("");
     }
 
     // endregion
@@ -42,7 +44,8 @@ public class TextInputValueTracker {
     public void registerNewValue(String value) {
         incrementIndex();
         values.put(currentValueIndex, value);
-        logger.debug("Registered the new value: " + value + " at the index " + currentValueIndex);
+        // logger.debug("Registered the new value: " + value + " at the index " +
+        // currentValueIndex);
     }
 
     public String getPreviousValue() {

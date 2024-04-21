@@ -38,7 +38,7 @@ public class EntryWindowController extends BaseWindowController {
 
   private TextInputValueTracker passwordValueTracker;
 
-  private boolean userInput;
+  private boolean allowInputRegistration;
 
   // endregion
 
@@ -80,19 +80,61 @@ public class EntryWindowController extends BaseWindowController {
     }
   }
 
+  // region -----Listeners-----
+
   private void addOnKeyPressedListeners() {
     pwdField.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
       var eventCode = event.getCode();
+      // ctrl+Z/Y detected
       if (event.isControlDown() && (eventCode == KeyCode.Z || eventCode == KeyCode.Y)) {
         event.consume();
+        allowInputRegistration = false;
+
+        if (eventCode == KeyCode.Z) {
+          var previousValue = passwordValueTracker.getPreviousValue();
+          if (previousValue == null) {
+            return;
+          }
+          // update the text -> this will then trigger the text property changed listener
+          pwdField.setText(previousValue);
+          pwdField.positionCaret(previousValue.length());
+        } else {
+          var nextValue = passwordValueTracker.getNextValue();
+          if (nextValue == null) {
+            return;
+          }
+          pwdField.setText(nextValue);
+          pwdField.positionCaret(nextValue.length());
+        }
+        return;
       }
+      // let it be considered a user input to be registered
+      allowInputRegistration = true;
     });
 
     revealedPwdField.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
       var eventCode = event.getCode();
       if (event.isControlDown() && (eventCode == KeyCode.Z || eventCode == KeyCode.Y)) {
         event.consume();
+        allowInputRegistration = false;
+        if (eventCode == KeyCode.Z) {
+          var previousValue = passwordValueTracker.getPreviousValue();
+          if (previousValue == null) {
+            return;
+          }
+          revealedPwdField.setText(previousValue);
+          revealedPwdField.positionCaret(previousValue.length());
+        } else {
+          var nextValue = passwordValueTracker.getNextValue();
+          if (nextValue == null) {
+            return;
+          }
+          revealedPwdField.setText(nextValue);
+          revealedPwdField.positionCaret(nextValue.length());
+        }
+        return;
       }
+      allowInputRegistration = true;
     });
   }
 
@@ -100,20 +142,24 @@ public class EntryWindowController extends BaseWindowController {
     pwdField.textProperty().addListener(
         (observable, oldValue, newValue) -> {
           password = newValue;
-          // if (userInput) {
-          // passwordValueTracker.registerNewValue(password);
-          // }
+          if (allowInputRegistration) {
+            passwordValueTracker.registerNewValue(password);
+            allowInputRegistration = false;
+          }
           revealedPwdField.setText(password);
         });
     revealedPwdField.textProperty().addListener(
         (observable, oldValue, newValue) -> {
           password = newValue;
-          // if (userInput) {
-          // passwordValueTracker.registerNewValue(password);
-          // }
+          if (allowInputRegistration) {
+            passwordValueTracker.registerNewValue(password);
+            allowInputRegistration = false;
+          }
           pwdField.setText(password);
         });
   }
+
+  // endregion
 
   // endregion
 
@@ -133,4 +179,5 @@ public class EntryWindowController extends BaseWindowController {
   }
 
   // endregion
+
 }

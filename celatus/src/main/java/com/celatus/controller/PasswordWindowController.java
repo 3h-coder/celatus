@@ -12,6 +12,7 @@ import com.celatus.App;
 import com.celatus.models.Category;
 import com.celatus.models.PasswordEntry;
 import com.celatus.models.RecordEntryView;
+import com.celatus.models.TextInputValueTracker;
 import com.celatus.util.CryptoUtils;
 import com.celatus.util.CustomDateUtils;
 import com.celatus.util.FXMLUtils;
@@ -100,8 +101,9 @@ public class PasswordWindowController extends DialogWindowController {
   private List<Node> defaultModeElements; // list where we store the default UI elements
   private List<Node> recordModeElements; // list where we store the record mode UI elements
   private String detectedChanges; // detected changes from the user (what is on the UI vs what is stored in the
-
-  // object)
+                                  // object)
+  private TextInputValueTracker passwordValueTracker; // To re-implement the Ctrl+Z/Y for the password input
+  private boolean allowPwdInputRegistration; // Used to properly save the values to be Ctrl+Z/Y'ed
 
   // endregion
 
@@ -146,7 +148,7 @@ public class PasswordWindowController extends DialogWindowController {
         });
   }
 
-  public void addListeners() {
+  private void addListeners() {
     // Dynamic password updates
     pwdField
         .textProperty()

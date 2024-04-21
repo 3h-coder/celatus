@@ -1,5 +1,6 @@
 package com.celatus.util;
 
+import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
@@ -75,10 +76,17 @@ public class MapUtils {
    * than the given index.
    */
   public static <T> void removeAllAfter(int index, Map<Integer, T> map) {
-    for (int key : map.keySet()) {
-      if (key <= index)
-        continue;
-      map.remove(key);
+    // for (int key : map.keySet()) {
+    // if (key <= index)
+    // continue;
+    // map.remove(key);
+    // }
+    Iterator<Integer> iterator = map.keySet().iterator();
+    while (iterator.hasNext()) {
+      int key = iterator.next();
+      if (key > index) {
+        iterator.remove(); // Safe removal using iterator
+      }
     }
   }
 
