@@ -3,6 +3,7 @@ package com.celatus.controller;
 import java.io.IOException;
 
 import com.celatus.App;
+import com.celatus.enums.AlertMode;
 import com.celatus.enums.Signal;
 
 import javafx.fxml.FXML;

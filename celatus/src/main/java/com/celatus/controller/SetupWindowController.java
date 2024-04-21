@@ -3,6 +3,7 @@ package com.celatus.controller;
 import java.util.Map;
 
 import com.celatus.App;
+import com.celatus.enums.AlertMode;
 import com.celatus.handler.AuthHandler;
 import com.celatus.util.FXMLUtils;
 

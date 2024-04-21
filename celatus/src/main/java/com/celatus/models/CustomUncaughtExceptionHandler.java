@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.celatus.App;
-import com.celatus.controller.AlertMode;
+import com.celatus.enums.AlertMode;
 
 /** Our custom implementation of the UncaughtExceptionHandler object */
 public class CustomUncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {

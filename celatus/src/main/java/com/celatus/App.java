@@ -11,9 +11,9 @@ import java.util.Properties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.celatus.controller.AlertMode;
 import com.celatus.controller.AlertWindowController;
 import com.celatus.controller.BaseWindowController;
+import com.celatus.enums.AlertMode;
 import com.celatus.enums.Signal;
 import com.celatus.handler.DatabaseHandler;
 import com.celatus.handler.PropertyHandler;

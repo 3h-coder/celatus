@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 import com.celatus.App;
+import com.celatus.enums.AlertMode;
 import com.celatus.enums.Signal;
 import com.celatus.enums.UserSettings;
 import com.celatus.handler.DatabaseHandler;

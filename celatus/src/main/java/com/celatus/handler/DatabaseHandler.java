@@ -7,7 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.celatus.App;
-import com.celatus.controller.AlertMode;
+import com.celatus.enums.AlertMode;
 import com.celatus.util.CryptoUtils;
 
 /** Performs all the actions related to the database file */
@@ -88,7 +88,9 @@ public class DatabaseHandler {
     }
   }
 
-  /** Decrypts the database to save the decrypted string into the rawData variable */
+  /**
+   * Decrypts the database to save the decrypted string into the rawData variable
+   */
   public static void parseRawDataFromDatabase() {
     if (dbFileExists()) {
       try {

@@ -1,4 +1,4 @@
-package com.celatus.controller;
+package com.celatus.enums;
 
 /** Represents all the potential modes of our alert windows */
 public enum AlertMode {

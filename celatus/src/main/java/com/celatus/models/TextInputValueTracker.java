@@ -33,8 +33,12 @@ public class TextInputValueTracker {
     public TextInputValueTracker() {
         values = new HashMap<Integer, String>();
         currentValueIndex = 0;
+    }
 
-        registerNewValue("");
+    public TextInputValueTracker(String initialValue) {
+        values = new HashMap<Integer, String>();
+        currentValueIndex = 0;
+        registerNewValue(initialValue);
     }
 
     // endregion

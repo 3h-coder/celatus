@@ -29,6 +29,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 
 /** Controller of the window used to create and edit password entries */
@@ -148,13 +150,80 @@ public class PasswordWindowController extends DialogWindowController {
         });
   }
 
+  public void setTitle(String title) {
+    this.title.setText(title);
+  }
+
   private void addListeners() {
-    // Dynamic password updates
+    addPwdKeyPressedListeners();
+    addPwdTextChangedListeners();
+    addRecordsTableListeners();
+  }
+
+  // See the implementation in EntryWindowController for comments
+  private void addPwdKeyPressedListeners() {
+    pwdField.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+      var eventCode = event.getCode();
+      if (event.isControlDown() && (eventCode == KeyCode.Z || eventCode == KeyCode.Y)) {
+        event.consume();
+        allowPwdInputRegistration = false;
+        if (eventCode == KeyCode.Z) {
+          var previousValue = passwordValueTracker.getPreviousValue();
+          if (previousValue == null) {
+            return;
+          }
+          pwdField.setText(previousValue);
+          pwdField.positionCaret(previousValue.length());
+        } else {
+          var nextValue = passwordValueTracker.getNextValue();
+          if (nextValue == null) {
+            return;
+          }
+          pwdField.setText(nextValue);
+          pwdField.positionCaret(nextValue.length());
+        }
+        return;
+      }
+
+      allowPwdInputRegistration = true;
+    });
+
+    revealedPwdField.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+      var eventCode = event.getCode();
+      if (event.isControlDown() && (eventCode == KeyCode.Z || eventCode == KeyCode.Y)) {
+        event.consume();
+        allowPwdInputRegistration = false;
+        if (eventCode == KeyCode.Z) {
+          var previousValue = passwordValueTracker.getPreviousValue();
+          if (previousValue == null) {
+            return;
+          }
+          revealedPwdField.setText(previousValue);
+          revealedPwdField.positionCaret(previousValue.length());
+        } else {
+          var nextValue = passwordValueTracker.getNextValue();
+          if (nextValue == null) {
+            return;
+          }
+          revealedPwdField.setText(nextValue);
+          revealedPwdField.positionCaret(nextValue.length());
+        }
+        return;
+      }
+      allowPwdInputRegistration = true;
+    });
+  }
+
+  private void addPwdTextChangedListeners() {
     pwdField
         .textProperty()
         .addListener(
             (observable, oldValue, newValue) -> {
               password = newValue;
+              if (allowPwdInputRegistration) {
+                passwordValueTracker.registerNewValue(password);
+                allowPwdInputRegistration = false;
+              }
               revealedPwdField.setText(password);
             });
     revealedPwdField
@@ -162,9 +231,15 @@ public class PasswordWindowController extends DialogWindowController {
         .addListener(
             (observable, oldValue, newValue) -> {
               password = newValue;
+              if (allowPwdInputRegistration) {
+                passwordValueTracker.registerNewValue(password);
+                allowPwdInputRegistration = false;
+              }
               pwdField.setText(password);
             });
-    // recordsTable
+  }
+
+  private void addRecordsTableListeners() {
     recordsTable
         .getSelectionModel()
         .selectedItemProperty()
@@ -180,12 +255,8 @@ public class PasswordWindowController extends DialogWindowController {
             });
   }
 
-  public void setTitle(String title) {
-    this.title.setText(title);
-  }
-
   /** Adds the concerned items in the appropriate mode array */
-  public void setModesItems() {
+  private void setModesItems() {
     // default mode
     defaultModeElements = new ArrayList<Node>();
 
@@ -219,7 +290,7 @@ public class PasswordWindowController extends DialogWindowController {
   }
 
   /** Fills the window fields in case we're editing an existing password entry */
-  public void fillFields() {
+  private void fillFields() {
     if (inputPwdEntry == null) {
       return;
     }
@@ -228,23 +299,26 @@ public class PasswordWindowController extends DialogWindowController {
     urlField.setText(inputPwdEntry.getUrl());
     identifierField.setText(inputPwdEntry.getIdentifier());
     emailField.setText(inputPwdEntry.getEmail());
-    this.password = inputPwdEntry.getPassword();
-    pwdField.setText(inputPwdEntry.getPassword());
-    revealedPwdField.setText(inputPwdEntry.getPassword());
     passwordNotes.setText(inputPwdEntry.getNotes());
+
+    password = inputPwdEntry.getPassword();
+    pwdField.setText(password);
+    revealedPwdField.setText(password);
+    passwordValueTracker = new TextInputValueTracker(password);
+
     createdLabel.setText(
         "Created : " + CustomDateUtils.prettyDate(inputPwdEntry.getCreationDate()));
     lastEditedLabel.setText(
         "Last edited : " + CustomDateUtils.prettyDate(inputPwdEntry.getLastEditDate()));
   }
 
-  public void setRecordButton() {
+  private void setRecordButton() {
     if (inputPwdEntry == null || inputPwdEntry.getRecords() == null) {
       recordsButton.setDisable(true);
     }
   }
 
-  public void fillRecordsTable() {
+  private void fillRecordsTable() {
     if (inputPwdEntry == null || inputPwdEntry.getRecords() == null) {
       return;
     }

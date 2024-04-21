@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import org.apache.commons.lang3.StringUtils;
 
 import com.celatus.App;
+import com.celatus.enums.AlertMode;
 import com.celatus.models.Category;
 import com.celatus.models.PasswordsDatabase;
 import com.celatus.util.FXMLUtils;

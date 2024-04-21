@@ -47,7 +47,7 @@ public class EntryWindowController extends BaseWindowController {
   @Override
   public void initialize() {
     super.initialize();
-    passwordValueTracker = new TextInputValueTracker();
+    passwordValueTracker = new TextInputValueTracker("");
     addOnKeyPressedListeners();
     addTextChangedListeners();
   }

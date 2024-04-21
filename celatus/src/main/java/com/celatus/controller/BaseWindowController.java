@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.celatus.App;
+import com.celatus.enums.AlertMode;
 import com.celatus.enums.UserSettings;
 import com.celatus.util.FXMLUtils;
 
