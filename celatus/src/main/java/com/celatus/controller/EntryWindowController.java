@@ -35,9 +35,7 @@ public class EntryWindowController extends BaseWindowController {
   private TextField revealedPwdField;
 
   private String password;
-
   private TextInputValueTracker passwordValueTracker;
-
   private boolean allowInputRegistration;
 
   // endregion
