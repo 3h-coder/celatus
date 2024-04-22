@@ -11,8 +11,8 @@ import org.apache.commons.lang3.StringUtils;
 import com.celatus.App;
 import com.celatus.models.Category;
 import com.celatus.models.PasswordEntry;
+import com.celatus.models.PasswordPackageProcessor;
 import com.celatus.models.RecordEntryView;
-import com.celatus.models.TextInputValueTracker;
 import com.celatus.util.CryptoUtils;
 import com.celatus.util.CustomDateUtils;
 import com.celatus.util.FXMLUtils;
@@ -29,8 +29,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 
 /** Controller of the window used to create and edit password entries */
@@ -104,8 +102,8 @@ public class PasswordWindowController extends DialogWindowController {
   private List<Node> recordModeElements; // list where we store the record mode UI elements
   private String detectedChanges; // detected changes from the user (what is on the UI vs what is stored in the
                                   // object)
-  private TextInputValueTracker passwordValueTracker; // To re-implement the Ctrl+Z/Y for the password input
-  private boolean allowPwdInputRegistration; // Used to properly save the values to be Ctrl+Z/Y'ed
+
+  private PasswordPackageProcessor pwdPackageProcessor;
 
   // endregion
 
@@ -155,88 +153,9 @@ public class PasswordWindowController extends DialogWindowController {
   }
 
   private void addListeners() {
-    addPwdKeyPressedListeners();
-    addPwdTextChangedListeners();
     addRecordsTableListeners();
-  }
-
-  // See the implementation in EntryWindowController for comments
-  private void addPwdKeyPressedListeners() {
-    pwdField.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-      var eventCode = event.getCode();
-      if (event.isControlDown() && (eventCode == KeyCode.Z || eventCode == KeyCode.Y)) {
-        event.consume();
-        allowPwdInputRegistration = false;
-        if (eventCode == KeyCode.Z) {
-          var previousValue = passwordValueTracker.getPreviousValue();
-          if (previousValue == null) {
-            return;
-          }
-          pwdField.setText(previousValue);
-          pwdField.positionCaret(previousValue.length());
-        } else {
-          var nextValue = passwordValueTracker.getNextValue();
-          if (nextValue == null) {
-            return;
-          }
-          pwdField.setText(nextValue);
-          pwdField.positionCaret(nextValue.length());
-        }
-        return;
-      }
-
-      allowPwdInputRegistration = true;
-    });
-
-    revealedPwdField.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-      var eventCode = event.getCode();
-      if (event.isControlDown() && (eventCode == KeyCode.Z || eventCode == KeyCode.Y)) {
-        event.consume();
-        allowPwdInputRegistration = false;
-        if (eventCode == KeyCode.Z) {
-          var previousValue = passwordValueTracker.getPreviousValue();
-          if (previousValue == null) {
-            return;
-          }
-          revealedPwdField.setText(previousValue);
-          revealedPwdField.positionCaret(previousValue.length());
-        } else {
-          var nextValue = passwordValueTracker.getNextValue();
-          if (nextValue == null) {
-            return;
-          }
-          revealedPwdField.setText(nextValue);
-          revealedPwdField.positionCaret(nextValue.length());
-        }
-        return;
-      }
-      allowPwdInputRegistration = true;
-    });
-  }
-
-  private void addPwdTextChangedListeners() {
-    pwdField
-        .textProperty()
-        .addListener(
-            (observable, oldValue, newValue) -> {
-              password = newValue;
-              if (allowPwdInputRegistration) {
-                passwordValueTracker.registerNewValue(password);
-                allowPwdInputRegistration = false;
-              }
-              revealedPwdField.setText(password);
-            });
-    revealedPwdField
-        .textProperty()
-        .addListener(
-            (observable, oldValue, newValue) -> {
-              password = newValue;
-              if (allowPwdInputRegistration) {
-                passwordValueTracker.registerNewValue(password);
-                allowPwdInputRegistration = false;
-              }
-              pwdField.setText(password);
-            });
+    pwdPackageProcessor = new PasswordPackageProcessor(pwdField, revealedPwdField);
+    pwdPackageProcessor.setUpPasswordFields();
   }
 
   private void addRecordsTableListeners() {
@@ -304,7 +223,6 @@ public class PasswordWindowController extends DialogWindowController {
     password = inputPwdEntry.getPassword();
     pwdField.setText(password);
     revealedPwdField.setText(password);
-    passwordValueTracker = new TextInputValueTracker(password);
 
     createdLabel.setText(
         "Created : " + CustomDateUtils.prettyDate(inputPwdEntry.getCreationDate()));

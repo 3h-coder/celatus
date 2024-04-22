@@ -5,7 +5,7 @@ import java.util.Map;
 import com.celatus.App;
 import com.celatus.enums.AlertMode;
 import com.celatus.handler.AuthHandler;
-import com.celatus.models.TextInputValueTracker;
+import com.celatus.models.PasswordPackageProcessor;
 import com.celatus.util.FXMLUtils;
 
 import javafx.fxml.FXML;
@@ -45,14 +45,8 @@ public class SetupWindowController extends DialogWindowController {
   @FXML
   private Label label04;
 
-  private String password;
-  private TextInputValueTracker passwordValueTracker; // To re-implement the Ctrl+Z/Y for the password input
-  private boolean allowInputRegistration; // Used to properly save the values to be Ctrl+Z/Y'ed
-
-  private String password2;
-  private TextInputValueTracker passwordValueTracker2;
-  private boolean allowInputRegistration2;
-  private String rollbackPassword2; // used to prevent copy pasting into the confirm master password field
+  private PasswordPackageProcessor pwdPackageProcessor;
+  private PasswordPackageProcessor pwdPackageProcessor2;
 
   // endregion
 
@@ -62,10 +56,8 @@ public class SetupWindowController extends DialogWindowController {
   public void initialize() {
     super.initialize();
     pwdField2.setContextMenu(new ContextMenu());
-    passwordValueTracker = new TextInputValueTracker("");
-    passwordValueTracker2 = new TextInputValueTracker("");
-    addKeyPressedListeners();
-    addTextChangedListeners();
+    setUpPasswordPackages();
+    addEventFilters();
   }
 
   @FXML
@@ -87,7 +79,8 @@ public class SetupWindowController extends DialogWindowController {
   @FXML
   private void submitMasterPasswords() {
     // We check the master password
-    Map<Boolean, String> passwordsCheckInfo = AuthHandler.checkPasswords(password, password2);
+    Map<Boolean, String> passwordsCheckInfo = AuthHandler.checkPasswords(pwdPackageProcessor.getPassword(),
+        pwdPackageProcessor2.getPassword());
     boolean validPasswords = (boolean) passwordsCheckInfo.keySet().toArray()[0];
     if (!validPasswords) {
       String invalidPasswordsMessage = (String) passwordsCheckInfo.values().toArray()[0];
@@ -98,12 +91,12 @@ public class SetupWindowController extends DialogWindowController {
     // We open the app, or go back to it
     try {
       if (App.getSignal("master_password_reset_signal")) {
-        AuthHandler.setAppEntry(password, true);
+        AuthHandler.setAppEntry(pwdPackageProcessor.getPassword(), true);
         closeDialog();
         logger.info("Master password changed");
         summonNotificationPopup(App.getWindow(), "Master password successfully changed");
       } else {
-        AuthHandler.setAppEntry(password, false);
+        AuthHandler.setAppEntry(pwdPackageProcessor2.getPassword(), false);
         switchToMainWindow();
       }
     } catch (Exception ex) {
@@ -121,160 +114,20 @@ public class SetupWindowController extends DialogWindowController {
     }
   }
 
-  private void addKeyPressedListeners() {
-    pwdField.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-      var eventCode = event.getCode();
-      if (event.isControlDown() && (eventCode == KeyCode.Z || eventCode == KeyCode.Y)) {
-        event.consume();
-        allowInputRegistration = false;
-
-        if (eventCode == KeyCode.Z) {
-          var previousValue = passwordValueTracker.getPreviousValue();
-          if (previousValue == null) {
-            return;
-          }
-          pwdField.setText(previousValue);
-          pwdField.positionCaret(previousValue.length());
-        } else {
-          var nextValue = passwordValueTracker.getNextValue();
-          if (nextValue == null) {
-            return;
-          }
-          pwdField.setText(nextValue);
-          pwdField.positionCaret(nextValue.length());
-        }
-        return;
-      }
-
-      allowInputRegistration = true;
-    });
-
-    revealedPwdField.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-      var eventCode = event.getCode();
-      if (event.isControlDown() && (eventCode == KeyCode.Z || eventCode == KeyCode.Y)) {
-        event.consume();
-        allowInputRegistration = false;
-
-        if (eventCode == KeyCode.Z) {
-          var previousValue = passwordValueTracker.getPreviousValue();
-          if (previousValue == null) {
-            return;
-          }
-          revealedPwdField.setText(previousValue);
-          revealedPwdField.positionCaret(previousValue.length());
-        } else {
-          var nextValue = passwordValueTracker.getNextValue();
-          if (nextValue == null) {
-            return;
-          }
-          revealedPwdField.setText(nextValue);
-          revealedPwdField.positionCaret(nextValue.length());
-        }
-        return;
-      }
-
-      allowInputRegistration = true;
-    });
-
-    pwdField2.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-      var eventCode = event.getCode();
-      if (event.isControlDown() && (eventCode == KeyCode.Z || eventCode == KeyCode.Y)) {
-        event.consume();
-        allowInputRegistration2 = false;
-
-        if (eventCode == KeyCode.Z) {
-          var previousValue = passwordValueTracker2.getPreviousValue();
-          if (previousValue == null) {
-            return;
-          }
-          pwdField2.setText(previousValue);
-          pwdField2.positionCaret(previousValue.length());
-        } else {
-          var nextValue = passwordValueTracker2.getNextValue();
-          if (nextValue == null) {
-            return;
-          }
-          pwdField2.setText(nextValue);
-          pwdField2.positionCaret(nextValue.length());
-        }
-        return;
-      }
-      allowInputRegistration2 = true;
-    });
-
-    revealedPwdField2.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-      var eventCode = event.getCode();
-      if (event.isControlDown() && (eventCode == KeyCode.Z || eventCode == KeyCode.Y)) {
-        event.consume();
-        allowInputRegistration2 = false;
-        if (eventCode == KeyCode.Z) {
-          var previousValue = passwordValueTracker2.getPreviousValue();
-          if (previousValue == null) {
-            return;
-          }
-          revealedPwdField2.setText(previousValue);
-          revealedPwdField2.positionCaret(previousValue.length());
-        } else {
-          var nextValue = passwordValueTracker2.getNextValue();
-          if (nextValue == null) {
-            return;
-          }
-          revealedPwdField2.setText(nextValue);
-          revealedPwdField2.positionCaret(nextValue.length());
-        }
-        return;
-      }
-      allowInputRegistration2 = true;
-    });
+  private void setUpPasswordPackages() {
+    pwdPackageProcessor = new PasswordPackageProcessor(pwdField, revealedPwdField);
+    pwdPackageProcessor2 = new PasswordPackageProcessor(pwdField2, revealedPwdField2);
+    pwdPackageProcessor.setUpPasswordFields();
+    pwdPackageProcessor2.setUpPasswordFields();
   }
 
-  private void addTextChangedListeners() {
-    pwdField
-        .textProperty()
-        .addListener(
-            (observable, oldValue, newValue) -> {
-              password = newValue;
-              if (allowInputRegistration) {
-                passwordValueTracker.registerNewValue(password);
-                allowInputRegistration = false;
-              }
-              revealedPwdField.setText(password);
-            });
-    revealedPwdField
-        .textProperty()
-        .addListener(
-            (observable, oldValue, newValue) -> {
-              password = newValue;
-              if (allowInputRegistration) {
-                passwordValueTracker.registerNewValue(password);
-                allowInputRegistration = false;
-              }
-              pwdField.setText(password);
-            });
-    pwdField2
-        .textProperty()
-        .addListener(
-            (observable, oldValue, newValue) -> {
-              rollbackPassword2 = oldValue;
-              password2 = newValue;
-              if (allowInputRegistration2) {
-                passwordValueTracker2.registerNewValue(password2);
-                allowInputRegistration2 = false;
-              }
-              revealedPwdField2.setText(password2);
-            });
-    revealedPwdField2
-        .textProperty()
-        .addListener(
-            (observable, oldValue, newValue) -> {
-              rollbackPassword2 = oldValue;
-              password2 = newValue;
-              if (allowInputRegistration2) {
-                passwordValueTracker2.registerNewValue(password2);
-                allowInputRegistration2 = false;
-              }
-              pwdField2.setText(password2);
-            });
+  private void addEventFilters() {
+    pwdField2.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+      if (event.isControlDown() && event.getCode() == KeyCode.V) {
+        warning("Copy-pasting is not allowed in this field");
+        event.consume();
+      }
+    });
   }
 
   // endregion
@@ -285,16 +138,6 @@ public class SetupWindowController extends DialogWindowController {
   private void pwdFieldKeyPressed(KeyEvent event) {
     if (event.getCode() == KeyCode.TAB) {
       goToPwdField2();
-    }
-  }
-
-  @FXML
-  private void pwdField2KeyPressed(KeyEvent event) {
-    // Prevent copy pasting into this field
-    if (event.isControlDown() && event.getCode() == KeyCode.V) {
-      warning("Copy pasting is not allowed in this field");
-      pwdField2.setText(rollbackPassword2);
-      pwdField2.positionCaret(rollbackPassword2.length());
     }
   }
 
