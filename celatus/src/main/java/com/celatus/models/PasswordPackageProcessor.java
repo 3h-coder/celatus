@@ -1,8 +1,6 @@
-package com.celatus.controller;
+package com.celatus.models;
 
 import org.apache.commons.lang3.StringUtils;
-
-import com.celatus.models.TextInputValueTracker;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
@@ -10,24 +8,44 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
-public class WindowWithPasswordController extends BaseWindowController {
-
+/**
+ * Model class to handle all the set up regarding PasswordField + TextField
+ * couples
+ */
+public class PasswordPackageProcessor {
     // region =====Variables=====
 
     @FXML
-    protected PasswordField pwdField;
+    private PasswordField pwdField;
     @FXML
-    protected TextField revealedPwdField;
+    private TextField revealedPwdField;
 
-    protected String password;
-    protected TextInputValueTracker passwordValueTracker; // To re-implement the Ctrl+Z/Y for the password input
-    protected boolean allowInputRegistration; // Used to properly save the values to be Ctrl+Z/Y'ed
+    private String password;
+    private TextInputValueTracker passwordValueTracker; // To re-implement the Ctrl+Z/Y for the password input
+    private boolean allowInputRegistration; // Used to properly save the values to be Ctrl+Z/Y'ed
+
+    // endregion
+
+    // region ====Getters and Setters=====
+
+    public String getPassword() {
+        return password;
+    }
+
+    // endregion
+
+    // region =====Constructor=====
+
+    public PasswordPackageProcessor(PasswordField pwdField, TextField revealedPwdField) {
+        this.pwdField = pwdField;
+        this.revealedPwdField = revealedPwdField;
+    }
 
     // endregion
 
     // region =====Window Methods=====
 
-    protected void setUpPasswordFields() {
+    public void setUpPasswordFields() {
         var initialPwdValue = StringUtils.isBlank(pwdField.getText()) ? "" : pwdField.getText();
         passwordValueTracker = new TextInputValueTracker(initialPwdValue);
         addOnKeyPressedListeners();

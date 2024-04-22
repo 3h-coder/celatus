@@ -1,16 +1,19 @@
 package com.celatus.controller;
 
 import com.celatus.handler.AuthHandler;
+import com.celatus.models.PasswordPackageProcessor;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 
 /**
  * Controller of our entry window, after the master password has been set by the
  * user
  */
-public class EntryWindowController extends WindowWithPasswordController {
+public class EntryWindowController extends BaseWindowController {
 
   // region =====Variables=====
 
@@ -24,6 +27,12 @@ public class EntryWindowController extends WindowWithPasswordController {
   private Label label01;
   @FXML
   private Label label02;
+  @FXML
+  private PasswordField pwdField;
+  @FXML
+  private TextField revealedPwdField;
+
+  private PasswordPackageProcessor pwdPackageProcessor;
 
   // endregion
 
@@ -32,7 +41,8 @@ public class EntryWindowController extends WindowWithPasswordController {
   @Override
   public void initialize() {
     super.initialize();
-    setUpPasswordFields();
+    pwdPackageProcessor = new PasswordPackageProcessor(pwdField, revealedPwdField);
+    pwdPackageProcessor.setUpPasswordFields();
   }
 
   @FXML
@@ -41,21 +51,11 @@ public class EntryWindowController extends WindowWithPasswordController {
     label02.setVisible(true);
   }
 
-  @FXML
-  private void getPasswordValue() {
-    if ("View".equals(viewButton.getText())) {
-      password = pwdField.getText();
-    } else {
-      password = revealedPwdField.getText();
-    }
-  }
-
   /** Method used to enter the App */
   @FXML
   private void submitPassword() {
-    getPasswordValue();
 
-    if (AuthHandler.correctPassword(password)) {
+    if (AuthHandler.correctPassword(pwdPackageProcessor.getPassword())) {
       AuthHandler.enterApp();
       switchToMainWindow();
     } else {
