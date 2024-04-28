@@ -19,8 +19,6 @@ public class DatabaseHandler {
 
   private static final Logger logger = LogManager.getLogger(DatabaseHandler.class.getName());
 
-  private static final String DB_FILE_PATH = App.DIRECTORY + File.separator + DB_FILE_NAME;
-
   private static String rawData;
 
   // endregion
@@ -41,7 +39,7 @@ public class DatabaseHandler {
    * @return
    */
   public static boolean dbFileExists() {
-    File file = new File(DB_FILE_PATH);
+    File file = new File(DB_FILE_NAME);
     return file.exists();
   }
 
@@ -52,7 +50,7 @@ public class DatabaseHandler {
    */
   public static void concealDatabase() throws IOException {
     if (dbFileExists()) {
-      CryptoUtils.hideFile(DB_FILE_PATH, true);
+      CryptoUtils.hideFile(DB_FILE_NAME, true);
     }
   }
 
@@ -75,10 +73,10 @@ public class DatabaseHandler {
   private static void dbToEncryptedFile(boolean fileExists) {
     try {
       if (fileExists) {
-        CryptoUtils.unhideFile(DB_FILE_PATH);
+        CryptoUtils.unhideFile(DB_FILE_NAME);
       }
       // logger.debug("Saved data: " + rawData);
-      CryptoUtils.encryptIntoFile(DB_FILE_PATH, rawData, App.getKey(), CryptoUtils.generateIV());
+      CryptoUtils.encryptIntoFile(DB_FILE_NAME, rawData, App.getKey(), CryptoUtils.generateIV());
     } catch (Exception ex) {
       App.error(
           App.getWindow(),
@@ -96,7 +94,7 @@ public class DatabaseHandler {
   public static void parseRawDataFromDatabase() {
     if (dbFileExists()) {
       try {
-        rawData = CryptoUtils.decryptFile(DB_FILE_PATH, App.getKey());
+        rawData = CryptoUtils.decryptFile(DB_FILE_NAME, App.getKey());
       } catch (Exception ex) {
         rawData = null;
       }

@@ -13,7 +13,6 @@ import com.celatus.handler.PropertyHandler;
 import com.celatus.models.PasswordEntry;
 import com.celatus.models.PasswordsDatabase;
 import com.celatus.util.CryptoUtils;
-import com.celatus.util.DesktopUtils;
 import com.celatus.util.MapUtils;
 
 /** Class made for all of our non-unit tests */
@@ -185,15 +184,6 @@ public class Testing {
     System.out.println(System.getenv("LOCALAPPDATA"));
   }
 
-  public static void isDirWriteable() {
-    System.out.println(DesktopUtils.isDirectoryWritable(System.getProperty("user.dir")));
-    System.out.println(DesktopUtils.isDirectoryWritable("C:/Program Files/"));
-  }
-
-  public static void AppDirectory() {
-    System.out.println(App.DIRECTORY);
-  }
-
   public static void main(String[] args) {
     // testDataEncryption();
     // testDataDecryption();
@@ -213,8 +203,5 @@ public class Testing {
     // testNestedDict();
     // testReadProperties();
     // testWriteProperties();
-    // envVars();
-    // isDirWriteable();
-    AppDirectory();
   }
 }

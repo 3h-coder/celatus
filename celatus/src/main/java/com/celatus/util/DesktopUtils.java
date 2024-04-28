@@ -6,10 +6,6 @@ import java.awt.datatransfer.StringSelection;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.commons.lang3.SystemUtils;
-
-import com.celatus.App;
-
 public class DesktopUtils {
 
   // region =====Public Methods=====
@@ -39,30 +35,6 @@ public class DesktopUtils {
     StringSelection stringSelection = new StringSelection(string);
     Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
     clipboard.setContents(stringSelection, null);
-  }
-
-  public static String getLogFilePath() {
-    return getUserAppPath() + "celatus.log";
-  }
-
-  // endregion
-
-  // region =====Private Methods=====
-
-  public static String getUserAppPath() {
-    String userHome = SystemUtils.USER_HOME;
-    String appDataPath = "";
-
-    if (SystemUtils.IS_OS_WINDOWS) {
-      appDataPath = System.getenv("LOCALAPPDATA") + File.separator + App.NAME;
-    } else if (SystemUtils.IS_OS_MAC) {
-      appDataPath = userHome + File.separator + "Library" + File.separator + "Application Support" + File.separator
-          + App.NAME;
-    } else {
-      appDataPath = userHome + File.separator + "." + App.NAME.toLowerCase();
-    }
-
-    return appDataPath;
   }
 
   // endregion

@@ -1,6 +1,5 @@
 package com.celatus;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -21,7 +20,6 @@ import com.celatus.handler.PropertyHandler;
 import com.celatus.models.ActionTracker;
 import com.celatus.models.CustomUncaughtExceptionHandler;
 import com.celatus.models.PasswordsDatabase;
-import com.celatus.util.DesktopUtils;
 import com.celatus.util.FXMLUtils;
 
 import javafx.application.Application;
@@ -34,14 +32,6 @@ import javafx.stage.StageStyle;
 
 /** JavaFX App */
 public class App extends Application {
-
-  // region =====Public constants=====
-
-  public final static String NAME = "Celatus";
-
-  public final static String DIRECTORY = getAppDirectory();
-
-  // endregion
 
   // region =====Application Variables=====
 
@@ -391,23 +381,6 @@ public class App extends Application {
                   }
                   _logger.info("--------------------Application Shutdown--------------------");
                 }));
-  }
-
-  private static String getAppDirectory() {
-    if (userAppPathContainsAppFiles() || !DesktopUtils.isCurrentDirWritable()) {
-      return DesktopUtils.getUserAppPath();
-    }
-
-    return System.getProperty("user.dir");
-  }
-
-  private static boolean userAppPathContainsAppFiles() {
-    String appDataPath = DesktopUtils.getUserAppPath();
-    File databaseFile = new File(appDataPath + File.separator + DatabaseHandler.DB_FILE_NAME);
-    File propertiesFile = new File(appDataPath + File.separator + PropertyHandler.PROPERTIES_FILE_NAME);
-    File loggingFile = new File(appDataPath + File.separator + "celatus.log");
-
-    return databaseFile.exists() || propertiesFile.exists() || loggingFile.exists();
   }
 
   // endregion

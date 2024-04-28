@@ -13,7 +13,6 @@ import java.util.Properties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.celatus.App;
 import com.celatus.enums.UserSettings;
 
 public class PropertyHandler {
@@ -23,8 +22,6 @@ public class PropertyHandler {
   public static final String PROPERTIES_FILE_NAME = "app.properties";
 
   private static final Logger logger = LogManager.getLogger(PropertyHandler.class.getName());
-
-  private static final String PROPERTIES_FILE_PATH = App.DIRECTORY + File.separator + PROPERTIES_FILE_NAME;
 
   private static HashMap<String, List<String>> propertyMap;
 
@@ -44,13 +41,13 @@ public class PropertyHandler {
   // region =====Methods=====
 
   public static boolean propertyFileExists() {
-    File file = new File(PROPERTIES_FILE_PATH);
+    File file = new File(PROPERTIES_FILE_NAME);
     return file.exists();
   }
 
   public static Properties readProperties() {
     Properties properties = new Properties();
-    try (InputStream input = new FileInputStream(PROPERTIES_FILE_PATH)) {
+    try (InputStream input = new FileInputStream(PROPERTIES_FILE_NAME)) {
       properties.load(input);
     } catch (IOException e) {
       e.printStackTrace();
@@ -59,7 +56,7 @@ public class PropertyHandler {
   }
 
   public static void writeProperties(Properties properties) {
-    try (OutputStream output = new FileOutputStream(PROPERTIES_FILE_PATH)) {
+    try (OutputStream output = new FileOutputStream(PROPERTIES_FILE_NAME)) {
       properties.store(output, null);
     } catch (IOException e) {
       e.printStackTrace();
