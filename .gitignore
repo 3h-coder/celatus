@@ -35,5 +35,9 @@ replay_pid*
 # App properties
 app.properties
 
-#Misc
-todo.md
+# Executable files
+*.exe
+*.jar
+
+**release/
+

@@ -15,9 +15,11 @@ public class DatabaseHandler {
 
   // region =====Variables=====
 
+  public static final String DB_FILE_NAME = "passwords.clts";
+
   private static final Logger logger = LogManager.getLogger(DatabaseHandler.class.getName());
 
-  private static final String DB_FILE_PATH = "passwords.clts";
+  private static final String DB_FILE_PATH = App.DIRECTORY + File.separator + DB_FILE_NAME;
 
   private static String rawData;
 

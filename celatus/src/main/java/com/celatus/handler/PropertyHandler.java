@@ -1,27 +1,30 @@
 package com.celatus.handler;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import com.celatus.enums.UserSettings;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Properties;
-import java.util.List;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Properties;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.celatus.App;
+import com.celatus.enums.UserSettings;
 
 public class PropertyHandler {
 
   // region =====Variables=====
 
+  public static final String PROPERTIES_FILE_NAME = "app.properties";
+
   private static final Logger logger = LogManager.getLogger(PropertyHandler.class.getName());
 
-  private static final String PROPERTIES_FILE_PATH = "app.properties";
+  private static final String PROPERTIES_FILE_PATH = App.DIRECTORY + File.separator + PROPERTIES_FILE_NAME;
 
   private static HashMap<String, List<String>> propertyMap;
 

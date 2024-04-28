@@ -20,7 +20,7 @@ public class PasswordPackageProcessor {
     @FXML
     private TextField revealedPwdField;
 
-    private String password;
+    private String password; // The actual password value
     private TextInputValueTracker passwordValueTracker; // To re-implement the Ctrl+Z/Y for the password input
     private boolean allowInputRegistration; // Used to properly save the values to be Ctrl+Z/Y'ed
 

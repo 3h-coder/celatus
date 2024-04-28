@@ -13,6 +13,7 @@ import com.celatus.handler.PropertyHandler;
 import com.celatus.models.PasswordEntry;
 import com.celatus.models.PasswordsDatabase;
 import com.celatus.util.CryptoUtils;
+import com.celatus.util.DesktopUtils;
 import com.celatus.util.MapUtils;
 
 /** Class made for all of our non-unit tests */
@@ -20,8 +21,7 @@ public class Testing {
 
   public static void testDataEncryption() {
     String password = "haha";
-    String textBlock =
-        "This just a simple test to see if my data encryption function actually works.";
+    String textBlock = "This just a simple test to see if my data encryption function actually works.";
     Key key = CryptoUtils.generateAESKey(password);
     IvParameterSpec iv = CryptoUtils.generateIv();
     IvParameterSpec iv2 = CryptoUtils.generateIv();
@@ -33,12 +33,10 @@ public class Testing {
     System.out.println("Second Block\n" + encryptedBlock2);
   }
 
-  public static void
-      testDataDecryption() { // The decrypted text block should be equal to the plain text original
+  public static void testDataDecryption() { // The decrypted text block should be equal to the plain text original
     // input
     String password = "haha";
-    String textBlock =
-        "This just a simple test to see if my data deciphering function actually works.";
+    String textBlock = "This just a simple test to see if my data deciphering function actually works.";
     Key key = CryptoUtils.generateAESKey(password);
     IvParameterSpec iv = CryptoUtils.generateIv();
     IvParameterSpec iv2 = CryptoUtils.generateIv();
@@ -53,8 +51,7 @@ public class Testing {
 
   public static void testDataEncryptionIntoFile() {
     String password = "haha";
-    String textBlock =
-        "This just a simple test to see if my data encryption function actually works.";
+    String textBlock = "This just a simple test to see if my data encryption function actually works.";
     Key key = CryptoUtils.generateAESKey(password);
     byte[] iv = CryptoUtils.generateIV();
 
@@ -106,22 +103,20 @@ public class Testing {
 
   public static void testObjToJson() {
     PasswordsDatabase pwdDB = PasswordsDatabase.generateDefault();
-    PasswordEntry pwdEntry =
-        new PasswordEntry(
-            "Facebook",
-            "https://facebook.com",
-            null,
-            "fake.email@gmail.com",
-            "fake.email@gmail.com",
-            "password");
+    PasswordEntry pwdEntry = new PasswordEntry(
+        "Facebook",
+        "https://facebook.com",
+        null,
+        "fake.email@gmail.com",
+        "fake.email@gmail.com",
+        "password");
     pwdDB.getCategory("Social Media").addPasswordEntry(pwdEntry);
     System.out.println(MapUtils.objectToJson(pwdDB, true));
   }
 
   public static void testJsonToObj() {
-    String json =
-        "{\"categories\":[{\"name\":\"General\",\"passwordEntries\":null},{\"name\":\"Emails\",\"passwordEntries\":null},{\"name\":\"Social"
-            + " media\",\"passwordEntries\":[{\"name\":\"Facebook\",\"description\":null,\"identifier\":\"fake.email@gmail.com\",\"password\":\"password\"}]},{\"name\":\"Administrative\",\"passwordEntries\":null},{\"name\":\"Shopping\",\"passwordEntries\":null},{\"name\":\"Miscellaneous\",\"passwordEntries\":null}]}";
+    String json = "{\"categories\":[{\"name\":\"General\",\"passwordEntries\":null},{\"name\":\"Emails\",\"passwordEntries\":null},{\"name\":\"Social"
+        + " media\",\"passwordEntries\":[{\"name\":\"Facebook\",\"description\":null,\"identifier\":\"fake.email@gmail.com\",\"password\":\"password\"}]},{\"name\":\"Administrative\",\"passwordEntries\":null},{\"name\":\"Shopping\",\"passwordEntries\":null},{\"name\":\"Miscellaneous\",\"passwordEntries\":null}]}";
     PasswordsDatabase pwdDB = MapUtils.jsonToObject(json, PasswordsDatabase.class);
     System.out.println(pwdDB);
   }
@@ -184,6 +179,21 @@ public class Testing {
     System.out.println(PropertyHandler.readProperties());
   }
 
+  public static void envVars() {
+    System.out.println(System.getProperty("user.home"));
+    System.out.println(System.getenv("APPDATA"));
+    System.out.println(System.getenv("LOCALAPPDATA"));
+  }
+
+  public static void isDirWriteable() {
+    System.out.println(DesktopUtils.isDirectoryWritable(System.getProperty("user.dir")));
+    System.out.println(DesktopUtils.isDirectoryWritable("C:/Program Files/"));
+  }
+
+  public static void AppDirectory() {
+    System.out.println(App.DIRECTORY);
+  }
+
   public static void main(String[] args) {
     // testDataEncryption();
     // testDataDecryption();
@@ -192,7 +202,7 @@ public class Testing {
     // testMapToJson();
     // testDataDecrytionFromfile("This is just a test passphrase to test",
     // "passwords.clts");
-    testObjToJson();
+    // testObjToJson();
     // testJsonToObj();
     // testIdFromDateTime();
     // testRemoveFromMap();
@@ -203,5 +213,8 @@ public class Testing {
     // testNestedDict();
     // testReadProperties();
     // testWriteProperties();
+    // envVars();
+    // isDirWriteable();
+    AppDirectory();
   }
 }
