@@ -1,9 +1,5 @@
 # User Guide
 
-> The application has not been packaged yet, so it may only be run from your IDE or code editor, by running the App.java file after cloning this repository.
-
----
-
 ## Table of contents
 
 [1. Setting up your master password](#1-setting-up-your-master-password)

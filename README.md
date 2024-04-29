@@ -1,4 +1,4 @@
-# Celatus (DEV ongoing)
+# Celatus
 This project is a simple light weight and easy to use desktop password manager.
 It is built upon JavaFX and Maven and licensed under the [GPL-3](LICENSE) license.
 
@@ -9,7 +9,11 @@ It is built upon JavaFX and Maven and licensed under the [GPL-3](LICENSE) licens
 - **Password generator** : Generate strong and secure passwords.
 - **Category organization** : Create the appropriate categories to organize your passwords.
 - **Password search** : Find your passwords easily through the search bar.
-- **Cross-Platform** : Runs on Windows, MacOS and Linux.
+- **Cross-Platform** : Currently packaged for Windows and Linux, but can still run on Mac (through java)
+
+## Install
+
+Find the packages [here](https://github.com/3h-coder/celatus)
 
 ## User Guide
 
