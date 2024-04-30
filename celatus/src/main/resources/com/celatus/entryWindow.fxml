@@ -21,7 +21,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Label fx:id="label01" alignment="CENTER" contentDisplay="TOP" prefHeight="17.0" prefWidth="204.0" text="Please enter your master password" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="40.0" />
+      <Label fx:id="label01" alignment="CENTER" contentDisplay="TOP" prefHeight="17.0" prefWidth="204.0" text="Please enter your master password" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0" />
       <Label fx:id="label02" layoutX="20.0" layoutY="97.0" prefHeight="17.0" prefWidth="400.0" styleClass="badFieldLabel" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="100.0" />
    </children>
 </AnchorPane>
