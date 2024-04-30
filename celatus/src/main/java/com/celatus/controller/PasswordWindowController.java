@@ -95,7 +95,6 @@ public class PasswordWindowController extends DialogWindowController {
 
   private Category category; // the password entry's category
   private PasswordEntry inputPwdEntry; // the password entry we are editing
-  private String password; // the current password (displayed on the window)
   private boolean recordMode; // whether we are in recordMode or not (recordMode refers to when we hide the
   // default elements to view the password entry's history)
   private List<Node> defaultModeElements; // list where we store the default UI elements
@@ -220,7 +219,7 @@ public class PasswordWindowController extends DialogWindowController {
     emailField.setText(inputPwdEntry.getEmail());
     passwordNotes.setText(inputPwdEntry.getNotes());
 
-    password = inputPwdEntry.getPassword();
+    String password = inputPwdEntry.getPassword();
     pwdField.setText(password);
     revealedPwdField.setText(password);
 
@@ -292,7 +291,8 @@ public class PasswordWindowController extends DialogWindowController {
 
     // Saving the new password entry
     if (inputPwdEntry == null) {
-      PasswordEntry pwdEntry = new PasswordEntry(name, url, notes, identifier, email, this.password);
+      PasswordEntry pwdEntry = new PasswordEntry(name, url, notes, identifier, email,
+          pwdPackageProcessor.getPassword());
       this.category.addPasswordEntry(pwdEntry);
       // Add the creation to the action tracker
       App.getActionTracker().addPwdCreation(pwdEntry, this.category.getName());
@@ -311,7 +311,7 @@ public class PasswordWindowController extends DialogWindowController {
       inputPwdEntry.setName(name);
       inputPwdEntry.setIdentifier(identifier);
       inputPwdEntry.setUrl(url);
-      inputPwdEntry.setPassword(this.password);
+      inputPwdEntry.setPassword(pwdPackageProcessor.getPassword());
       inputPwdEntry.setEmail(email);
       inputPwdEntry.setNotes(notes);
       inputPwdEntry.setLastEditDate(LocalDateTime.now());
@@ -330,12 +330,10 @@ public class PasswordWindowController extends DialogWindowController {
       viewButton.setText("Hide");
       pwdField.setVisible(false);
       revealedPwdField.setVisible(true);
-      revealedPwdField.setText(password);
     } else {
       viewButton.setText("View");
       revealedPwdField.setVisible(false);
       pwdField.setVisible(true);
-      pwdField.setText(password);
     }
   }
 
@@ -399,7 +397,7 @@ public class PasswordWindowController extends DialogWindowController {
     }
 
     checkPasswordLabel.setText(null);
-    if (StringUtils.isBlank(this.password)) {
+    if (StringUtils.isBlank(pwdPackageProcessor.getPassword())) {
       checkPasswordLabel.setText("This field is requied");
       allOk = false;
     }
@@ -455,7 +453,7 @@ public class PasswordWindowController extends DialogWindowController {
     if (!StringUtils.equals(inputPwdEntry.getNotes(), notes)) {
       detectedChanges += "notes, ";
     }
-    if (!StringUtils.equals(inputPwdEntry.getPassword(), password)) {
+    if (!StringUtils.equals(inputPwdEntry.getPassword(), pwdPackageProcessor.getPassword())) {
       detectedChanges += "password, ";
     }
 
