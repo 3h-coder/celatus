@@ -132,6 +132,11 @@
     -fx-opacity: 1
 }
 
+.topRowButton {
+    -fx-min-width: 25;
+    -fx-min-height: 25;
+}
+
 #rowPane1 {
     -fx-background-color: #2b2b2b;
     -fx-border-color: #8c8c8c;
