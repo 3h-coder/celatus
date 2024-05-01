@@ -170,7 +170,7 @@ public abstract class BaseWindowController {
 
   /** Switches to the application's main window */
   public void switchToMainWindow() {
-    switchAppWindow("mainWindow", true);
+    switchAppWindow("mainWindow2", true);
   }
 
   /**

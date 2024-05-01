@@ -20,6 +20,7 @@ import com.celatus.util.DesktopUtils;
 import com.celatus.util.FXMLUtils;
 
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
@@ -28,7 +29,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -42,6 +42,7 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Popup;
 
 /** The controller of the App's main window */
@@ -52,7 +53,7 @@ public class MainWindowController extends BaseWindowController {
   @FXML
   private AnchorPane columnPane1;
   @FXML
-  private SplitPane columnPane2;
+  private VBox columnPane2;
   @FXML
   private AnchorPane descriptionPane;
   @FXML
@@ -98,15 +99,12 @@ public class MainWindowController extends BaseWindowController {
    */
   private void performGraphicalSetup() {
     // We set the minimum window dimensions
-    window.setMinWidth(900);
-    window.setMinHeight(600);
+    window.setMinWidth(700);
+    window.setMinHeight(400);
     // We set the proper bindings
     setBindings();
     // We add our listeners
     addListeners();
-    // We disable the split pane divider
-    columnPane2.lookupAll(".split-pane-divider").stream()
-        .forEach(div -> div.setMouseTransparent(true));
     // We fill up the categories list view and set up the context menus
     displayCategories();
     // We set our context menus and passwords table
@@ -117,8 +115,10 @@ public class MainWindowController extends BaseWindowController {
   private void setBindings() {
     descriptionPane.maxHeightProperty().bind(catDescription.prefHeightProperty());
     descriptionPane.minHeightProperty().bind(catDescription.prefHeightProperty());
-    passwordsPane.maxHeightProperty().bind(passwordsTable.prefHeightProperty());
-    passwordsPane.minHeightProperty().bind(passwordsTable.prefHeightProperty());
+    // passwordsPane.maxHeightProperty().bind(passwordsTable.prefHeightProperty());
+    // passwordsPane.minHeightProperty().bind(passwordsTable.prefHeightProperty());
+
+    passwordsPane.maxHeightProperty().bind(Bindings.divide(columnPane2.heightProperty(), 100).multiply(80));
   }
 
   private void addListeners() {
