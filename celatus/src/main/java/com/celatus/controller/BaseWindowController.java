@@ -86,11 +86,16 @@ public abstract class BaseWindowController {
           enableAnchorPaneFocusOnClick();
           setOnCloseRequest();
           setIcon();
+          setWindowTitle("Celatus Password Manager");
         });
   }
 
   public void setIcon() {
     this.window.getIcons().add(new Image(App.class.getResourceAsStream("images/logo.png")));
+  }
+
+  public void setWindowTitle(String title) {
+    window.setTitle(title);
   }
 
   @FXML

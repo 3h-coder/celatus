@@ -179,14 +179,14 @@
 }
 
 #passwordsTable .column-header {
-    -fx-background-color: linear-gradient(to bottom, #8c8c8c, #cacac9);
+    -fx-background-color: #cacac9;
     /*-fx-border-color: black;
     -fx-border-width: 0 0 0 1;
     -fx-font-weight: 600*/
 }
 
 #passwordsTable .column-header-background {
-    -fx-background-color: linear-gradient(to bottom, #8c8c8c, #cacac9);
+    -fx-background-color: #cacac9;
 }
 
 #passwordsTable .column-header-background .label {
