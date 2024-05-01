@@ -13,7 +13,7 @@ It is built upon JavaFX and Maven and licensed under the [GPL-3](LICENSE) licens
 
 ## Install
 
-Find the packages [here](https://github.com/3h-coder/celatus)
+Find the packages [here](https://github.com/3h-coder/celatus/releases/tag/v1.0.0)
 
 ## User Guide
 
