@@ -3,7 +3,6 @@ module com.celatus {
         requires javafx.controls;
         requires javafx.fxml;
         requires javafx.graphics;
-        requires javafx.base;
         requires org.apache.commons.lang3;
         requires org.apache.logging.log4j;
         requires com.fasterxml.jackson.core;
@@ -14,7 +13,6 @@ module com.celatus {
                         javafx.fxml,
                         com.fasterxml.jackson.databind;
         opens com.celatus.controller to
-                        javafx.base,
                         javafx.fxml;
         opens com.celatus.models to
                         javafx.fxml,

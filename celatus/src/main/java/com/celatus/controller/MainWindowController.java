@@ -20,7 +20,6 @@ import com.celatus.util.DesktopUtils;
 import com.celatus.util.FXMLUtils;
 
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
@@ -116,9 +115,9 @@ public class MainWindowController extends BaseWindowController {
   private void setBindings() {
     descriptionPane.maxHeightProperty().bind(catDescription.prefHeightProperty());
     descriptionPane.minHeightProperty().bind(catDescription.prefHeightProperty());
-    passwordsPane.maxHeightProperty().bind(Bindings.divide(columnPane2.heightProperty(), 100).multiply(80));
+    passwordsPane.maxHeightProperty().bind(columnPane2.heightProperty().multiply(0.8));
   }
-
+  
   private void addListeners() {
     categoriesList
         .getSelectionModel()
