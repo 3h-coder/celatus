@@ -24,9 +24,9 @@ Find below one example for each platform.
 
 *Debian based distributions (debian, ubuntu, mint etc.)*
 
-    jpackage --type deb --name Celatus --vendor 3h-coder --app-version <version> --icon ./logo.ico --dest ../dist --verbose --input . --main-jar <jarWithDependencies> --about-url https://github.com/3h-coder/celatus/blob/main/README.md --license-file ./LICENSE --linux-shortcut --linux-menu-group Utilities
+    jpackage --type deb --name Celatus --vendor 3h-coder --app-version <version> --icon ./logo.png --dest ../dist --verbose --input . --main-jar <jarWithDependencies> --about-url https://github.com/3h-coder/celatus/blob/main/README.md --license-file ./LICENSE --linux-shortcut --linux-menu-group Utilities
 
 
 *Red-hat based distributions (fedora, centOs, rhel, etc.)*
 
-    jpackage --type rpm --name Celatus --vendor 3h-coder --app-version <version> --icon ./logo.ico --dest ../dist --verbose --input . --main-jar <jarWithDependencies> --about-url https://github.com/3h-coder/celatus/blob/main/README.md --license-file ./LICENSE --linux-shortcut --linux-menu-group Utilities
+    jpackage --type rpm --name Celatus --vendor 3h-coder --app-version <version> --icon ./logo.png --dest ../dist --verbose --input . --main-jar <jarWithDependencies> --about-url https://github.com/3h-coder/celatus/blob/main/README.md --license-file ./LICENSE --linux-shortcut --linux-menu-group Utilities
