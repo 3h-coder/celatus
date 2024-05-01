@@ -42,6 +42,7 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Popup;
 
@@ -115,9 +116,6 @@ public class MainWindowController extends BaseWindowController {
   private void setBindings() {
     descriptionPane.maxHeightProperty().bind(catDescription.prefHeightProperty());
     descriptionPane.minHeightProperty().bind(catDescription.prefHeightProperty());
-    // passwordsPane.maxHeightProperty().bind(passwordsTable.prefHeightProperty());
-    // passwordsPane.minHeightProperty().bind(passwordsTable.prefHeightProperty());
-
     passwordsPane.maxHeightProperty().bind(Bindings.divide(columnPane2.heightProperty(), 100).multiply(80));
   }
 
@@ -215,6 +213,7 @@ public class MainWindowController extends BaseWindowController {
    * @param category
    */
   public void displayPasswords(Category category) {
+    passwordsPane.setPrefHeight(Region.USE_COMPUTED_SIZE);
     passwordsTable.getItems().clear();
     passwordsTable.setPrefHeight(0);
     if (category.getPasswordEntries() != null) {
