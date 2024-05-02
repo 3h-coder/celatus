@@ -14,7 +14,7 @@
       <HBox layoutX="10.0" layoutY="10.0" spacing="5.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Button fx:id="minimizeButton" mnemonicParsing="false" onAction="#minimize" styleClass="topRowButton" text="_" visible="false" />
-            <Button id="closeButton" fx:id="closeButton" mnemonicParsing="false" onAction="#close" styleClass="topRowButton" text="X" visible="false" />
+            <Button id="closeButton" fx:id="closeButton" mnemonicParsing="false" onAction="#closeDialog" styleClass="topRowButton" text="X" visible="false" />
          </children>
       </HBox>
       <Label id="warningLabel" fx:id="label01" alignment="CENTER" contentDisplay="TOP" layoutX="20.0" layoutY="30.0" prefHeight="66.0" prefWidth="400.0" text="Please enter your master password. Your master password is not saved anywhere. Please make sure you write it down somewhere as there will be no way to recover your data!" textAlignment="JUSTIFY" wrapText="true" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="30.0">
