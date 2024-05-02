@@ -47,6 +47,7 @@ public class PasswordPackageProcessor {
 
     public void setUpPasswordFields() {
         var initialPwdValue = StringUtils.isBlank(pwdField.getText()) ? "" : pwdField.getText();
+        password = initialPwdValue;
         passwordValueTracker = new TextInputValueTracker(initialPwdValue);
         addOnKeyPressedListeners();
         addTextChangedListeners();
