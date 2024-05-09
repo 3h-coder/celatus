@@ -321,7 +321,7 @@ public class PasswordWindowController extends DialogWindowController {
     }
     closeDialog();
     // Refreshing the password entry view in the main window
-    controller.displayPasswords(category);
+    controller.refreshPasswords(category);
   }
 
   @FXML
