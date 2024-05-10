@@ -89,8 +89,6 @@ public class MainWindowController extends BaseWindowController {
         () -> {
           performGraphicalSetup();
         });
-    // logger.debug(App.getProperties());
-    // logger.debug(App.getPasswordsDatabase());
   }
 
   /**
@@ -101,12 +99,12 @@ public class MainWindowController extends BaseWindowController {
     // We set the minimum window dimensions
     window.setMinWidth(700);
     window.setMinHeight(400);
-    // We set the proper bindings
+
     setBindings();
-    // We add our listeners
-    addListeners();
+    addCategoryListeners();
+    
     // We fill up the categories list view and set up the context menus
-    displayCategories();
+    refreshCategories();
     // We set our context menus and passwords table
     setContextMenus();
     setPasswordsTable();
@@ -118,7 +116,7 @@ public class MainWindowController extends BaseWindowController {
     passwordsPane.maxHeightProperty().bind(columnPane2.heightProperty().multiply(0.8));
   }
   
-  private void addListeners() {
+  private void addCategoryListeners() {
     categoriesList
         .getSelectionModel()
         .selectedItemProperty()
@@ -134,7 +132,7 @@ public class MainWindowController extends BaseWindowController {
         .widthProperty()
         .addListener(
             (observable, oldValue, newValue) -> {
-              String selectedCategory = categoriesList.getSelectionModel().getSelectedItem();
+              String selectedCategory = getSelectedCategory();
               if (selectedCategory != null) {
                 FXMLUtils.adjustTextAreaHeight(catDescription);
               }
@@ -143,8 +141,6 @@ public class MainWindowController extends BaseWindowController {
 
   /**
    * Displays the category's description as well as all of its passwords
-   *
-   * @param categoryName
    */
   public void showCategory(String categoryName) {
     Category category = App.getPasswordsDatabase().getCategory(categoryName);
@@ -156,13 +152,11 @@ public class MainWindowController extends BaseWindowController {
       catDescription.setPrefHeight(0);
     }
     // Displaying all the password entries
-    displayPasswords(category);
+    refreshPasswords(category);
   }
 
   /**
    * Displays the given description in the description pane
-   *
-   * @param description
    */
   @FXML
   public void showDescription(String description) {
@@ -171,15 +165,54 @@ public class MainWindowController extends BaseWindowController {
     FXMLUtils.adjustTextAreaHeight(catDescription);
   }
 
-  /** Displays all the categories of our database */
-  private void displayCategories() {
-    String selectedCategory = categoriesList.getSelectionModel().getSelectedItem();
+  /** Displays all the categories of our database, refreshing the view
+   * and selecting the first category if none is selected
+   */
+  private void refreshCategories() {
+    String selectedCategory = getSelectedCategory();
+    // refresh
     categoriesList.getItems().clear();
     for (Category category : App.getPasswordsDatabase().getCategories()) {
       FXMLUtils.addToListView(categoriesList, category.getName());
     }
+    // reselect the previously selected category
     if (selectedCategory != null) {
       categoriesList.getSelectionModel().select(selectedCategory);
+    } else if (!categoriesList.getItems().isEmpty()) {
+      categoriesList.getSelectionModel().select(0);
+    }
+  }
+
+  /**
+   * Displays all the password entries of the selected category, refreshing the
+   * view
+   */
+  public void refreshPasswords(Category category) {
+    passwordsPane.setPrefHeight(Region.USE_COMPUTED_SIZE);
+    passwordsTable.getItems().clear();
+    passwordsTable.setPrefHeight(0);
+    if (category.getPasswordEntries() != null) {
+      passwordsTable.setVisible(true);
+      fillPasswordsTable(category);
+    } else {
+      passwordsTable.setVisible(false);
+    }
+  }
+
+  /**
+   * Displays all the given password entries
+   *
+   * @param category
+   */
+  public void refreshPasswords(List<PasswordEntry> passwordEntries) {
+    passwordsTable.getItems().clear();
+    passwordsTable.setPrefHeight(0);
+    catDescription.setPrefHeight(0);
+    if (passwordEntries != null && !passwordEntries.isEmpty()) {
+      passwordsTable.setVisible(true);
+      fillPasswordsTable(passwordEntries);
+    } else {
+      passwordsTable.setVisible(false);
     }
   }
 
@@ -206,41 +239,6 @@ public class MainWindowController extends BaseWindowController {
   }
 
   /**
-   * Displays all the password entries of the selected category, refreshing the
-   * view
-   *
-   * @param category
-   */
-  public void displayPasswords(Category category) {
-    passwordsPane.setPrefHeight(Region.USE_COMPUTED_SIZE);
-    passwordsTable.getItems().clear();
-    passwordsTable.setPrefHeight(0);
-    if (category.getPasswordEntries() != null) {
-      passwordsTable.setVisible(true);
-      fillPasswordsTable(category);
-    } else {
-      passwordsTable.setVisible(false);
-    }
-  }
-
-  /**
-   * Displays all the given password entries
-   *
-   * @param category
-   */
-  public void displayPasswords(List<PasswordEntry> passwordEntries) {
-    passwordsTable.getItems().clear();
-    passwordsTable.setPrefHeight(0);
-    catDescription.setPrefHeight(0);
-    if (passwordEntries != null && !passwordEntries.isEmpty()) {
-      passwordsTable.setVisible(true);
-      fillPasswordsTable(passwordEntries);
-    } else {
-      passwordsTable.setVisible(false);
-    }
-  }
-
-  /**
    * Used whenever we resize the window, to prevent a glitch showing an empty
    * description
    */
@@ -252,6 +250,10 @@ public class MainWindowController extends BaseWindowController {
     }
   }
 
+  private String getSelectedCategory() {
+    return categoriesList.getSelectionModel().getSelectedItem();
+  }
+  
   // endregion
 
   // region =====Event Methods=====
@@ -315,25 +317,25 @@ public class MainWindowController extends BaseWindowController {
     if (event.isControlDown() && eventCode == KeyCode.Z) {
       App.getActionTracker().goBackwards();
 
-      String selectedCategory = categoriesList.getSelectionModel().getSelectedItem();
+      String selectedCategory = getSelectedCategory();
       if (selectedCategory != null) {
         Category category = App.getPasswordsDatabase().getCategory(selectedCategory);
-        displayPasswords(category);
+        refreshPasswords(category);
       }
 
-      displayCategories();
+      refreshCategories();
     }
     // Ctrl+Y
     if (event.isControlDown() && eventCode == KeyCode.Y) {
       App.getActionTracker().goForwards();
 
-      String selectedCategory = categoriesList.getSelectionModel().getSelectedItem();
+      String selectedCategory = getSelectedCategory();
       if (selectedCategory != null) {
         Category category = App.getPasswordsDatabase().getCategory(selectedCategory);
-        displayPasswords(category);
+        refreshPasswords(category);
       }
 
-      displayCategories();
+      refreshCategories();
     }
   }
 
@@ -344,8 +346,7 @@ public class MainWindowController extends BaseWindowController {
 
     if (eventCode == KeyCode.ESCAPE || eventCode == KeyCode.TAB) {
       // Disabling the onKeyTyped other wise it is triggered
-      searchBar.setOnKeyTyped(keyTypedEvent -> {
-      });
+      searchBar.setOnKeyTyped(keyTypedEvent -> {});
       searchBar.getParent().requestFocus();
 
       return;
@@ -356,7 +357,7 @@ public class MainWindowController extends BaseWindowController {
 
   @FXML
   public void searchBarKeyTyped(KeyEvent event) {
-    displayPasswords(searchPassword());
+    refreshPasswords(searchPassword());
   }
 
   @FXML
@@ -369,7 +370,7 @@ public class MainWindowController extends BaseWindowController {
       summonNotificationPopup(window, "No password found");
       return;
     }
-    displayPasswords(searchResult);
+    refreshPasswords(searchResult);
   }
 
   @FXML
@@ -796,25 +797,25 @@ public class MainWindowController extends BaseWindowController {
   /** Moves the selected category up in the list */
   public void moveCategoryUp() {
     PasswordsDatabase database = App.getPasswordsDatabase();
-    String selectedCategory = categoriesList.getSelectionModel().getSelectedItem();
+    String selectedCategory = getSelectedCategory();
     if (selectedCategory == null) {
       return;
     }
     Category category = database.getCategory(selectedCategory);
     database.moveCategoryUp(category);
-    displayCategories();
+    refreshCategories();
   }
 
   /** Moves the selected category down in the list */
   public void moveCategoryDown() {
     PasswordsDatabase database = App.getPasswordsDatabase();
-    String selectedCategory = categoriesList.getSelectionModel().getSelectedItem();
+    String selectedCategory = getSelectedCategory();
     if (selectedCategory == null) {
       return;
     }
     Category category = database.getCategory(selectedCategory);
     database.moveCategoryDown(category);
-    displayCategories();
+    refreshCategories();
   }
 
   /**
@@ -833,7 +834,7 @@ public class MainWindowController extends BaseWindowController {
     logger.debug("action tracker: " + App.getActionTracker());
     category.removePasswordEntry(pwdEntry);
     // Refresh the passwords display for that category
-    displayPasswords(category);
+    refreshPasswords(category);
   }
 
   /**
@@ -860,8 +861,8 @@ public class MainWindowController extends BaseWindowController {
               + oldCatName
               + " to "
               + newCatName);
-      if (categoriesList.getSelectionModel().getSelectedItem() != null) {
-        displayPasswords(oldCat);
+      if (getSelectedCategory() != null) {
+        refreshPasswords(oldCat);
       }
     } catch (IllegalArgumentException ex) {
       App.error(this.window, ex, "An error occured", logger, AlertMode.OK, true);
@@ -891,7 +892,7 @@ public class MainWindowController extends BaseWindowController {
   // Used for the fxml file
   public void openPwdWindow() {
     removeNotificationPopup();
-    String selectedCategory = categoriesList.getSelectionModel().getSelectedItem();
+    String selectedCategory = getSelectedCategory();
     if (selectedCategory == null) {
       summonNotificationPopup(window, "You must select a category first");
       return;
