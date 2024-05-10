@@ -89,8 +89,6 @@ public class MainWindowController extends BaseWindowController {
         () -> {
           performGraphicalSetup();
         });
-    // logger.debug(App.getProperties());
-    // logger.debug(App.getPasswordsDatabase());
   }
 
   /**
@@ -101,10 +99,10 @@ public class MainWindowController extends BaseWindowController {
     // We set the minimum window dimensions
     window.setMinWidth(700);
     window.setMinHeight(400);
-    // We set the proper bindings
+
     setBindings();
-    // We add our listeners
     addCategoryListeners();
+    
     // We fill up the categories list view and set up the context menus
     refreshCategories();
     // We set our context menus and passwords table
@@ -143,8 +141,6 @@ public class MainWindowController extends BaseWindowController {
 
   /**
    * Displays the category's description as well as all of its passwords
-   *
-   * @param categoryName
    */
   public void showCategory(String categoryName) {
     Category category = App.getPasswordsDatabase().getCategory(categoryName);
@@ -161,8 +157,6 @@ public class MainWindowController extends BaseWindowController {
 
   /**
    * Displays the given description in the description pane
-   *
-   * @param description
    */
   @FXML
   public void showDescription(String description) {
@@ -171,7 +165,9 @@ public class MainWindowController extends BaseWindowController {
     FXMLUtils.adjustTextAreaHeight(catDescription);
   }
 
-  /** Displays all the categories of our database */
+  /** Displays all the categories of our database, refreshing the view
+   * and selecting the first category if none is selected
+   */
   private void refreshCategories() {
     String selectedCategory = getSelectedCategory();
     // refresh
@@ -190,8 +186,6 @@ public class MainWindowController extends BaseWindowController {
   /**
    * Displays all the password entries of the selected category, refreshing the
    * view
-   *
-   * @param category
    */
   public void refreshPasswords(Category category) {
     passwordsPane.setPrefHeight(Region.USE_COMPUTED_SIZE);
