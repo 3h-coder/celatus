@@ -30,6 +30,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -470,8 +471,7 @@ public class MainWindowController extends BaseWindowController {
 
     deletePwdMenuItem.setOnAction(
         event -> {
-          App.warn(
-              this.window, "Are you sure you want to delete it?", logger, AlertMode.YES_AND_NO);
+          App.warn(window, "Are you sure you want to delete it?", logger, AlertMode.YES_AND_NO);
           if (App.getSignal(Signal.YES)) {
             PasswordEntry selectedPassword = getSelectedPassword();
             deletePasswordEntry(selectedPassword);
@@ -500,8 +500,29 @@ public class MainWindowController extends BaseWindowController {
           App.getHS().showDocument(url);
         });
 
+    // Display the context menu on enter
+    passwordsTable.setOnKeyPressed(event -> {
+      var keyCode = event.getCode();
+      var selectedPasswordEntry = getSelectedPassword();
+      
+      if (keyCode == KeyCode.ENTER && selectedPasswordEntry != null) {
+        var index = passwordsTable.getSelectionModel().getSelectedIndex();
+        var row = FXMLUtils.getAllNodesByClass(passwordsTable, TableRow.class).stream()
+        .filter(r -> r.indexProperty().get() == index)
+        .findFirst().orElse(null);
+
+        if (row == null) {
+          return;
+        }
+        var localBounds = row.getBoundsInLocal();
+        var screenBounds = row.localToScreen(localBounds);
+        passwordsTable.fireEvent(new ContextMenuEvent(ContextMenuEvent.CONTEXT_MENU_REQUESTED, 
+        0, 0, screenBounds.getMinX(), screenBounds.getMaxY(), false, null));
+      }
+    });
+
     // Runtime context menu calculations
-    this.passwordsTable.addEventHandler(
+    passwordsTable.addEventHandler(
         ContextMenuEvent.CONTEXT_MENU_REQUESTED,
         event -> {
           PasswordEntry selectedPassword = getSelectedPassword();
