@@ -182,7 +182,7 @@ public class MainWindowController extends BaseWindowController {
     // reselect the previously selected category
     if (selectedCategory != null) {
       categoriesList.getSelectionModel().select(selectedCategory);
-    } else {
+    } else if (!categoriesList.getItems().isEmpty()) {
       categoriesList.getSelectionModel().select(0);
     }
   }
