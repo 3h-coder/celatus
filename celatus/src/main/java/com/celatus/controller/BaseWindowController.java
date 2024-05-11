@@ -202,10 +202,10 @@ public abstract class BaseWindowController {
     textArea.setWrapText(true);
     textArea.setEditable(false);
     textArea.setMouseTransparent(true);
+    textArea.setFocusTraversable(false);
     String theme = App.getProperties().getProperty(UserSettings.THEME.toString());
     textArea.getStylesheets().add(App.class.getResource("styles/" + theme + ".css").toExternalForm());
     textArea.getStyleClass().add("popup");
-    textArea.focusTraversableProperty().set(false);
     FXMLUtils.adjustTextAreaDimensions(textArea);
 
     Popup popup = new Popup();
@@ -217,7 +217,6 @@ public abstract class BaseWindowController {
     popup.setY(window.getY());
 
     popup.getContent().addAll(textArea);
-    // popup.setAutoHide(true);
 
     // Create a TranslateTransition to move the popup down
     // right under the menu bar row

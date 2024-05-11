@@ -126,12 +126,29 @@ public class MainWindowController extends BaseWindowController {
         return;
       }
 
+      // logger.debug("Focus went from " + oldFocus + " to " + newFocus);
+
+      if (oldFocus == categoriesList) {
+        for (var cell : FXMLUtils.getAllNodesByClass(categoriesList, ListCell.class)) {
+          var contextMenu = cell.getContextMenu();
+          if (contextMenu != null && contextMenu.isShowing()) {
+            contextMenu.hide();
+          }
+        }
+      }
+      else if (oldFocus == passwordsTable) {
+        var contextMenu = passwordsTable.getContextMenu();
+        if (contextMenu != null && contextMenu.isShowing()) {
+          contextMenu.hide();
+        }
+      }
+
+
       // Select the first category when the categories list gets the focus
       // and no category is selected
       if (newFocus == categoriesList && getSelectedCategory() == null) {
         categoriesList.getSelectionModel().select(0);
       }
-
       // Select the first password entry when the passwords table gets the focus
       // and no password entry is selected
       else if (newFocus == passwordsTable && getSelectedPassword() == null) {
@@ -267,11 +284,9 @@ public class MainWindowController extends BaseWindowController {
 
   /**
    * Fills the password table with the given category's password entries
-   *
-   * @param cat
    */
-  private void fillPasswordsTable(Category cat) {
-    for (PasswordEntry pwdEntry : cat.getPasswordEntries()) {
+  private void fillPasswordsTable(Category category) {
+    for (PasswordEntry pwdEntry : category.getPasswordEntries()) {
       FXMLUtils.addToTableView(passwordsTable, pwdEntry);
     }
   }
@@ -393,7 +408,7 @@ public class MainWindowController extends BaseWindowController {
   }
 
   @FXML
-  public void searchBarKeyPressed(KeyEvent event) {
+  private void searchBarKeyPressed(KeyEvent event) {
     KeyCode eventCode = event.getCode();
     // String eventText = event.getText();
 
@@ -418,12 +433,12 @@ public class MainWindowController extends BaseWindowController {
   }
 
   @FXML
-  public void searchBarKeyTyped(KeyEvent event) {
+  private void searchBarKeyTyped(KeyEvent event) {
     refreshPasswords(searchPassword());
   }
 
   @FXML
-  public void searchBarOnAction() {
+  private void searchBarOnAction() {
     var searchResult = searchPassword();
     if (searchResult == null) {
       return;
@@ -435,13 +450,53 @@ public class MainWindowController extends BaseWindowController {
     refreshPasswords(searchResult);
   }
 
+  @FXML
+  private void categoriesListKeyPressed(KeyEvent event) {
+    var keyCode = event.getCode();
+    var selectedCategory = getSelectedCategory();
+
+    if (keyCode == KeyCode.ENTER && selectedCategory != null) {
+      var index = categoriesList.getSelectionModel().getSelectedIndex();
+      var cell = FXMLUtils.getAllNodesByClass(categoriesList, ListCell.class).stream()
+      .filter(c -> c.getIndex() == index)
+      .findFirst().orElse(null);
+
+      if (cell == null) {
+        return;
+      }
+      var localBounds = cell.getBoundsInLocal();
+      var screenBounds = cell.localToScreen(localBounds);
+      cell.fireEvent(new ContextMenuEvent(ContextMenuEvent.CONTEXT_MENU_REQUESTED, 
+      0, 0, screenBounds.getMinX(), screenBounds.getMaxY(), false, null));
+    }
+  }
+
+  @FXML
+  private void passwordsTableKeyPressed(KeyEvent event) {
+    var keyCode = event.getCode();
+    var selectedPasswordEntry = getSelectedPassword();
+    
+    if (keyCode == KeyCode.ENTER && selectedPasswordEntry != null) {
+      var index = passwordsTable.getSelectionModel().getSelectedIndex();
+      var row = FXMLUtils.getAllNodesByClass(passwordsTable, TableRow.class).stream()
+      .filter(r -> r.getIndex() == index)
+      .findFirst().orElse(null);
+
+      if (row == null) {
+        return;
+      }
+      var localBounds = row.getBoundsInLocal();
+      var screenBounds = row.localToScreen(localBounds);
+      passwordsTable.fireEvent(new ContextMenuEvent(ContextMenuEvent.CONTEXT_MENU_REQUESTED, 
+      0, 0, screenBounds.getMinX(), screenBounds.getMaxY(), false, null));
+    }
+  }
+  
   /**
    * Searches for the given password, and displays all the passwords that contain
    * its name.
-   *
-   * @param passwordName
    */
-  public List<PasswordEntry> searchPassword() {
+  private List<PasswordEntry> searchPassword() {
     // We deselect the selected category
     categoriesList.getSelectionModel().clearSelection();
     return SearchHandler.searchPassword(searchBar.getText());
@@ -552,27 +607,6 @@ public class MainWindowController extends BaseWindowController {
           }
           App.getHS().showDocument(url);
         });
-
-    // Display the context menu on enter
-    passwordsTable.setOnKeyPressed(event -> {
-      var keyCode = event.getCode();
-      var selectedPasswordEntry = getSelectedPassword();
-      
-      if (keyCode == KeyCode.ENTER && selectedPasswordEntry != null) {
-        var index = passwordsTable.getSelectionModel().getSelectedIndex();
-        var row = FXMLUtils.getAllNodesByClass(passwordsTable, TableRow.class).stream()
-        .filter(r -> r.indexProperty().get() == index)
-        .findFirst().orElse(null);
-
-        if (row == null) {
-          return;
-        }
-        var localBounds = row.getBoundsInLocal();
-        var screenBounds = row.localToScreen(localBounds);
-        passwordsTable.fireEvent(new ContextMenuEvent(ContextMenuEvent.CONTEXT_MENU_REQUESTED, 
-        0, 0, screenBounds.getMinX(), screenBounds.getMaxY(), false, null));
-      }
-    });
 
     // Runtime context menu calculations
     passwordsTable.addEventHandler(
