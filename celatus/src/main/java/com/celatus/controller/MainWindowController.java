@@ -22,7 +22,6 @@ import com.celatus.util.FXMLUtils;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
-import javafx.scene.control.Cell;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -35,6 +34,7 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputControl;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.KeyCode;
@@ -45,7 +45,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.stage.Popup;
 
 /** The controller of the App's main window */
 public class MainWindowController extends BaseWindowController {
@@ -138,14 +137,6 @@ public class MainWindowController extends BaseWindowController {
       else if (newFocus == passwordsTable && getSelectedPassword() == null) {
         passwordsTable.getSelectionModel().select(0);
       }
-
-      // Enable key transfer if a popup is currently having the focus
-      else if (newFocus == searchBar) {
-        Popup popup = (Popup) App.getTempVariable("notification_popup");
-        if (popup != null) {
-          FXMLUtils.enableKeyTransfer((TextArea) popup.getContent().get(0), searchBar);
-        }
-      }
     });
   }
   
@@ -173,14 +164,29 @@ public class MainWindowController extends BaseWindowController {
   }
 
   private void addEventFilters() {
+    addCategoriesListEventFilters();
+    addPasswordsTableEventFilter();
+  }
+
+  private void addCategoriesListEventFilters() {
     categoriesList.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
       var eventCode = event.getCode();
-
       // Go to the search bar when pressing key up from the first category 
       if (eventCode == KeyCode.UP && categoriesList.getSelectionModel().getSelectedIndex() == 0) {
         searchBar.requestFocus();
-        // event.consume();
       }
+    });
+  }
+
+  private void addPasswordsTableEventFilter() {
+    passwordsTable.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+      var eventCode = event.getCode();
+
+      if (eventCode == KeyCode.LEFT) {
+        categoriesList.requestFocus();
+        passwordsTable.getSelectionModel().clearSelection();
+      }
+
     });
   }
 
@@ -339,7 +345,7 @@ public class MainWindowController extends BaseWindowController {
     KeyCode eventCode = event.getCode();
     // Full screen
     if (eventCode == KeyCode.F11) {
-      removeNotificationPopup();
+      removeRegisteredNotificationPopup();
       if (window.isMaximized()) {
         window.setMaximized(false);
         controlCatDescription();
@@ -347,7 +353,7 @@ public class MainWindowController extends BaseWindowController {
         window.setMaximized(true);
       }
     } else if (eventCode == KeyCode.ESCAPE && window.isMaximized()) {
-      removeNotificationPopup();
+      removeRegisteredNotificationPopup();
       window.setMaximized(false);
       controlCatDescription();
     }
@@ -402,6 +408,10 @@ public class MainWindowController extends BaseWindowController {
     if (eventCode == KeyCode.DOWN) {
       categoriesList.requestFocus();
       return;
+    }
+
+    if (eventCode == KeyCode.UP) {
+      menuBar.requestFocus();
     }
     // Re-enabling onKeyTyped if not the escape key
     searchBar.setOnKeyTyped(keyTypedEvent -> searchBarKeyTyped(keyTypedEvent));
@@ -945,13 +955,13 @@ public class MainWindowController extends BaseWindowController {
 
   // Used for the fxml file
   public void openCatWindow() {
-    removeNotificationPopup();
+    removeRegisteredNotificationPopup();
     openCategoryWindow(null);
   }
 
   // Used for the fxml file
   public void openPwdWindow() {
-    removeNotificationPopup();
+    removeRegisteredNotificationPopup();
     String selectedCategory = getSelectedCategory();
     if (selectedCategory == null) {
       summonNotificationPopup(window, "You must select a category first");

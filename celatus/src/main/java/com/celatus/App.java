@@ -27,6 +27,7 @@ import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -57,6 +58,9 @@ public class App extends Application {
 
   private static HostServices hostServices; // Used to open up the password's website
 
+  // Temp variable keys
+  private static final String KEY_NOTIFICATION_POPUP = "notification_popup";
+  
   // endregion
 
   // region =====Getters and Setters=====
@@ -342,6 +346,18 @@ public class App extends Application {
       return true;
     }
     return false;
+  }
+
+  public static void registerNotificationPopup(Popup popup) {
+    addTempVariable(KEY_NOTIFICATION_POPUP, popup);
+  }
+
+  public static Popup getNotificationPopup() {
+    return (Popup) getTempVariable(KEY_NOTIFICATION_POPUP);
+  }
+
+  public static Popup extractNotificationPopup() {
+    return (Popup) extractTempVariable(KEY_NOTIFICATION_POPUP);
   }
 
   /**
