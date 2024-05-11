@@ -220,7 +220,7 @@ public abstract class BaseWindowController {
     }
 
     Popup popup = new Popup();
-
+    
     // The popup is located at the window's middle
     popup.setX(
         window.getX()

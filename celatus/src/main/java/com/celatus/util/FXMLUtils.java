@@ -211,14 +211,12 @@ public class FXMLUtils {
           KeyCode eventCode = event.getCode();
           // Ignore the text input if alt or ctrl is pressed
           if (event.isControlDown() || event.isAltDown()) {
-            // App.addTempVariable("ignore_key", true);
             return;
           }
           // Trigger the onAction() if it's the enter key
           if (eventCode == KeyCode.ENTER) {
             if (receiver instanceof TextField) {
               ((TextField) receiver).fireEvent(new ActionEvent());
-              ;
               // It's a text area so we need a new line
             } else if (receiver instanceof TextArea) {
               TextArea textAreaReceiver = (TextArea) receiver;
@@ -229,9 +227,11 @@ public class FXMLUtils {
               textAreaReceiver.positionCaret(caretPosition + 1);
             }
           }
+
           // Text handling
           String receiverText = receiver.getText();
           String eventText = event.getText();
+
           if (event.isShiftDown()) {
             eventText = eventText.toUpperCase();
           }
@@ -257,17 +257,17 @@ public class FXMLUtils {
             receiverText += eventText;
             receiver.setText(receiverText);
             receiver.positionCaret(receiverText.length());
-            // trigger the receiver onKeyPressed
-            var receiverOnKeyPressed = receiver.getOnKeyPressed();
-            if (receiverOnKeyPressed != null) {
-              receiverOnKeyPressed.handle(event);
-            }
+          }
+
+          // trigger the receiver onKeyPressed
+          var receiverOnKeyPressed = receiver.getOnKeyPressed();
+          if (receiverOnKeyPressed != null) {
+            receiverOnKeyPressed.handle(event);
           }
         });
     // On key typed
     sender.setOnKeyTyped(
         event -> {
-          // Ignore the text input if alt or ctrl is pressed
           var receiverOnKeyTyped = receiver.getOnKeyTyped();
           if (receiverOnKeyTyped != null) {
             receiverOnKeyTyped.handle(event);
