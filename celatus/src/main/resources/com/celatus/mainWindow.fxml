@@ -84,15 +84,15 @@
                 </MenuBar>
             </children>
         </AnchorPane>
-        <AnchorPane id="columnPane1" fx:id="columnPane1" focusTraversable="true" layoutY="39.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="180.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="30.0">
+        <AnchorPane id="columnPane1" fx:id="columnPane1" layoutY="39.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="180.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="30.0">
             <children>
                 <ImageView fx:id="magGlassImage" fitHeight="25.0" fitWidth="25.0" layoutY="6.0" pickOnBounds="true" smooth="false" AnchorPane.leftAnchor="12.0" AnchorPane.topAnchor="10.0">
                     <image>
                         <Image url="@images/magGlass.png" />
                     </image>
                 </ImageView>
-                <TextField fx:id="searchBar" layoutX="31.0" layoutY="18.0" onAction="#searchBarOnAction" onKeyPressed="#searchBarKeyPressed" onKeyTyped="#searchBarKeyTyped" onMouseClicked="#searchBarOnMouseClicked" promptText="Search password" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="11.0" />
-                <ListView fx:id="categoriesList" fixedCellSize="26.0" layoutX="-6.0" layoutY="14.0" prefHeight="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0" />
+                <TextField fx:id="searchBar" layoutX="31.0" layoutY="18.0" onAction="#searchBarOnAction" onKeyPressed="#searchBarKeyPressed" onKeyTyped="#searchBarKeyTyped" promptText="Search password" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="11.0" />
+                <ListView fx:id="categoriesList" fixedCellSize="26.0" layoutX="-6.0" layoutY="14.0" onKeyPressed="#categoriesListKeyPressed" prefHeight="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0" />
             </children>
         </AnchorPane>
       <VBox fx:id="columnPane2" alignment="TOP_CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="180.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
@@ -104,7 +104,7 @@
             </AnchorPane>
             <AnchorPane fx:id="passwordsPane" minHeight="0.0" minWidth="0.0" prefHeight="0.0">
                <children>
-                  <TableView fx:id="passwordsTable" fixedCellSize="24.0" layoutX="7.0" minHeight="0.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="-1.0">
+                  <TableView fx:id="passwordsTable" fixedCellSize="24.0" layoutX="7.0" minHeight="0.0" onKeyPressed="#passwordsTableKeyPressed" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="-1.0">
                      <placeholder>
                         <Label text="" />
                      </placeholder>

@@ -202,26 +202,14 @@ public abstract class BaseWindowController {
     textArea.setWrapText(true);
     textArea.setEditable(false);
     textArea.setMouseTransparent(true);
+    textArea.setFocusTraversable(false);
     String theme = App.getProperties().getProperty(UserSettings.THEME.toString());
     textArea.getStylesheets().add(App.class.getResource("styles/" + theme + ".css").toExternalForm());
     textArea.getStyleClass().add("popup");
     FXMLUtils.adjustTextAreaDimensions(textArea);
-    // Enable key transfer to the window's focused textfield or text area
-    var sceneFocusOwner = window.getScene().getFocusOwner();
-    if (sceneFocusOwner instanceof TextInputControl) {
-      FXMLUtils.enableKeyTransfer(textArea, (TextInputControl) sceneFocusOwner);
-    } else if (sceneFocusOwner.getOnKeyPressed() != null
-        || sceneFocusOwner.getOnKeyTyped() != null) {
-      // Transfer key events to the window's scene focus owner
-      FXMLUtils.transferKeyEvents(textArea, sceneFocusOwner);
-    } else {
-      // Transfer key events to the window's scene root
-      FXMLUtils.transferKeyEvents(textArea, window.getScene().getRoot());
-    }
 
     Popup popup = new Popup();
-
-    // The popup is located at the window's middle
+    // The popup is located at the window's top middle
     popup.setX(
         window.getX()
             + (window.getWidth() / 2)
@@ -229,7 +217,6 @@ public abstract class BaseWindowController {
     popup.setY(window.getY());
 
     popup.getContent().addAll(textArea);
-    // popup.setAutoHide(true);
 
     // Create a TranslateTransition to move the popup down
     // right under the menu bar row
@@ -241,26 +228,25 @@ public abstract class BaseWindowController {
     FadeTransition fadeTransition = new FadeTransition(Duration.seconds(4.9), popup.getContent().get(0));
     fadeTransition.setFromValue(1);
     fadeTransition.setToValue(0);
-    fadeTransition.setOnFinished(
-        event -> {
-          popup.hide();
-        });
+    fadeTransition.setOnFinished(event -> popup.hide());
 
-    // Only one popup at a time
-    removeNotificationPopup();
-    App.addTempVariable("notification_popup", popup);
+    // Only one notification popup at a time
+    removeRegisteredNotificationPopup();
+    App.registerNotificationPopup(popup);
+
+    // Display and animations
     popup.show(window);
     translateTransition.play();
     fadeTransition.play();
   }
 
   public boolean notifPopupShown() {
-    Popup popup = (Popup) App.extractTempVariable("notification_popup");
+    Popup popup = App.extractNotificationPopup();
     return popup != null;
   }
 
-  public void removeNotificationPopup() {
-    Popup popup = (Popup) App.extractTempVariable("notification_popup");
+  protected void removeRegisteredNotificationPopup() {
+    Popup popup = App.extractNotificationPopup();
     if (popup != null) {
       popup.hide();
     }
