@@ -126,8 +126,7 @@ public class MainWindowController extends BaseWindowController {
         return;
       }
 
-      // logger.debug("Focus went from " + oldFocus + " to " + newFocus);
-
+      // Hiding the context menus on focus lost
       if (oldFocus == categoriesList) {
         for (var cell : FXMLUtils.getAllNodesByClass(categoriesList, ListCell.class)) {
           var contextMenu = cell.getContextMenu();
@@ -191,7 +190,17 @@ public class MainWindowController extends BaseWindowController {
       // Go to the search bar when pressing key up from the first category 
       if (eventCode == KeyCode.UP && categoriesList.getSelectionModel().getSelectedIndex() == 0) {
         searchBar.requestFocus();
+        return;
       }
+
+      // Go back to the first category from a key down on the last one
+      if (eventCode == KeyCode.DOWN && 
+          categoriesList.getSelectionModel().getSelectedIndex() == categoriesList.getItems().size() - 1) {
+        categoriesList.getSelectionModel().select(0);
+        event.consume();
+        return;
+      }
+
     });
   }
 
