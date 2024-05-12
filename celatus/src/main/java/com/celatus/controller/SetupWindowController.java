@@ -37,6 +37,8 @@ public class SetupWindowController extends DialogWindowController {
   @FXML
   private TextField revealedPwdField2;
   @FXML
+  private Label label00;
+  @FXML
   private Label label01;
   @FXML
   private Label label02;

@@ -23,6 +23,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
@@ -77,6 +78,8 @@ public class MainWindowController extends BaseWindowController {
   private Menu helpMenu;
   @FXML
   private ListView<String> categoriesList;
+  @FXML
+  private Label addPwdLabel;
 
   // endregion
 
@@ -163,8 +166,10 @@ public class MainWindowController extends BaseWindowController {
         .addListener(
             (observable, oldValue, newValue) -> {
               if (StringUtils.isBlank(newValue)) {
+                addPwdLabel.setVisible(false);
                 return;
               }
+              addPwdLabel.setVisible(true);
               showCategory(newValue);
             });
 
