@@ -20,9 +20,11 @@ import com.celatus.util.DesktopUtils;
 import com.celatus.util.FXMLUtils;
 
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
@@ -34,8 +36,8 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputControl;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -43,6 +45,7 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
@@ -77,6 +80,12 @@ public class MainWindowController extends BaseWindowController {
   private Menu helpMenu;
   @FXML
   private ListView<String> categoriesList;
+  @FXML
+  private Label addPwdLabel;
+  @FXML
+  private BorderPane logoBorderPane;
+  @FXML
+  private ImageView backgroundLogo;
 
   // endregion
 
@@ -106,7 +115,7 @@ public class MainWindowController extends BaseWindowController {
     addFocusListeners();
     addCategoryListeners();
     addEventFilters();
-    
+
     // We fill up the categories list view and set up the context menus
     refreshCategories();
     // We set our context menus and passwords table
@@ -118,6 +127,8 @@ public class MainWindowController extends BaseWindowController {
     descriptionPane.maxHeightProperty().bind(catDescription.prefHeightProperty());
     descriptionPane.minHeightProperty().bind(catDescription.prefHeightProperty());
     passwordsPane.maxHeightProperty().bind(columnPane2.heightProperty().multiply(0.8));
+    backgroundLogo.fitHeightProperty().bind(Bindings.min(400, logoBorderPane.heightProperty().multiply(0.6)));
+    backgroundLogo.fitWidthProperty().bind(backgroundLogo.fitHeightProperty());
   }
 
   private void addFocusListeners() {
@@ -134,14 +145,12 @@ public class MainWindowController extends BaseWindowController {
             contextMenu.hide();
           }
         }
-      }
-      else if (oldFocus == passwordsTable) {
+      } else if (oldFocus == passwordsTable) {
         var contextMenu = passwordsTable.getContextMenu();
         if (contextMenu != null && contextMenu.isShowing()) {
           contextMenu.hide();
         }
       }
-
 
       // Select the first category when the categories list gets the focus
       // and no category is selected
@@ -155,7 +164,7 @@ public class MainWindowController extends BaseWindowController {
       }
     });
   }
-  
+
   private void addCategoryListeners() {
     categoriesList
         .getSelectionModel()
@@ -163,8 +172,10 @@ public class MainWindowController extends BaseWindowController {
         .addListener(
             (observable, oldValue, newValue) -> {
               if (StringUtils.isBlank(newValue)) {
+                addPwdLabel.setVisible(false);
                 return;
               }
+              addPwdLabel.setVisible(true);
               showCategory(newValue);
             });
 
@@ -187,14 +198,14 @@ public class MainWindowController extends BaseWindowController {
   private void addCategoriesListEventFilters() {
     categoriesList.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
       var eventCode = event.getCode();
-      // Go to the search bar when pressing key up from the first category 
+      // Go to the search bar when pressing key up from the first category
       if (eventCode == KeyCode.UP && categoriesList.getSelectionModel().getSelectedIndex() == 0) {
         searchBar.requestFocus();
         return;
       }
 
       // Go back to the first category from a key down on the last one
-      if (eventCode == KeyCode.DOWN && 
+      if (eventCode == KeyCode.DOWN &&
           categoriesList.getSelectionModel().getSelectedIndex() == categoriesList.getItems().size() - 1) {
         categoriesList.getSelectionModel().select(0);
         event.consume();
@@ -242,7 +253,8 @@ public class MainWindowController extends BaseWindowController {
     FXMLUtils.adjustTextAreaHeight(catDescription);
   }
 
-  /** Displays all the categories of our database, refreshing the view
+  /**
+   * Displays all the categories of our database, refreshing the view
    * and selecting the first category if none is selected
    */
   private void refreshCategories() {
@@ -330,7 +342,7 @@ public class MainWindowController extends BaseWindowController {
   private PasswordEntry getSelectedPassword() {
     return passwordsTable.getSelectionModel().getSelectedItem();
   }
-  
+
   // endregion
 
   // region =====Event Methods=====
@@ -423,7 +435,8 @@ public class MainWindowController extends BaseWindowController {
 
     if (eventCode == KeyCode.ESCAPE || eventCode == KeyCode.TAB) {
       // Disabling the onKeyTyped other wise it is triggered
-      searchBar.setOnKeyTyped(keyTypedEvent -> {});
+      searchBar.setOnKeyTyped(keyTypedEvent -> {
+      });
       searchBar.getParent().requestFocus();
 
       return;
@@ -467,16 +480,16 @@ public class MainWindowController extends BaseWindowController {
     if (keyCode == KeyCode.ENTER && selectedCategory != null) {
       var index = categoriesList.getSelectionModel().getSelectedIndex();
       var cell = FXMLUtils.getAllNodesByClass(categoriesList, ListCell.class).stream()
-      .filter(c -> c.getIndex() == index)
-      .findFirst().orElse(null);
+          .filter(c -> c.getIndex() == index)
+          .findFirst().orElse(null);
 
       if (cell == null) {
         return;
       }
       var localBounds = cell.getBoundsInLocal();
       var screenBounds = cell.localToScreen(localBounds);
-      cell.fireEvent(new ContextMenuEvent(ContextMenuEvent.CONTEXT_MENU_REQUESTED, 
-      0, 0, screenBounds.getMinX(), screenBounds.getMaxY(), false, null));
+      cell.fireEvent(new ContextMenuEvent(ContextMenuEvent.CONTEXT_MENU_REQUESTED,
+          0, 0, screenBounds.getMinX(), screenBounds.getMaxY(), false, null));
     }
   }
 
@@ -484,23 +497,23 @@ public class MainWindowController extends BaseWindowController {
   private void passwordsTableKeyPressed(KeyEvent event) {
     var keyCode = event.getCode();
     var selectedPasswordEntry = getSelectedPassword();
-    
+
     if (keyCode == KeyCode.ENTER && selectedPasswordEntry != null) {
       var index = passwordsTable.getSelectionModel().getSelectedIndex();
       var row = FXMLUtils.getAllNodesByClass(passwordsTable, TableRow.class).stream()
-      .filter(r -> r.getIndex() == index)
-      .findFirst().orElse(null);
+          .filter(r -> r.getIndex() == index)
+          .findFirst().orElse(null);
 
       if (row == null) {
         return;
       }
       var localBounds = row.getBoundsInLocal();
       var screenBounds = row.localToScreen(localBounds);
-      passwordsTable.fireEvent(new ContextMenuEvent(ContextMenuEvent.CONTEXT_MENU_REQUESTED, 
-      0, 0, screenBounds.getMinX(), screenBounds.getMaxY(), false, null));
+      passwordsTable.fireEvent(new ContextMenuEvent(ContextMenuEvent.CONTEXT_MENU_REQUESTED,
+          0, 0, screenBounds.getMinX(), screenBounds.getMaxY(), false, null));
     }
   }
-  
+
   /**
    * Searches for the given password, and displays all the passwords that contain
    * its name.
