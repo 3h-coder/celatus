@@ -7,13 +7,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.celatus.App;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
@@ -26,9 +24,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputControl;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
@@ -424,20 +419,22 @@ public class FXMLUtils {
 
   public static void launchDialogWindow(Stage owner, String fxml) throws IOException {
     Stage dialogStage = new Stage();
-    dialogStage.initModality(Modality.APPLICATION_MODAL);
-    dialogStage.initStyle(StageStyle.UNDECORATED);
-    dialogStage.initOwner(owner);
     dialogStage.setScene(new Scene(FXMLUtils.loadFXML(fxml)));
+    prepareDialogWindow(owner, dialogStage);
     dialogStage.showAndWait();
   }
 
   public static void launchDialogWindow(Stage owner, Scene scene) throws IOException {
     Stage dialogStage = new Stage();
+    dialogStage.setScene(scene);
+    prepareDialogWindow(owner, dialogStage);
+    dialogStage.showAndWait();
+  }
+
+  private static void prepareDialogWindow(Stage owner, Stage dialogStage) {
     dialogStage.initModality(Modality.APPLICATION_MODAL);
     dialogStage.initStyle(StageStyle.UNDECORATED);
     dialogStage.initOwner(owner);
-    dialogStage.setScene(scene);
-    dialogStage.showAndWait();
   }
 
   // endregion

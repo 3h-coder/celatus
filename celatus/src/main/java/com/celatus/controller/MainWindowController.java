@@ -20,6 +20,7 @@ import com.celatus.util.DesktopUtils;
 import com.celatus.util.FXMLUtils;
 
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
@@ -35,8 +36,8 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputControl;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -44,6 +45,7 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
@@ -80,6 +82,10 @@ public class MainWindowController extends BaseWindowController {
   private ListView<String> categoriesList;
   @FXML
   private Label addPwdLabel;
+  @FXML
+  private BorderPane logoBorderPane;
+  @FXML
+  private ImageView backgroundLogo;
 
   // endregion
 
@@ -121,6 +127,8 @@ public class MainWindowController extends BaseWindowController {
     descriptionPane.maxHeightProperty().bind(catDescription.prefHeightProperty());
     descriptionPane.minHeightProperty().bind(catDescription.prefHeightProperty());
     passwordsPane.maxHeightProperty().bind(columnPane2.heightProperty().multiply(0.8));
+    backgroundLogo.fitHeightProperty().bind(Bindings.min(400, logoBorderPane.heightProperty().multiply(0.6)));
+    backgroundLogo.fitWidthProperty().bind(backgroundLogo.fitHeightProperty());
   }
 
   private void addFocusListeners() {
