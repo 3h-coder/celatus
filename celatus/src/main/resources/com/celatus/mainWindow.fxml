@@ -90,9 +90,9 @@
         </AnchorPane>
         <AnchorPane id="columnPane1" fx:id="columnPane1" layoutY="39.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="180.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="30.0">
             <children>
-            <StackPane minHeight="0.0" minWidth="0.0" prefHeight="25.0" prefWidth="25.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="8.0">
+            <StackPane minHeight="0.0" minWidth="0.0" prefHeight="20.0" prefWidth="20.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="8.0">
                <children>
-                      <SVGPath content="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" fill="grey" scaleX="0.04" scaleY="0.04" styleClass="svg" />
+                      <SVGPath content="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" fill="grey" scaleX="0.035" scaleY="0.035" styleClass="svg" />
                </children>
             </StackPane>
                 <TextField fx:id="searchBar" layoutX="31.0" layoutY="18.0" onAction="#searchBarOnAction" onKeyPressed="#searchBarKeyPressed" onKeyTyped="#searchBarKeyTyped" promptText="Search password" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="11.0" />
