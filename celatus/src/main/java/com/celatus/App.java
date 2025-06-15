@@ -15,6 +15,7 @@ import com.celatus.controller.AlertWindowController;
 import com.celatus.controller.BaseWindowController;
 import com.celatus.enums.AlertMode;
 import com.celatus.enums.Signal;
+import com.celatus.enums.WindowType;
 import com.celatus.handler.DatabaseHandler;
 import com.celatus.handler.PropertyHandler;
 import com.celatus.models.ActionTracker;
@@ -138,9 +139,9 @@ public class App extends Application {
     loadProperties();
 
     if (DatabaseHandler.dbFileExists()) {
-      launchWindow(stage, "entryWindow", false);
+      launchWindow(stage, WindowType.ENTRY, false);
     } else {
-      launchWindow(stage, "setupWindow", false);
+      launchWindow(stage, WindowType.SETUP, false);
     }
   }
 
@@ -170,11 +171,10 @@ public class App extends Application {
   /**
    * Launches a window, making it the application's top layer current window.
    *
-   * @param fxml
    * @throws IOException
    */
-  public static void launchWindow(String fxml, boolean resizable) throws IOException {
-    Map<String, Object> map = FXMLUtils.getSceneAndController(fxml);
+  public static void launchWindow(WindowType windowType, boolean resizable) throws IOException {
+    Map<String, Object> map = FXMLUtils.getSceneAndController(windowType);
     App.scene = (Scene) map.get("Scene");
     App.controller = (BaseWindowController) map.get("Controller");
 
@@ -187,12 +187,11 @@ public class App extends Application {
 
   /**
    * Launches a window, making it the application's top layer current window.
-   *
-   * @param fxml
+   * 
    * @throws IOException
    */
-  public static void launchWindow(Stage stage, String fxml, boolean resizable) throws IOException {
-    Map<String, Object> map = FXMLUtils.getSceneAndController(fxml);
+  public static void launchWindow(Stage stage, WindowType windowType, boolean resizable) throws IOException {
+    Map<String, Object> map = FXMLUtils.getSceneAndController(windowType);
     App.scene = (Scene) map.get("Scene");
     App.controller = (BaseWindowController) map.get("Controller");
 
@@ -237,7 +236,7 @@ public class App extends Application {
     }
     // Opening a popup window to notify the user
     try {
-      Map<String, Object> map = FXMLUtils.getSceneAndController("popupWindow");
+      Map<String, Object> map = FXMLUtils.getSceneAndController(WindowType.POPUP);
       Scene scene = (Scene) map.get("Scene");
       AlertWindowController controller = (AlertWindowController) map.get("Controller");
 
@@ -271,7 +270,7 @@ public class App extends Application {
     }
     // Opening a popup window to notify the user
     try {
-      Map<String, Object> map = FXMLUtils.getSceneAndController("popupWindow");
+      Map<String, Object> map = FXMLUtils.getSceneAndController(WindowType.POPUP);
       Scene scene = (Scene) map.get("Scene");
       AlertWindowController controller = (AlertWindowController) map.get("Controller");
 

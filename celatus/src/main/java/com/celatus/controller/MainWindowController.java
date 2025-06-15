@@ -10,6 +10,7 @@ import com.celatus.App;
 import com.celatus.enums.AlertMode;
 import com.celatus.enums.Signal;
 import com.celatus.enums.UserSettings;
+import com.celatus.enums.WindowType;
 import com.celatus.handler.DatabaseHandler;
 import com.celatus.handler.SearchHandler;
 import com.celatus.models.Category;
@@ -850,7 +851,7 @@ public class MainWindowController extends BaseWindowController {
    */
   private void openCategoryWindow(Category category) {
     try {
-      Map<String, Object> map = FXMLUtils.getSceneAndController("categoryWindow");
+      Map<String, Object> map = FXMLUtils.getSceneAndController(WindowType.CATEGORY);
       Scene scene = (Scene) map.get("Scene");
       CategoryWindowController controller = (CategoryWindowController) map.get("Controller");
 
@@ -876,7 +877,7 @@ public class MainWindowController extends BaseWindowController {
    */
   private void openPasswordWindow(PasswordEntry pwdEntry) {
     try {
-      Map<String, Object> map = FXMLUtils.getSceneAndController("passwordWindow");
+      Map<String, Object> map = FXMLUtils.getSceneAndController(WindowType.PASSWORD);
       Scene scene = (Scene) map.get("Scene");
       PasswordWindowController controller = (PasswordWindowController) map.get("Controller");
 
@@ -1040,7 +1041,7 @@ public class MainWindowController extends BaseWindowController {
   public void resetMasterPassword() {
     App.addTempVariable("master_password_reset_signal", true);
     try {
-      Map<String, Object> setupWindowSceneAndController = FXMLUtils.getSceneAndController("setupWindow");
+      Map<String, Object> setupWindowSceneAndController = FXMLUtils.getSceneAndController(WindowType.SETUP);
       var controller = ((SetupWindowController) (setupWindowSceneAndController.get("Controller")));
       controller.displayMinimizeAndCloseButtons();
       controller.setBorderVisible();

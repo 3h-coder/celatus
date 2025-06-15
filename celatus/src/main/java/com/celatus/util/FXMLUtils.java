@@ -11,6 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.celatus.App;
+import com.celatus.enums.WindowType;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -409,9 +410,9 @@ public class FXMLUtils {
     return getLoader(fxml).getController();
   }
 
-  public static Map<String, Object> getSceneAndController(String fxml) throws IOException {
+  public static Map<String, Object> getSceneAndController(WindowType windowType) throws IOException {
     Map<String, Object> map = new HashMap<>();
-    FXMLLoader fxmlLoader = getLoader(fxml);
+    FXMLLoader fxmlLoader = getLoader(windowType.getName());
     map.put("Scene", new Scene(fxmlLoader.load()));
     map.put("Controller", fxmlLoader.getController());
     return map;

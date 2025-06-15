@@ -1,10 +1,10 @@
 module com.celatus {
         requires java.desktop;
-        requires javafx.controls;
-        requires javafx.fxml;
+        requires transitive javafx.controls;
+        requires transitive javafx.fxml;
         requires javafx.graphics;
         requires org.apache.commons.lang3;
-        requires org.apache.logging.log4j;
+        requires transitive org.apache.logging.log4j;
         requires com.fasterxml.jackson.core;
         requires com.fasterxml.jackson.databind;
         requires com.fasterxml.jackson.datatype.jsr310;

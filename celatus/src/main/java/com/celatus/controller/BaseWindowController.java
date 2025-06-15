@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import com.celatus.App;
 import com.celatus.enums.AlertMode;
 import com.celatus.enums.UserSettings;
+import com.celatus.enums.WindowType;
 import com.celatus.util.FXMLUtils;
 
 import javafx.animation.FadeTransition;
@@ -23,7 +24,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputControl;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -115,11 +115,11 @@ public abstract class BaseWindowController {
   /**
    * Launches a window on top of the current one
    *
-   * @param fxml : the name of the fxml file (without the ".fxml" suffix)
+   * @param windowType : the window you want to launch
    */
-  public void launchWindow(String fxml) {
+  public void launchWindow(WindowType windowType) {
     try {
-      Map<String, Object> map = FXMLUtils.getSceneAndController(fxml);
+      Map<String, Object> map = FXMLUtils.getSceneAndController(windowType);
       Scene scene = (Scene) map.get("Scene");
       Stage stage = new Stage();
       stage.initOwner(this.window);
@@ -131,9 +131,9 @@ public abstract class BaseWindowController {
     }
   }
 
-  public void launchWindow(String fxml, double X, double Y) {
+  public void launchWindow(WindowType windowType, double X, double Y) {
     try {
-      Map<String, Object> map = FXMLUtils.getSceneAndController(fxml);
+      Map<String, Object> map = FXMLUtils.getSceneAndController(windowType);
       Scene scene = (Scene) map.get("Scene");
       Stage stage = new Stage();
       stage.initOwner(this.window);
@@ -155,17 +155,17 @@ public abstract class BaseWindowController {
    * <p>
    * <b>Note :</b> This will make the new window the App's main window
    *
-   * @param fxml : the name of the fxml file (without the ".fxml" suffix)
+   * @param windowType : the window (as {@link com.celatus.enums.WindowType})
    */
-  public void switchAppWindow(String fxml, boolean resizable) {
+  public void switchAppWindow(WindowType windowType, boolean resizable) {
     try {
-      App.launchWindow(fxml, resizable);
+      App.launchWindow(windowType, resizable);
       window.close();
     } catch (Exception ex) {
       App.error(
           this.window,
           ex,
-          "An unexpected error occured when trying to open" + fxml,
+          "An unexpected error occured when trying to open" + window,
           logger,
           AlertMode.OK,
           true);
@@ -175,7 +175,7 @@ public abstract class BaseWindowController {
 
   /** Switches to the application's main window */
   public void switchToMainWindow() {
-    switchAppWindow("mainWindow", true);
+    switchAppWindow(WindowType.MAIN, true);
   }
 
   /**
