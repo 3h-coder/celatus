@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 import com.celatus.App;
+import com.celatus.constants.Constants;
 import com.celatus.enums.AlertMode;
 import com.celatus.enums.Signal;
 import com.celatus.enums.UserSettings;
@@ -852,8 +853,8 @@ public class MainWindowController extends BaseWindowController {
   private void openCategoryWindow(Category category) {
     try {
       Map<String, Object> map = FXMLUtils.getSceneAndController(WindowType.CATEGORY);
-      Scene scene = (Scene) map.get("Scene");
-      CategoryWindowController controller = (CategoryWindowController) map.get("Controller");
+      Scene scene = (Scene) map.get(Constants.SCENE);
+      CategoryWindowController controller = (CategoryWindowController) map.get(Constants.CONTROLLER);
 
       String title;
       if (category != null) {
@@ -878,8 +879,8 @@ public class MainWindowController extends BaseWindowController {
   private void openPasswordWindow(PasswordEntry pwdEntry) {
     try {
       Map<String, Object> map = FXMLUtils.getSceneAndController(WindowType.PASSWORD);
-      Scene scene = (Scene) map.get("Scene");
-      PasswordWindowController controller = (PasswordWindowController) map.get("Controller");
+      Scene scene = (Scene) map.get(Constants.SCENE);
+      PasswordWindowController controller = (PasswordWindowController) map.get(Constants.CONTROLLER);
 
       String title;
       if (pwdEntry != null) {
@@ -1042,10 +1043,10 @@ public class MainWindowController extends BaseWindowController {
     App.addTempVariable("master_password_reset_signal", true);
     try {
       Map<String, Object> setupWindowSceneAndController = FXMLUtils.getSceneAndController(WindowType.SETUP);
-      var controller = ((SetupWindowController) (setupWindowSceneAndController.get("Controller")));
+      var controller = ((SetupWindowController) (setupWindowSceneAndController.get(Constants.CONTROLLER)));
       controller.displayMinimizeAndCloseButtons();
       controller.setBorderVisible();
-      FXMLUtils.launchDialogWindow(window, (Scene) (setupWindowSceneAndController.get("Scene")));
+      FXMLUtils.launchDialogWindow(window, (Scene) (setupWindowSceneAndController.get(Constants.SCENE)));
     } catch (Exception ex) {
       App.error(this.window, ex, "An error occured", logger, AlertMode.OK, true);
     }

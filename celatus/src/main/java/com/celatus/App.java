@@ -11,6 +11,7 @@ import java.util.Properties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.celatus.constants.Constants;
 import com.celatus.controller.AlertWindowController;
 import com.celatus.controller.BaseWindowController;
 import com.celatus.enums.AlertMode;
@@ -175,8 +176,8 @@ public class App extends Application {
    */
   public static void launchWindow(WindowType windowType, boolean resizable) throws IOException {
     Map<String, Object> map = FXMLUtils.getSceneAndController(windowType);
-    App.scene = (Scene) map.get("Scene");
-    App.controller = (BaseWindowController) map.get("Controller");
+    App.scene = (Scene) map.get(Constants.SCENE);
+    App.controller = (BaseWindowController) map.get(Constants.CONTROLLER);
 
     Stage stage = new Stage();
     stage.setScene(scene);
@@ -192,8 +193,8 @@ public class App extends Application {
    */
   public static void launchWindow(Stage stage, WindowType windowType, boolean resizable) throws IOException {
     Map<String, Object> map = FXMLUtils.getSceneAndController(windowType);
-    App.scene = (Scene) map.get("Scene");
-    App.controller = (BaseWindowController) map.get("Controller");
+    App.scene = (Scene) map.get(Constants.SCENE);
+    App.controller = (BaseWindowController) map.get(Constants.CONTROLLER);
 
     stage.setScene(scene);
     stage.setResizable(resizable);
@@ -237,8 +238,8 @@ public class App extends Application {
     // Opening a popup window to notify the user
     try {
       Map<String, Object> map = FXMLUtils.getSceneAndController(WindowType.POPUP);
-      Scene scene = (Scene) map.get("Scene");
-      AlertWindowController controller = (AlertWindowController) map.get("Controller");
+      Scene scene = (Scene) map.get(Constants.SCENE);
+      AlertWindowController controller = (AlertWindowController) map.get(Constants.CONTROLLER);
 
       Stage errorStage = new Stage();
       errorStage.initModality(Modality.APPLICATION_MODAL);
@@ -271,8 +272,8 @@ public class App extends Application {
     // Opening a popup window to notify the user
     try {
       Map<String, Object> map = FXMLUtils.getSceneAndController(WindowType.POPUP);
-      Scene scene = (Scene) map.get("Scene");
-      AlertWindowController controller = (AlertWindowController) map.get("Controller");
+      Scene scene = (Scene) map.get(Constants.SCENE);
+      AlertWindowController controller = (AlertWindowController) map.get(Constants.CONTROLLER);
 
       Stage errorStage = new Stage();
       errorStage.initModality(Modality.APPLICATION_MODAL);
