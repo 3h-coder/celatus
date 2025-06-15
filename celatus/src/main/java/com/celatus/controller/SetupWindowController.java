@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.celatus.App;
 import com.celatus.enums.AlertMode;
+import com.celatus.enums.AppTempVariable;
 import com.celatus.handler.AuthHandler;
 import com.celatus.models.PasswordPackageProcessor;
 import com.celatus.util.FXMLUtils;
@@ -97,7 +98,7 @@ public class SetupWindowController extends DialogWindowController {
 
     // We open the app, or go back to it
     try {
-      if (App.getSignal("master_password_reset_signal")) {
+      if (App.getSignal(AppTempVariable.SIGNAL_MASTER_PASSWORD_RESET)) {
         AuthHandler.setAppEntry(pwdPackageProcessor.getPassword(), true);
         closeDialog();
         logger.info("Master password changed");

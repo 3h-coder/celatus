@@ -15,7 +15,7 @@ import com.celatus.constants.Constants;
 import com.celatus.controller.AlertWindowController;
 import com.celatus.controller.BaseWindowController;
 import com.celatus.enums.AlertMode;
-import com.celatus.enums.Signal;
+import com.celatus.enums.AppTempVariable;
 import com.celatus.enums.WindowType;
 import com.celatus.handler.DatabaseHandler;
 import com.celatus.handler.PropertyHandler;
@@ -59,9 +59,6 @@ public class App extends Application {
   private static Properties properties; // App and user properties
 
   private static HostServices hostServices; // Used to open up the password's website
-
-  // Temp variable keys
-  private static final String KEY_NOTIFICATION_POPUP = "notification_popup";
 
   // endregion
 
@@ -292,16 +289,16 @@ public class App extends Application {
     }
   }
 
-  public static void addTempVariable(String key, Object value) {
+  public static void addTempVariable(AppTempVariable tempVariable, Object value) {
     if (tmpVariables == null) {
       tmpVariables = new HashMap<>();
     }
-    tmpVariables.put(key, value);
+    tmpVariables.put(tempVariable.toString(), value);
   }
 
-  public static void removeTempVariable(String key) {
+  public static void removeTempVariable(AppTempVariable tempVariable) {
     if (tmpVariables != null) {
-      tmpVariables.remove(key);
+      tmpVariables.remove(tempVariable.toString());
     }
   }
 
@@ -311,16 +308,23 @@ public class App extends Application {
     }
   }
 
-  // Overall it's better to use extract instead of get since they're meant to be
-  // temporary and deleted asap
-  public static Object getTempVariable(String key) {
+  /**
+   * Overall it's better to use extract instead of get since they're meant to be
+   * temporary and deleted asap
+   */
+  public static Object getTempVariable(AppTempVariable tempVariable) {
     if (tmpVariables != null) {
-      return tmpVariables.get(key);
+      return tmpVariables.get(tempVariable.toString());
     }
     return null;
   }
 
-  public static Object extractTempVariable(String key) {
+  /**
+   * @param tempVariable
+   * @return The temp variable, removing it from the internal map along the way.
+   */
+  public static Object extractTempVariable(AppTempVariable tempVariable) {
+    var key = tempVariable.toString();
     if (tmpVariables != null && tmpVariables.containsKey(key)) {
       var variable = tmpVariables.get(key);
       tmpVariables.remove(key);
@@ -329,7 +333,12 @@ public class App extends Application {
     return null;
   }
 
-  public static boolean getSignal(Signal signal) {
+  /**
+   * 
+   * @param signal
+   * @return
+   */
+  public static boolean getSignal(AppTempVariable signal) {
     return getSignal(signal.toString());
   }
 
@@ -348,15 +357,15 @@ public class App extends Application {
   }
 
   public static void registerNotificationPopup(Popup popup) {
-    addTempVariable(KEY_NOTIFICATION_POPUP, popup);
+    addTempVariable(AppTempVariable.NOTIFICATION_POPUP, popup);
   }
 
   public static Popup getNotificationPopup() {
-    return (Popup) getTempVariable(KEY_NOTIFICATION_POPUP);
+    return (Popup) getTempVariable(AppTempVariable.NOTIFICATION_POPUP);
   }
 
   public static Popup extractNotificationPopup() {
-    return (Popup) extractTempVariable(KEY_NOTIFICATION_POPUP);
+    return (Popup) extractTempVariable(AppTempVariable.NOTIFICATION_POPUP);
   }
 
   /**

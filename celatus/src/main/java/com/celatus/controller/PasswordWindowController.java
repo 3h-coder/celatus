@@ -9,6 +9,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 import com.celatus.App;
+import com.celatus.enums.AppTempVariable;
 import com.celatus.enums.WindowType;
 import com.celatus.models.Category;
 import com.celatus.models.PasswordEntry;
@@ -365,7 +366,7 @@ public class PasswordWindowController extends DialogWindowController {
     String selectedDate = recordsTable.getSelectionModel().getSelectedItem().getDate();
     Map<String, String> foundRecord = findRecord(selectedDate);
     if (foundRecord != null) {
-      App.addTempVariable("password_record", foundRecord);
+      App.addTempVariable(AppTempVariable.PASSWORD_RECORD, foundRecord);
       var coordinates = FXMLUtils.findOuterCoordinatesForWindow(window, 40, 510, 420);
       launchWindow(WindowType.VIEW_PASSWORD, coordinates.get("X"), coordinates.get("Y"));
     }

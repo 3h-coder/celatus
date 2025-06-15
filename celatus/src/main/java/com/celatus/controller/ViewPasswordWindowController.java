@@ -3,6 +3,7 @@ package com.celatus.controller;
 import java.util.Map;
 
 import com.celatus.App;
+import com.celatus.enums.AppTempVariable;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -14,12 +15,18 @@ public class ViewPasswordWindowController extends BaseWindowController {
 
   // region =====Variables=====
 
-  @FXML private TextField nameTextField;
-  @FXML private TextField urlField;
-  @FXML private TextField identifierField;
-  @FXML private TextField emailField;
-  @FXML private TextField revealedPwdField;
-  @FXML private TextArea passwordNotes;
+  @FXML
+  private TextField nameTextField;
+  @FXML
+  private TextField urlField;
+  @FXML
+  private TextField identifierField;
+  @FXML
+  private TextField emailField;
+  @FXML
+  private TextField revealedPwdField;
+  @FXML
+  private TextArea passwordNotes;
 
   private Map<String, String> passwordRecord;
 
@@ -39,7 +46,7 @@ public class ViewPasswordWindowController extends BaseWindowController {
   @SuppressWarnings("unchecked")
   public void fillFields() {
     // extract the password record
-    this.passwordRecord = (Map<String, String>) App.extractTempVariable("password_record");
+    this.passwordRecord = (Map<String, String>) App.extractTempVariable(AppTempVariable.PASSWORD_RECORD);
 
     // fill in the fields
     nameTextField.setText(passwordRecord.get("name"));

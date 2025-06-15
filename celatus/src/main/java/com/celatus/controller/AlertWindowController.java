@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import com.celatus.App;
 import com.celatus.enums.AlertMode;
-import com.celatus.enums.Signal;
+import com.celatus.enums.AppTempVariable;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -68,20 +68,20 @@ public class AlertWindowController extends DialogWindowController {
   // region =====Event Methods=====
 
   public void sendOKSignal() {
-    logger.info("Sending the signal: " + Signal.OK);
-    App.addTempVariable(Signal.OK.toString(), true);
-    closeDialog();
+    sendSignal(AppTempVariable.SIGNAL_OK);
   }
 
   public void sendYesSignal() {
-    logger.info("Sending the signal: " + Signal.YES);
-    App.addTempVariable(Signal.YES.toString(), true);
-    closeDialog();
+    sendSignal(AppTempVariable.SIGNAL_YES);
   }
 
   public void sendNoSignal() {
-    logger.info("Sending the signal: " + Signal.NO);
-    App.addTempVariable(Signal.NO.toString(), true);
+    sendSignal(AppTempVariable.SIGNAL_NO);
+  }
+
+  private void sendSignal(AppTempVariable signal) {
+    logger.info("Sending the signal: " + signal);
+    App.addTempVariable(signal, true);
     closeDialog();
   }
 

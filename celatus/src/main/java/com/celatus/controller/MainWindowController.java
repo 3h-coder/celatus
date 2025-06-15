@@ -9,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.celatus.App;
 import com.celatus.constants.Constants;
 import com.celatus.enums.AlertMode;
-import com.celatus.enums.Signal;
+import com.celatus.enums.AppTempVariable;
 import com.celatus.enums.UserSettings;
 import com.celatus.enums.WindowType;
 import com.celatus.handler.DatabaseHandler;
@@ -363,10 +363,10 @@ public class MainWindowController extends BaseWindowController {
           logger,
           AlertMode.YES_AND_NO);
     }
-    if (App.getSignal(Signal.YES)) {
+    if (App.getSignal(AppTempVariable.SIGNAL_YES)) {
       saveDatabase();
       super.close();
-    } else if (App.getSignal(Signal.NO)) {
+    } else if (App.getSignal(AppTempVariable.SIGNAL_NO)) {
       super.close();
     }
   }
@@ -604,7 +604,7 @@ public class MainWindowController extends BaseWindowController {
     deletePwdMenuItem.setOnAction(
         event -> {
           App.warn(window, "Are you sure you want to delete it?", logger, AlertMode.YES_AND_NO);
-          if (App.getSignal(Signal.YES)) {
+          if (App.getSignal(AppTempVariable.SIGNAL_YES)) {
             PasswordEntry selectedPassword = getSelectedPassword();
             deletePasswordEntry(selectedPassword);
           }
@@ -744,7 +744,7 @@ public class MainWindowController extends BaseWindowController {
                         + " category, are you sure you want to delete it?",
                     logger,
                     AlertMode.YES_AND_NO);
-                if (App.getSignal(Signal.YES) == true) {
+                if (App.getSignal(AppTempVariable.SIGNAL_YES) == true) {
                   String categoryName = cell.getItem();
                   FXMLUtils.removeFromListView(listView, categoryName);
                   deleteCategory(categoryName);
@@ -1040,7 +1040,7 @@ public class MainWindowController extends BaseWindowController {
   }
 
   public void resetMasterPassword() {
-    App.addTempVariable("master_password_reset_signal", true);
+    App.addTempVariable(AppTempVariable.SIGNAL_MASTER_PASSWORD_RESET, true);
     try {
       Map<String, Object> setupWindowSceneAndController = FXMLUtils.getSceneAndController(WindowType.SETUP);
       var controller = ((SetupWindowController) (setupWindowSceneAndController.get(Constants.CONTROLLER)));
