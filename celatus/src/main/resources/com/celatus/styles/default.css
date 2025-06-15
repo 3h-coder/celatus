@@ -3,7 +3,8 @@
 .AnchorPane {
     -fx-background-color : #3e3e3e;
     -fx-border-color: #8c8c8c;
-    -fx-border-width: 0
+    -fx-border-width: 0;
+    -fx-font-family: "Segoe UI", "Arial", sans-serif;
 }
 
 .split-pane {
@@ -30,8 +31,6 @@
 
 .label {
     -fx-text-fill: white;
-    /*-fx-border-color: #8c8c8c;
-    -fx-border-width: 1 1 1 1*/
 }
 
 .infoFieldLabel {
@@ -57,8 +56,6 @@
     -fx-background-radius: 5;
     -fx-background-color :  #2b2b2b;
     -fx-text-fill: white;
-    /*-fx-border-color: #8c8c8c;
-    -fx-border-width: 1 1 1 1;*/
 }
 
 .text-area .content{
@@ -91,15 +88,6 @@
 .context-menu .menu-item:focused {
     -fx-background-color: #8c8c8c;
 }
-
-.context-menu .menu-item:focused .label {
-    /*-fx-text-fill: black*/
-}
-
-/*.menu .separator .line, context-menu .separator .line {
-    -fx-border-color: #8c8c8c;
-    -fx-border-width: 0.3
-}*/
 
 .corner {
     -fx-background-color: transparent
@@ -161,13 +149,13 @@
 #searchBar {
     -fx-border-color: #8c8c8c;
     -fx-border-width: 0 0 1 0;
-    -fx-padding: 0 0 0 0
+    -fx-padding: 0 0 0 0;
 }
 
 #descriptionPane {
     -fx-background-color: #2b2b2b;
     -fx-border-color: #8c8c8c;
-    -fx-border-width: 0 0 1 0
+    -fx-border-width: 0 0 1 0;
 }
 
 #passwordsPane {
@@ -179,19 +167,13 @@
 }
 
 #passwordsTable .column-header {
-    -fx-background-color: #cacac9;
-    /*-fx-border-color: black;
-    -fx-border-width: 0 0 0 1;
-    -fx-font-weight: 600*/
+    -fx-background-color: #2b2b2b;
 }
 
 #passwordsTable .column-header-background {
-    -fx-background-color: #cacac9;
-}
-
-#passwordsTable .column-header-background .label {
-    -fx-background-color: transparent;
-    -fx-text-fill: black;
+    -fx-background-color: #2b2b2b;
+    -fx-border-color: #8c8c8c;
+    -fx-border-width: 0 0 1 0;
 }
 
 #passwordsTable .column-header-background .filler {
@@ -227,32 +209,6 @@
     -fx-max-height: 0;
 }
 
-/*#passwordsTable .table-row-cell:odd {
-    -fx-background-color: #8c8c8c;
-    -fx-background-insets: 0, 0 0 1 0;
-}
-
-#passwordsTable .table-row-cell:odd:hover {
-    -fx-background-color: #cacac9;
-}
-
-#passwordsTable .table-row-cell:odd:hover .table-cell{
-    -fx-text-fill: black
-}
-
-#passwordsTable .table-row-cell:even {
-    -fx-background-color: #3e3e3e;
-    -fx-background-insets: 0, 0 0 1 0;
-}
-
-#passwordsTable .table-row-cell:even:hover {
-    -fx-background-color: #cacac9;
-}
-
-#passwordsTable .table-row-cell:even:hover .table-cell{
-    -fx-text-fill: black
-}*/
-
 #catDescription .content {
     -fx-padding: 0 0 0 0;
 }
@@ -260,14 +216,6 @@
 #menuBar {
     -fx-background-color : #2b2b2b;
     -fx-selection-bar: #3e3e3e
-}
-
-#menuBar .menu:hover{
-    
-}
-
-#menuBar .menu:hover .label{
-    
 }
 
 .menu .label {
@@ -318,14 +266,10 @@
 
 #recordsTable {
     -fx-background-color: transparent;
-    /*-fx-border-color: #8c8c8c;*/
 }
 
 #recordsTable .column-header {
     -fx-background-color: linear-gradient(to bottom, #8c8c8c, #cacac9);
-    /*-fx-border-color: black;
-    -fx-border-width: 0 0 0 1;
-    -fx-font-weight: 600*/
 }
 
 #recordsTable .column-header-background {
@@ -347,7 +291,6 @@
 }
 
 #recordsTable .table-row-cell {
-    /*-fx-border-color: #8c8c8c;*/
     -fx-background-color: #2b2b2b
 }
 
@@ -374,29 +317,3 @@
     -fx-pref-height: 0;
     -fx-max-height: 0;
 }
-
-/*#recordsTable .table-row-cell:odd {
-    -fx-background-color: #8c8c8c;
-    -fx-background-insets: 0, 0 0 1 0;
-}
-
-#recordsTable .table-row-cell:odd:hover {
-    -fx-background-color: #cacac9;
-}
-
-#recordsTable .table-row-cell:odd:hover .table-cell{
-    -fx-text-fill: black
-}
-
-#recordsTable .table-row-cell:even {
-    -fx-background-color: #3e3e3e;
-    -fx-background-insets: 0, 0 0 1 0;
-}
-
-#recordsTable .table-row-cell:even:hover {
-    -fx-background-color: #cacac9;
-}
-
-#recordsTable .table-row-cell:even:hover .table-cell{
-    -fx-text-fill: black
-}*/
