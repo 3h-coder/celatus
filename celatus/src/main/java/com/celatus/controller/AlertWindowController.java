@@ -9,8 +9,7 @@ import com.celatus.enums.Signal;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.shape.SVGPath;
 
 /**
  * Controller for our alert windows, which can be error, warning, or info
@@ -21,7 +20,7 @@ public class AlertWindowController extends DialogWindowController {
   // region =====Variables=====
 
   @FXML
-  private ImageView popupIcon;
+  private SVGPath popupIcon;
   @FXML
   private Label mainMessage;
   @FXML
@@ -41,9 +40,9 @@ public class AlertWindowController extends DialogWindowController {
   }
 
   @FXML
-  public void setIcon(String imagePath) throws IOException {
-    Image image = new Image(App.class.getResourceAsStream("images/" + imagePath));
-    popupIcon.setImage(image);
+  public void setErrorIcon() throws IOException {
+    final String CIRCLE_XMARK_CONTENT = "M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c-9.4 9.4-9.4 24.6 0 33.9l47 47-47 47c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l47-47 47 47c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-47-47 47-47c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-47 47-47-47c-9.4-9.4-24.6-9.4-33.9 0z";
+    popupIcon.setContent(CIRCLE_XMARK_CONTENT);
   }
 
   /**

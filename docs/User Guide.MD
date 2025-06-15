@@ -64,8 +64,8 @@ Note that you can :
 - Copy the identifier and password to the clipboard
 
 Also note :
-- Deletion and category change can be reverted through ctrl+Z, but only before a file save.
-- Creations, deletions and category change are recorded in the log file by default.
+- Deletion and category changes can be reverted through ctrl+Z, but only before a file save.
+- Creations, deletions and category changes are recorded in the log file by default.
 
 ---
 

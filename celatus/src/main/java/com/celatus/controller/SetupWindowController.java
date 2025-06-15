@@ -73,6 +73,11 @@ public class SetupWindowController extends DialogWindowController {
     FXMLUtils.showElements(closeButton, minimizeButton);
   }
 
+  @FXML
+  public void setBorderVisible() {
+    rootPane.setStyle("-fx-border-width: 1");
+  }
+
   /**
    * Method used to open the access to the App's main window after checking the
    * submitted master

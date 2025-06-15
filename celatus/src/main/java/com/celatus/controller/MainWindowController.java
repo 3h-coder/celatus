@@ -1041,7 +1041,9 @@ public class MainWindowController extends BaseWindowController {
     App.addTempVariable("master_password_reset_signal", true);
     try {
       Map<String, Object> setupWindowSceneAndController = FXMLUtils.getSceneAndController("setupWindow");
-      ((SetupWindowController) (setupWindowSceneAndController.get("Controller"))).displayMinimizeAndCloseButtons();
+      var controller = ((SetupWindowController) (setupWindowSceneAndController.get("Controller")));
+      controller.displayMinimizeAndCloseButtons();
+      controller.setBorderVisible();
       FXMLUtils.launchDialogWindow(window, (Scene) (setupWindowSceneAndController.get("Scene")));
     } catch (Exception ex) {
       App.error(this.window, ex, "An error occured", logger, AlertMode.OK, true);

@@ -15,7 +15,7 @@
    <children>
       <AnchorPane fx:id="rowPane1" layoutY="8.0" prefHeight="30.0" prefWidth="500.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox alignment="TOP_RIGHT" fillHeight="false" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <HBox alignment="TOP_RIGHT" fillHeight="false" spacing="5.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="1.0">
                <children>
                   <Button fx:id="minimizeButton" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" onAction="#minimize" prefHeight="15.0" prefWidth="20.0" styleClass="topRowButton">
                      <graphic>

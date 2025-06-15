@@ -100,7 +100,9 @@ public class CategoryWindowController extends DialogWindowController {
     }
   }
 
-  /** Saves our category into the database (or updates it) */
+  /**
+   * Saves our category into the database (or updates it)
+   */
   @FXML
   private void saveCategory() {
     Scene appScene = owner.getScene();

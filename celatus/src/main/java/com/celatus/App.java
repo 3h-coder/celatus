@@ -247,7 +247,7 @@ public class App extends Application {
       errorStage.initOwner(window);
       errorStage.setScene(scene);
       controller.setMessage(errorMessage);
-      controller.setIcon("error-icon.png");
+      controller.setErrorIcon();
       controller.setMode(mode);
       errorStage.showAndWait();
     } catch (IOException ex) {
@@ -281,7 +281,6 @@ public class App extends Application {
       errorStage.initOwner(window);
       errorStage.setScene(scene);
       controller.setMessage(warning);
-      controller.setIcon("warning-icon.png");
       controller.setMode(mode);
       errorStage.showAndWait();
     } catch (IOException ex) {
