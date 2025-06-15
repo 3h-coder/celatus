@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.celatus.constants.Constants;
 import com.celatus.util.MapUtils;
 
 /** Object serving as our passwords database, meant to be json serialized */
@@ -182,11 +183,13 @@ public class PasswordsDatabase {
    */
   public static PasswordsDatabase generateDefault() {
     List<Category> categoriesList = Arrays.asList(
-        new Category("General", "General passwords", null),
-        new Category("Emails", "For example your gmail passwords", null),
-        new Category("Social media", "Social media passwords", null),
-        new Category("Administrative", "Administrative passwords", null),
-        new Category("Shopping", "For example eBay, Amazon or Sephora", null));
+        new Category(Constants.DefaultCategories.GENERAL_NAME, Constants.DefaultCategories.GENERAL_DESC, null),
+        new Category(Constants.DefaultCategories.EMAILS_NAME, Constants.DefaultCategories.EMAILS_DESC, null),
+        new Category(Constants.DefaultCategories.SOCIAL_MEDIA_NAME, Constants.DefaultCategories.SOCIAL_MEDIA_DESC,
+            null),
+        new Category(Constants.DefaultCategories.ADMINISTRATIVE_NAME, Constants.DefaultCategories.ADMINISTRATIVE_DESC,
+            null),
+        new Category(Constants.DefaultCategories.SHOPPING_NAME, Constants.DefaultCategories.SHOPPING_DESC, null));
     return new PasswordsDatabase(new ArrayList<>(categoriesList));
   }
 
