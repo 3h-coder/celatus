@@ -397,11 +397,11 @@ public class MainWindowController extends BaseWindowController {
     }
     // New category (only if there is a notification popup, otherwise it overlaps
     // with the accelerator)
-    if (event.isShiftDown() && eventCode == KeyCode.C && notifPopupShown()) {
+    if (event.isShiftDown() && eventCode == KeyCode.C && notificationPopupShown()) {
       openCatWindow();
     }
     // New password (same here)
-    if (event.isShiftDown() && eventCode == KeyCode.P && notifPopupShown()) {
+    if (event.isShiftDown() && eventCode == KeyCode.P && notificationPopupShown()) {
       openPwdWindow();
     }
     // Ctrl+Z

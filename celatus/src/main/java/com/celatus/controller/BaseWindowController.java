@@ -16,6 +16,7 @@ import com.celatus.util.FXMLUtils;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
@@ -209,12 +210,7 @@ public abstract class BaseWindowController {
     FXMLUtils.adjustTextAreaDimensions(textArea);
 
     Popup popup = new Popup();
-    // The popup is located at the window's top middle
-    popup.setX(
-        window.getX()
-            + (window.getWidth() / 2)
-            - (FXMLUtils.computeTextWidth(textArea.getText(), textArea.getFont()) + 2) / 2);
-    popup.setY(window.getY());
+    placePopupCorrectly(popup, textArea);
 
     popup.getContent().addAll(textArea);
 
@@ -238,9 +234,35 @@ public abstract class BaseWindowController {
     popup.show(window);
     translateTransition.play();
     fadeTransition.play();
+
+    // Store listeners so we can remove them later
+    ChangeListener<Number> xListener = (obs, oldX, newX) -> placePopupCorrectly(popup, textArea);
+    ChangeListener<Number> yListener = (obs, oldY, newY) -> placePopupCorrectly(popup, textArea);
+    ChangeListener<Number> wListener = (obs, oldW, newW) -> placePopupCorrectly(popup, textArea);
+    ChangeListener<Number> hListener = (obs, oldH, newH) -> placePopupCorrectly(popup, textArea);
+    ChangeListener<Boolean> focusListener = (obs, wasFocused, isNowFocused) -> {
+      if (!isNowFocused) {
+        popup.hide();
+      }
+    };
+
+    window.xProperty().addListener(xListener);
+    window.yProperty().addListener(yListener);
+    window.widthProperty().addListener(wListener);
+    window.heightProperty().addListener(hListener);
+    window.focusedProperty().addListener(focusListener);
+
+    // Remove all listeners when the popup is hidden
+    popup.setOnHidden(e -> {
+      window.xProperty().removeListener(xListener);
+      window.yProperty().removeListener(yListener);
+      window.widthProperty().removeListener(wListener);
+      window.heightProperty().removeListener(hListener);
+      window.focusedProperty().removeListener(focusListener);
+    });
   }
 
-  public boolean notifPopupShown() {
+  public boolean notificationPopupShown() {
     Popup popup = App.extractNotificationPopup();
     return popup != null;
   }
@@ -250,6 +272,15 @@ public abstract class BaseWindowController {
     if (popup != null) {
       popup.hide();
     }
+  }
+
+  private void placePopupCorrectly(Popup popup, TextArea popupText) {
+    // The popup is located at the window's top middle
+    popup.setX(
+        window.getX()
+            + (window.getWidth() / 2)
+            - (FXMLUtils.computeTextWidth(popupText.getText(), popupText.getFont()) + 2) / 2);
+    popup.setY(window.getY());
   }
 
   /**
