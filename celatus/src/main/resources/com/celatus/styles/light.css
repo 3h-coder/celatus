@@ -7,6 +7,10 @@
     -fx-font-family: "Segoe UI", "Arial", sans-serif;
 }
 
+.svg {
+    -fx-fill: #5a5a5a;
+}
+
 .split-pane {
     -fx-background-color : #dfdfdf;
     -fx-box-border: transparent;
@@ -21,7 +25,8 @@
 
 .button {
     -fx-background-color :  #bdbaba;
-    -fx-text-fill: black
+    -fx-text-fill: black;
+    -fx-cursor: hand;
 }
 
 .button:hover {
@@ -124,6 +129,10 @@
 .scroll-bar:vertical .thumb:hover,
 .scroll-bar:horizontal .thumb:hover {
     -fx-opacity: 1
+}
+
+.title {
+    -fx-font-size: 14px;
 }
 
 .topRowButton {

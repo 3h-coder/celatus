@@ -6,15 +6,11 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.SVGPath?>
 
 <AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#windowKeyPressed" prefHeight="200.0" prefWidth="380.0" style="-fx-border-width: 1;" styleClass="AnchorPane" stylesheets="@styles/default.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.celatus.controller.AlertWindowController">
    <children>
-      <HBox spacing="5.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <Button fx:id="minimizeButton" mnemonicParsing="false" onAction="#minimize" styleClass="topRowButton" text="_" />
-            <Button fx:id="closeButton" mnemonicParsing="false" onAction="#closeDialog" styleClass="topRowButton" text="X" />
-         </children>
-      </HBox>
       <AnchorPane AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <ImageView fx:id="popupIcon" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="10.0" />
@@ -40,5 +36,27 @@
             </Button>
          </children>
       </AnchorPane>
+      <HBox alignment="TOP_RIGHT" fillHeight="false" spacing="5.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Button fx:id="minimizeButton" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" onAction="#minimize" prefHeight="15.0" prefWidth="20.0" styleClass="topRowButton">
+               <graphic>
+                  <StackPane minHeight="0.0" minWidth="0.0" prefHeight="15.0" prefWidth="20.0">
+                     <children>
+                        <SVGPath content="M24 432c-13.3 0-24 10.7-24 24s10.7 24 24 24H488c13.3 0 24-10.7 24-24s-10.7-24-24-24H24z" scaleX="0.025" scaleY="0.04" styleClass="svg" />
+                     </children>
+                  </StackPane>
+               </graphic>
+            </Button>
+            <Button id="closeButton" fx:id="closeButton" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" onAction="#closeDialog" prefHeight="15.0" prefWidth="20.0" styleClass="topRowButton">
+               <graphic>
+                  <StackPane minHeight="0.0" minWidth="0.0">
+                     <children>
+                        <SVGPath content="M345 137c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-119 119L73 103c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l119 119L39 375c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l119-119L311 409c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-119-119L345 137z" scaleX="0.04" scaleY="0.04" styleClass="svg" />
+                     </children>
+                  </StackPane>
+               </graphic>
+            </Button>
+         </children>
+      </HBox>
    </children>
 </AnchorPane>

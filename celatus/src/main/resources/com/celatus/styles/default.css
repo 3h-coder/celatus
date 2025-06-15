@@ -7,6 +7,10 @@
     -fx-font-family: "Segoe UI", "Arial", sans-serif;
 }
 
+.svg {
+    -fx-fill: white;
+}
+
 .split-pane {
     -fx-background-color : #3e3e3e;
     -fx-box-border: transparent;
@@ -21,12 +25,12 @@
 
 .button {
     -fx-background-color :  #2b2b2b;
-    -fx-text-fill: white
+    -fx-text-fill: white;
+    -fx-cursor: hand;
 }
 
 .button:hover {
-    -fx-background-color: #cacac9;
-    -fx-text-fill: black;
+    -fx-background-color: #757575;
 }
 
 .label {
@@ -118,6 +122,10 @@
 .scroll-bar:vertical .thumb:hover,
 .scroll-bar:horizontal .thumb:hover {
     -fx-opacity: 1
+}
+
+.title {
+    -fx-font-size: 14px;
 }
 
 .topRowButton {

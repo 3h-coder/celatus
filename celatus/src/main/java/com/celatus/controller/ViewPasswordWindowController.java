@@ -32,7 +32,6 @@ public class ViewPasswordWindowController extends BaseWindowController {
     super.initialize();
     Platform.runLater(
         () -> {
-          rootPane.setStyle("-fx-border-width: 1 1 1 1");
           fillFields();
         });
   }

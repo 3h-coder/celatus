@@ -60,7 +60,7 @@ public class App extends Application {
 
   // Temp variable keys
   private static final String KEY_NOTIFICATION_POPUP = "notification_popup";
-  
+
   // endregion
 
   // region =====Getters and Setters=====
