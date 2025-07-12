@@ -1,3 +1,12 @@
+## Version 1.2.0
+
+- Small UI improvements (png icons to svg, table header row color change, minimize and close button changes)
+
+### Bug fixes
+
+- The notification popup now properly moves/disappears upon moving the window or alt tabbing
+
+
 ## Version 1.1.0
 
 - Enhanced keyboard navigation
