@@ -218,8 +218,7 @@ public abstract class BaseWindowController {
     // Create a TranslateTransition to move the popup down
     // right under the menu bar row
     TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.1), popup.getContent().get(0));
-    translateTransition.setByY(
-        (int) (rowPane1.getHeight() / 2)); // Converting it to int otherwise the text is blurry
+    translateTransition.setByY((int) (rowPane1.getHeight() * 1.2)); // Converting it to int otherwise the text is blurry
 
     // Create a FadeTransition
     FadeTransition fadeTransition = new FadeTransition(Duration.seconds(4.9), popup.getContent().get(0));
