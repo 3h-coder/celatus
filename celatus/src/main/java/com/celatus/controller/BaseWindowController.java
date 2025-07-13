@@ -36,6 +36,7 @@ import javafx.stage.Popup;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.Window;
 import javafx.util.Duration;
 
 /**
@@ -388,6 +389,10 @@ public abstract class BaseWindowController {
 
   public void close() {
     window.close();
+    if (Stage.getWindows().stream().filter(Window::isShowing).count() == 0) {
+      // No more visible windows, exit the app
+      App.exit();
+    }
   }
 
   /** Currently not used */

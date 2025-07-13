@@ -146,7 +146,6 @@ public class App extends Application {
   public static void exit() {
     _logger.info("--------------------Application Shutdown--------------------");
     Platform.exit();
-    System.exit(0);
   }
 
   public static void main(String[] args) {
