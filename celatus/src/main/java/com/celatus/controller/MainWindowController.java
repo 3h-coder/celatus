@@ -10,6 +10,7 @@ import com.celatus.App;
 import com.celatus.constants.Constants;
 import com.celatus.enums.AlertMode;
 import com.celatus.enums.AppTempVariable;
+import com.celatus.enums.AppTheme;
 import com.celatus.enums.UserSettings;
 import com.celatus.enums.WindowType;
 import com.celatus.handler.DatabaseHandler;
@@ -1045,6 +1046,7 @@ public class MainWindowController extends BaseWindowController {
       Map<String, Object> setupWindowSceneAndController = FXMLUtils.getSceneAndController(WindowType.SETUP);
       var controller = ((SetupWindowController) (setupWindowSceneAndController.get(Constants.CONTROLLER)));
       controller.displayMinimizeAndCloseButtons();
+      controller.hidePasswordLocationFields();
       controller.setBorderVisible();
       FXMLUtils.launchDialogWindow(window, (Scene) (setupWindowSceneAndController.get(Constants.SCENE)));
     } catch (Exception ex) {
@@ -1053,12 +1055,12 @@ public class MainWindowController extends BaseWindowController {
   }
 
   public void defaultThemeSelected() {
-    App.saveProperty(UserSettings.THEME.toString(), "default");
+    App.saveProperty(UserSettings.THEME.toString(), AppTheme.DEFAULT.toString());
     loadTheme();
   }
 
   public void lightThemeSelected() {
-    App.saveProperty(UserSettings.THEME.toString(), "light");
+    App.saveProperty(UserSettings.THEME.toString(), AppTheme.LIGHT.toString());
     loadTheme();
   }
 
@@ -1079,6 +1081,16 @@ public class MainWindowController extends BaseWindowController {
     var newPasswordColumn = ConstructPasswordColumn();
     tableColumns.set(index, newPasswordColumn);
 
+  }
+
+  public void changePwdsFileLocation() {
+    try {
+      Map<String, Object> changePwdsFileLocationSceneAndController = FXMLUtils
+          .getSceneAndController(WindowType.CHANGE_PASSWORDS_FILE_LOCATION);
+      FXMLUtils.launchDialogWindow(window, (Scene) (changePwdsFileLocationSceneAndController.get(Constants.SCENE)));
+    } catch (Exception ex) {
+      App.error(this.window, ex, "An error occured", logger, AlertMode.OK, true);
+    }
   }
 
   public void openReadMe() {

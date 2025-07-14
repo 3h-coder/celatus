@@ -1,12 +1,8 @@
-package com.celatus.models;
+package com.celatus.models.FxmlHelpers;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import com.celatus.App;
 import com.celatus.util.MapUtils;
 
 /**
@@ -17,8 +13,6 @@ import com.celatus.util.MapUtils;
 public class TextInputValueTracker {
 
     // region =====Variables=====
-
-    private static final Logger logger = LogManager.getLogger(App.class.getName());
 
     private final int MAX_STATES_NUM = 50;
 

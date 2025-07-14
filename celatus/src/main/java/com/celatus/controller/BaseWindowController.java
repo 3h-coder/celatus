@@ -32,6 +32,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Popup;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -54,7 +55,7 @@ public abstract class BaseWindowController {
   @FXML
   protected ImageView logo;
   @FXML
-  protected AnchorPane rootPane;
+  protected Pane rootPane;
   @FXML
   protected AnchorPane rowPane1;
   @FXML
@@ -211,14 +212,19 @@ public abstract class BaseWindowController {
     FXMLUtils.adjustTextAreaDimensions(textArea);
 
     Popup popup = new Popup();
-    placePopupCorrectly(popup, textArea);
+    placePopupCorrectly(window, popup, textArea);
 
     popup.getContent().addAll(textArea);
+    Pane rowPaneForPlacement = (Pane) window.getScene().lookup("#rowPane1");
+    if (rowPaneForPlacement == null) {
+      rowPaneForPlacement = rowPane1;
+    }
 
     // Create a TranslateTransition to move the popup down
     // right under the menu bar row
     TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.1), popup.getContent().get(0));
-    translateTransition.setByY((int) (rowPane1.getHeight() * 1.2)); // Converting it to int otherwise the text is blurry
+    translateTransition.setByY((int) (rowPaneForPlacement.getHeight() * 1.2)); // Converting it to int otherwise the
+                                                                               // text is blurry
 
     // Create a FadeTransition
     FadeTransition fadeTransition = new FadeTransition(Duration.seconds(4.9), popup.getContent().get(0));
@@ -236,10 +242,10 @@ public abstract class BaseWindowController {
     fadeTransition.play();
 
     // Store listeners so we can remove them later
-    ChangeListener<Number> xListener = (obs, oldX, newX) -> placePopupCorrectly(popup, textArea);
-    ChangeListener<Number> yListener = (obs, oldY, newY) -> placePopupCorrectly(popup, textArea);
-    ChangeListener<Number> wListener = (obs, oldW, newW) -> placePopupCorrectly(popup, textArea);
-    ChangeListener<Number> hListener = (obs, oldH, newH) -> placePopupCorrectly(popup, textArea);
+    ChangeListener<Number> xListener = (obs, oldX, newX) -> placePopupCorrectly(window, popup, textArea);
+    ChangeListener<Number> yListener = (obs, oldY, newY) -> placePopupCorrectly(window, popup, textArea);
+    ChangeListener<Number> wListener = (obs, oldW, newW) -> placePopupCorrectly(window, popup, textArea);
+    ChangeListener<Number> hListener = (obs, oldH, newH) -> placePopupCorrectly(window, popup, textArea);
     ChangeListener<Boolean> focusListener = (obs, wasFocused, isNowFocused) -> {
       if (!isNowFocused) {
         popup.hide();
@@ -274,13 +280,13 @@ public abstract class BaseWindowController {
     }
   }
 
-  private void placePopupCorrectly(Popup popup, TextArea popupText) {
+  private void placePopupCorrectly(Stage parentWindow, Popup popup, TextArea popupText) {
     // The popup is located at the window's top middle
     popup.setX(
-        window.getX()
-            + (window.getWidth() / 2)
+        parentWindow.getX()
+            + (parentWindow.getWidth() / 2)
             - (FXMLUtils.computeTextWidth(popupText.getText(), popupText.getFont()) + 2) / 2);
-    popup.setY(window.getY());
+    popup.setY(parentWindow.getY());
   }
 
   /**
@@ -312,6 +318,8 @@ public abstract class BaseWindowController {
                 textField.setStyle(
                     "-fx-background-color: transparent; -fx-border-width: 0; -fx-padding: 0 0 0"
                         + " -1;");
+                textField.setFont(label.getFont());
+
                 textField.setAlignment(label.getAlignment());
                 textField.setPrefWidth(label.getWidth());
                 parentPane.getChildren().add(textField);

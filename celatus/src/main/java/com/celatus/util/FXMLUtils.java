@@ -132,10 +132,22 @@ public class FXMLUtils {
     }
   }
 
+  public static void collapseElements(Node... elements) {
+    for (Node element : elements) {
+      try {
+        element.setVisible(false);
+        element.setManaged(false);
+      } catch (Exception ex) {
+        logger.debug("Cannot collapse the element: " + element);
+      }
+    }
+  }
+
   public static void showElements(Node... elements) {
     for (Node element : elements) {
       try {
         element.setVisible(true);
+        element.setManaged(true);
       } catch (Exception ex) {
         logger.debug("Cannot show the element: " + element);
       }

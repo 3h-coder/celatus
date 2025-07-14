@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.celatus.App;
 import com.celatus.models.Category;
 import com.celatus.models.PasswordEntry;
@@ -17,9 +14,9 @@ public class SearchHandler {
 
   // region =====Variable and Init=====
 
-  private static final Logger logger = LogManager.getLogger(SearchHandler.class.getName());
-
   private static PasswordsDatabase database = App.getPasswordsDatabase();
+
+  private static final String advancedSearchPrefix = "-";
 
   // endregion
 
@@ -31,7 +28,7 @@ public class SearchHandler {
       return null;
     }
 
-    if (searchEntry.startsWith("-")) {
+    if (searchEntry.startsWith(advancedSearchPrefix)) {
       // advanced search
       return advancedSearch(searchEntry);
     } else {
@@ -41,29 +38,30 @@ public class SearchHandler {
   }
 
   private static List<PasswordEntry> advancedSearch(String searchEntry) {
-    if ("-all".equals(searchEntry)) {
+    if ((advancedSearchPrefix + "all").equals(searchEntry)) {
       return getAllPasswordEntries();
     }
 
-    String searchPrefix = "";
-    String searchQuery = "";
+    String searchPrefix = StringUtils.EMPTY;
+    String searchQuery = StringUtils.EMPTY;
+    final String delimiter = ":";
 
-    if (searchEntry.contains(":") && searchEntry.split(":").length > 1) {
-      searchPrefix = searchEntry.split(":")[0];
-      searchQuery = searchEntry.split(":")[1];
+    if (searchEntry.contains(delimiter) && searchEntry.split(delimiter).length > 1) {
+      searchPrefix = searchEntry.split(delimiter)[0];
+      searchQuery = searchEntry.split(delimiter)[1];
     } else {
       return null;
     }
     switch (searchPrefix) {
-      case "-mail":
-      case "-email":
+      case advancedSearchPrefix + "mail":
+      case advancedSearchPrefix + "email":
         return searchByEmail(searchQuery);
-      case "-pwd":
-      case "-password":
+      case advancedSearchPrefix + "pwd":
+      case advancedSearchPrefix + "password":
         return searchByPwd(searchQuery);
-      case "-id":
-      case "-identifier":
-      case "-username":
+      case advancedSearchPrefix + "id":
+      case advancedSearchPrefix + "identifier":
+      case advancedSearchPrefix + "username":
         return searchByIdentifier(searchQuery);
       default:
         return null;

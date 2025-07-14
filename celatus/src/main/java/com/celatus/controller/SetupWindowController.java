@@ -6,7 +6,8 @@ import com.celatus.App;
 import com.celatus.enums.AlertMode;
 import com.celatus.enums.AppTempVariable;
 import com.celatus.handler.AuthHandler;
-import com.celatus.models.PasswordPackageProcessor;
+import com.celatus.handler.DatabaseHandler;
+import com.celatus.models.FxmlHelpers.PasswordPackageProcessor;
 import com.celatus.util.FXMLUtils;
 
 import javafx.fxml.FXML;
@@ -18,7 +19,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
-/** Controller of our setup window, used to (re)set our App's master password */
+/**
+ * Controller of our setup window, used to (re)set our App's master password,
+ * and set the location of the password file (the first time only).
+ */
 public class SetupWindowController extends DialogWindowController {
 
   // region =====Variables=====
@@ -32,7 +36,11 @@ public class SetupWindowController extends DialogWindowController {
   @FXML
   private Button viewButton2;
   @FXML
-  private Button enterButton;
+  private TextField pwdFileLocationField;
+  @FXML
+  private Button pwdFileLocationBrowseButton;
+  @FXML
+  private Button saveButton;
   @FXML
   private TextField revealedPwdField;
   @FXML
@@ -47,6 +55,8 @@ public class SetupWindowController extends DialogWindowController {
   private Label label03;
   @FXML
   private Label label04;
+  @FXML
+  private Label errorLabel;
 
   private PasswordPackageProcessor pwdPackageProcessor;
   private PasswordPackageProcessor pwdPackageProcessor2;
@@ -58,20 +68,27 @@ public class SetupWindowController extends DialogWindowController {
   @Override
   public void initialize() {
     super.initialize();
+    // No context menu for the second password field to prevent copy-pasting
     pwdField2.setContextMenu(new ContextMenu());
+    pwdFileLocationField.setText(DatabaseHandler.getDBFolderPath());
     setUpPasswordPackages();
     addEventFilters();
   }
 
   @FXML
   public void warning(String message) {
-    label04.setText(message);
-    label04.setVisible(true);
+    errorLabel.setText(message);
+    errorLabel.setVisible(true);
   }
 
   @FXML
   public void displayMinimizeAndCloseButtons() {
     FXMLUtils.showElements(closeButton, minimizeButton);
+  }
+
+  @FXML
+  public void hidePasswordLocationFields() {
+    FXMLUtils.collapseElements(label04, pwdFileLocationField, pwdFileLocationBrowseButton);
   }
 
   @FXML
@@ -93,6 +110,14 @@ public class SetupWindowController extends DialogWindowController {
     if (!validPasswords) {
       String invalidPasswordsMessage = (String) passwordsCheckInfo.values().toArray()[0];
       warning(invalidPasswordsMessage);
+      return;
+    }
+    // We check and set the password file location
+    String pwdFileLocation = pwdFileLocationField.getText();
+    try {
+      DatabaseHandler.setDBFolderPath(pwdFileLocation);
+    } catch (Exception e) {
+      warning("The password file location is invalid");
       return;
     }
 
@@ -130,6 +155,7 @@ public class SetupWindowController extends DialogWindowController {
   }
 
   private void addEventFilters() {
+    // Prevent copy-pasting in the second password field
     pwdField2.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
       if (event.isControlDown() && event.getCode() == KeyCode.V) {
         warning("Copy-pasting is not allowed in this field");
@@ -151,6 +177,16 @@ public class SetupWindowController extends DialogWindowController {
 
   @FXML
   private void viewButtonClicked() {
+    handleViewButtonClicked(viewButton, pwdField, revealedPwdField);
+  }
+
+  @FXML
+  private void viewButton2Clicked() {
+    handleViewButtonClicked(viewButton2, pwdField2, revealedPwdField2);
+  }
+
+  private static void handleViewButtonClicked(Button viewButton,
+      PasswordField pwdField, TextField revealedPwdField) {
     if ("View".equals(viewButton.getText())) {
       viewButton.setText("Hide");
       pwdField.setVisible(false);
@@ -163,16 +199,8 @@ public class SetupWindowController extends DialogWindowController {
   }
 
   @FXML
-  private void viewButton2Clicked() {
-    if ("View".equals(viewButton2.getText())) {
-      viewButton2.setText("Hide");
-      pwdField2.setVisible(false);
-      revealedPwdField2.setVisible(true);
-    } else {
-      viewButton2.setText("View");
-      revealedPwdField2.setVisible(false);
-      pwdField2.setVisible(true);
-    }
+  private void openFolderDialogForPwdLocation() {
+    PwdsFileLocationWindowController.OpenPwdsFileLocationDialog(pwdFileLocationField, window);
   }
 
   // endregion

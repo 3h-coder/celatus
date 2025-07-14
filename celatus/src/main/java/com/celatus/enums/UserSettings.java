@@ -6,5 +6,6 @@ package com.celatus.enums;
  */
 public enum UserSettings {
     THEME,
-    PASSWORDS_VISIBLE
+    PASSWORDS_VISIBLE,
+    PASSWORDS_FILE_LOCATION,
 }

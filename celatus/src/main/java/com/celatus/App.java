@@ -96,6 +96,15 @@ public class App extends Application {
     return (Stage) scene.getWindow();
   }
 
+  public static Stage getMainWindow() {
+    var currentWindow = getWindow();
+    if (currentWindow.getOwner() != null) {
+      return (Stage) currentWindow.getOwner();
+    } else {
+      return currentWindow;
+    }
+  }
+
   public static BaseWindowController getController() {
     return controller;
   }

@@ -1,4 +1,4 @@
-package com.celatus.models;
+package com.celatus.models.FxmlHelpers;
 
 import org.apache.commons.lang3.StringUtils;
 

@@ -1,7 +1,7 @@
 package com.celatus.controller;
 
 import com.celatus.handler.AuthHandler;
-import com.celatus.models.PasswordPackageProcessor;
+import com.celatus.models.FxmlHelpers.PasswordPackageProcessor;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

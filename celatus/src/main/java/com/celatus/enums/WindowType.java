@@ -7,7 +7,8 @@ public enum WindowType {
     POPUP("popupWindow"),
     CATEGORY("categoryWindow"),
     PASSWORD("passwordWindow"),
-    VIEW_PASSWORD("viewPasswordWindow");
+    VIEW_PASSWORD("viewPasswordWindow"),
+    CHANGE_PASSWORDS_FILE_LOCATION("changePasswordsFileLocationWindow");
 
     private final String name;
 

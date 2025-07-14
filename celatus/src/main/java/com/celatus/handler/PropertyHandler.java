@@ -7,12 +7,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.celatus.enums.AppTheme;
 import com.celatus.enums.UserSettings;
 
 public class PropertyHandler {
@@ -25,15 +27,29 @@ public class PropertyHandler {
 
   private static HashMap<String, List<String>> propertyMap;
 
+  private static HashSet<String> userSettingsWithFixedValues = new HashSet<>();
+
   // endregion
 
   // region =====Static Init=====
 
   static {
+    setUpPropertyMap();
+    setUpUserSettingsWithFixedValues();
+  }
+
+  private static void setUpPropertyMap() {
     propertyMap = new HashMap<>();
     // The first element of the list is the default
-    propertyMap.put(UserSettings.THEME.toString(), List.of("default", "light"));
-    propertyMap.put(UserSettings.PASSWORDS_VISIBLE.toString(), List.of("false", "true"));
+    propertyMap.put(UserSettings.THEME.toString(), List.of(AppTheme.DEFAULT.toString(), AppTheme.LIGHT.toString()));
+    propertyMap.put(UserSettings.PASSWORDS_VISIBLE.toString(),
+        List.of(Boolean.FALSE.toString(), Boolean.TRUE.toString()));
+    propertyMap.put(UserSettings.PASSWORDS_FILE_LOCATION.toString(), List.of(DatabaseHandler.getDefaultDBFolderPath()));
+  }
+
+  private static void setUpUserSettingsWithFixedValues() {
+    userSettingsWithFixedValues.add(UserSettings.THEME.toString());
+    userSettingsWithFixedValues.add(UserSettings.PASSWORDS_VISIBLE.toString());
   }
 
   // endregion
@@ -75,7 +91,7 @@ public class PropertyHandler {
 
   /**
    * Deletes unknown properties and resets unkown values to default, before saving
-   * them.
+   * them. Additionally, it adds defaults for missing properties.
    *
    * @param properties
    */
@@ -91,20 +107,39 @@ public class PropertyHandler {
         properties.remove(propertyName);
         continue;
       }
-      // Resetting unknown values
-      if (!propertyMap.get(propertyName).contains(propertyValue)) {
-        logger.debug(
-            "The following value is not recognized for the "
-                + propertyName
-                + " property: "
-                + propertyValue);
-        String defaultProperty = propertyMap.get(propertyName).get(0);
-        logger.debug("Setting " + propertyName + " to " + defaultProperty);
-        properties.setProperty(propertyName, defaultProperty);
-      }
+
+      ResetValueIfUnknown(properties, propertyName, propertyValue);
     }
+
+    addDefaultsForMissingProperties(properties);
+
     // Saving the properties
     writeProperties(properties);
+  }
+
+  private static void ResetValueIfUnknown(Properties properties, String propertyName, String propertyValue) {
+    if (userSettingsWithFixedValues.contains(propertyName)
+        && !propertyMap.get(propertyName).contains(propertyValue)) {
+      logger.debug(
+          "The following value is not recognized for the "
+              + propertyName
+              + " property: "
+              + propertyValue);
+      String defaultProperty = propertyMap.get(propertyName).get(0);
+      logger.debug("Setting " + propertyName + " to " + defaultProperty);
+      properties.setProperty(propertyName, defaultProperty);
+    }
+  }
+
+  public static void addDefaultsForMissingProperties(Properties properties) {
+    for (var entry : propertyMap.entrySet()) {
+      String propertyName = entry.getKey();
+      String defaultValue = entry.getValue().get(0);
+      if (!properties.containsKey(propertyName)) {
+        logger.debug("Adding default value for missing property: " + propertyName + " -> " + defaultValue);
+        properties.setProperty(propertyName, defaultValue);
+      }
+    }
   }
 
   // endregion
