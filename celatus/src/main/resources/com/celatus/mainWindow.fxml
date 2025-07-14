@@ -100,7 +100,7 @@
                                     </accelerator>
                                 </MenuItem>
                                 <MenuItem mnemonicParsing="false" onAction="#changePwdsFileLocation"
-                                    text="Changes passwords file location">
+                                    text="Change passwords file location">
                                     <accelerator>
                                         <KeyCodeCombination alt="UP" code="P" control="DOWN"
                                             meta="UP" shift="UP" shortcut="UP" />

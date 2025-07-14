@@ -1,4 +1,4 @@
-/* -------------------------All windows------------------------- */
+/* #region -------------------------All windows------------------------- */
 
 .RootPane {
     -fx-background-color : #dfdfdf;
@@ -151,15 +151,18 @@
     -fx-border-width: 1 0 0 0
 }
 
+/* #endregion */
 
-/* -------------------------Setup window------------------------- */
+/* #region -------------------------Setup window------------------------- */
 
 #warningLabel {
     -fx-text-fill: #ff7b00;
     -fx-font-size: 14px;
 }
 
-/* -------------------------Main window------------------------- */
+/* #endregion */
+
+/* #region -------------------------Main window------------------------- */
 
 #searchBar {
     -fx-border-color: #2b2b2b;
@@ -276,7 +279,9 @@
     
 }
 
-/* -------------------------View Password Window------------------------- */
+/* #endregion */
+
+/* #region -------------------------View Password Window------------------------- */
 
 #recordsTable {
     -fx-background-color: transparent;
@@ -331,3 +336,5 @@
     -fx-pref-height: 0;
     -fx-max-height: 0;
 }
+
+/* #endregion */
