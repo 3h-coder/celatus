@@ -247,7 +247,8 @@ public class PasswordWindowController extends DialogWindowController {
     inputPwdEntry
         .getRecords()
         .forEach(
-            (date, record) -> recordEntries.add(new RecordEntryView(date, (String) ((Map) record).get("changes"))));
+            (date, record) -> recordEntries
+                .add(new RecordEntryView(date, (String) ((Map<String, String>) record).get("changes"))));
 
     recordsTable.setItems(recordEntries);
 

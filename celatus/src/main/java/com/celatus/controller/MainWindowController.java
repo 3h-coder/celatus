@@ -784,9 +784,9 @@ public class MainWindowController extends BaseWindowController {
   @SuppressWarnings("unchecked")
   private void setPasswordsTable() {
 
-    TableColumn nameColumn = new TableColumn("Name");
-    TableColumn identifierColumn = new TableColumn("Identifier");
-    TableColumn lastEditedColumn = new TableColumn("Last edited");
+    var nameColumn = new TableColumn<PasswordEntry, String>("Name");
+    var identifierColumn = new TableColumn<PasswordEntry, String>("Identifier");
+    var lastEditedColumn = new TableColumn<PasswordEntry, LocalDateTime>("Last edited");
 
     FXMLUtils.setMinWidth(100.0, nameColumn, identifierColumn, lastEditedColumn);
 
@@ -810,7 +810,7 @@ public class MainWindowController extends BaseWindowController {
           };
         });
 
-    TableColumn passwordColumn = ConstructPasswordColumn();
+    var passwordColumn = ConstructPasswordColumn();
 
     passwordsTable
         .getColumns()

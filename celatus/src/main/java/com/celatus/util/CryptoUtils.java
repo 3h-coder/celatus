@@ -21,7 +21,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -71,7 +70,8 @@ public class CryptoUtils {
       StringBuilder hexString = new StringBuilder();
       for (byte hashByte : hashBytes) {
         String hex = Integer.toHexString(0xff & hashByte);
-        if (hex.length() == 1) hexString.append('0');
+        if (hex.length() == 1)
+          hexString.append('0');
         hexString.append(hex);
       }
 
@@ -90,7 +90,8 @@ public class CryptoUtils {
   public static Key generateAESKey(String masterPwd) {
     try {
       SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-      // Note that salting the pass phrase is not necessary since we're not storing multiple
+      // Note that salting the pass phrase is not necessary since we're not storing
+      // multiple
       // passwords in a database, but to comply with
       // the method we are forced to use a salt.
       KeySpec spec = new PBEKeySpec(masterPwd.toCharArray(), "salt".getBytes(), 65536, 256);
@@ -128,8 +129,8 @@ public class CryptoUtils {
    * Encrypts the input data
    *
    * @param data : The data string to cipher
-   * @param Key : The key used for our AES CBC encryption
-   * @param iv : The IV used for our AES CBC encryption
+   * @param Key  : The key used for our AES CBC encryption
+   * @param iv   : The IV used for our AES CBC encryption
    * @return : The encrypted data as a string
    */
   public static String encryptData(String data, Key Key, IvParameterSpec iv) {
@@ -149,8 +150,8 @@ public class CryptoUtils {
    * Deciphers an encrypted data string
    *
    * @param encryptedData : The data we want to decipher
-   * @param key : The key used for our AES deciphering
-   * @param iv : The IV used for our AES CBC encryption
+   * @param key           : The key used for our AES deciphering
+   * @param iv            : The IV used for our AES CBC encryption
    * @return : The deciphered plain text
    */
   public static String decryptData(String encryptedData, Key key, IvParameterSpec iv) {
@@ -169,63 +170,66 @@ public class CryptoUtils {
    * Saves data into a file after ciphering it through AES CBC
    *
    * @param outputFilePath : File where we store the data
-   * @param data : Data to be stored into the file
-   * @param key : Key used for AES CBC encryption
-   * @param iv : The iv byte array used for encryption
+   * @param data           : Data to be stored into the file
+   * @param key            : Key used for AES CBC encryption
+   * @param iv             : The iv byte array used for encryption
    * @return <b>true</b> if the encryption was succesful, <b>false</b> otherwise
    */
   public static void encryptIntoFile(String outputFilePath, String data, Key key, byte[] iv)
       throws FileNotFoundException,
-          IOException,
-          NoSuchAlgorithmException,
-          NoSuchPaddingException,
-          InvalidKeyException,
-          InvalidAlgorithmParameterException,
-          IllegalBlockSizeException,
-          BadPaddingException {
+      IOException,
+      NoSuchAlgorithmException,
+      NoSuchPaddingException,
+      InvalidKeyException,
+      InvalidAlgorithmParameterException,
+      IllegalBlockSizeException,
+      BadPaddingException {
 
-    FileOutputStream outputStream = new FileOutputStream(outputFilePath);
-    outputStream.write(iv);
-    Cipher cipher = Cipher.getInstance(ALGORITHM);
-    cipher.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(iv));
+    try (var outputStream = new FileOutputStream(outputFilePath)) {
+      outputStream.write(iv);
+      Cipher cipher = Cipher.getInstance(ALGORITHM);
+      cipher.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(iv));
 
-    byte[] cipherText = cipher.doFinal(data.getBytes());
-    outputStream.write(cipherText);
+      byte[] cipherText = cipher.doFinal(data.getBytes());
+      outputStream.write(cipherText);
+    }
   }
 
   /**
    * Decrypts data from an AES CBC encrypted file
    *
    * @param inputFilePath : The file that we want to decrypt
-   * @param key : The AES key used for decryption
+   * @param key           : The AES key used for decryption
    * @return The deciphered file content as a String object
    */
   public static String decryptFile(String inputFilePath, Key key)
       throws InvalidKeyException,
-          InvalidAlgorithmParameterException,
-          FileNotFoundException,
-          NoSuchAlgorithmException,
-          NoSuchPaddingException,
-          IllegalBlockSizeException,
-          BadPaddingException,
-          IOException {
+      InvalidAlgorithmParameterException,
+      FileNotFoundException,
+      NoSuchAlgorithmException,
+      NoSuchPaddingException,
+      IllegalBlockSizeException,
+      BadPaddingException,
+      IOException {
 
-    InputStream inputStream = new FileInputStream(inputFilePath);
-    Cipher cipher = Cipher.getInstance(ALGORITHM);
+    try (var inputStream = new FileInputStream(inputFilePath)) {
+      Cipher cipher = Cipher.getInstance(ALGORITHM);
 
-    // Read the IV from the input file
-    byte[] storedIV = new byte[16];
-    inputStream.read(storedIV);
+      // Read the IV from the input file
+      byte[] storedIV = new byte[16];
+      inputStream.read(storedIV);
 
-    cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(storedIV));
+      cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(storedIV));
 
-    byte[] encryptedBytes = inputStream.readAllBytes();
-    byte[] decryptedBytes = cipher.doFinal(encryptedBytes);
-    return new String(decryptedBytes, StandardCharsets.UTF_8);
+      byte[] encryptedBytes = inputStream.readAllBytes();
+      byte[] decryptedBytes = cipher.doFinal(encryptedBytes);
+      return new String(decryptedBytes, StandardCharsets.UTF_8);
+    }
   }
 
   /**
-   * Generates a random password containing at least one uppercase character, one numeric character
+   * Generates a random password containing at least one uppercase character, one
+   * numeric character
    * and one special character.
    *
    * @param length : The password's length, 6 minimum.
@@ -245,13 +249,13 @@ public class CryptoUtils {
     String password = "";
     SecureRandom random = new SecureRandom();
 
-    // Ensure at least one uppercase character, one number, and one special character
+    // Ensure at least one uppercase character, one number, and one special
+    // character
     password += UPPERCASE_CHARACTERS.charAt(random.nextInt(UPPERCASE_CHARACTERS.length()));
     password += NUMERIC_CHARACTERS.charAt(random.nextInt(NUMERIC_CHARACTERS.length()));
     password += SPECIAL_CHARACTERS.charAt(random.nextInt(SPECIAL_CHARACTERS.length()));
 
-    String allCharacters =
-        LOWERCASE_CHARACTERS + UPPERCASE_CHARACTERS + NUMERIC_CHARACTERS + SPECIAL_CHARACTERS;
+    String allCharacters = LOWERCASE_CHARACTERS + UPPERCASE_CHARACTERS + NUMERIC_CHARACTERS + SPECIAL_CHARACTERS;
 
     for (int i = 3; i < length; i++) { // Start from 3 to account for the initial characters
       int randomIndex = random.nextInt(allCharacters.length());

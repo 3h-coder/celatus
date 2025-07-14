@@ -4,7 +4,6 @@ import java.security.Key;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 
 import javax.crypto.spec.IvParameterSpec;
@@ -83,9 +82,9 @@ public class Testing {
   }
 
   public static void testMapToJson() {
-    Map<String, Object> outerMap = new HashMap();
-    Map<String, Object> childMap1 = new HashMap();
-    Map<String, Object> childMap2 = new HashMap();
+    var outerMap = new HashMap<String, Object>();
+    var childMap1 = new HashMap<String, Object>();
+    var childMap2 = new HashMap<String, Object>();
 
     childMap2.put("testy", "testo");
     childMap1.put("childMap2", childMap2);
@@ -128,22 +127,6 @@ public class Testing {
     String hash = CryptoUtils.getSHA256Hash(String.valueOf(timeStampSeconds));
     String result = "CAT" + hash.toUpperCase();
     System.out.println("Result: " + result);
-  }
-
-  public static void testRemoveFromMap() {
-    /*
-     * Map <String, Boolean> map = new HashMap<>();
-     * map.put("test", true);
-     * System.out.println(map);
-     * boolean tmp = map.get("test");
-     * map.remove("test");
-     * System.out.println(tmp);
-     * System.out.println(map);
-     */
-    Map map = null;
-    if (map.containsKey("test")) {
-      System.out.println("haha");
-    }
   }
 
   public static void testLastIndexOf() {

@@ -16,7 +16,7 @@ public class MapUtils {
 
   // region =====Json Serialization=====
 
-  public static String mapToJson(Map map, boolean pretty) {
+  public static String mapToJson(@SuppressWarnings("rawtypes") Map map, boolean pretty) {
     String json = null;
     ObjectMapper objectMapper = new ObjectMapper();
     objectMapper.findAndRegisterModules();
@@ -32,6 +32,7 @@ public class MapUtils {
     return json;
   }
 
+  @SuppressWarnings("unchecked")
   public static <T> Map<String, T> jsonToMap(String json) {
     ObjectMapper objectMapper = new ObjectMapper();
     objectMapper.findAndRegisterModules();

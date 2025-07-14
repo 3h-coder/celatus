@@ -170,13 +170,13 @@ public class FXMLUtils {
 
   // region =====Table Column=====
 
-  public static void setMaxWidth(double maxWidth, TableColumn... columns) {
+  public static void setMaxWidth(double maxWidth, @SuppressWarnings("rawtypes") TableColumn... columns) {
     for (var column : columns) {
       column.setMaxWidth(maxWidth);
     }
   }
 
-  public static void setMinWidth(double minWidth, TableColumn... columns) {
+  public static void setMinWidth(double minWidth, @SuppressWarnings("rawtypes") TableColumn... columns) {
     for (var column : columns) {
       column.setMinWidth(minWidth);
     }
