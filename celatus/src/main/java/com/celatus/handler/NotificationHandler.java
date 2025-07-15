@@ -11,7 +11,6 @@ import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.Pane;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -30,17 +29,13 @@ public class NotificationHandler {
     // region =====Methods=====
 
     public static void summonNotificationPopup(Stage window, String message) {
-        Pane rowPaneForPlacement = (Pane) window.getScene().lookup("#rowPane1");
-        if (rowPaneForPlacement == null)
-            return;
-
         hideActiveNotificationPopup();
 
         Popup popup = new Popup();
         var textArea = buildTextArea(message);
 
         setUpNewPopup(window, popup, textArea);
-        showNewPopup(window, rowPaneForPlacement, popup);
+        showNewPopup(window, popup);
     }
 
     // endregion
@@ -70,67 +65,77 @@ public class NotificationHandler {
 
     private static void setUpNewPopup(Stage window, Popup popup, TextArea textArea) {
         popup.getContent().addAll(textArea);
-        setUpListeners(window, popup, textArea);
-        placePopupCorrectly(window, popup, textArea);
+        setUpListeners(window, popup);
         notificationPopup = popup;
     }
 
-    private static void showNewPopup(Stage window, Pane rowPaneForPlacement, Popup popup) {
-        var transitions = getTransitions(popup, rowPaneForPlacement);
+    private static void showNewPopup(Stage window, Popup popup) {
+        var transitions = getTransitions(popup);
         popup.show(window);
+        placePopupCorrectly(window, popup);
         transitions.forEach(transition -> transition.play());
     }
 
-    private static void setUpListeners(Stage window, Popup popup, TextArea textArea) {
+    private static void setUpListeners(Stage window, Popup popup) {
+        var scene = window.getScene();
+
         // Store listeners so we can remove them later
-        ChangeListener<Number> xListener = (obs, oldX, newX) -> placePopupCorrectly(window, popup, textArea);
-        ChangeListener<Number> yListener = (obs, oldY, newY) -> placePopupCorrectly(window, popup, textArea);
-        ChangeListener<Number> wListener = (obs, oldW, newW) -> placePopupCorrectly(window, popup, textArea);
-        ChangeListener<Number> hListener = (obs, oldH, newH) -> placePopupCorrectly(window, popup, textArea);
+        ChangeListener<Number> xListener = (obs, oldX, newX) -> placePopupCorrectly(window, popup);
+        ChangeListener<Number> yListener = (obs, oldY, newY) -> placePopupCorrectly(window, popup);
+        ChangeListener<Number> sceneWListener = (obs, oldW, newW) -> placePopupCorrectly(window, popup);
+        ChangeListener<Number> sceneHListener = (obs, oldH, newH) -> placePopupCorrectly(window, popup);
         ChangeListener<Boolean> focusListener = (obs, wasFocused, isNowFocused) -> {
             if (!isNowFocused) {
                 popup.hide();
             }
         };
 
+        // Add listeners for window position and focus changes
         window.xProperty().addListener(xListener);
         window.yProperty().addListener(yListener);
-        window.widthProperty().addListener(wListener);
-        window.heightProperty().addListener(hListener);
         window.focusedProperty().addListener(focusListener);
+        // Add listeners for scene size changes
+        scene.widthProperty().addListener(sceneWListener);
+        scene.heightProperty().addListener(sceneHListener);
 
         // Remove all listeners when the popup is hidden
         popup.setOnHidden(e -> {
             window.xProperty().removeListener(xListener);
             window.yProperty().removeListener(yListener);
-            window.widthProperty().removeListener(wListener);
-            window.heightProperty().removeListener(hListener);
             window.focusedProperty().removeListener(focusListener);
+            scene.widthProperty().removeListener(sceneWListener);
+            scene.heightProperty().removeListener(sceneHListener);
         });
     }
 
-    private static void placePopupCorrectly(Stage parentWindow, Popup popup, TextArea popupText) {
-        // The popup is located at the window's top middle
-        popup.setX(parentWindow.getX()
-                + (parentWindow.getWidth() / 2)
-                - (FXMLUtils.computeTextWidth(popupText.getText(), popupText.getFont()) + 2) / 2);
-        popup.setY(parentWindow.getY());
+    private static void placePopupCorrectly(Stage parentWindow, Popup popup) {
+        final int xOffset = 10; // Offset from the right edge
+        final int yOffset = 10; // Offset from the bottom edge
+        double windowX = parentWindow.getX();
+        double windowY = parentWindow.getY();
+        double sceneX = parentWindow.getScene().getX();
+        double sceneY = parentWindow.getScene().getY();
+        double sceneWidth = parentWindow.getScene().getWidth();
+        double sceneHeight = parentWindow.getScene().getHeight();
+
+        popup.setX(windowX + sceneX + sceneWidth - popup.getWidth() - xOffset);
+        popup.setY(windowY + sceneY + sceneHeight - popup.getHeight() - yOffset);
     }
 
-    private static ArrayList<Transition> getTransitions(Popup popup, Pane rowPaneForPlacement) {
+    private static ArrayList<Transition> getTransitions(Popup popup) {
         var transitions = new ArrayList<Transition>();
-        transitions.add(getTranslateTransition(rowPaneForPlacement, popup));
+        transitions.add(getTranslateTransition(popup));
         transitions.add(getFadeTransition(popup));
 
         return transitions;
     }
 
-    private static TranslateTransition getTranslateTransition(Pane rowPaneForPlacement, Popup popup) {
+    private static TranslateTransition getTranslateTransition(Popup popup) {
         TranslateTransition translateTransition = new TranslateTransition(
-                Duration.seconds(0.1),
+                Duration.seconds(0.15),
                 popup.getContent().get(0));
-        // Converting it to int otherwise the text is blurry
-        translateTransition.setByY((int) (rowPaneForPlacement.getHeight() * 1.2));
+        translateTransition.setFromY(popup.getHeight() + 30);
+        translateTransition.setToY(0);
 
         return translateTransition;
     }
