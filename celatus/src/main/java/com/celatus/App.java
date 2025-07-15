@@ -29,7 +29,6 @@ import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -96,21 +95,8 @@ public class App extends Application {
     return (Stage) scene.getWindow();
   }
 
-  public static Stage getMainWindow() {
-    var currentWindow = getWindow();
-    if (currentWindow.getOwner() != null) {
-      return (Stage) currentWindow.getOwner();
-    } else {
-      return currentWindow;
-    }
-  }
-
   public static BaseWindowController getController() {
     return controller;
-  }
-
-  public static void setController(BaseWindowController controller) {
-    App.controller = controller;
   }
 
   public static Map<String, ?> getTmpVariables() {
@@ -133,14 +119,13 @@ public class App extends Application {
 
   // region =====Main Methods=====
 
-  @Override
-  public void init() {
-    Platform.setImplicitExit(false);
+  public static void main(String[] args) {
+    Thread.setDefaultUncaughtExceptionHandler(new CustomUncaughtExceptionHandler());
+    launch();
   }
 
   @Override
   public void start(Stage stage) throws IOException {
-
     setShutdownHook();
     initVariables();
     loadProperties();
@@ -157,22 +142,9 @@ public class App extends Application {
     Platform.exit();
   }
 
-  public static void main(String[] args) {
-    Thread.setDefaultUncaughtExceptionHandler(new CustomUncaughtExceptionHandler());
-    launch();
-  }
-
   // endregion
 
   // region =====Secondary Methods=====
-
-  public void loadProperties() {
-    if (!PropertyHandler.propertyFileExists()) {
-      PropertyHandler.createDefaultProperties();
-    }
-    properties = PropertyHandler.readProperties();
-    PropertyHandler.checkProperties(properties);
-  }
 
   /**
    * Launches a window, making it the application's top layer current window.
@@ -364,18 +336,6 @@ public class App extends Application {
     return false;
   }
 
-  public static void registerNotificationPopup(Popup popup) {
-    addTempVariable(AppTempVariable.NOTIFICATION_POPUP, popup);
-  }
-
-  public static Popup getNotificationPopup() {
-    return (Popup) getTempVariable(AppTempVariable.NOTIFICATION_POPUP);
-  }
-
-  public static Popup extractNotificationPopup() {
-    return (Popup) extractTempVariable(AppTempVariable.NOTIFICATION_POPUP);
-  }
-
   /**
    * Saves a property
    *
@@ -390,11 +350,6 @@ public class App extends Application {
   // endregion
 
   // region =====Private Methods=====
-
-  private void initVariables() {
-    actionTracker = new ActionTracker();
-    hostServices = getHostServices();
-  }
 
   private void setShutdownHook() {
     Runtime.getRuntime()
@@ -413,6 +368,19 @@ public class App extends Application {
                   }
                   _logger.info("--------------------Application Shutdown--------------------");
                 }));
+  }
+
+  private void initVariables() {
+    actionTracker = new ActionTracker();
+    hostServices = getHostServices();
+  }
+
+  private void loadProperties() {
+    if (!PropertyHandler.propertyFileExists()) {
+      PropertyHandler.createDefaultProperties();
+    }
+    properties = PropertyHandler.readProperties();
+    PropertyHandler.checkProperties(properties);
   }
 
   // endregion

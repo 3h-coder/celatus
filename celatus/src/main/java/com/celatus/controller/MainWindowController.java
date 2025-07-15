@@ -384,7 +384,6 @@ public class MainWindowController extends BaseWindowController {
     KeyCode eventCode = event.getCode();
     // Full screen
     if (eventCode == KeyCode.F11) {
-      removeRegisteredNotificationPopup();
       if (window.isMaximized()) {
         window.setMaximized(false);
         controlCatDescription();
@@ -392,18 +391,8 @@ public class MainWindowController extends BaseWindowController {
         window.setMaximized(true);
       }
     } else if (eventCode == KeyCode.ESCAPE && window.isMaximized()) {
-      removeRegisteredNotificationPopup();
       window.setMaximized(false);
       controlCatDescription();
-    }
-    // New category (only if there is a notification popup, otherwise it overlaps
-    // with the accelerator)
-    if (event.isShiftDown() && eventCode == KeyCode.C && notificationPopupShown()) {
-      openCatWindow();
-    }
-    // New password (same here)
-    if (event.isShiftDown() && eventCode == KeyCode.P && notificationPopupShown()) {
-      openPwdWindow();
     }
     // Ctrl+Z
     if (event.isControlDown() && eventCode == KeyCode.Z) {
@@ -1014,13 +1003,11 @@ public class MainWindowController extends BaseWindowController {
 
   // Used for the fxml file
   public void openCatWindow() {
-    removeRegisteredNotificationPopup();
     openCategoryWindow(null);
   }
 
   // Used for the fxml file
   public void openPwdWindow() {
-    removeRegisteredNotificationPopup();
     String selectedCategory = getSelectedCategory();
     if (selectedCategory == null) {
       summonNotificationPopup(window, "You must select a category first");

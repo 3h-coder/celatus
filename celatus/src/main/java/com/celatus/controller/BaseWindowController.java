@@ -11,19 +11,16 @@ import com.celatus.App;
 import com.celatus.enums.AlertMode;
 import com.celatus.enums.UserSettings;
 import com.celatus.enums.WindowType;
+import com.celatus.handler.NotificationHandler;
 import com.celatus.util.FXMLUtils;
 
-import javafx.animation.FadeTransition;
-import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -33,12 +30,9 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.stage.Popup;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.stage.Window;
-import javafx.util.Duration;
 
 /**
  * Mother class of all of our controllers, contains all common behaviour to all
@@ -201,92 +195,7 @@ public abstract class BaseWindowController {
    * @param message
    */
   public void summonNotificationPopup(Stage window, String message) {
-    TextArea textArea = new TextArea(message);
-    textArea.setWrapText(true);
-    textArea.setEditable(false);
-    textArea.setMouseTransparent(true);
-    textArea.setFocusTraversable(false);
-    String theme = App.getProperties().getProperty(UserSettings.THEME.toString());
-    textArea.getStylesheets().add(App.class.getResource("styles/" + theme + ".css").toExternalForm());
-    textArea.getStyleClass().add("popup");
-    FXMLUtils.adjustTextAreaDimensions(textArea);
-
-    Popup popup = new Popup();
-    placePopupCorrectly(window, popup, textArea);
-
-    popup.getContent().addAll(textArea);
-    Pane rowPaneForPlacement = (Pane) window.getScene().lookup("#rowPane1");
-    if (rowPaneForPlacement == null) {
-      rowPaneForPlacement = rowPane1;
-    }
-
-    // Create a TranslateTransition to move the popup down
-    // right under the menu bar row
-    TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.1), popup.getContent().get(0));
-    translateTransition.setByY((int) (rowPaneForPlacement.getHeight() * 1.2)); // Converting it to int otherwise the
-                                                                               // text is blurry
-
-    // Create a FadeTransition
-    FadeTransition fadeTransition = new FadeTransition(Duration.seconds(4.9), popup.getContent().get(0));
-    fadeTransition.setFromValue(1);
-    fadeTransition.setToValue(0);
-    fadeTransition.setOnFinished(event -> popup.hide());
-
-    // Only one notification popup at a time
-    removeRegisteredNotificationPopup();
-    App.registerNotificationPopup(popup);
-
-    // Display and animations
-    popup.show(window);
-    translateTransition.play();
-    fadeTransition.play();
-
-    // Store listeners so we can remove them later
-    ChangeListener<Number> xListener = (obs, oldX, newX) -> placePopupCorrectly(window, popup, textArea);
-    ChangeListener<Number> yListener = (obs, oldY, newY) -> placePopupCorrectly(window, popup, textArea);
-    ChangeListener<Number> wListener = (obs, oldW, newW) -> placePopupCorrectly(window, popup, textArea);
-    ChangeListener<Number> hListener = (obs, oldH, newH) -> placePopupCorrectly(window, popup, textArea);
-    ChangeListener<Boolean> focusListener = (obs, wasFocused, isNowFocused) -> {
-      if (!isNowFocused) {
-        popup.hide();
-      }
-    };
-
-    window.xProperty().addListener(xListener);
-    window.yProperty().addListener(yListener);
-    window.widthProperty().addListener(wListener);
-    window.heightProperty().addListener(hListener);
-    window.focusedProperty().addListener(focusListener);
-
-    // Remove all listeners when the popup is hidden
-    popup.setOnHidden(e -> {
-      window.xProperty().removeListener(xListener);
-      window.yProperty().removeListener(yListener);
-      window.widthProperty().removeListener(wListener);
-      window.heightProperty().removeListener(hListener);
-      window.focusedProperty().removeListener(focusListener);
-    });
-  }
-
-  public boolean notificationPopupShown() {
-    Popup popup = App.extractNotificationPopup();
-    return popup != null;
-  }
-
-  protected void removeRegisteredNotificationPopup() {
-    Popup popup = App.extractNotificationPopup();
-    if (popup != null) {
-      popup.hide();
-    }
-  }
-
-  private void placePopupCorrectly(Stage parentWindow, Popup popup, TextArea popupText) {
-    // The popup is located at the window's top middle
-    popup.setX(
-        parentWindow.getX()
-            + (parentWindow.getWidth() / 2)
-            - (FXMLUtils.computeTextWidth(popupText.getText(), popupText.getFont()) + 2) / 2);
-    popup.setY(parentWindow.getY());
+    NotificationHandler.summonNotificationPopup(window, message);
   }
 
   /**
@@ -396,10 +305,6 @@ public abstract class BaseWindowController {
 
   public void close() {
     window.close();
-    if (Stage.getWindows().stream().filter(Window::isShowing).count() == 0) {
-      // No more visible windows, exit the app
-      App.exit();
-    }
   }
 
   /** Currently not used */

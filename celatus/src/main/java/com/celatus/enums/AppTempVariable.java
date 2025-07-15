@@ -12,7 +12,6 @@ package com.celatus.enums;
  * Variables starting with the SIGNAL_ prefix should be of boolean type.
  */
 public enum AppTempVariable {
-    NOTIFICATION_POPUP,
     PASSWORD_RECORD,
     SIGNAL_MASTER_PASSWORD_RESET,
     SIGNAL_YES,
