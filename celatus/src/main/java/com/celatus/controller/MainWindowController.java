@@ -22,6 +22,7 @@ import com.celatus.util.CustomDateUtils;
 import com.celatus.util.DesktopUtils;
 import com.celatus.util.FXMLUtils;
 
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
@@ -988,8 +989,24 @@ public class MainWindowController extends BaseWindowController {
   }
 
   private void copyPwdToClipBoard(String password) {
+    final int clipboardTimeout = 10;
+
+    logger.info("Copying password to clipboard");
     DesktopUtils.copyToClipBoard(password);
-    summonNotificationPopup(this.window, "Password copied to the clipboard");
+    summonNotificationPopup(window, "Password copied to the clipboard (for "
+        + clipboardTimeout + " seconds)");
+
+    // We clear the clipboard after a certain timeout
+    var pause = new PauseTransition(javafx.util.Duration.seconds(clipboardTimeout));
+    pause.setOnFinished(event -> {
+      var clipboardContent = DesktopUtils.getClipboardContents();
+      if (clipboardContent.isBlank() || !clipboardContent.equals(password)) {
+        return;
+      }
+      logger.info("Clearing the clipboard");
+      DesktopUtils.copyToClipBoard(StringUtils.EMPTY);
+    });
+    pause.play();
   }
 
   private void copyIdToClipBoard(String identifier) {

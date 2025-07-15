@@ -3,10 +3,13 @@ package com.celatus.util;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.DataFlavor;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
+import org.apache.commons.lang3.StringUtils;
 
 public class DesktopUtils {
 
@@ -37,6 +40,19 @@ public class DesktopUtils {
     StringSelection stringSelection = new StringSelection(string);
     Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
     clipboard.setContents(stringSelection, null);
+  }
+
+  public static String getClipboardContents() {
+    try {
+      var clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+      var contents = clipboard.getContents(null);
+      if (contents != null && contents.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+        return (String) contents.getTransferData(DataFlavor.stringFlavor);
+      }
+    } catch (Exception e) {
+      // Ignore
+    }
+    return StringUtils.EMPTY;
   }
 
   public static void moveFile(String sourcePath, String destPath) throws IOException {
