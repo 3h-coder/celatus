@@ -17,6 +17,7 @@ import javafx.util.Duration;
 
 /**
  * Handles notifications within the application.
+ * Note that there can only be one active notification popup at a time.
  */
 public class NotificationHandler {
 
