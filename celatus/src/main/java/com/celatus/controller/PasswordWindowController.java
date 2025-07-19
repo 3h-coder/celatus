@@ -369,7 +369,7 @@ public class PasswordWindowController extends DialogWindowController {
     if (foundRecord != null) {
       App.addTempVariable(AppTempVariable.PASSWORD_RECORD, foundRecord);
       var coordinates = FXMLUtils.findOuterCoordinatesForWindow(window, 40, 510, 420);
-      launchWindow(WindowType.VIEW_PASSWORD, coordinates.get("X"), coordinates.get("Y"));
+      launchChildWindow(WindowType.VIEW_PASSWORD, coordinates.getX(), coordinates.getY());
     }
   }
 

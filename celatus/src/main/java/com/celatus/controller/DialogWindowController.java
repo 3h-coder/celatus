@@ -2,7 +2,6 @@ package com.celatus.controller;
 
 import com.celatus.util.FXMLUtils;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -19,15 +18,23 @@ public class DialogWindowController extends BaseWindowController {
 
   // region ======Window Methods=====
 
-  public void initialize() {
-    super.initialize();
-    Platform.runLater(
-        () -> {
-          owner = (Stage) window.getOwner();
-          if (owner != null) {
-            FXMLUtils.addDarkOverlay(owner.getScene());
-          }
-        });
+  @Override
+  protected void lateInitialize() {
+    super.lateInitialize();
+    owner = (Stage) window.getOwner();
+    addDarkOverlayOnOwner();
+  }
+
+  private void addDarkOverlayOnOwner() {
+    if (owner != null) {
+      FXMLUtils.addDarkOverlay(owner.getScene());
+    }
+  }
+
+  private void removeDarkOverlayFromOwner() {
+    if (owner != null) {
+      FXMLUtils.removeDarkOverlay(owner.getScene());
+    }
   }
 
   // endregion
@@ -45,9 +52,7 @@ public class DialogWindowController extends BaseWindowController {
 
   @FXML
   public void closeDialog() {
-    if (owner != null) {
-      FXMLUtils.removeDarkOverlay(owner.getScene());
-    }
+    removeDarkOverlayFromOwner();
     window.close();
   }
 

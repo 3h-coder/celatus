@@ -120,6 +120,7 @@ public class App extends Application {
   // region =====Main Methods=====
 
   public static void main(String[] args) {
+    _logger.info("--------------------Application Startup--------------------");
     Thread.setDefaultUncaughtExceptionHandler(new CustomUncaughtExceptionHandler());
     launch();
   }

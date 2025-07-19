@@ -374,12 +374,6 @@ public class MainWindowController extends BaseWindowController {
   }
 
   @Override
-  public void maximize() {
-    super.maximize();
-    controlCatDescription();
-  }
-
-  @Override
   public void windowKeyPressed(KeyEvent event) {
     super.windowKeyPressed(event);
     KeyCode eventCode = event.getCode();

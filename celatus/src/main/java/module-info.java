@@ -29,4 +29,5 @@ module com.celatus {
         exports com.celatus.models;
         exports com.celatus.interfaces;
         exports com.celatus.enums;
+        exports com.celatus.dataclasses;
 }

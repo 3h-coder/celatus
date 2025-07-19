@@ -17,56 +17,38 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-
-<VBox fx:id="rootPane" prefWidth="500.0" styleClass="RootPane" stylesheets="@styles/default.css"
-   xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1"
-   fx:controller="com.celatus.controller.SetupWindowController">
+<VBox fx:id="rootPane" onMouseDragged="#onMouseDragged" onMousePressed="#onMousePressed" prefWidth="500.0" styleClass="RootPane" stylesheets="@styles/default.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.celatus.controller.SetupWindowController">
    <children>
-      <AnchorPane fx:id="rowPane1" maxHeight="1.7976931348623157E308" minHeight="-Infinity"
-         prefHeight="30.0" prefWidth="500.0">
+      <AnchorPane fx:id="rowPane1" maxHeight="1.7976931348623157E308" minHeight="-Infinity" prefHeight="30.0" prefWidth="500.0">
          <children>
-            <HBox alignment="TOP_RIGHT" fillHeight="false" spacing="5.0"
-               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="1.0">
+            <HBox alignment="TOP_RIGHT" fillHeight="false" spacing="5.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="1.0">
                <children>
-                  <Button fx:id="minimizeButton" minHeight="0.0" minWidth="0.0"
-                     mnemonicParsing="false" onAction="#minimize" prefHeight="15.0" prefWidth="20.0"
-                     styleClass="topRowButton" visible="false">
+                  <Button fx:id="minimizeButton" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" onAction="#minimize" prefHeight="15.0" prefWidth="20.0" styleClass="topRowButton" visible="false">
                      <graphic>
                         <StackPane minHeight="0.0" minWidth="0.0" prefHeight="15.0" prefWidth="20.0">
                            <children>
-                              <SVGPath
-                                 content="M24 432c-13.3 0-24 10.7-24 24s10.7 24 24 24H488c13.3 0 24-10.7 24-24s-10.7-24-24-24H24z"
-                                 scaleX="0.025" scaleY="0.04" styleClass="svg" />
+                              <SVGPath content="M24 432c-13.3 0-24 10.7-24 24s10.7 24 24 24H488c13.3 0 24-10.7 24-24s-10.7-24-24-24H24z" scaleX="0.025" scaleY="0.04" styleClass="svg" />
                            </children>
                         </StackPane>
                      </graphic>
                   </Button>
-                  <Button id="closeButton" fx:id="closeButton" minHeight="0.0" minWidth="0.0"
-                     mnemonicParsing="false" onAction="#closeDialog" prefHeight="15.0"
-                     prefWidth="20.0" styleClass="topRowButton" visible="false">
+                  <Button id="closeButton" fx:id="closeButton" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" onAction="#closeDialog" prefHeight="15.0" prefWidth="20.0" styleClass="topRowButton" visible="false">
                      <graphic>
                         <StackPane minHeight="0.0" minWidth="0.0">
                            <children>
-                              <SVGPath
-                                 content="M345 137c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-119 119L73 103c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l119 119L39 375c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l119-119L311 409c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-119-119L345 137z"
-                                 scaleX="0.04" scaleY="0.04" styleClass="svg" />
+                              <SVGPath content="M345 137c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-119 119L73 103c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l119 119L39 375c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l119-119L311 409c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-119-119L345 137z" scaleX="0.04" scaleY="0.04" styleClass="svg" />
                            </children>
                         </StackPane>
                      </graphic>
                   </Button>
                </children>
             </HBox>
-            <Label fx:id="label00" alignment="CENTER" contentDisplay="CENTER" styleClass="title"
-               text="Master Password Setup" textAlignment="CENTER" AnchorPane.leftAnchor="100.0"
-               AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="5.0" />
+            <Label fx:id="label00" alignment="CENTER" contentDisplay="CENTER" styleClass="title" text="Master Password Setup" textAlignment="CENTER" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="5.0" />
          </children>
       </AnchorPane>
       <VBox maxHeight="1.7976931348623157E308" minHeight="-Infinity">
          <children>
-            <Label id="warningLabel" fx:id="label01" alignment="CENTER" contentDisplay="TOP"
-               minHeight="-Infinity"
-               text="Please enter your master password. Your master password is not saved anywhere. Please make sure you write it down somewhere as there will be no way to recover your data!"
-               textAlignment="CENTER" wrapText="true">
+            <Label id="warningLabel" fx:id="label01" alignment="CENTER" contentDisplay="TOP" minHeight="-Infinity" text="Please enter your master password. Your master password is not saved anywhere. Please make sure you write it down somewhere as there will be no way to recover your data!" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="14.0" />
                </font>
@@ -82,8 +64,7 @@
                </columnConstraints>
                <rowConstraints>
                   <RowConstraints vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="1.7976931348623157E308" minHeight="-Infinity"
-                     vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="1.7976931348623157E308" minHeight="-Infinity" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="-Infinity" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="-Infinity" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="-Infinity" vgrow="SOMETIMES" />
@@ -96,41 +77,21 @@
                         <Insets />
                      </GridPane.margin>
                   </Label>
-                  <PasswordField fx:id="pwdField" maxHeight="1.7976931348623157E308"
-                     maxWidth="1.7976931348623157E308" minHeight="-Infinity"
-                     onAction="#goToPwdField2" onKeyPressed="#pwdFieldKeyPressed"
-                     styleClass="PasswordField" GridPane.rowIndex="1" />
-                  <TextField fx:id="revealedPwdField" maxHeight="1.7976931348623157E308"
-                     minHeight="-Infinity" onAction="#goToPwdField2"
-                     onKeyPressed="#pwdFieldKeyPressed" styleClass="PasswordField" visible="false"
-                     GridPane.rowIndex="1" />
-                  <Button fx:id="viewButton" alignment="CENTER" contentDisplay="CENTER"
-                     maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                     minWidth="-Infinity" mnemonicParsing="false" onAction="#viewButtonClicked"
-                     text="View" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS"
-                     GridPane.rowIndex="1">
+                  <PasswordField fx:id="pwdField" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" onAction="#goToPwdField2" onKeyPressed="#pwdFieldKeyPressed" styleClass="PasswordField" GridPane.rowIndex="1" />
+                  <TextField fx:id="revealedPwdField" maxHeight="1.7976931348623157E308" minHeight="-Infinity" onAction="#goToPwdField2" onKeyPressed="#pwdFieldKeyPressed" styleClass="PasswordField" visible="false" GridPane.rowIndex="1" />
+                  <Button fx:id="viewButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" mnemonicParsing="false" onAction="#viewButtonClicked" text="View" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Label fx:id="label03" prefHeight="17.0" text="Confirm master password"
-                     GridPane.rowIndex="2">
+                  <Label fx:id="label03" prefHeight="17.0" text="Confirm master password" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets top="10.0" />
                      </GridPane.margin>
                   </Label>
-                  <PasswordField fx:id="pwdField2" maxHeight="1.7976931348623157E308"
-                     maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity"
-                     onAction="#submitMasterPasswords" styleClass="PasswordField"
-                     GridPane.rowIndex="3" />
-                  <TextField fx:id="revealedPwdField2" maxHeight="1.7976931348623157E308"
-                     maxWidth="1.7976931348623157E308" minHeight="-Infinity"
-                     onAction="#submitMasterPasswords" styleClass="PasswordField" visible="false"
-                     GridPane.rowIndex="3" />
-                  <Button fx:id="viewButton2" maxHeight="1.7976931348623157E308"
-                     maxWidth="1.7976931348623157E308" mnemonicParsing="false"
-                     onAction="#viewButton2Clicked" text="View" GridPane.columnIndex="2"
-                     GridPane.rowIndex="3">
+                  <PasswordField fx:id="pwdField2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" onAction="#submitMasterPasswords" styleClass="PasswordField" GridPane.rowIndex="3" />
+                  <TextField fx:id="revealedPwdField2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" onAction="#submitMasterPasswords" styleClass="PasswordField" visible="false" GridPane.rowIndex="3" />
+                  <Button fx:id="viewButton2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#viewButton2Clicked" text="View" GridPane.columnIndex="2" GridPane.rowIndex="3">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
@@ -140,22 +101,17 @@
                         <Insets top="10.0" />
                      </GridPane.margin>
                   </Label>
-                  <TextField fx:id="pwdFileLocationField" minHeight="-Infinity"
-                     GridPane.rowIndex="5">
+                  <TextField fx:id="pwdFileLocationField" minHeight="-Infinity" GridPane.rowIndex="5">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
                   </TextField>
-                  <Button fx:id="pwdFileLocationBrowseButton" maxHeight="1.7976931348623157E308"
-                     maxWidth="1.7976931348623157E308" mnemonicParsing="false"
-                     onAction="#openFolderDialogForPwdLocation" text="Browse"
-                     GridPane.columnIndex="2" GridPane.rowIndex="5">
+                  <Button fx:id="pwdFileLocationBrowseButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#openFolderDialogForPwdLocation" text="Browse" GridPane.columnIndex="2" GridPane.rowIndex="5">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
                   </Button>
-                  <Label fx:id="errorLabel" prefHeight="17.0" styleClass="badFieldLabel"
-                     visible="false" GridPane.rowIndex="6" />
+                  <Label fx:id="errorLabel" prefHeight="17.0" styleClass="badFieldLabel" visible="false" GridPane.rowIndex="6" />
                </children>
                <VBox.margin>
                   <Insets top="10.0" />
@@ -163,9 +119,7 @@
             </GridPane>
             <BorderPane maxHeight="1.7976931348623157E308" minHeight="-Infinity">
                <center>
-                  <Button fx:id="enterButton" mnemonicParsing="false"
-                     onAction="#submitMasterPasswords" prefHeight="25.0" prefWidth="80.0"
-                     text="Save">
+                  <Button fx:id="enterButton" mnemonicParsing="false" onAction="#submitMasterPasswords" prefHeight="25.0" prefWidth="80.0" text="Save">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>

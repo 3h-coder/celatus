@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.celatus.App;
 import com.celatus.constants.Constants;
+import com.celatus.dataclasses.ScreenCoordinates;
 import com.celatus.enums.WindowType;
 
 import javafx.fxml.FXML;
@@ -37,7 +38,7 @@ public class FXMLUtils {
 
   private static final Logger logger = LogManager.getLogger(App.class.getName());
 
-  // region =====General components=====
+  // region General components
 
   public static ArrayList<Node> getAllNodes(Parent root) {
     ArrayList<Node> nodes = new ArrayList<Node>();
@@ -168,7 +169,7 @@ public class FXMLUtils {
 
   // endregion
 
-  // region =====Table Column=====
+  // region Table Column
 
   public static void setMaxWidth(double maxWidth, @SuppressWarnings("rawtypes") TableColumn... columns) {
     for (var column : columns) {
@@ -184,7 +185,7 @@ public class FXMLUtils {
 
   // endregion
 
-  // region =====Text=====
+  // region Text
 
   public static double computeTextHeight(String text, javafx.scene.text.Font font, double width) {
     javafx.scene.text.Text helper = new javafx.scene.text.Text();
@@ -203,7 +204,7 @@ public class FXMLUtils {
 
   // endregion
 
-  // region =====TextArea / TextField=====
+  // region TextArea / TextField
 
   public static void adjustTextAreaHeight(TextArea textArea) {
     final double MIN_HEIGHT = 30.0;
@@ -240,7 +241,7 @@ public class FXMLUtils {
 
   // endregion
 
-  // region =====ListView=====
+  // region ListView
 
   @FXML
   public static void adjustListViewHeight(ListView<String> listView) {
@@ -291,7 +292,7 @@ public class FXMLUtils {
 
   // endregion
 
-  // region =====TableView=====
+  // region TableView
 
   @FXML
   public static <T> void adjustTableViewHeight(TableView<T> tableView) {
@@ -307,7 +308,7 @@ public class FXMLUtils {
 
   // endregion
 
-  // region =====Menu / Context Menu / Menu Items=====
+  // region Menu / Context Menu / Menu Items
 
   public static ContextMenu createContextMenu(String[] menuItems) {
     ContextMenu contextMenu = new ContextMenu();
@@ -342,7 +343,7 @@ public class FXMLUtils {
 
   // endregion
 
-  // region =====Stage / Scene=====
+  // region Stage / Scene
 
   public static void addDarkOverlay(Scene scene) {
     AnchorPane root = (AnchorPane) scene.getRoot();
@@ -382,9 +383,8 @@ public class FXMLUtils {
    * @param newWindowHeight : The height of the window we want to spawn
    * @return
    */
-  public static Map<String, Double> findOuterCoordinatesForWindow(
+  public static ScreenCoordinates findOuterCoordinatesForWindow(
       Stage primaryStage, double radius, double newWindowWidth, double newWindowHeight) {
-    Map<String, Double> outerCoords = new HashMap<>();
     Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
     double screenWidth = screenBounds.getWidth();
     double screenHeight = screenBounds.getHeight();
@@ -396,15 +396,19 @@ public class FXMLUtils {
         primaryStage.getY() + Math.random() * radius,
         screenHeight - newWindowHeight - Math.random() * radius);
 
-    outerCoords.put("X", newX);
-    outerCoords.put("Y", newY);
+    return new ScreenCoordinates((int) newX, (int) newY);
+  }
 
-    return outerCoords;
+  public static ScreenCoordinates findCenter(Stage stage) {
+    double newX = stage.getX() + (stage.getWidth() / 2);
+    double newY = stage.getY() + (stage.getHeight() / 2);
+
+    return new ScreenCoordinates((int) newX, (int) newY);
   }
 
   // endregion
 
-  // region =====FXML files=====
+  // region FXML files
 
   public static FXMLLoader getLoader(String fxml) throws IOException {
     return new FXMLLoader(App.class.getResource(fxml + ".fxml"));

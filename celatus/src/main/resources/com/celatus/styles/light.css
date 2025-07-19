@@ -4,7 +4,8 @@
     -fx-background-color : #dfdfdf;
     -fx-border-color: #2b2b2b;
     -fx-border-width: 0;
-    -fx-font-family: "Segoe UI", "Arial", sans-serif;
+    -fx-font-family: "Segoe UI", "Arial", sans-serif, monospace;
+    -fx-font-size: 12.5px;
 }
 
 .svg {
@@ -214,7 +215,7 @@
 #passwordsTable .table-row-cell:selected{
     -fx-background-color: #cecece;
     -fx-border-color: black;
-    -fx-border-width: 1 0 1 0
+    -fx-border-width: 1 1 1 0;
 }
 
 #passwordsTable .scroll-bar:horizontal{

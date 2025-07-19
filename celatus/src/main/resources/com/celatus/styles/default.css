@@ -4,7 +4,8 @@
     -fx-background-color : #3e3e3e;
     -fx-border-color: #8c8c8c;
     -fx-border-width: 0;
-    -fx-font-family: "Segoe UI", "Arial", sans-serif;
+    -fx-font-family: "Segoe UI", "Arial", sans-serif, monospace;
+    -fx-font-size: 12.5px;
 }
 
 .svg {
@@ -207,7 +208,7 @@
 #passwordsTable .table-row-cell:selected{
     -fx-background-color: #8c8c8c;
     -fx-border-color: white;
-    -fx-border-width: 1 0 1 0
+    -fx-border-width: 1 1 1 0;
 }
 
 #passwordsTable .scroll-bar:horizontal{
@@ -282,16 +283,16 @@
 }
 
 #recordsTable .column-header {
-    -fx-background-color: linear-gradient(to bottom, #8c8c8c, #cacac9);
+    -fx-background-color: #2b2b2b;
 }
 
 #recordsTable .column-header-background {
-    -fx-background-color: linear-gradient(to bottom, #8c8c8c, #cacac9);
+    -fx-background-color: #2b2b2b;
 }
 
 #recordsTable .column-header-background .label {
     -fx-background-color: transparent;
-    -fx-text-fill: black;
+    -fx-text-fill: white;
 }
 
 #recordsTable .column-header-background .filler {

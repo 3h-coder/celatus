@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.celatus.App;
+import com.celatus.constants.Constants;
 import com.celatus.enums.AlertMode;
 import com.celatus.enums.WindowType;
 import com.celatus.handler.NotificationHandler;
@@ -16,21 +17,16 @@ import com.celatus.util.ThemeUtils;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -75,16 +71,24 @@ public abstract class BaseWindowController {
     loadTheme();
     // We have to make sure the scene is fully initialized to properly set up our
     // variables
-    Platform.runLater(
-        () -> {
-          window = getCurrentWindow();
-          scene = window.getScene();
-          makeLabelsSelectable();
-          enableAnchorPaneFocusOnClick();
-          setOnCloseRequest();
-          setIcon();
-          setWindowTitle("Celatus Password Manager");
-        });
+    Platform.runLater(this::lateInitialize);
+  }
+
+  /**
+   * This method is called after the scene is fully initialized, so we can safely
+   * access the window and scene.
+   * 
+   * It is called inside the initialize method, in a
+   * Platform.runLater block to ensure that the scene is ready.
+   */
+  protected void lateInitialize() {
+    scene = getScene();
+    window = (Stage) scene.getWindow();
+
+    enableAnchorPaneFocusOnClick();
+    setUpCloseRequestHandling();
+    setIcon();
+    setWindowTitle("Celatus Password Manager");
   }
 
   public void setIcon() {
@@ -96,41 +100,15 @@ public abstract class BaseWindowController {
   }
 
   @FXML
-  public Stage getCurrentWindow() {
-    return (Stage) rootPane.getScene().getWindow();
-  }
-
-  @FXML
   public void loadTheme() {
     rootPane.getStylesheets().clear();
-    rootPane
-        .getStylesheets()
-        .add(ThemeUtils.getTheme());
+    rootPane.getStylesheets().add(ThemeUtils.getTheme());
   }
 
-  /**
-   * Launches a window on top of the current one
-   *
-   * @param windowType : the window you want to launch
-   */
-  public void launchWindow(WindowType windowType) {
+  public void launchChildWindow(WindowType windowType, double X, double Y) {
     try {
       Map<String, Object> map = FXMLUtils.getSceneAndController(windowType);
-      Scene scene = (Scene) map.get("Scene");
-      Stage stage = new Stage();
-      stage.initOwner(this.window);
-      stage.setScene(scene);
-      stage.initStyle(StageStyle.UNDECORATED);
-      stage.show();
-    } catch (Exception ex) {
-      App.error(this.window, ex, "An error occured", logger, AlertMode.OK, true);
-    }
-  }
-
-  public void launchWindow(WindowType windowType, double X, double Y) {
-    try {
-      Map<String, Object> map = FXMLUtils.getSceneAndController(windowType);
-      Scene scene = (Scene) map.get("Scene");
+      Scene scene = (Scene) map.get(Constants.SCENE);
       Stage stage = new Stage();
       stage.initOwner(this.window);
       stage.setScene(scene);
@@ -156,7 +134,6 @@ public abstract class BaseWindowController {
   public void switchAppWindow(WindowType windowType, boolean resizable) {
     try {
       App.launchWindow(windowType, resizable);
-      window.close();
     } catch (Exception ex) {
       App.error(
           this.window,
@@ -165,6 +142,7 @@ public abstract class BaseWindowController {
           logger,
           AlertMode.OK,
           true);
+    } finally {
       close();
     }
   }
@@ -197,57 +175,8 @@ public abstract class BaseWindowController {
     NotificationHandler.summonNotificationPopup(window, message);
   }
 
-  /**
-   * Browses the window to find all first layer labels (under an anchor pane) and
-   * make them
-   * selectable upon clicking on them
-   */
-  private void makeLabelsSelectable() {
-    ArrayList<Label> labels = FXMLUtils.getAllNodesByClass(rootPane, Label.class);
-    for (Label label : labels) {
-      if (!(label.getParent() instanceof AnchorPane)) {
-        continue;
-      }
-      if (label.getStyleClass().contains("badFieldLabel")) {
-        continue;
-      }
-      if (label.getId().equals("warningLabel")) {
-        continue;
-      }
-      AnchorPane parentPane = (AnchorPane) label.getParent();
-
-      label.setOnMouseClicked(
-          mouseEvent -> {
-            if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
-              if (mouseEvent.getClickCount() == 1) {
-                label.setVisible(false);
-                TextField textField = new TextField(label.getText());
-                textField.setEditable(false);
-                textField.setStyle(
-                    "-fx-background-color: transparent; -fx-border-width: 0; -fx-padding: 0 0 0"
-                        + " -1;");
-                textField.setFont(label.getFont());
-
-                textField.setAlignment(label.getAlignment());
-                textField.setPrefWidth(label.getWidth());
-                parentPane.getChildren().add(textField);
-                AnchorPane.setTopAnchor(textField, AnchorPane.getTopAnchor(label));
-                AnchorPane.setBottomAnchor(textField, AnchorPane.getBottomAnchor(label));
-                AnchorPane.setLeftAnchor(textField, AnchorPane.getLeftAnchor(label));
-                AnchorPane.setRightAnchor(textField, AnchorPane.getRightAnchor(label));
-                textField.setLayoutX(label.getLayoutX());
-
-                textField.setOnKeyPressed(
-                    event -> {
-                      if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.ESCAPE) {
-                        parentPane.getChildren().remove(textField);
-                        label.setVisible(true);
-                      }
-                    });
-              }
-            }
-          });
-    }
+  private Scene getScene() {
+    return (Scene) rootPane.getScene();
   }
 
   /**
@@ -271,14 +200,39 @@ public abstract class BaseWindowController {
   // region =====Event Methods=====
 
   @FXML
-  public void windowKeyPressed(KeyEvent event) {
-    // Quit program on alt + F4
+  protected void close() {
+    window.close();
+  }
+
+  @FXML
+  private void minimize() {
+    Stage stage = (Stage) minimizeButton.getScene().getWindow();
+    stage.setIconified(true);
+  }
+
+  @FXML
+  protected void windowKeyPressed(KeyEvent event) {
     if (event.isAltDown() && event.getCode() == KeyCode.F4) {
       this.altF4Detected = true;
     }
   }
 
-  public void setOnCloseRequest() {
+  @FXML
+  private void onMousePressed(MouseEvent event) {
+    xOffset = window.getX() - event.getScreenX();
+    yOffset = window.getY() - event.getScreenY();
+  }
+
+  @FXML
+  private void onMouseDragged(MouseEvent event) {
+    window.setX(event.getScreenX() + xOffset);
+    window.setY(event.getScreenY() + yOffset);
+  }
+
+  /**
+   * Sets up the close request handling for the window.
+   */
+  private void setUpCloseRequestHandling() {
     window.setOnCloseRequest(
         event -> {
           // The default alt+F4 only closes the foreground window, not the whole app
@@ -288,51 +242,6 @@ public abstract class BaseWindowController {
           }
           close();
         });
-  }
-
-  @FXML
-  public void onMousePressed(MouseEvent event) {
-    xOffset = window.getX() - event.getScreenX();
-    yOffset = window.getY() - event.getScreenY();
-  }
-
-  @FXML
-  public void onMouseDragged(MouseEvent event) {
-    window.setX(event.getScreenX() + xOffset);
-    window.setY(event.getScreenY() + yOffset);
-  }
-
-  public void close() {
-    window.close();
-  }
-
-  /** Currently not used */
-  public void minimize() {
-    Stage stage = (Stage) minimizeButton.getScene().getWindow();
-    stage.setIconified(true);
-  }
-
-  /** Currently not used */
-  public void maximize() {
-    Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-    double minX = primaryScreenBounds.getMinX();
-    double minY = primaryScreenBounds.getMinY();
-    double screenWidth = primaryScreenBounds.getWidth();
-    double screenHeight = primaryScreenBounds.getHeight();
-
-    // If the window is already maximized, we set it back to default
-    if (window.getWidth() == screenWidth
-        && window.getHeight() == screenHeight
-        && window.getX() == minX
-        && window.getY() == minY) {
-      window.setWidth(900);
-      window.setHeight(600);
-      window.centerOnScreen();
-    } else {
-      window.setWidth(screenWidth);
-      window.setHeight(screenHeight);
-      window.centerOnScreen();
-    }
   }
 
   // endregion
