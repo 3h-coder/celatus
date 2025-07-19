@@ -2,9 +2,9 @@
 
 
 
-1. In `./celatus`, run a `maven clean install` command
-2. In `./celatus/release/package`, copy the jar with dependencies, the logo.ico and the LICENSE files
-3. Run the [jpackage](https://docs.oracle.com/en/java/javase/17/docs/specs/man/jpackage.html) command for the desired platform
+1. In `./celatus`, run `mvn clean install` command
+2. Copy the jar with dependencies from `./celatus/target` folder, as well as the icon from `./celatus/src/main/resources/com/celatus/images/logo.ico` (or `logo.png` on debian based distros) and the license file `./LICENSE` and place them into a folder, such as `./celatus/release/package`
+3. In that folder, run the [jpackage](https://docs.oracle.com/en/java/javase/17/docs/specs/man/jpackage.html) command for the desired platform
 
 Note that the installation is user scoped, not system scoped.
 

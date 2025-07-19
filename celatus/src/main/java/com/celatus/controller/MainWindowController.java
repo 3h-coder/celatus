@@ -989,15 +989,15 @@ public class MainWindowController extends BaseWindowController {
   }
 
   private void copyPwdToClipBoard(String password) {
-    final int clipboardTimeout = 10;
+    final int clipboardTimeoutInS = 20;
 
     logger.info("Copying password to clipboard");
     DesktopUtils.copyToClipBoard(password);
     summonNotificationPopup(window, "Password copied to the clipboard (for "
-        + clipboardTimeout + " seconds)");
+        + clipboardTimeoutInS + " seconds)");
 
     // We clear the clipboard after a certain timeout
-    var pause = new PauseTransition(javafx.util.Duration.seconds(clipboardTimeout));
+    var pause = new PauseTransition(javafx.util.Duration.seconds(clipboardTimeoutInS));
     pause.setOnFinished(event -> {
       var clipboardContent = DesktopUtils.getClipboardContents();
       if (clipboardContent.isBlank() || !clipboardContent.equals(password)) {
