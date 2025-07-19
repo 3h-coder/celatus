@@ -9,10 +9,10 @@ import org.apache.logging.log4j.Logger;
 
 import com.celatus.App;
 import com.celatus.enums.AlertMode;
-import com.celatus.enums.UserSettings;
 import com.celatus.enums.WindowType;
 import com.celatus.handler.NotificationHandler;
 import com.celatus.util.FXMLUtils;
+import com.celatus.util.ThemeUtils;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -102,11 +102,10 @@ public abstract class BaseWindowController {
 
   @FXML
   public void loadTheme() {
-    String theme = appProperties.getProperty(UserSettings.THEME.toString());
     rootPane.getStylesheets().clear();
     rootPane
         .getStylesheets()
-        .add(App.class.getResource("styles/" + theme + ".css").toExternalForm());
+        .add(ThemeUtils.getTheme());
   }
 
   /**

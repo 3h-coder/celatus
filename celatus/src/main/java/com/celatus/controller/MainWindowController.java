@@ -1039,8 +1039,7 @@ public class MainWindowController extends BaseWindowController {
       summonNotificationPopup(window, "Database successfully saved");
     } catch (Exception ex) {
       logger.error(
-          "An unexpected error occured while trying to save the passwords database: "
-              + ex.getMessage());
+          "An unexpected error occured while trying to save the passwords database", ex);
     }
   }
 

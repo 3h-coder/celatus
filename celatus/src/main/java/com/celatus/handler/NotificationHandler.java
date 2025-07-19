@@ -1,10 +1,8 @@
 package com.celatus.handler;
 
 import java.util.ArrayList;
-
-import com.celatus.App;
-import com.celatus.enums.UserSettings;
 import com.celatus.util.FXMLUtils;
+import com.celatus.util.ThemeUtils;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.Transition;
@@ -50,14 +48,12 @@ public class NotificationHandler {
     }
 
     private static TextArea buildTextArea(String message) {
-        var theme = App.getProperties().getProperty(UserSettings.THEME.toString());
-
         var textArea = new TextArea(message);
         textArea.setWrapText(true);
         textArea.setEditable(false);
         textArea.setMouseTransparent(true);
         textArea.setFocusTraversable(false);
-        textArea.getStylesheets().add(App.class.getResource("styles/" + theme + ".css").toExternalForm());
+        textArea.getStylesheets().add(ThemeUtils.getTheme());
         textArea.getStyleClass().add("popup");
         FXMLUtils.adjustTextAreaDimensions(textArea);
 
