@@ -181,17 +181,6 @@ public class App extends Application {
   }
 
   /**
-   * Switches the application's scene to another
-   *
-   * @param fxml The view to switch to
-   * @throws IOException
-   */
-  // /!\ Do not use! Currently not working properly
-  public static void setView(String fxml) throws IOException {
-    scene.setRoot(FXMLUtils.loadFXML(fxml));
-  }
-
-  /**
    * Logs the provided error message and displays it into a pop-up window
    *
    * @param error The error message

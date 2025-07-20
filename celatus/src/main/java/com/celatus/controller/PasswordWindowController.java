@@ -19,7 +19,6 @@ import com.celatus.util.CryptoUtils;
 import com.celatus.util.CustomDateUtils;
 import com.celatus.util.FXMLUtils;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -131,22 +130,19 @@ public class PasswordWindowController extends DialogWindowController {
   // region =====Window Methods=====
 
   @Override
-  public void initialize() {
-    super.initialize();
-    Platform.runLater(
-        () -> {
-          fillFields();
-          // We add our listeners
-          addListeners();
-          // We set the record mode to false
-          recordMode = false;
-          // We set the mode items
-          setModesItems();
-          // We set the record button
-          setRecordButton();
-          // we intialize the detected changes
-          detectedChanges = "";
-        });
+  protected void lateInitialize() {
+    super.lateInitialize();
+    fillFields();
+    // We add our listeners
+    addListeners();
+    // We set the record mode to false
+    recordMode = false;
+    // We set the mode items
+    setModesItems();
+    // We set the record button
+    setRecordButton();
+    // we intialize the detected changes
+    detectedChanges = "";
   }
 
   public void setTitle(String title) {
@@ -288,12 +284,11 @@ public class PasswordWindowController extends DialogWindowController {
     String email = emailField.getText();
     String notes = passwordNotes.getText();
 
-    MainWindowController controller = (MainWindowController) App.getController();
+    MainWindowController mainWindowController = (MainWindowController) App.getController();
 
     // Saving the new password entry
     if (inputPwdEntry == null) {
-      var pwdEntry = new PasswordEntry(name, url, notes, identifier, email,
-          pwdPackageProcessor.getPassword());
+      var pwdEntry = new PasswordEntry(name, url, notes, identifier, email, pwdPackageProcessor.getPassword());
       this.category.addPasswordEntry(pwdEntry);
       // Add the creation to the action tracker
       String categoryName = this.category.getName();
@@ -303,8 +298,6 @@ public class PasswordWindowController extends DialogWindowController {
               + categoryName
               + "category : "
               + pwdEntry);
-
-      closeDialog();
       // Updating the exisiting password entry
     } else if (changesDetected()) {
 
@@ -323,8 +316,8 @@ public class PasswordWindowController extends DialogWindowController {
       closeDialog();
       summonNotificationPopup(App.getWindow(), "Password entry updated");
     }
-    // Refreshing the password entry view in the main window
-    controller.refreshPasswords(category);
+    closeDialog();
+    mainWindowController.refreshPasswords(category);
   }
 
   @FXML
