@@ -35,11 +35,13 @@ public class PwdsFileLocationWindowController extends DialogWindowController {
 
     // region =====Event methods=====
 
-    public void openFolderDialogForPwdLocation() {
+    @FXML
+    private void openFolderDialogForPwdLocation() {
         OpenPwdsFileLocationDialog(pwdsFileLocationTextField, window);
     }
 
-    public void saveButtonClicked() {
+    @FXML
+    private void saveButtonClicked() {
         try {
             DatabaseHandler.setDBFolderPath(pwdsFileLocationTextField.getText());
             closeDialog();

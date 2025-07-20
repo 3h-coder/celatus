@@ -7,10 +7,8 @@ import org.apache.commons.lang3.StringUtils;
 import com.celatus.App;
 import com.celatus.enums.AlertMode;
 import com.celatus.models.Category;
-import com.celatus.models.PasswordsDatabase;
 import com.celatus.util.FXMLUtils;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -28,7 +26,7 @@ public class CategoryWindowController extends DialogWindowController {
   @FXML
   private Label title;
   @FXML
-  private Label label02;
+  private Label errorLabel;
   @FXML
   private TextField nameTextField;
   @FXML
@@ -52,16 +50,14 @@ public class CategoryWindowController extends DialogWindowController {
 
   // region =====Window Methods=====
 
-  public void initialize() {
-    super.initialize();
-    Platform.runLater(
-        () -> {
-          fillFields();
-        });
+  @Override
+  protected void lateInitialize() {
+    super.lateInitialize();
+    fillFields();
   }
 
   /** Fills the window fields in case we're editing an existing category */
-  public void fillFields() {
+  private void fillFields() {
     if (inputCategory != null) {
       nameTextField.setText(inputCategory.getName());
 
@@ -114,46 +110,64 @@ public class CategoryWindowController extends DialogWindowController {
     String description = descriptionTextArea.getText();
     // Checking required fields
     if (StringUtils.isBlank(name)) {
-      label02.setText("This field is required");
+      errorLabel.setText("This field is required");
       return;
     }
 
-    Category category = new Category(name, description, null);
-    PasswordsDatabase passwordsDatabase = App.getPasswordsDatabase();
-
-    // Saving the new category
     if (inputCategory == null) {
-      try {
-        // Updating the passwords database
-        passwordsDatabase.addCategory(category);
-        // Updating the main window categories list
-        FXMLUtils.addToListView(categoriesList, name);
-      } catch (IllegalArgumentException ex) {
-        label02.setText("This category already exists");
-        return;
-      } catch (Exception ex) {
-        App.error(this.window, ex, "An error occured", logger, AlertMode.OK, true);
-      }
-      // Adding the creation to the action tracker
-      App.getActionTracker().addCatCreation(category);
-      closeDialog();
-      summonNotificationPopup(App.getWindow(), "The category " + name + " has been added");
-    } else { // Updating the category
-      String oldName = inputCategory.getName();
-      inputCategory.setName(name);
-      inputCategory.setDescription(description);
-      inputCategory.setLastEditDate(LocalDateTime.now());
-      // Updating the main window categories list and category description
-      FXMLUtils.updateListView(categoriesList, oldName, name);
-      if (StringUtils.isNotBlank(description)) {
-        MainWindowController controller = (MainWindowController) App.getController();
-        controller.showDescription(description);
-      } else {
-        descriptionPane.setVisible(false);
-      }
-      closeDialog();
-      summonNotificationPopup(App.getWindow(), "Category updated");
+
+      var newCategory = new Category(name, description, null);
+      addNewcategory(newCategory, categoriesList);
+
+    } else {
+      editExistingCategory(name, description, categoriesList, descriptionPane);
     }
+  }
+
+  private void addNewcategory(Category newCategory, ListView<String> categoriesList) {
+    var passwordsDatabase = App.getPasswordsDatabase();
+    var categoryName = newCategory.getName();
+
+    try {
+      passwordsDatabase.addCategory(newCategory);
+      // Updating the main window categories list
+      FXMLUtils.addToListView(categoriesList, categoryName);
+    } catch (IllegalArgumentException ex) {
+      errorLabel.setText("This category already exists");
+      return;
+    } catch (Exception ex) {
+      App.error(this.window, ex, "An error occured", logger, AlertMode.OK, true);
+    }
+
+    // Adding the creation to the action tracker
+    App.getActionTracker().addCatCreation(newCategory);
+
+    // Close the window and notify the user
+    closeDialog();
+    summonNotificationPopup(App.getWindow(), "The category " + categoryName + " has been added");
+  }
+
+  private void editExistingCategory(String newName, String newDescription, ListView<String> categoriesList,
+      AnchorPane descriptionPane) {
+    var oldName = inputCategory.getName();
+
+    // Updating the category
+    inputCategory.setName(newName);
+    inputCategory.setDescription(newDescription);
+    inputCategory.setLastEditDate(LocalDateTime.now());
+
+    // Updating the main window categories list and category description
+    FXMLUtils.updateListView(categoriesList, oldName, newName);
+    if (StringUtils.isNotBlank(newDescription)) {
+      MainWindowController controller = (MainWindowController) App.getController();
+      controller.showDescription(newDescription);
+    } else {
+      descriptionPane.setVisible(false);
+    }
+
+    // Close the window and notify the user
+    closeDialog();
+    summonNotificationPopup(App.getWindow(), "Category updated");
   }
 
   // endregion

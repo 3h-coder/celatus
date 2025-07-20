@@ -42,7 +42,8 @@ public class DialogWindowController extends BaseWindowController {
   // region =====Event Methods=====
 
   @Override
-  public void windowKeyPressed(KeyEvent event) {
+  @FXML
+  protected void windowKeyPressed(KeyEvent event) {
     super.windowKeyPressed(event);
     KeyCode eventCode = event.getCode();
     if (eventCode == KeyCode.ESCAPE) {

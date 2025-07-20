@@ -46,7 +46,7 @@ public class EntryWindowController extends BaseWindowController {
   }
 
   @FXML
-  public void warning(String message) {
+  private void warning(String message) {
     label02.setText(message);
     label02.setVisible(true);
   }

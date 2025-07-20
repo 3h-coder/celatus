@@ -75,8 +75,14 @@ public class SetupWindowController extends DialogWindowController {
     addEventFilters();
   }
 
+  @Override
+  protected void lateInitialize() {
+    super.lateInitialize();
+    pwdField.requestFocus();
+  }
+
   @FXML
-  public void warning(String message) {
+  private void warning(String message) {
     errorLabel.setText(message);
     errorLabel.setVisible(true);
   }

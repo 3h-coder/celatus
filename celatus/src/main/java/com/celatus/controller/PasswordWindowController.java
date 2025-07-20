@@ -19,7 +19,6 @@ import com.celatus.util.CryptoUtils;
 import com.celatus.util.CustomDateUtils;
 import com.celatus.util.FXMLUtils;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -131,22 +130,19 @@ public class PasswordWindowController extends DialogWindowController {
   // region =====Window Methods=====
 
   @Override
-  public void initialize() {
-    super.initialize();
-    Platform.runLater(
-        () -> {
-          fillFields();
-          // We add our listeners
-          addListeners();
-          // We set the record mode to false
-          recordMode = false;
-          // We set the mode items
-          setModesItems();
-          // We set the record button
-          setRecordButton();
-          // we intialize the detected changes
-          detectedChanges = "";
-        });
+  protected void lateInitialize() {
+    super.lateInitialize();
+    fillFields();
+    // We add our listeners
+    addListeners();
+    // We set the record mode to false
+    recordMode = false;
+    // We set the mode items
+    setModesItems();
+    // We set the record button
+    setRecordButton();
+    // we intialize the detected changes
+    detectedChanges = "";
   }
 
   public void setTitle(String title) {
@@ -273,16 +269,14 @@ public class PasswordWindowController extends DialogWindowController {
   @FXML
   private void savePassword() {
 
-    // We first check that none of the required fiels is blank
+    // We first check that none of the required fields is blank
     if (!requiredFieldsNotBlank()) {
       return;
     }
     // We then check that the fields are valid
-    /*
-     * if (!allFieldsValid()) {
-     * return;
-     * }
-     */
+    if (!allFieldsValid()) {
+      return;
+    }
 
     String name = nameTextField.getText();
     String identifier = identifierField.getText();
@@ -290,18 +284,18 @@ public class PasswordWindowController extends DialogWindowController {
     String email = emailField.getText();
     String notes = passwordNotes.getText();
 
-    MainWindowController controller = (MainWindowController) App.getController();
+    MainWindowController mainWindowController = (MainWindowController) App.getController();
 
     // Saving the new password entry
     if (inputPwdEntry == null) {
-      PasswordEntry pwdEntry = new PasswordEntry(name, url, notes, identifier, email,
-          pwdPackageProcessor.getPassword());
+      var pwdEntry = new PasswordEntry(name, url, notes, identifier, email, pwdPackageProcessor.getPassword());
       this.category.addPasswordEntry(pwdEntry);
       // Add the creation to the action tracker
-      App.getActionTracker().addPwdCreation(pwdEntry, this.category.getName());
+      String categoryName = this.category.getName();
+      App.getActionTracker().addPwdCreation(pwdEntry, categoryName);
       logger.info(
           "Adding the following password entry to the "
-              + this.category.getName()
+              + categoryName
               + "category : "
               + pwdEntry);
       // Updating the exisiting password entry
@@ -323,8 +317,7 @@ public class PasswordWindowController extends DialogWindowController {
       summonNotificationPopup(App.getWindow(), "Password entry updated");
     }
     closeDialog();
-    // Refreshing the password entry view in the main window
-    controller.refreshPasswords(category);
+    mainWindowController.refreshPasswords(category);
   }
 
   @FXML
@@ -410,8 +403,6 @@ public class PasswordWindowController extends DialogWindowController {
 
   /**
    * Checks for the validity of certain fields
-   *
-   * @return
    */
   @FXML
   private boolean allFieldsValid() {
@@ -430,8 +421,6 @@ public class PasswordWindowController extends DialogWindowController {
   /**
    * Detects whether changes have been made or not to the password entry (in case
    * of editing)
-   *
-   * @return
    */
   private boolean changesDetected() {
 

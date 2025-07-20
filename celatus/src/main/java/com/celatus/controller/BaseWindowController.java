@@ -91,21 +91,12 @@ public abstract class BaseWindowController {
     setWindowTitle("Celatus Password Manager");
   }
 
-  public void setIcon() {
-    this.window.getIcons().add(new Image(App.class.getResourceAsStream("images/logo.png")));
-  }
-
-  public void setWindowTitle(String title) {
-    window.setTitle(title);
-  }
-
-  @FXML
-  public void loadTheme() {
+  protected void loadTheme() {
     rootPane.getStylesheets().clear();
     rootPane.getStylesheets().add(ThemeUtils.getTheme());
   }
 
-  public void launchChildWindow(WindowType windowType, double X, double Y) {
+  protected void launchChildWindow(WindowType windowType, double X, double Y) {
     try {
       Map<String, Object> map = FXMLUtils.getSceneAndController(windowType);
       Scene scene = (Scene) map.get(Constants.SCENE);
@@ -131,7 +122,7 @@ public abstract class BaseWindowController {
    *
    * @param windowType : the window (as {@link com.celatus.enums.WindowType})
    */
-  public void switchAppWindow(WindowType windowType, boolean resizable) {
+  protected void switchAppWindow(WindowType windowType, boolean resizable) {
     try {
       App.launchWindow(windowType, resizable);
     } catch (Exception ex) {
@@ -148,7 +139,7 @@ public abstract class BaseWindowController {
   }
 
   /** Switches to the application's main window */
-  public void switchToMainWindow() {
+  protected void switchToMainWindow() {
     switchAppWindow(WindowType.MAIN, true);
   }
 
@@ -157,7 +148,7 @@ public abstract class BaseWindowController {
    *
    * @param fxml
    */
-  public void switchScene(String fxml) {
+  protected void switchScene(String fxml) {
     try {
       scene.setRoot(FXMLUtils.loadFXML(fxml));
     } catch (Exception ex) {
@@ -171,12 +162,20 @@ public abstract class BaseWindowController {
    * @param window
    * @param message
    */
-  public void summonNotificationPopup(Stage window, String message) {
+  protected void summonNotificationPopup(Stage window, String message) {
     NotificationHandler.summonNotificationPopup(window, message);
   }
 
   private Scene getScene() {
     return (Scene) rootPane.getScene();
+  }
+
+  private void setIcon() {
+    this.window.getIcons().add(new Image(App.class.getResourceAsStream("images/logo.png")));
+  }
+
+  private void setWindowTitle(String title) {
+    window.setTitle(title);
   }
 
   /**

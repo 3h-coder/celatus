@@ -5,7 +5,6 @@ import java.util.Map;
 import com.celatus.App;
 import com.celatus.enums.AppTempVariable;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -35,16 +34,13 @@ public class ViewPasswordWindowController extends BaseWindowController {
   // region =====Window Methods=====
 
   @Override
-  public void initialize() {
-    super.initialize();
-    Platform.runLater(
-        () -> {
-          fillFields();
-        });
+  public void lateInitialize() {
+    super.lateInitialize();
+    fillFields();
   }
 
   @SuppressWarnings("unchecked")
-  public void fillFields() {
+  private void fillFields() {
     // extract the password record
     this.passwordRecord = (Map<String, String>) App.extractTempVariable(AppTempVariable.PASSWORD_RECORD);
 

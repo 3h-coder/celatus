@@ -23,7 +23,6 @@ import com.celatus.util.DesktopUtils;
 import com.celatus.util.FXMLUtils;
 
 import javafx.animation.PauseTransition;
-import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -96,14 +95,10 @@ public class MainWindowController extends BaseWindowController {
   // region =====Window Methods=====
 
   @Override
-  public void initialize() {
-
-    super.initialize();
-    Platform.runLater(
-        () -> {
-          performGraphicalSetup();
-          categoriesList.requestFocus();
-        });
+  protected void lateInitialize() {
+    super.lateInitialize();
+    performGraphicalSetup();
+    categoriesList.requestFocus();
   }
 
   /**
@@ -234,7 +229,7 @@ public class MainWindowController extends BaseWindowController {
   /**
    * Displays the category's description as well as all of its passwords
    */
-  public void showCategory(String categoryName) {
+  private void showCategory(String categoryName) {
     Category category = App.getPasswordsDatabase().getCategory(categoryName);
     String categoryDescription = category.getDescription();
     if (StringUtils.isNotBlank(categoryDescription)) {
@@ -280,13 +275,15 @@ public class MainWindowController extends BaseWindowController {
    */
   public void refreshPasswords(Category category) {
     passwordsPane.setPrefHeight(Region.USE_COMPUTED_SIZE);
+
     passwordsTable.getItems().clear();
     passwordsTable.setPrefHeight(0);
+
     if (category.getPasswordEntries() != null) {
       passwordsTable.setVisible(true);
       fillPasswordsTable(category);
     } else {
-      passwordsTable.setVisible(false);
+      hidePasswordsTable();
     }
   }
 
@@ -295,16 +292,26 @@ public class MainWindowController extends BaseWindowController {
    *
    * @param category
    */
-  public void refreshPasswords(List<PasswordEntry> passwordEntries) {
+  private void refreshPasswords(List<PasswordEntry> passwordEntries) {
     passwordsTable.getItems().clear();
     passwordsTable.setPrefHeight(0);
+
     catDescription.setPrefHeight(0);
+
     if (passwordEntries != null && !passwordEntries.isEmpty()) {
       passwordsTable.setVisible(true);
       fillPasswordsTable(passwordEntries);
     } else {
-      passwordsTable.setVisible(false);
+      hidePasswordsTable();
     }
+  }
+
+  private void hidePasswordsTable() {
+    passwordsTable.setVisible(false);
+    // Prevent JavaFX from switching the focus to the next focusable element in the
+    // tree (usually the search bar) and explicitly request focus on the categories
+    // list.
+    categoriesList.requestFocus();
   }
 
   /**
@@ -352,7 +359,8 @@ public class MainWindowController extends BaseWindowController {
   // region =====Event Methods=====
 
   @Override
-  public void close() {
+  @FXML
+  protected void close() {
     // Check for unsaved changes
     int originalDBHash = App.getOriginalDatabaseHash();
     int currentDBHash = App.getPasswordsDatabase().hashCode();
@@ -374,7 +382,8 @@ public class MainWindowController extends BaseWindowController {
   }
 
   @Override
-  public void windowKeyPressed(KeyEvent event) {
+  @FXML
+  protected void windowKeyPressed(KeyEvent event) {
     super.windowKeyPressed(event);
     KeyCode eventCode = event.getCode();
     // Full screen
@@ -908,7 +917,8 @@ public class MainWindowController extends BaseWindowController {
   }
 
   /** Moves the selected category up in the list */
-  public void moveCategoryUp() {
+  @FXML
+  private void moveCategoryUp() {
     PasswordsDatabase database = App.getPasswordsDatabase();
     String selectedCategory = getSelectedCategory();
     if (selectedCategory == null) {
@@ -920,7 +930,8 @@ public class MainWindowController extends BaseWindowController {
   }
 
   /** Moves the selected category down in the list */
-  public void moveCategoryDown() {
+  @FXML
+  private void moveCategoryDown() {
     PasswordsDatabase database = App.getPasswordsDatabase();
     String selectedCategory = getSelectedCategory();
     if (selectedCategory == null) {
@@ -933,8 +944,6 @@ public class MainWindowController extends BaseWindowController {
 
   /**
    * Deletes the given password entry from the database
-   *
-   * @param pwdEntry
    */
   private void deletePasswordEntry(PasswordEntry pwdEntry) {
     PasswordsDatabase passwordsDatabase = App.getPasswordsDatabase();
@@ -953,7 +962,7 @@ public class MainWindowController extends BaseWindowController {
   /**
    * Moves a password entry from one category to another
    *
-   * @param pwdEntry
+   * @param pwdEntry   : the password entry to be moved
    * @param oldCatName : old category name, from where we take it
    * @param newCatName : new category name, in where we put it
    */
@@ -1012,13 +1021,13 @@ public class MainWindowController extends BaseWindowController {
 
   // region -----Menu Bar-----
 
-  // Used for the fxml file
-  public void openCatWindow() {
+  @FXML
+  private void openCatWindow() {
     openCategoryWindow(null);
   }
 
-  // Used for the fxml file
-  public void openPwdWindow() {
+  @FXML
+  private void openPwdWindow() {
     String selectedCategory = getSelectedCategory();
     if (selectedCategory == null) {
       summonNotificationPopup(window, "You must select a category first");
@@ -1027,7 +1036,8 @@ public class MainWindowController extends BaseWindowController {
     openPasswordWindow(null);
   }
 
-  public void saveDatabase() {
+  @FXML
+  private void saveDatabase() {
     try {
       DatabaseHandler.saveDatabase();
       summonNotificationPopup(window, "Database successfully saved");
@@ -1037,7 +1047,8 @@ public class MainWindowController extends BaseWindowController {
     }
   }
 
-  public void resetMasterPassword() {
+  @FXML
+  private void resetMasterPassword() {
     App.addTempVariable(AppTempVariable.SIGNAL_MASTER_PASSWORD_RESET, true);
     try {
       Map<String, Object> setupWindowSceneAndController = FXMLUtils.getSceneAndController(WindowType.SETUP);
@@ -1051,18 +1062,21 @@ public class MainWindowController extends BaseWindowController {
     }
   }
 
-  public void defaultThemeSelected() {
+  @FXML
+  private void defaultThemeSelected() {
     App.saveProperty(UserSettings.THEME.toString(), AppTheme.DEFAULT.toString());
     loadTheme();
   }
 
-  public void lightThemeSelected() {
+  @FXML
+  private void lightThemeSelected() {
     App.saveProperty(UserSettings.THEME.toString(), AppTheme.LIGHT.toString());
     loadTheme();
   }
 
   @SuppressWarnings("unchecked")
-  public void togglePwdsVisibilitySetting() {
+  @FXML
+  private void togglePwdsVisibilitySetting() {
     // Save the new property value
     var pwdVisibilityPropertyKey = UserSettings.PASSWORDS_VISIBLE.toString();
     var currentVisibility = Boolean.valueOf(appProperties.getProperty(pwdVisibilityPropertyKey));
@@ -1080,7 +1094,8 @@ public class MainWindowController extends BaseWindowController {
 
   }
 
-  public void changePwdsFileLocation() {
+  @FXML
+  private void changePwdsFileLocation() {
     try {
       Map<String, Object> changePwdsFileLocationSceneAndController = FXMLUtils
           .getSceneAndController(WindowType.CHANGE_PASSWORDS_FILE_LOCATION);
@@ -1090,17 +1105,20 @@ public class MainWindowController extends BaseWindowController {
     }
   }
 
-  public void openReadMe() {
+  @FXML
+  private void openReadMe() {
     final String READ_ME_URL = "https://github.com/3h-coder/celatus/blob/main/README.md";
     App.getHS().showDocument(READ_ME_URL);
   }
 
-  public void openUserGuide() {
+  @FXML
+  private void openUserGuide() {
     final String USER_GUIDE_URL = "https://github.com/3h-coder/celatus/blob/main/docs/User%20Guide.MD";
     App.getHS().showDocument(USER_GUIDE_URL);
   }
 
-  public void openReleaseNotes() {
+  @FXML
+  private void openReleaseNotes() {
     final String USER_GUIDE_URL = "https://github.com/3h-coder/celatus/blob/main/docs/Release%20Notes.MD";
     App.getHS().showDocument(USER_GUIDE_URL);
   }

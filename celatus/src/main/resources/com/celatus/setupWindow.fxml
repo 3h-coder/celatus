@@ -17,7 +17,7 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="rootPane" onMouseDragged="#onMouseDragged" onMousePressed="#onMousePressed" prefWidth="500.0" styleClass="RootPane" stylesheets="@styles/default.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.celatus.controller.SetupWindowController">
+<VBox fx:id="rootPane" onKeyPressed="#windowKeyPressed" onMouseDragged="#onMouseDragged" onMousePressed="#onMousePressed" prefWidth="500.0" styleClass="RootPane" stylesheets="@styles/default.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.celatus.controller.SetupWindowController">
    <children>
       <AnchorPane fx:id="rowPane1" maxHeight="1.7976931348623157E308" minHeight="-Infinity" prefHeight="30.0" prefWidth="500.0">
          <children>
