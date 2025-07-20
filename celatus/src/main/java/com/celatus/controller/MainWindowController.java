@@ -260,12 +260,21 @@ public class MainWindowController extends BaseWindowController {
     String selectedCategory = getSelectedCategory();
     // refresh
     categoriesList.getItems().clear();
-    for (Category category : App.getPasswordsDatabase().getCategories()) {
+    var passwordsDatabase = App.getPasswordsDatabase();
+    for (Category category : passwordsDatabase.getCategories()) {
       FXMLUtils.addToListView(categoriesList, category.getName());
     }
-    // reselect the previously selected category
-    if (selectedCategory != null) {
+
+    if (categoriesList.getItems().isEmpty()) {
+      return;
+    }
+
+    // reselect the previously selected category (if it still exists)
+    if (selectedCategory != null && passwordsDatabase.hasCategory(selectedCategory)) {
       categoriesList.getSelectionModel().select(selectedCategory);
+    } else {
+      // select the first category if none is selected
+      categoriesList.getSelectionModel().selectFirst();
     }
   }
 
@@ -283,7 +292,7 @@ public class MainWindowController extends BaseWindowController {
       passwordsTable.setVisible(true);
       fillPasswordsTable(category);
     } else {
-      hidePasswordsTable();
+      hidePasswordsTable(true);
     }
   }
 
@@ -292,7 +301,7 @@ public class MainWindowController extends BaseWindowController {
    *
    * @param category
    */
-  private void refreshPasswords(List<PasswordEntry> passwordEntries) {
+  private void refreshPasswordsFromSearch(List<PasswordEntry> passwordEntries) {
     passwordsTable.getItems().clear();
     passwordsTable.setPrefHeight(0);
 
@@ -302,16 +311,20 @@ public class MainWindowController extends BaseWindowController {
       passwordsTable.setVisible(true);
       fillPasswordsTable(passwordEntries);
     } else {
-      hidePasswordsTable();
+      hidePasswordsTable(false);
     }
   }
 
-  private void hidePasswordsTable() {
+  private void hidePasswordsTable(boolean shiftFocus) {
     passwordsTable.setVisible(false);
-    // Prevent JavaFX from switching the focus to the next focusable element in the
-    // tree (usually the search bar) and explicitly request focus on the categories
-    // list.
-    categoriesList.requestFocus();
+    // Note: We do not want to shift the focus during a password search, as we want
+    // the focus to remain on the search bar.
+    if (shiftFocus) {
+      // Prevent JavaFX from switching the focus to the next focusable element in the
+      // tree (usually the search bar) and explicitly request focus on the categories
+      // list.
+      categoriesList.requestFocus();
+    }
   }
 
   /**
@@ -361,7 +374,14 @@ public class MainWindowController extends BaseWindowController {
   @Override
   @FXML
   protected void close() {
-    // Check for unsaved changes
+    checkForUnsavedChanges();
+  }
+
+  /**
+   * Checks if there are unsaved changes in the database, and prompts the user
+   * to save them if there are.
+   */
+  private void checkForUnsavedChanges() {
     int originalDBHash = App.getOriginalDatabaseHash();
     int currentDBHash = App.getPasswordsDatabase().hashCode();
     if (originalDBHash == currentDBHash) {
@@ -402,32 +422,37 @@ public class MainWindowController extends BaseWindowController {
     if (event.isControlDown() && eventCode == KeyCode.Z) {
       App.getActionTracker().goBackwards();
 
-      String selectedCategory = getSelectedCategory();
-      if (selectedCategory != null) {
-        Category category = App.getPasswordsDatabase().getCategory(selectedCategory);
-        refreshPasswords(category);
-      }
-
-      refreshCategories();
+      refreshPasswordsAndCategories();
     }
     // Ctrl+Y
     if (event.isControlDown() && eventCode == KeyCode.Y) {
       App.getActionTracker().goForwards();
 
-      String selectedCategory = getSelectedCategory();
-      if (selectedCategory != null) {
-        Category category = App.getPasswordsDatabase().getCategory(selectedCategory);
-        refreshPasswords(category);
-      }
+      refreshPasswordsAndCategories();
+    }
+  }
 
-      refreshCategories();
+  private void refreshPasswordsAndCategories() {
+    refreshPasswordsForSelectedCategory();
+    refreshCategories();
+  }
+
+  private void refreshPasswordsForSelectedCategory() {
+    String selectedCategory = getSelectedCategory();
+    if (selectedCategory != null) {
+      var category = App.getPasswordsDatabase().getCategory(selectedCategory);
+      // The category may be null if the ctrl + Z/Y action deleted the selected
+      // category
+      if (category == null) {
+        return;
+      }
+      refreshPasswords(category);
     }
   }
 
   @FXML
   private void searchBarKeyPressed(KeyEvent event) {
     KeyCode eventCode = event.getCode();
-    // String eventText = event.getText();
 
     if (eventCode == KeyCode.ESCAPE || eventCode == KeyCode.TAB) {
       // Disabling the onKeyTyped other wise it is triggered
@@ -438,21 +463,25 @@ public class MainWindowController extends BaseWindowController {
       return;
     }
 
+    // Give the focus to the categories list if the user pressed the down arrow
     if (eventCode == KeyCode.DOWN) {
       categoriesList.requestFocus();
       return;
     }
 
+    // Give the focus to the menu bar if the user pressed the up arrow
     if (eventCode == KeyCode.UP) {
       menuBar.requestFocus();
+      return;
     }
-    // Re-enabling onKeyTyped if not the escape key
+
+    // Re-enabling onKeyTyped in case the user previously pressed escape or tab
     searchBar.setOnKeyTyped(keyTypedEvent -> searchBarKeyTyped(keyTypedEvent));
   }
 
   @FXML
   private void searchBarKeyTyped(KeyEvent event) {
-    refreshPasswords(searchPassword());
+    refreshPasswordsFromSearch(searchPassword());
   }
 
   @FXML
@@ -465,7 +494,7 @@ public class MainWindowController extends BaseWindowController {
       summonNotificationPopup(window, "No password found");
       return;
     }
-    refreshPasswords(searchResult);
+    refreshPasswordsFromSearch(searchResult);
   }
 
   @FXML
@@ -522,9 +551,9 @@ public class MainWindowController extends BaseWindowController {
 
   // endregion
 
-  // region =====Back end / Menu Item Methods=====
+  // region =====Menu Item / Context Menu Methods=====
 
-  // region -----Categories and Password Entries-----
+  // region -----Categories and Password Entries Context Menus-----
 
   /** Sets up the context menus for our categories and password entries */
   private void setContextMenus() {
@@ -538,43 +567,94 @@ public class MainWindowController extends BaseWindowController {
     setPwdPaneContextMenu();
   }
 
-  /** Sets the context menu for our passwords pane */
-  private void setPwdPaneContextMenu() {
-    ContextMenu newPwdContextMenu = new ContextMenu();
-    MenuItem newPwdMenuItem = new MenuItem("new password");
+  /** Sets the context menu for our categories list view */
+  private void setCatListViewContextMenu() {
+    this.categoriesList.setCellFactory(
+        (listView) -> {
+          ListCell<String> cell = new ListCell<>();
+          cell.textProperty().bind(cell.itemProperty());
 
-    newPwdMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.P, KeyCombination.SHIFT_DOWN));
-    newPwdMenuItem.setOnAction(
-        event -> {
-          openPasswordWindow(null);
+          MenuItem editMenuItem = new MenuItem("edit");
+          MenuItem deleteMenuItem = new MenuItem("delete");
+          MenuItem moveUpItem = new MenuItem("move up");
+          MenuItem moveDownItem = new MenuItem("move down");
+
+          editMenuItem.setOnAction(
+              event -> {
+                String categoryName = cell.getItem();
+                Category category = App.getPasswordsDatabase().getCategory(categoryName);
+                openCategoryWindow(category);
+              });
+
+          deleteMenuItem.setOnAction(
+              event -> {
+                App.warn(
+                    window,
+                    "This is an irreversible action, and you will lose all the passwords in this"
+                        + " category, are you sure you want to delete it?",
+                    logger,
+                    AlertMode.YES_AND_NO);
+                if (App.getSignal(AppTempVariable.SIGNAL_YES) == true) {
+                  String categoryName = cell.getItem();
+                  FXMLUtils.removeFromListView(listView, categoryName);
+                  deleteCategory(categoryName);
+                  // clearing the selection
+                  categoriesList.getSelectionModel().clearSelection();
+                }
+              });
+
+          moveUpItem.setAccelerator(new KeyCodeCombination(KeyCode.U, KeyCombination.SHIFT_DOWN));
+          moveUpItem.setOnAction(
+              event -> {
+                moveCategoryUp();
+              });
+
+          moveDownItem.setAccelerator(new KeyCodeCombination(KeyCode.D, KeyCombination.SHIFT_DOWN));
+          moveDownItem.setOnAction(
+              event -> {
+                moveCategoryDown();
+              });
+
+          ContextMenu contextMenu = new ContextMenu();
+          contextMenu.getItems().addAll(editMenuItem, deleteMenuItem, moveUpItem, moveDownItem);
+          cell.setContextMenu(contextMenu);
+
+          cell.setOnMouseClicked(
+              event -> {
+                String categoryName = cell.getItem();
+                showCategory(categoryName);
+              });
+
+          return cell;
         });
+  }
 
-    newPwdContextMenu.getItems().add(newPwdMenuItem);
-    blankSpacePane.addEventHandler(
+  /** Sets the context menu of our categories pane */
+  private void setCatPaneContextMenu() {
+    ContextMenu newCatContextMenu = new ContextMenu();
+    MenuItem newCatMenuItem = new MenuItem("new category");
+
+    newCatMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.C, KeyCombination.SHIFT_DOWN));
+    newCatMenuItem.setOnAction(
+        event -> {
+          openCategoryWindow(null);
+        });
+    newCatContextMenu.getItems().add(newCatMenuItem);
+    columnPane1.addEventHandler(
         ContextMenuEvent.CONTEXT_MENU_REQUESTED,
         event -> {
-          newPwdContextMenu.show(passwordsPane, event.getScreenX(), event.getScreenY());
-          // we disable the new password creation if no category was selected
-          for (MenuItem menuItem : newPwdContextMenu.getItems()) {
-            if ("new password".equals(menuItem.getText())) {
-              if (StringUtils.isBlank(this.categoriesList.getSelectionModel().getSelectedItem())) {
-                menuItem.setDisable(true);
-              } else {
-                menuItem.setDisable(false);
-              }
-            }
-          }
+          newCatContextMenu.show(columnPane1, event.getScreenX(), event.getScreenY());
           event.consume();
         });
-    columnPane2.addEventHandler(
+    columnPane1.addEventHandler(
         MouseEvent.MOUSE_PRESSED,
         event -> {
-          newPwdContextMenu.hide();
+          newCatContextMenu.hide();
         });
-    passwordsTable.addEventHandler(
+    categoriesList.addEventHandler(
         MouseEvent.MOUSE_PRESSED,
         event -> {
-          newPwdContextMenu.hide();
+          newCatContextMenu.hide();
         });
   }
 
@@ -682,94 +762,43 @@ public class MainWindowController extends BaseWindowController {
     passwordsTable.setContextMenu(pwdContextMenu);
   }
 
-  /** Sets the context menu of our categories pane */
-  private void setCatPaneContextMenu() {
-    ContextMenu newCatContextMenu = new ContextMenu();
-    MenuItem newCatMenuItem = new MenuItem("new category");
+  /** Sets the context menu for our passwords pane */
+  private void setPwdPaneContextMenu() {
+    ContextMenu newPwdContextMenu = new ContextMenu();
+    MenuItem newPwdMenuItem = new MenuItem("new password");
 
-    newCatMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.C, KeyCombination.SHIFT_DOWN));
-    newCatMenuItem.setOnAction(
+    newPwdMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.P, KeyCombination.SHIFT_DOWN));
+    newPwdMenuItem.setOnAction(
         event -> {
-          openCategoryWindow(null);
+          openPasswordWindow(null);
         });
-    newCatContextMenu.getItems().add(newCatMenuItem);
-    columnPane1.addEventHandler(
+
+    newPwdContextMenu.getItems().add(newPwdMenuItem);
+    blankSpacePane.addEventHandler(
         ContextMenuEvent.CONTEXT_MENU_REQUESTED,
         event -> {
-          newCatContextMenu.show(columnPane1, event.getScreenX(), event.getScreenY());
+          newPwdContextMenu.show(passwordsPane, event.getScreenX(), event.getScreenY());
+          // we disable the new password creation if no category was selected
+          for (MenuItem menuItem : newPwdContextMenu.getItems()) {
+            if ("new password".equals(menuItem.getText())) {
+              if (StringUtils.isBlank(this.categoriesList.getSelectionModel().getSelectedItem())) {
+                menuItem.setDisable(true);
+              } else {
+                menuItem.setDisable(false);
+              }
+            }
+          }
           event.consume();
         });
-    columnPane1.addEventHandler(
+    columnPane2.addEventHandler(
         MouseEvent.MOUSE_PRESSED,
         event -> {
-          newCatContextMenu.hide();
+          newPwdContextMenu.hide();
         });
-    categoriesList.addEventHandler(
+    passwordsTable.addEventHandler(
         MouseEvent.MOUSE_PRESSED,
         event -> {
-          newCatContextMenu.hide();
-        });
-  }
-
-  /** Sets the context menu for our categories list view */
-  private void setCatListViewContextMenu() {
-    this.categoriesList.setCellFactory(
-        (listView) -> {
-          ListCell<String> cell = new ListCell<>();
-          cell.textProperty().bind(cell.itemProperty());
-
-          MenuItem editMenuItem = new MenuItem("edit");
-          MenuItem deleteMenuItem = new MenuItem("delete");
-          MenuItem moveUpItem = new MenuItem("move up");
-          MenuItem moveDownItem = new MenuItem("move down");
-
-          editMenuItem.setOnAction(
-              event -> {
-                String categoryName = cell.getItem();
-                Category category = App.getPasswordsDatabase().getCategory(categoryName);
-                openCategoryWindow(category);
-              });
-
-          deleteMenuItem.setOnAction(
-              event -> {
-                App.warn(
-                    window,
-                    "This is an irreversible action, and you will lose all the passwords in this"
-                        + " category, are you sure you want to delete it?",
-                    logger,
-                    AlertMode.YES_AND_NO);
-                if (App.getSignal(AppTempVariable.SIGNAL_YES) == true) {
-                  String categoryName = cell.getItem();
-                  FXMLUtils.removeFromListView(listView, categoryName);
-                  deleteCategory(categoryName);
-                  // clearing the selection
-                  categoriesList.getSelectionModel().clearSelection();
-                }
-              });
-
-          moveUpItem.setAccelerator(new KeyCodeCombination(KeyCode.U, KeyCombination.SHIFT_DOWN));
-          moveUpItem.setOnAction(
-              event -> {
-                moveCategoryUp();
-              });
-
-          moveDownItem.setAccelerator(new KeyCodeCombination(KeyCode.D, KeyCombination.SHIFT_DOWN));
-          moveDownItem.setOnAction(
-              event -> {
-                moveCategoryDown();
-              });
-
-          ContextMenu contextMenu = new ContextMenu();
-          contextMenu.getItems().addAll(editMenuItem, deleteMenuItem, moveUpItem, moveDownItem);
-          cell.setContextMenu(contextMenu);
-
-          cell.setOnMouseClicked(
-              event -> {
-                String categoryName = cell.getItem();
-                showCategory(categoryName);
-              });
-
-          return cell;
+          newPwdContextMenu.hide();
         });
   }
 
@@ -841,8 +870,6 @@ public class MainWindowController extends BaseWindowController {
 
   /**
    * Opens a window to create a category or edit the selected category
-   *
-   * @param category
    */
   private void openCategoryWindow(Category category) {
     try {
@@ -867,8 +894,6 @@ public class MainWindowController extends BaseWindowController {
 
   /**
    * Opens a window to create a password entry or edit the selected one
-   *
-   * @param pwdEntry
    */
   private void openPasswordWindow(PasswordEntry pwdEntry) {
     try {
