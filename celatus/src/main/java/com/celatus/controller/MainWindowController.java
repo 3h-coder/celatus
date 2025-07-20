@@ -282,6 +282,7 @@ public class MainWindowController extends BaseWindowController {
     passwordsPane.setPrefHeight(Region.USE_COMPUTED_SIZE);
     passwordsTable.getItems().clear();
     passwordsTable.setPrefHeight(0);
+
     if (category.getPasswordEntries() != null) {
       passwordsTable.setVisible(true);
       fillPasswordsTable(category);
@@ -374,7 +375,8 @@ public class MainWindowController extends BaseWindowController {
   }
 
   @Override
-  public void windowKeyPressed(KeyEvent event) {
+  @FXML
+  protected void windowKeyPressed(KeyEvent event) {
     super.windowKeyPressed(event);
     KeyCode eventCode = event.getCode();
     // Full screen

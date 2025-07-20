@@ -9,72 +9,45 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.shape.SVGPath?>
 
-<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-   minWidth="-Infinity" onKeyPressed="#windowKeyPressed" onMouseDragged="#onMouseDragged"
-   onMousePressed="#onMousePressed" prefHeight="280.0" prefWidth="500.0"
-   style="-fx-border-width: 1;" styleClass="RootPane" stylesheets="@styles/default.css"
-   xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1"
-   fx:controller="com.celatus.controller.CategoryWindowController">
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#windowKeyPressed" onMouseDragged="#onMouseDragged" onMousePressed="#onMousePressed" prefHeight="280.0" prefWidth="500.0" style="-fx-border-width: 1;" styleClass="RootPane" stylesheets="@styles/default.css"
+   xmlns="http://javafx.com/javafx/20.0.1"
+   xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.celatus.controller.CategoryWindowController">
    <children>
-      <AnchorPane fx:id="rowPane1" layoutY="8.0" prefHeight="30.0" prefWidth="500.0"
-         AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <AnchorPane fx:id="rowPane1" layoutY="8.0" prefHeight="30.0" prefWidth="500.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox alignment="TOP_RIGHT" fillHeight="false" spacing="5.0"
-               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="1.0">
+            <HBox alignment="TOP_RIGHT" fillHeight="false" spacing="5.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="1.0">
                <children>
-                  <Button fx:id="minimizeButton" minHeight="0.0" minWidth="0.0"
-                     mnemonicParsing="false" onAction="#minimize" prefHeight="15.0" prefWidth="20.0"
-                     styleClass="topRowButton">
+                  <Button fx:id="minimizeButton" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" onAction="#minimize" prefHeight="15.0" prefWidth="20.0" styleClass="topRowButton">
                      <graphic>
                         <StackPane minHeight="0.0" minWidth="0.0" prefHeight="15.0" prefWidth="20.0">
                            <children>
-                              <SVGPath
-                                 content="M24 432c-13.3 0-24 10.7-24 24s10.7 24 24 24H488c13.3 0 24-10.7 24-24s-10.7-24-24-24H24z"
-                                 scaleX="0.025" scaleY="0.04" styleClass="svg" />
+                              <SVGPath content="M24 432c-13.3 0-24 10.7-24 24s10.7 24 24 24H488c13.3 0 24-10.7 24-24s-10.7-24-24-24H24z" scaleX="0.025" scaleY="0.04" styleClass="svg" />
                            </children>
                         </StackPane>
                      </graphic>
                   </Button>
-                  <Button id="closeButton" fx:id="closeButton" minHeight="0.0" minWidth="0.0"
-                     mnemonicParsing="false" onAction="#closeDialog" prefHeight="15.0"
-                     prefWidth="20.0" styleClass="topRowButton">
+                  <Button id="closeButton" fx:id="closeButton" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" onAction="#closeDialog" prefHeight="15.0" prefWidth="20.0" styleClass="topRowButton">
                      <graphic>
                         <StackPane minHeight="0.0" minWidth="0.0">
                            <children>
-                              <SVGPath
-                                 content="M345 137c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-119 119L73 103c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l119 119L39 375c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l119-119L311 409c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-119-119L345 137z"
-                                 scaleX="0.04" scaleY="0.04" styleClass="svg" />
+                              <SVGPath content="M345 137c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-119 119L73 103c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l119 119L39 375c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l119-119L311 409c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-119-119L345 137z" scaleX="0.04" scaleY="0.04" styleClass="svg" />
                            </children>
                         </StackPane>
                      </graphic>
                   </Button>
                </children>
             </HBox>
-            <Label fx:id="title" alignment="CENTER" layoutX="52.0" layoutY="7.0" styleClass="title"
-               AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="60.0" />
+            <Label fx:id="title" alignment="CENTER" layoutX="52.0" layoutY="7.0" styleClass="title" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="60.0" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="rowPane2" layoutY="35.0" prefWidth="500.0" AnchorPane.bottomAnchor="0.0"
-         AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
+      <AnchorPane fx:id="rowPane2" layoutY="35.0" prefWidth="500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
          <children>
-            <Label fx:id="label01" layoutX="40.0" layoutY="14.0" text="Category Name"
-               AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0"
-               AnchorPane.topAnchor="18.0" />
-            <TextField fx:id="nameTextField" layoutX="41.0" layoutY="55.0" onKeyPressed="#checkName"
-               prefHeight="25.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0"
-               AnchorPane.topAnchor="40.0" />
-            <Label fx:id="label02" layoutX="40.0" layoutY="65.0" styleClass="badFieldLabel"
-               AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0"
-               AnchorPane.topAnchor="68.0" />
-            <Label fx:id="label03" layoutX="40.0" layoutY="92.0"
-               text="Description (250 characters max)" AnchorPane.leftAnchor="40.0"
-               AnchorPane.rightAnchor="40.0" />
-            <TextArea fx:id="descriptionTextArea" layoutX="40.0" layoutY="116.0"
-               onKeyPressed="#checkDescription" prefHeight="80.0" wrapText="true"
-               AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0"
-               AnchorPane.topAnchor="115.0" />
-            <Button fx:id="saveButton" layoutX="224.0" layoutY="211.0" mnemonicParsing="false"
-               onAction="#saveCategory" text="Save" />
+            <Label fx:id="label01" layoutX="40.0" layoutY="14.0" text="Category Name" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="18.0" />
+            <TextField fx:id="nameTextField" layoutX="41.0" layoutY="55.0" onKeyPressed="#checkName" prefHeight="25.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="40.0" />
+            <Label fx:id="errorLabel" layoutX="40.0" layoutY="65.0" styleClass="badFieldLabel" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="68.0" />
+            <Label fx:id="label03" layoutX="40.0" layoutY="92.0" text="Description (250 characters max)" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" />
+            <TextArea fx:id="descriptionTextArea" layoutX="40.0" layoutY="116.0" onKeyPressed="#checkDescription" prefHeight="80.0" wrapText="true" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="115.0" />
+            <Button fx:id="saveButton" layoutX="224.0" layoutY="211.0" mnemonicParsing="false" onAction="#saveCategory" text="Save" />
          </children>
       </AnchorPane>
    </children>
