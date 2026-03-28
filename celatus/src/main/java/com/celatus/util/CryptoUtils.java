@@ -20,6 +20,7 @@ import java.security.spec.KeySpec;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -185,7 +186,13 @@ public class CryptoUtils {
       IllegalBlockSizeException,
       BadPaddingException {
 
-    try (var outputStream = new FileOutputStream(outputFilePath)) {
+    File file = new File(outputFilePath);
+    File parentFile = file.getParentFile();
+    if (parentFile != null && !parentFile.exists()) {
+      parentFile.mkdirs();
+    }
+
+    try (var outputStream = new FileOutputStream(file)) {
       outputStream.write(iv);
       Cipher cipher = Cipher.getInstance(ALGORITHM);
       cipher.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(iv));

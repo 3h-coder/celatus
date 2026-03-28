@@ -1,7 +1,7 @@
 package com.celatus;
 
 /**
- * The jar generated from Maven fails run if the entry point
+ * The jar generated from Maven fails to run if the entry point
  * class inherits from another, so we have to create this
  * class as a the main entry point.
  */

@@ -105,7 +105,7 @@ public class DatabaseHandler {
    */
   public static void concealDatabase() throws IOException {
     if (dbFileExists()) {
-      CryptoUtils.hideFile(DB_FILE_NAME, true);
+      CryptoUtils.hideFile(getDBFilePath(), true);
     }
   }
 
