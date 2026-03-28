@@ -225,14 +225,15 @@ public class FXMLUtils {
     final double MIN_HEIGHT = 30.0;
     final double LINE_HEIGHT = 19.0; // Minimum height to ensure readability
     final double MAX_WIDTH = 300.0;
+    final double TEXTAREA_INSETS = 20.0; // horizontal padding inside TextArea (left + right combined)
 
     textArea.setMaxWidth(MAX_WIDTH);
 
     double textwidth = computeTextWidth(textArea.getText(), textArea.getFont()) + 2;
-    int linesNeeded = (int) Math.ceil(textwidth / MAX_WIDTH);
+    int linesNeeded = (int) Math.ceil(textwidth / (MAX_WIDTH - TEXTAREA_INSETS));
 
     if (linesNeeded == 1) {
-      textArea.setMaxWidth(textwidth + 15.0);
+      textArea.setMaxWidth(textwidth + TEXTAREA_INSETS + 15.0);
     }
 
     textArea.setPrefHeight(MIN_HEIGHT + (linesNeeded - 1) * LINE_HEIGHT);
