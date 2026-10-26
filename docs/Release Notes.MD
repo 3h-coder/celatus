@@ -1,3 +1,15 @@
+## Version 1.4.0
+
+- The app now runs on Java 21 and JavaFX 21
+- Editing, deleting or moving a password from the search results now keeps the search results displayed
+
+### Bug fixes
+
+- Fixed the app crashing when saving or deleting a password entry from the search results
+- Fixed the passwords database failing to save when its folder did not exist yet
+- Fixed the notification popup text not being fully displayed
+
+
 ## Version 1.3.0
 
 - Passwords copied into the clipboard now get cleared from it after 20 seconds
