@@ -288,11 +288,26 @@ public class MainWindowController extends BaseWindowController {
     passwordsTable.getItems().clear();
     passwordsTable.setPrefHeight(0);
 
-    if (category.getPasswordEntries() != null) {
+    if (category != null && category.getPasswordEntries() != null) {
       passwordsTable.setVisible(true);
       fillPasswordsTable(category);
     } else {
       hidePasswordsTable(true);
+    }
+  }
+
+  /**
+   * Refreshes the passwords table, either from the active search or from the
+   * selected category
+   */
+  public void refreshPasswordsView() {
+    String selectedCategory = getSelectedCategory();
+    String searchText = searchBar.getText();
+    // No category is selected during a search
+    if (selectedCategory == null && StringUtils.isNotBlank(searchText)) {
+      refreshPasswordsFromSearch(SearchHandler.searchPassword(searchText));
+    } else {
+      refreshPasswords(App.getPasswordsDatabase().getCategory(selectedCategory));
     }
   }
 
@@ -315,11 +330,11 @@ public class MainWindowController extends BaseWindowController {
     }
   }
 
-  private void hidePasswordsTable(boolean shiftFocus) {
+  private void hidePasswordsTable(boolean shiftFocusToCategories) {
     passwordsTable.setVisible(false);
     // Note: We do not want to shift the focus during a password search, as we want
     // the focus to remain on the search bar.
-    if (shiftFocus) {
+    if (shiftFocusToCategories) {
       // Prevent JavaFX from switching the focus to the next focusable element in the
       // tree (usually the search bar) and explicitly request focus on the categories
       // list.
@@ -908,9 +923,12 @@ public class MainWindowController extends BaseWindowController {
       } else {
         title = "Adding new password entry";
       }
-      controller.setCategory(
-          App.getPasswordsDatabase()
-              .getCategory(this.categoriesList.getSelectionModel().getSelectedItem()));
+      // When editing, use the entry's own category as no category is selected
+      // during a search
+      var activeCategory = pwdEntry != null
+          ? pwdEntry.findCategory()
+          : App.getPasswordsDatabase().getCategory(getSelectedCategory());
+      controller.setCategory(activeCategory);
       controller.setTitle(title);
       FXMLUtils.launchDialogWindow(this.window, scene);
     } catch (Exception ex) {
@@ -971,17 +989,16 @@ public class MainWindowController extends BaseWindowController {
    * Deletes the given password entry from the database
    */
   private void deletePasswordEntry(PasswordEntry pwdEntry) {
-    PasswordsDatabase passwordsDatabase = App.getPasswordsDatabase();
-    String categoryName = this.categoriesList.getSelectionModel().getSelectedItem();
-    Category category = passwordsDatabase.getCategory(categoryName);
+    // No category is selected during a search, so we use the entry's own category
+    Category category = pwdEntry.findCategory();
+    String categoryName = category.getName();
     // Delete it
     logger.info("Deleting the password entry " + pwdEntry.getName() + " : " + pwdEntry);
     // Register the action in our action tracker
     App.getActionTracker().addPwdRemoval(pwdEntry, categoryName);
     logger.debug("action tracker: " + App.getActionTracker());
     category.removePasswordEntry(pwdEntry);
-    // Refresh the passwords display for that category
-    refreshPasswords(category);
+    refreshPasswordsView();
   }
 
   /**
@@ -1008,9 +1025,7 @@ public class MainWindowController extends BaseWindowController {
               + oldCatName
               + " to "
               + newCatName);
-      if (getSelectedCategory() != null) {
-        refreshPasswords(oldCat);
-      }
+      refreshPasswordsView();
     } catch (IllegalArgumentException ex) {
       App.error(this.window, ex, "An error occured", logger, AlertMode.OK, true);
     }

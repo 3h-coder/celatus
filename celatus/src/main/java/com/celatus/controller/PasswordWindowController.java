@@ -313,11 +313,10 @@ public class PasswordWindowController extends DialogWindowController {
       inputPwdEntry.setNotes(notes);
       inputPwdEntry.setLastEditDate(LocalDateTime.now());
 
-      closeDialog();
       summonNotificationPopup(App.getWindow(), "Password entry updated");
     }
     closeDialog();
-    mainWindowController.refreshPasswords(category);
+    mainWindowController.refreshPasswordsView();
   }
 
   @FXML
